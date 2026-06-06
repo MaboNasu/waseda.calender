@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="早稲田大学関連イベントの日程・場所・内容をまとめて確認できるカレンダーサイト。スポーツ、文化、講演、演劇、音楽など多彩なイベント情報を掲載。">
+  <meta name="robots" content="index, follow">
+  <!-- OGP -->
+  <meta property="og:title" content="Wase Calendar – 早稲田のイベントをひとつのカレンダーで">
+  <meta property="og:description" content="早稲田大学関連のイベント情報をまとめて確認できるカレンダーサイト。">
+  <meta property="og:type" content="website">
+
+  <title>Wase Calendar – 早稲田のイベントをひとつのカレンダーで</title>
+
+  <!-- Google Fonts (Noto Serif JP / Noto Sans JP) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- スタイルシート -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============================================================
+     ヘッダー
+     ============================================================ -->
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <!-- ロゴ -->
+    <a href="#top" class="site-logo" onclick="scrollToSection('top')">
+      <span class="logo-main">Wase Calendar</span>
+      <span class="logo-sub">早稲田イベント情報</span>
+    </a>
+
+    <!-- PC ナビ -->
+    <nav class="header-nav" aria-label="メインナビゲーション">
+      <button class="nav-btn" onclick="scrollToSection('today-section')">本日のイベント</button>
+      <button class="nav-btn" onclick="scrollToSection('upcoming-section')">近日開催</button>
+      <button class="nav-btn" onclick="scrollToSection('calendar-section')">カレンダー</button>
+      <button class="nav-btn" onclick="scrollToSection('contact-section')">掲載依頼</button>
+    </nav>
+
+    <!-- ハンバーガー（スマホ） -->
+    <button class="hamburger" id="hamburger-btn" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- モバイルナビ -->
+<nav class="mobile-nav" id="mobile-nav" aria-label="モバイルナビゲーション">
+  <button class="nav-btn" onclick="scrollToSection('today-section')">本日のイベント</button>
+  <button class="nav-btn" onclick="scrollToSection('upcoming-section')">近日開催</button>
+  <button class="nav-btn" onclick="scrollToSection('calendar-section')">カレンダー</button>
+  <button class="nav-btn" onclick="scrollToSection('contact-section')">掲載依頼・問い合わせ</button>
+</nav>
+
+
+<!-- ============================================================
+     ヒーロー
+     ============================================================ -->
+<section class="hero" id="top">
+  <div class="container hero-inner">
+    <span class="hero-badge">早稲田大学 イベントカレンダー</span>
+    <h1>早稲田のイベントを、<br>ひとつのカレンダーで。</h1>
+    <p class="hero-sub">
+      スポーツ、文化、講演、演劇、音楽。<br>
+      早稲田に関わるイベント情報をまとめて見られるカレンダーサイト。
+    </p>
+    <div class="hero-cta">
+      <button class="btn btn-white" onclick="scrollToSection('today-section')">
+        📅 本日のイベントを見る
+      </button>
+      <button class="btn btn-outline-white" onclick="scrollToSection('calendar-section')">
+        🗓 カレンダーを見る
+      </button>
+      <button class="btn btn-outline-white" onclick="scrollToSection('contact-section')">
+        ✉ 掲載依頼・問い合わせ
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     絞り込みパネル
+     ============================================================ -->
+<div class="container">
+  <div class="filter-section" style="margin-top:2rem;">
+    <div class="filter-title">
+      🔍 イベントを絞り込む
+    </div>
+    <div class="filter-grid">
+      <!-- カテゴリ -->
+      <div class="filter-group">
+        <label for="filter-category">カテゴリ</label>
+        <select id="filter-category" class="filter-select">
+          <option value="">すべて</option>
+          <option value="sports">スポーツ</option>
+          <option value="culture">文化</option>
+          <option value="music">音楽</option>
+          <option value="theater">演劇</option>
+          <option value="lecture">講演</option>
+          <option value="community">地域</option>
+          <option value="other">その他</option>
+        </select>
+      </div>
+      <!-- 対象者 -->
+      <div class="filter-group">
+        <label for="filter-target">対象者</label>
+        <select id="filter-target" class="filter-select">
+          <option value="">すべて</option>
+          <option value="student">在学生向け</option>
+          <option value="obog">OBOG向け</option>
+          <option value="public">一般参加可</option>
+          <option value="applicant">受験生向け</option>
+        </select>
+      </div>
+      <!-- 開催場所 -->
+      <div class="filter-group">
+        <label for="filter-campus">開催場所</label>
+        <select id="filter-campus" class="filter-select">
+          <option value="">すべて</option>
+          <option value="waseda">早稲田キャンパス</option>
+          <option value="toyama">戸山キャンパス</option>
+          <option value="nishiwaseda">西早稲田キャンパス</option>
+          <option value="tokorozawa">所沢キャンパス</option>
+          <option value="takadanobaba">高田馬場周辺</option>
+          <option value="outside">学外</option>
+          <option value="online">オンライン</option>
+        </select>
+      </div>
+      <!-- 参加費 -->
+      <div class="filter-group">
+        <label for="filter-fee">参加費</label>
+        <select id="filter-fee" class="filter-select">
+          <option value="">すべて</option>
+          <option value="free">無料</option>
+          <option value="paid">有料</option>
+        </select>
+      </div>
+      <!-- キーワード -->
+      <div class="filter-group" style="grid-column: 1 / -1;">
+        <label for="filter-keyword">キーワード検索</label>
+        <input type="text" id="filter-keyword" class="filter-input"
+          placeholder="イベント名・主催団体・説明文で検索（Enterキーでも検索）">
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button id="filter-reset" class="btn btn-ghost btn-sm">リセット</button>
+      <button id="filter-apply" class="btn btn-enjy btn-sm">🔍 この条件で絞り込む</button>
+    </div>
+  </div>
+
+  <!-- 広告枠（将来のGoogle AdSense設置予定） -->
+  <div class="ad-placeholder">
+    <div class="ad-placeholder-label">AD</div>
+    <p style="margin-top:0.3rem;font-size:0.75rem;">広告掲載予定スペース</p>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     本日のイベント
+     ============================================================ -->
+<section class="section scroll-target" id="today-section">
+  <div class="container">
+    <h2 class="section-title">
+      本日のイベント
+      <span id="today-count" style="font-size:0.85rem;font-weight:500;color:#6B7280;font-family:var(--font-main);margin-left:0.25rem;"></span>
+    </h2>
+    <div id="today-events">
+      <!-- JSで描画 -->
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     近日開催のイベント
+     ============================================================ -->
+<section class="section scroll-target" id="upcoming-section" style="background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="container">
+    <h2 class="section-title">
+      近日開催のイベント
+      <span id="upcoming-count" style="font-size:0.85rem;font-weight:500;color:#6B7280;font-family:var(--font-main);margin-left:0.25rem;"></span>
+    </h2>
+    <div id="upcoming-events">
+      <!-- JSで描画 -->
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     イベントカレンダー
+     ============================================================ -->
+<section class="section scroll-target" id="calendar-section">
+  <div class="container">
+    <h2 class="section-title">イベントカレンダー</h2>
+    <div class="calendar-wrapper">
+      <!-- カレンダーナビ -->
+      <div class="calendar-nav">
+        <button class="calendar-nav-btn" onclick="prevMonth()" aria-label="前の月">&#8249;</button>
+        <span class="calendar-nav-title" id="calendar-title">読み込み中...</span>
+        <button class="calendar-nav-btn" onclick="nextMonth()" aria-label="次の月">&#8250;</button>
+      </div>
+
+      <!-- PC: グリッドカレンダー -->
+      <div class="calendar-grid-view">
+        <div class="calendar-weekdays">
+          <div class="calendar-weekday sun">日</div>
+          <div class="calendar-weekday">月</div>
+          <div class="calendar-weekday">火</div>
+          <div class="calendar-weekday">水</div>
+          <div class="calendar-weekday">木</div>
+          <div class="calendar-weekday">金</div>
+          <div class="calendar-weekday sat">土</div>
+        </div>
+        <div class="calendar-days" id="calendar-grid">
+          <!-- JSで描画 -->
+        </div>
+      </div>
+
+      <!-- スマホ: リスト形式カレンダー -->
+      <div class="calendar-list-view">
+        <div id="calendar-list">
+          <!-- JSで描画 -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     掲載依頼・問い合わせフォーム
+     ============================================================ -->
+<section class="section scroll-target" id="contact-section" style="background:var(--white);border-top:1px solid var(--border);">
+  <div class="container" style="max-width:720px;">
+    <h2 class="section-title">掲載依頼・問い合わせ</h2>
+    <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:1.5rem;line-height:1.8;">
+      イベントの掲載依頼や修正・削除依頼、その他お問い合わせはこちらからどうぞ。<br>
+      <strong>※ 現在、フォームは準備中です。お問い合わせ内容を入力後、送信してください。</strong>
+    </p>
+
+    <div class="form-wrapper">
+      <form id="contact-form" novalidate>
+
+        <!-- 基本情報 -->
+        <div class="form-group">
+          <label class="form-label" for="contact-name">
+            お名前<span class="required-mark">*</span>
+          </label>
+          <input type="text" id="contact-name" name="name" class="form-control"
+            placeholder="山田 太郎" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="contact-org">所属・団体名</label>
+          <input type="text" id="contact-org" name="organization" class="form-control"
+            placeholder="早稲田大学 ○○サークル">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="contact-email">
+            メールアドレス<span class="required-mark">*</span>
+          </label>
+          <input type="email" id="contact-email" name="email" class="form-control"
+            placeholder="example@waseda.jp" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="contact-type">
+            問い合わせ種別<span class="required-mark">*</span>
+          </label>
+          <select id="contact-type" name="contact_type" class="form-control" required>
+            <option value="">選択してください</option>
+            <option value="event-request">イベント掲載依頼</option>
+            <option value="modify-request">掲載内容の修正依頼</option>
+            <option value="delete-request">削除依頼</option>
+            <option value="partnership">協力・提携相談</option>
+            <option value="other">その他</option>
+          </select>
+        </div>
+
+        <!-- イベント掲載依頼時の追加フィールド -->
+        <div id="event-request-fields" class="event-fields">
+          <hr class="form-divider">
+          <div class="form-section-title">
+            📋 イベント情報（掲載依頼の場合）
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="ev-title">
+              イベント名<span class="required-mark">*</span>
+            </label>
+            <input type="text" id="ev-title" name="ev_title" class="form-control"
+              placeholder="早稲田大学 春の演劇祭">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="ev-date">
+                開催日<span class="required-mark">*</span>
+              </label>
+              <input type="date" id="ev-date" name="ev_date" class="form-control">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <!-- 空カラム -->
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="ev-start">開始時間</label>
+              <input type="time" id="ev-start" name="ev_start_time" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="ev-end">終了時間</label>
+              <input type="time" id="ev-end" name="ev_end_time" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="ev-location">開催場所</label>
+            <input type="text" id="ev-location" name="ev_location" class="form-control"
+              placeholder="大隈記念講堂">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="ev-campus">キャンパス・エリア</label>
+            <select id="ev-campus" name="ev_campus" class="form-control">
+              <option value="">選択してください</option>
+              <option value="waseda">早稲田キャンパス</option>
+              <option value="toyama">戸山キャンパス</option>
+              <option value="nishiwaseda">西早稲田キャンパス</option>
+              <option value="tokorozawa">所沢キャンパス</option>
+              <option value="takadanobaba">高田馬場周辺</option>
+              <option value="outside">学外</option>
+              <option value="online">オンライン</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="ev-organizer">主催団体</label>
+            <input type="text" id="ev-organizer" name="ev_organizer" class="form-control"
+              placeholder="早稲田大学 演劇倶楽部">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="ev-category">カテゴリ</label>
+              <select id="ev-category" name="ev_category" class="form-control">
+                <option value="">選択してください</option>
+                <option value="sports">スポーツ</option>
+                <option value="culture">文化</option>
+                <option value="music">音楽</option>
+                <option value="theater">演劇</option>
+                <option value="lecture">講演</option>
+                <option value="community">地域</option>
+                <option value="other">その他</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="ev-target">対象者</label>
+              <select id="ev-target" name="ev_target" class="form-control">
+                <option value="">選択してください</option>
+                <option value="student">在学生向け</option>
+                <option value="obog">OBOG向け</option>
+                <option value="public">一般参加可</option>
+                <option value="applicant">受験生向け</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="ev-fee-type">参加費</label>
+              <select id="ev-fee-type" name="ev_fee_type" class="form-control">
+                <option value="">選択してください</option>
+                <option value="free">無料</option>
+                <option value="paid">有料</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="ev-fee-text">参加費詳細</label>
+              <input type="text" id="ev-fee-text" name="ev_fee_text" class="form-control"
+                placeholder="例: 前売り500円">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="ev-url">公式リンク（URL）</label>
+            <input type="url" id="ev-url" name="ev_external_url" class="form-control"
+              placeholder="https://example.com">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="ev-desc">イベント説明</label>
+            <textarea id="ev-desc" name="ev_description" class="form-control"
+              placeholder="イベントの内容・概要を入力してください"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="ev-note">掲載希望内容・補足</label>
+            <textarea id="ev-note" name="ev_note" class="form-control" style="min-height:80px;"
+              placeholder="その他、掲載に関するご要望があればご記入ください"></textarea>
+          </div>
+        </div>
+        <!-- /event-request-fields -->
+
+        <hr class="form-divider">
+
+        <div class="form-group">
+          <label class="form-label" for="contact-message">メッセージ・その他</label>
+          <textarea id="contact-message" name="message" class="form-control"
+            placeholder="その他ご連絡事項があればこちらにご記入ください"></textarea>
+        </div>
+
+        <div class="form-submit-area">
+          <button type="submit" class="btn btn-enjy" style="width:100%;justify-content:center;padding:0.8rem;">
+            送信する（準備中）
+          </button>
+          <p class="form-note">
+            ※ 現在、フォームの送信機能は準備中です。<br>
+            内容をご確認の上、お問い合わせください。
+          </p>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     フッター
+     ============================================================ -->
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-logo-wrap">
+      <span class="footer-logo">Wase Calendar</span>
+    </div>
+    <nav class="footer-links" aria-label="フッターナビゲーション">
+      <a href="#today-section" onclick="scrollToSection('today-section')">本日のイベント</a>
+      <a href="#upcoming-section" onclick="scrollToSection('upcoming-section')">近日開催</a>
+      <a href="#calendar-section" onclick="scrollToSection('calendar-section')">カレンダー</a>
+      <a href="#contact-section" onclick="scrollToSection('contact-section')">掲載依頼・問い合わせ</a>
+    </nav>
+    <div class="footer-disclaimers">
+      <p>⚠ このサイトは早稲田大学公式サイトではありません。</p>
+      <p>掲載情報は主催団体の公開情報または掲載依頼をもとに作成しています。</p>
+      <p>© 2026 Wase Calendar. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ============================================================
+     イベント詳細モーダル
+     ============================================================ -->
+<div class="modal-overlay" id="event-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-title"></h2>
+      <button class="modal-close" onclick="closeModal()" aria-label="閉じる">×</button>
+    </div>
+    <div class="modal-body">
+      <!-- タグ -->
+      <div class="modal-tags mb-2" id="modal-tags"></div>
+      <!-- 詳細グリッド -->
+      <div class="modal-detail-grid" id="modal-detail-content"></div>
+      <!-- 説明文 -->
+      <div id="modal-desc-section">
+        <p class="modal-desc-label">イベント説明</p>
+        <p class="modal-desc-text" id="modal-desc-text"></p>
+      </div>
+      <!-- フッター -->
+      <div class="modal-footer" id="modal-footer-section">
+        <span class="modal-updated" id="modal-updated"></span>
+        <a id="modal-ext-link" href="#" target="_blank" rel="noopener noreferrer"
+          class="btn btn-ghost btn-sm" style="display:none;">公式サイトを見る ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     スクリプト読み込み（events.js → script.js の順）
+     ============================================================ -->
+<script src="events.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
