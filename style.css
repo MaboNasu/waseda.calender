@@ -489,7 +489,8 @@ ul, ol { list-style: none; }
   isolation: isolate;
 }
 
-.calendar-day.sunday .day-num { color: var(--enjy); }
+.calendar-day.sunday .day-num,
+.calendar-day.holiday .day-num { color: var(--enjy); }
 .calendar-day.saturday .day-num { color: #1D4ED8; }
 
 .calendar-day.today .day-num,

@@ -16,7 +16,30 @@
    ============================================================ */
 const WEEKDAY_JP  = ['日', '月', '火', '水', '木', '金', '土'];
 const MONTH_NAMES = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+const HOLIDAYS = {
+  '2026-01-01': '元日',
+  '2026-01-12': '成人の日',
+  '2026-02-11': '建国記念の日',
+  '2026-02-23': '天皇誕生日',
+  '2026-03-20': '春分の日',
+  '2026-04-29': '昭和の日',
+  '2026-05-03': '憲法記念日',
+  '2026-05-04': 'みどりの日',
+  '2026-05-05': 'こどもの日',
+  '2026-05-06': '振替休日',
+  '2026-07-20': '海の日',
+  '2026-08-11': '山の日',
+  '2026-09-21': '敬老の日',
+  '2026-09-22': '国民の休日',
+  '2026-09-23': '秋分の日',
+  '2026-10-12': 'スポーツの日',
+  '2026-11-03': '文化の日',
+  '2026-11-23': '勤労感謝の日'
+};
 
+function getHolidayName(dateStr) {
+  return HOLIDAYS[dateStr] || '';
+}
 let calendarYear, calendarMonth;
 
 let activeFilters = {
@@ -265,6 +288,7 @@ function renderCalendarGrid() {
   const lastDay  = new Date(calendarYear, calendarMonth + 1, 0);
   const startCol = (firstDay.getDay() + 6) % 7;
   const total    = lastDay.getDate();
+  const holiday = getHolidayName(dateStr);
 
   let html = '';
 
@@ -280,7 +304,8 @@ function renderCalendarGrid() {
     const jsDow    = new Date(calendarYear, calendarMonth, d).getDay();
     const isToday  = dateStr === today;
     const dayEvs   = evByDate[dateStr] || [];
-    const classes  = ['calendar-day', isToday ? 'today' : '', jsDow === 0 ? 'sunday' : '', jsDow === 6 ? 'saturday' : ''].filter(Boolean).join(' ');
+    const classes  = ['calendar-day', isToday ? 'today' : '', holiday ? 'holiday' : '', jsDow === 0 ? 'sunday' : '', jsDow === 6 ? 'saturday' : ''].filter(Boolean).join(' ');
+    const holidayTitle = holiday ? ` title="${escapeHtml(holiday)}"` : '';
 
     const maxShow  = 3;
     const chips    = dayEvs.slice(0, maxShow).map(ev =>
@@ -290,7 +315,7 @@ function renderCalendarGrid() {
       ? `<div class="day-more" onclick="showDayEvents('${dateStr}')">他${dayEvs.length - maxShow}件</div>`
       : '';
 
-    html += `<div class="${classes}"><span class="day-num">${d}</span><div class="day-events">${chips}${moreBtn}</div></div>`;
+    html += `<div class="${classes}"${holidayTitle}><span class="day-num">${d}</span><div class="day-events">${chips}${moreBtn}</div></div>`;
   }
 
   // 次月の空白
