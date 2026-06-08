@@ -288,7 +288,6 @@ function renderCalendarGrid() {
   const lastDay  = new Date(calendarYear, calendarMonth + 1, 0);
   const startCol = (firstDay.getDay() + 6) % 7;
   const total    = lastDay.getDate();
-  const holiday = getHolidayName(dateStr);
 
   let html = '';
 
@@ -301,6 +300,7 @@ function renderCalendarGrid() {
   // 当月
   for (let d = 1; d <= total; d++) {
     const dateStr  = `${calendarYear}-${String(calendarMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const holiday = getHolidayName(dateStr);
     const jsDow    = new Date(calendarYear, calendarMonth, d).getDay();
     const isToday  = dateStr === today;
     const dayEvs   = evByDate[dateStr] || [];
