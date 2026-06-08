@@ -306,6 +306,7 @@ function renderCalendarGrid() {
     const dayEvs   = evByDate[dateStr] || [];
     const classes  = ['calendar-day', isToday ? 'today' : '', holiday ? 'holiday' : '', jsDow === 0 ? 'sunday' : '', jsDow === 6 ? 'saturday' : ''].filter(Boolean).join(' ');
     const holidayTitle = holiday ? ` title="${escapeHtml(holiday)}"` : '';
+　　const holidayMark = holiday ? `<span class="holiday-mark" title="${escapeHtml(holiday)}">(祝)</span>` : '';
 
     const maxShow  = 3;
     const chips    = dayEvs.slice(0, maxShow).map(ev =>
@@ -315,7 +316,7 @@ function renderCalendarGrid() {
       ? `<div class="day-more" onclick="showDayEvents('${dateStr}')">他${dayEvs.length - maxShow}件</div>`
       : '';
 
-    html += `<div class="${classes}"${holidayTitle}><span class="day-num">${d}</span><div class="day-events">${chips}${moreBtn}</div></div>`;
+    html += `<div class="${classes}"${holidayTitle}>${holidayMark}<span class="day-num">${d}</span><div class="day-events">${chips}${moreBtn}</div></div>`;
   }
 
   // 次月の空白

@@ -507,6 +507,18 @@ ul, ol { list-style: none; }
   background: var(--enjy);
   z-index: -1;
 }
+.holiday-mark {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--enjy);
+  border-radius: 999px;
+  padding: 1px 5px;
+  line-height: 1.4;
+}
 .day-events { display: flex; flex-direction: column; gap: 2px; }
 .day-event-chip {
   font-size: 0.68rem;
