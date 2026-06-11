@@ -40,6 +40,13 @@ const HOLIDAYS = {
 function getHolidayName(dateStr) {
   return HOLIDAYS[dateStr] || '';
 }
+
+const REACTION_TYPES = {
+  interested: { label: '気になる', icon: '☆' },
+  wantToGo:   { label: '行きたい', icon: '↗' },
+  going:      { label: '参加予定', icon: '✓' }
+};
+
 let calendarYear, calendarMonth;
 
 let activeFilters = {
@@ -119,6 +126,65 @@ function feeClass(key) {
   return key === 'free' ? 'tag-free' : 'tag-paid';
 }
 
+/** 公開イベントのみ取得 */
+function getPublishedEvents() {
+  return (typeof EVENTS !== 'undefined' ? EVENTS : []).filter(ev => ev.isPublished);
+}
+
+/** reactions未定義でも0件として扱う */
+function getEventReactions(ev) {
+  const source = ev && ev.reactions ? ev.reactions : {};
+  return {
+    interested: Number(source.interested) || 0,
+    wantToGo:   Number(source.wantToGo) || 0,
+    going:      Number(source.going) || 0
+  };
+}
+
+function reactionCount(ev, type) {
+  const reactions = getEventReactions(ev);
+  return reactions[type] || 0;
+}
+
+function reactionLabel(type) {
+  return REACTION_TYPES[type] ? REACTION_TYPES[type].label : type;
+}
+
+function createReactionButtonsHTML(ev) {
+  const id = escapeHtml(String(ev.id));
+  return `
+    <div class="reaction-panel" aria-label="リアクション">
+      <p class="reaction-panel-label">リアクション</p>
+      <div class="reaction-buttons">
+        ${Object.keys(REACTION_TYPES).map(type => {
+          const meta = REACTION_TYPES[type];
+          return `
+            <button class="reaction-btn" type="button" onclick="handleReactionClick('${type}', '${id}')">
+              <span class="reaction-icon">${meta.icon}</span>
+              <span>${meta.label}</span>
+              <strong>${reactionCount(ev, type)}</strong>
+            </button>`;
+        }).join('')}
+      </div>
+      <p class="reaction-note">ログイン機能の実装後に利用できます。</p>
+    </div>`;
+}
+
+function createReactionSummaryHTML(ev, activeType = '') {
+  return `
+    <div class="reaction-summary" aria-label="リアクション件数">
+      ${Object.keys(REACTION_TYPES).map(type => {
+        const meta = REACTION_TYPES[type];
+        const activeClass = activeType === type ? ' active' : '';
+        return `<span class="reaction-chip${activeClass}">${meta.label} ${reactionCount(ev, type)}</span>`;
+      }).join('')}
+    </div>`;
+}
+
+function handleReactionClick() {
+  alert('この機能は準備中です。ログイン機能の実装後に利用できます。');
+}
+
 /** XSS防止エスケープ */
 function escapeHtml(str) {
   if (str === null || str === undefined) return '';
@@ -136,8 +202,7 @@ function escapeHtml(str) {
 
 /** EVENTSにフィルタを適用（isPublished:true のみ） */
 function getFilteredEvents() {
-  return (typeof EVENTS !== 'undefined' ? EVENTS : []).filter(ev => {
-    if (!ev.isPublished) return false;
+  return getPublishedEvents().filter(ev => {
     if (activeFilters.category && ev.category !== activeFilters.category) return false;
     if (activeFilters.campus   && ev.campus   !== activeFilters.campus)   return false;
     if (activeFilters.feeType  && ev.feeType  !== activeFilters.feeType)  return false;
@@ -213,6 +278,7 @@ function createEventCardHTML(ev, showDate = true) {
             <span>${escapeHtml(ev.organizer || '—')}</span>
           </div>
         </div>
+        ${createReactionSummaryHTML(ev)}
         ${ev.description ? `<p class="event-card-desc">${escapeHtml(ev.description)}</p>` : ''}
       </div>
       <div class="event-card-footer">
@@ -267,6 +333,55 @@ function renderUpcomingEvents() {
   el.innerHTML = filtered.length === 0
     ? emptyStateHTML('近日開催のイベントは0件です。')
     : `<div class="events-grid">${filtered.map(ev => createEventCardHTML(ev, true)).join('')}</div>`;
+}
+
+/* ============================================================
+   リアクションランキング
+   ============================================================ */
+function createRankingCardHTML(ev, index, reactionType) {
+  const count = reactionCount(ev, reactionType);
+  const rankClass = index < 3 ? ` top-${index + 1}` : '';
+  return `
+    <article class="ranking-card">
+      <div class="ranking-rank${rankClass}">${index + 1}</div>
+      <div class="ranking-card-main">
+        <div class="event-card-meta">
+          <span class="tag ${categoryClass(ev.category)}">${categoryLabel(ev.category)}</span>
+          <span class="ranking-count">${reactionLabel(reactionType)} ${count}</span>
+        </div>
+        <h3 class="ranking-title">${escapeHtml(ev.title)}</h3>
+        <div class="ranking-meta">
+          <span>📅 ${formatDateDisplay(ev.date)}</span>
+          <span>🕐 ${escapeHtml(formatTime(ev.startTime, ev.endTime))}</span>
+          <span>📍 ${escapeHtml(ev.location || campusLabel(ev.campus))}</span>
+        </div>
+        ${createReactionSummaryHTML(ev, reactionType)}
+      </div>
+      <button class="btn-detail" onclick="openModal('${escapeHtml(String(ev.id))}')">詳細を見る</button>
+    </article>`;
+}
+
+function renderReactionRanking() {
+  const wrap = document.getElementById('reaction-ranking');
+  if (!wrap) return;
+
+  const reactionSelect = document.getElementById('ranking-reaction');
+  const sortSelect = document.getElementById('ranking-sort');
+  const reactionType = reactionSelect?.value || 'interested';
+  const sortType = sortSelect?.value || 'countDesc';
+  const items = [...getPublishedEvents()];
+
+  items.sort((a, b) => {
+    if (sortType === 'dateAsc') return a.date.localeCompare(b.date) || a.title.localeCompare(b.title, 'ja');
+    if (sortType === 'dateDesc') return b.date.localeCompare(a.date) || a.title.localeCompare(b.title, 'ja');
+    return reactionCount(b, reactionType) - reactionCount(a, reactionType)
+      || a.date.localeCompare(b.date)
+      || a.title.localeCompare(b.title, 'ja');
+  });
+
+  wrap.innerHTML = items.length === 0
+    ? emptyStateHTML('ランキングに表示できるイベントはまだありません。')
+    : items.map((ev, index) => createRankingCardHTML(ev, index, reactionType)).join('');
 }
 
 /* ============================================================
@@ -437,6 +552,8 @@ function showDayEvents(dateStr) {
   document.getElementById('modal-title').textContent = `${dateDisp} のイベント`;
   document.getElementById('modal-tags').innerHTML    = '';
   document.getElementById('modal-detail-content').innerHTML = listHTML;
+  const reactions = document.getElementById('modal-reactions');
+  if (reactions) reactions.innerHTML = '';
   document.getElementById('modal-desc-section').style.display  = 'none';
   document.getElementById('modal-footer-section').style.display = 'none';
   document.getElementById('event-modal').classList.add('active');
@@ -490,6 +607,9 @@ function openModal(eventId) {
       <span class="modal-detail-value">${escapeHtml(ev.feeText || feeLabel(ev.feeType))}</span>
     </div>`;
 
+  const reactions = document.getElementById('modal-reactions');
+  if (reactions) reactions.innerHTML = createReactionButtonsHTML(ev);
+
   // 説明
   const descSection = document.getElementById('modal-desc-section');
   descSection.style.display = ev.description ? '' : 'none';
@@ -526,6 +646,7 @@ function closeModal() {
 function renderAll() {
   renderTodayEvents();
   renderUpcomingEvents();
+  renderReactionRanking();
   renderCalendar();
 }
 
@@ -596,6 +717,13 @@ function setupFilters() {
   });
 }
 
+function setupRankingControls() {
+  const reactionSelect = document.getElementById('ranking-reaction');
+  const sortSelect = document.getElementById('ranking-sort');
+  if (reactionSelect) reactionSelect.addEventListener('change', renderReactionRanking);
+  if (sortSelect) sortSelect.addEventListener('change', renderReactionRanking);
+}
+
 /* ============================================================
    モーダル: オーバーレイクリック / Escで閉じる
    ============================================================ */
@@ -616,6 +744,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setupHamburger();
   setupFilters();
+  setupRankingControls();
   setupModal();
   setupContactForm();
   renderAll();

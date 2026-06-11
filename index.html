@@ -40,6 +40,8 @@
       <button class="nav-btn" onclick="scrollToSection('today-section')">本日のイベント</button>
       <button class="nav-btn" onclick="scrollToSection('upcoming-section')">近日開催</button>
       <button class="nav-btn" onclick="scrollToSection('calendar-section')">カレンダー</button>
+      <button class="nav-btn" onclick="scrollToSection('ranking-section')">ランキング</button>
+      <a class="nav-btn" href="organizations.html">掲載団体一覧</a>
       <button class="nav-btn" onclick="scrollToSection('contact-section')">掲載依頼</button>
     </nav>
 
@@ -55,6 +57,8 @@
   <button class="nav-btn" onclick="scrollToSection('today-section')">本日のイベント</button>
   <button class="nav-btn" onclick="scrollToSection('upcoming-section')">近日開催</button>
   <button class="nav-btn" onclick="scrollToSection('calendar-section')">カレンダー</button>
+  <button class="nav-btn" onclick="scrollToSection('ranking-section')">ランキング</button>
+  <a class="nav-btn" href="organizations.html">掲載団体一覧</a>
   <button class="nav-btn" onclick="scrollToSection('contact-section')">掲載依頼・問い合わせ</button>
 </nav>
 
@@ -196,6 +200,39 @@
 
 
 <!-- ============================================================
+     リアクションランキング
+     ============================================================ -->
+<section class="section scroll-target" id="ranking-section">
+  <div class="container">
+    <h2 class="section-title">リアクションランキング</h2>
+    <div class="ranking-panel">
+      <div class="ranking-controls">
+        <div class="filter-group">
+          <label for="ranking-reaction">ランキング種別</label>
+          <select id="ranking-reaction" class="filter-select">
+            <option value="interested">気になる数ランキング</option>
+            <option value="wantToGo">行きたい数ランキング</option>
+            <option value="going">参加予定数ランキング</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="ranking-sort">並び替え</label>
+          <select id="ranking-sort" class="filter-select">
+            <option value="countDesc">件数が多い順</option>
+            <option value="dateAsc">開催日が近い順</option>
+            <option value="dateDesc">開催日が新しい順</option>
+          </select>
+        </div>
+      </div>
+      <div id="reaction-ranking" class="ranking-list">
+        <!-- JSで描画 -->
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
      イベントカレンダー
      ============================================================ -->
 <section class="section scroll-target" id="calendar-section">
@@ -272,7 +309,9 @@
     <nav class="footer-links" aria-label="フッターナビゲーション">
       <a href="#today-section" onclick="scrollToSection('today-section')">本日のイベント</a>
       <a href="#upcoming-section" onclick="scrollToSection('upcoming-section')">近日開催</a>
+      <a href="#ranking-section" onclick="scrollToSection('ranking-section')">ランキング</a>
       <a href="#calendar-section" onclick="scrollToSection('calendar-section')">カレンダー</a>
+      <a href="organizations.html">掲載団体一覧</a>
       <a href="#contact-section" onclick="scrollToSection('contact-section')">掲載依頼・問い合わせ</a>
     </nav>
     <div class="footer-disclaimers">
@@ -298,6 +337,8 @@
       <div class="modal-tags mb-2" id="modal-tags"></div>
       <!-- 詳細グリッド -->
       <div class="modal-detail-grid" id="modal-detail-content"></div>
+      <!-- リアクション -->
+      <div id="modal-reactions"></div>
       <!-- 説明文 -->
       <div id="modal-desc-section">
         <p class="modal-desc-label">イベント説明</p>

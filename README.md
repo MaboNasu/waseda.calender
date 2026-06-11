@@ -24,8 +24,11 @@
 /
 ├── index.html     # メインHTML（全ページ1ファイルに集約）
 ├── style.css      # スタイルシート（えんじ色テーマ・レスポンシブ対応）
-├── script.js      # メインJavaScript（カレンダー・絞り込み・モーダル等）
+├── script.js      # メインJavaScript（カレンダー・絞り込み・モーダル・ランキング等）
 ├── events.js      # ★ イベントデータ管理ファイル（運営者が編集）
+├── organizations.html # 掲載団体一覧ページ
+├── organizations.js   # 掲載団体データ管理ファイル
+├── organizations-page.js # 掲載団体一覧ページ用JavaScript
 └── README.md      # このファイル
 ```
 
@@ -74,6 +77,11 @@ const EVENTS = [
     feeType: "free",                 // 参加費種別（"free" or "paid"）
     feeText: "無料",                  // 参加費の表示テキスト（自由記述）
     description: "春の演劇公演です。", // イベント説明
+    reactions: {                       // 静的なリアクション件数（任意）
+      interested: 12,                  // 気になる
+      wantToGo: 5,                     // 行きたい
+      going: 3                         // 参加予定
+    },
     externalUrl: "https://...",      // 公式サイトURL（任意）
     lastUpdated: "2025-06-01",       // 最終更新日（YYYY-MM-DD）
     isPublished: true                // true=公開 / false=非公開（下書き）
@@ -174,6 +182,96 @@ const ENDPOINT = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
 ```html
 <a href="mailto:contact@example.com?subject=掲載依頼">メールで問い合わせ</a>
 ```
+
+---
+
+## リアクション機能について
+
+現在のリアクション機能は、UIと静的な件数表示のみです。
+
+- イベント詳細モーダルに「気になる」「行きたい」「参加予定」を表示します
+- 各イベントの件数は `events.js` の `reactions` で管理します
+- `reactions` がないイベントは、すべて0件として表示されます
+- クリックすると「この機能は準備中です。」という案内を表示します
+- 現時点では、ユーザーごとの保存・ログイン・データベース更新は行いません
+
+本実装する場合は、ログイン認証とデータベースが必要です。将来的には、1ユーザー1イベントにつき1種類のリアクションまでに制限する想定です。
+
+```javascript
+reactions: {
+  interested: 0,
+  wantToGo: 0,
+  going: 0
+}
+```
+
+## リアクションランキングについて
+
+トップページに「リアクションランキング」を表示します。
+
+- 気になる数ランキング
+- 行きたい数ランキング
+- 参加予定数ランキング
+
+並び替えは以下に対応しています。
+
+- 件数が多い順
+- 開催日が近い順
+- 開催日が新しい順
+
+件数が0件のイベントも表示対象です。
+
+---
+
+## 掲載団体一覧について
+
+掲載団体は `organizations.js` の `ORGANIZATIONS` 配列で管理します。
+
+```javascript
+const ORGANIZATIONS = [
+  {
+    id: "org-001",
+    name: "団体名",
+    nameKana: "だんたいめい",
+    alphabetName: "Dantai Name",
+    genre: "スポーツ",
+    description: "団体概要",
+    instagramUrl: "https://www.instagram.com/xxxxx/",
+    websiteUrl: "",
+    relatedEventIds: []
+  }
+];
+```
+
+### 団体データの追加・修正・削除
+
+- 追加: `ORGANIZATIONS` 配列に新しいオブジェクトを追加します
+- 修正: 該当団体の項目を書き換えます
+- 削除: 該当団体のオブジェクトを配列から削除します
+
+### 各項目の役割
+
+- `name`: サイト上に表示する団体名
+- `nameKana`: 五十音順ソートに使う読み仮名
+- `alphabetName`: アルファベット順ソートに使う英字名
+- `genre`: ジャンルフィルターに使う値
+- `description`: 一覧カードと詳細表示に使う団体概要
+- `instagramUrl`: Instagramリンク
+- `websiteUrl`: 公式サイトリンク。ない場合は空文字でOKです
+- `relatedEventIds`: `events.js` のイベントIDを配列で指定します
+
+掲載団体一覧ページでは、ジャンルフィルター、五十音順・アルファベット順の並び替え、キーワード検索が使えます。
+
+---
+
+## スマホ表示について
+
+スマホ表示では、PCと同じ7列カレンダーではなく、日付ごとのリスト形式に切り替えます。
+
+- PC: 月間グリッドカレンダー
+- スマホ: イベントがある日付のみリスト表示
+
+フォーム、検索欄、ランキング、掲載団体一覧はスマホ幅に収まるように調整しています。
 
 ---
 

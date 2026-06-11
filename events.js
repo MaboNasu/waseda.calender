@@ -27,6 +27,9 @@
  * isPublished:
  *   true → サイトに表示する
  *   false → 非表示（下書き）
+ *
+ * reactions:
+ *   現時点では静的な件数表示のみ。未指定の場合はすべて0件として扱われます。
  */
 
 const EVENTS = [
@@ -49,6 +52,11 @@ const EVENTS = [
   //   feeType: "free",
   //   feeText: "無料",
   //   description: "早稲田大学演劇倶楽部による春の公演です。3本の短編を上演します。",
+  //   reactions: {
+  //     interested: 12,
+  //     wantToGo: 5,
+  //     going: 3
+  //   },
   //   externalUrl: "https://example.com",
   //   lastUpdated: "2025-06-01",
   //   isPublished: true
