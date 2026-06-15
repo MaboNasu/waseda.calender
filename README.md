@@ -296,27 +296,21 @@ const ORGANIZATIONS = [
 
 ---
 
-## Google AdSenseを導入する場合
+## 広告枠・スポンサー枠について
 
-現在、`index.html` にAdSense設置予定スペース（`.ad-placeholder`）が1箇所あります。
+現時点では、サイト上に広告枠を表示していません。
+Google AdSenseも未導入です。
 
-導入には以下が必要です:
+今後、広告掲載やスポンサー依頼が来た場合、またはサイトのコンテンツ量・アクセス数が増えた段階で、以下のような位置への追加を検討します。
 
-1. **AdSenseアカウントの審査**（審査通過まで数週間かかる場合があります）
-2. **プライバシーポリシーページの設置**（必須）
-3. **AdSenseポリシーへの準拠**（コンテンツポリシー確認）
-4. **cookieの同意バナー**（EU向け対応、国内でも推奨）
+- 絞り込みパネル下
+- カレンダー下
+- ページ下部、フッター手前
 
-```html
-<!-- AdSense審査通過後、.ad-placeholder を以下に置き換える例 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-     data-ad-slot="XXXXXXXXXX"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-```
+広告を追加する場合も、イベント情報の探しやすさを損なわない位置に配置します。
+特に、イベント一覧・カレンダー・掲載依頼導線の間に大きな広告を入れすぎないよう注意してください。
+
+`index.html` には、将来広告掲載・スポンサー枠を追加しやすいよう、絞り込みパネル下にコメントだけ残しています。
 
 ---
 
