@@ -1,0 +1,19 @@
+{
+  "name": "Wase Calendar – 早稲田のイベントをひとつのカレンダーで",
+  "short_name": "Wase Calendar",
+  "description": "早稲田大学関連イベントの日程・場所・内容をまとめて確認できるカレンダーサイト",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#8B0000",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

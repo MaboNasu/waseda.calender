@@ -554,6 +554,8 @@ function showDayEvents(dateStr) {
   document.getElementById('modal-detail-content').innerHTML = listHTML;
   const reactions = document.getElementById('modal-reactions');
   if (reactions) reactions.innerHTML = '';
+  const shareActions = document.getElementById('modal-share-actions');
+  if (shareActions) shareActions.innerHTML = '';
   document.getElementById('modal-desc-section').style.display  = 'none';
   document.getElementById('modal-footer-section').style.display = 'none';
   document.getElementById('event-modal').classList.add('active');
@@ -610,6 +612,10 @@ function openModal(eventId) {
   const reactions = document.getElementById('modal-reactions');
   if (reactions) reactions.innerHTML = createReactionButtonsHTML(ev);
 
+  // カレンダー追加・シェア
+  const shareActions = document.getElementById('modal-share-actions');
+  if (shareActions) shareActions.innerHTML = createModalShareActionsHTML(ev);
+
   // 説明
   const descSection = document.getElementById('modal-desc-section');
   descSection.style.display = ev.description ? '' : 'none';
@@ -641,6 +647,148 @@ function closeModal() {
 }
 
 /* ============================================================
+   カレンダー追加（.ics ダウンロード）・SNSシェア
+   ============================================================ */
+function pad2(n) { return String(n).padStart(2, '0'); }
+
+function addOneDay(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return formatDateStr(new Date(y, m - 1, d + 1));
+}
+
+function icsDateTime(dateStr, timeStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  if (!timeStr) return `${y}${pad2(m)}${pad2(d)}`;
+  const [hh, mm] = timeStr.split(':').map(Number);
+  return `${y}${pad2(m)}${pad2(d)}T${pad2(hh)}${pad2(mm)}00`;
+}
+
+function icsTimestampUTC() {
+  const d = new Date();
+  return `${d.getUTCFullYear()}${pad2(d.getUTCMonth() + 1)}${pad2(d.getUTCDate())}T${pad2(d.getUTCHours())}${pad2(d.getUTCMinutes())}${pad2(d.getUTCSeconds())}Z`;
+}
+
+function escapeIcsText(str) {
+  return String(str || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+}
+
+/** イベントを.icsファイルとしてダウンロード（Google/Apple/Outlookカレンダーに追加用） */
+function downloadIcsForEvent(eventId) {
+  const allEvents = typeof EVENTS !== 'undefined' ? EVENTS : [];
+  const ev = allEvents.find(e => String(e.id) === String(eventId));
+  if (!ev) return;
+
+  let dtStartLine, dtEndLine;
+  if (ev.startTime) {
+    dtStartLine = `DTSTART;TZID=Asia/Tokyo:${icsDateTime(ev.date, ev.startTime)}`;
+    dtEndLine   = `DTEND;TZID=Asia/Tokyo:${icsDateTime(ev.date, ev.endTime || ev.startTime)}`;
+  } else {
+    dtStartLine = `DTSTART;VALUE=DATE:${icsDateTime(ev.date)}`;
+    dtEndLine   = `DTEND;VALUE=DATE:${icsDateTime(addOneDay(ev.date))}`;
+  }
+
+  const lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Wase Calendar//JP',
+    'CALSCALE:GREGORIAN',
+    'BEGIN:VEVENT',
+    `UID:${escapeIcsText(ev.id)}@wasedacalendar.com`,
+    `DTSTAMP:${icsTimestampUTC()}`,
+    dtStartLine,
+    dtEndLine,
+    `SUMMARY:${escapeIcsText(ev.title)}`,
+    `DESCRIPTION:${escapeIcsText(ev.description || '')}`,
+    `LOCATION:${escapeIcsText(ev.location || campusLabel(ev.campus))}`,
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ];
+
+  const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `${ev.id}.ics`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function shareEventOnLine(eventId) {
+  const allEvents = typeof EVENTS !== 'undefined' ? EVENTS : [];
+  const ev = allEvents.find(e => String(e.id) === String(eventId));
+  if (!ev) return;
+  const text = `${ev.title} | Wase Calendar`;
+  const url  = 'https://wasedacalendar.com/';
+  window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+}
+
+function shareEventOnX(eventId) {
+  const allEvents = typeof EVENTS !== 'undefined' ? EVENTS : [];
+  const ev = allEvents.find(e => String(e.id) === String(eventId));
+  if (!ev) return;
+  const text = `${ev.title} | Wase Calendar`;
+  const url  = 'https://wasedacalendar.com/';
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer');
+}
+
+function createModalShareActionsHTML(ev) {
+  const id = escapeHtml(String(ev.id));
+  return `
+    <button type="button" class="btn btn-ghost btn-sm" onclick="downloadIcsForEvent('${id}')">📅 カレンダーに追加</button>
+    <button type="button" class="btn btn-ghost btn-sm" onclick="shareEventOnLine('${id}')">LINEで共有</button>
+    <button type="button" class="btn btn-ghost btn-sm" onclick="shareEventOnX('${id}')">Xで共有</button>`;
+}
+
+/* ============================================================
+   構造化データ（schema.org/Event） SEO用
+   ============================================================ */
+function buildEventJsonLd(ev) {
+  const isOnline = ev.campus === 'online';
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: ev.title,
+    startDate: ev.startTime ? `${ev.date}T${ev.startTime}:00+09:00` : ev.date,
+    endDate: ev.endTime ? `${ev.date}T${ev.endTime}:00+09:00` : undefined,
+    eventAttendanceMode: isOnline
+      ? 'https://schema.org/OnlineEventAttendanceMode'
+      : 'https://schema.org/OfflineEventAttendanceMode',
+    eventStatus: 'https://schema.org/EventScheduled',
+    location: isOnline
+      ? { '@type': 'VirtualLocation', url: ev.externalUrl || 'https://wasedacalendar.com/' }
+      : { '@type': 'Place', name: ev.location || campusLabel(ev.campus) },
+    description: ev.description || ev.title,
+    organizer: { '@type': 'Organization', name: ev.organizer || 'Wase Calendar' },
+    offers: {
+      '@type': 'Offer',
+      price: ev.feeType === 'free' ? '0' : undefined,
+      priceCurrency: 'JPY',
+      availability: 'https://schema.org/InStock',
+      url: 'https://wasedacalendar.com/'
+    }
+  };
+}
+
+/** 公開済み・本日以降のイベントをJSON-LDとして<head>に埋め込む（検索エンジン向け） */
+function injectEventsJsonLd() {
+  const upcoming = getPublishedEvents()
+    .filter(ev => ev.date >= getTodayStr())
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .slice(0, 20);
+
+  let script = document.getElementById('events-jsonld');
+  if (!script) {
+    script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'events-jsonld';
+    document.head.appendChild(script);
+  }
+  script.textContent = JSON.stringify(upcoming.map(buildEventJsonLd));
+}
+
+/* ============================================================
    まとめて再描画
    ============================================================ */
 function renderAll() {
@@ -648,6 +796,7 @@ function renderAll() {
   renderUpcomingEvents();
   renderReactionRanking();
   renderCalendar();
+  injectEventsJsonLd();
 }
 
 /* ============================================================
