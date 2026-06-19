@@ -1,6 +1,6 @@
 {
-  "name": "Wase Calendar – 早稲田のイベントをひとつのカレンダーで",
-  "short_name": "Wase Calendar",
+  "name": "Waseda Calendar – 早稲田のイベントをひとつのカレンダーで",
+  "short_name": "Waseda Calendar",
   "description": "早稲田大学関連イベントの日程・場所・内容をまとめて確認できるカレンダーサイト",
   "start_url": "/index.html",
   "scope": "/",

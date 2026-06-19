@@ -1,5 +1,5 @@
 /**
- * events.js - Wase Calendar イベントデータ管理ファイル
+ * events.js - Waseda Calendar イベントデータ管理ファイル
  *
  * 【運営者向け】
  * このファイルにイベント情報を追加・修正・削除することで

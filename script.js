@@ -1,5 +1,5 @@
 /**
- * script.js - Wase Calendar メインスクリプト
+ * script.js - Waseda Calendar メインスクリプト
  *
  * 機能:
  * - 本日のイベント表示
@@ -690,7 +690,7 @@ function downloadIcsForEvent(eventId) {
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Wase Calendar//JP',
+    'PRODID:-//Waseda Calendar//JP',
     'CALSCALE:GREGORIAN',
     'BEGIN:VEVENT',
     `UID:${escapeIcsText(ev.id)}@wasedacalendar.com`,
@@ -719,7 +719,7 @@ function shareEventOnLine(eventId) {
   const allEvents = typeof EVENTS !== 'undefined' ? EVENTS : [];
   const ev = allEvents.find(e => String(e.id) === String(eventId));
   if (!ev) return;
-  const text = `${ev.title} | Wase Calendar`;
+  const text = `${ev.title} | Waseda Calendar`;
   const url  = 'https://wasedacalendar.com/';
   window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
 }
@@ -728,7 +728,7 @@ function shareEventOnX(eventId) {
   const allEvents = typeof EVENTS !== 'undefined' ? EVENTS : [];
   const ev = allEvents.find(e => String(e.id) === String(eventId));
   if (!ev) return;
-  const text = `${ev.title} | Wase Calendar`;
+  const text = `${ev.title} | Waseda Calendar`;
   const url  = 'https://wasedacalendar.com/';
   window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer');
 }
@@ -760,7 +760,7 @@ function buildEventJsonLd(ev) {
       ? { '@type': 'VirtualLocation', url: ev.externalUrl || 'https://wasedacalendar.com/' }
       : { '@type': 'Place', name: ev.location || campusLabel(ev.campus) },
     description: ev.description || ev.title,
-    organizer: { '@type': 'Organization', name: ev.organizer || 'Wase Calendar' },
+    organizer: { '@type': 'Organization', name: ev.organizer || 'Waseda Calendar' },
     offers: {
       '@type': 'Offer',
       price: ev.feeType === 'free' ? '0' : undefined,

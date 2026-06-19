@@ -1,5 +1,5 @@
 /**
- * organizations.js - Wase Calendar 掲載団体データ
+ * organizations.js - Waseda Calendar 掲載団体データ
  *
  * ORGANIZATIONS 配列に団体情報を追加すると、organizations.html に表示されます。
  * relatedEventIds には events.js のイベントIDを入れてください。

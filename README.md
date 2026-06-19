@@ -1,4 +1,4 @@
-# Wase Calendar
+# Waseda Calendar
 
 早稲田大学関連のイベント情報をまとめて確認できるカレンダーサイト。
 
@@ -10,7 +10,7 @@
 
 | 項目 | 内容 |
 |---|---|
-| サイト名 | Wase Calendar |
+| サイト名 | Waseda Calendar |
 | 目的 | 早稲田大学関連イベントの日程・時間・場所・内容の一覧表示 |
 | 対象 | 在学生・OBOG・地域住民・一般参加者 |
 | 種別 | 静的Webサイト（HTML/CSS/JavaScript） |
@@ -341,4 +341,4 @@ Google AdSenseも未導入です。
 
 ---
 
-*Wase Calendar – 早稲田のイベントを、ひとつのカレンダーで。*
+*Waseda Calendar – 早稲田のイベントを、ひとつのカレンダーで。*
