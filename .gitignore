@@ -1,0 +1,9 @@
+# Claude Code ローカル設定（個人環境のため共有しない）
+.claude/
+
+# Windows / OneDrive が自動生成するファイル
+Thumbs.db
+desktop.ini
+
+# macOS が自動生成するファイル（将来Macで作業する場合用）
+.DS_Store
