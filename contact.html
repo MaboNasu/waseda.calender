@@ -63,7 +63,7 @@
     <div class="container">
       <span class="hero-badge">掲載依頼・お問い合わせ</span>
       <h1>お問い合わせ</h1>
-      <p>イベントの掲載依頼や修正・削除依頼、団体情報の掲載、広告・協賛のご相談、不具合報告など、お気軽にご連絡ください。</p>
+      <p>イベントの掲載依頼や修正・削除依頼、団体情報の登録、広告・協賛のご相談、不具合報告など、お気軽にご連絡ください。</p>
     </div>
   </section>
 
@@ -78,37 +78,84 @@
             <input type="text" id="contact-website" name="website" tabindex="-1" autocomplete="off">
           </div>
 
+          <!-- 認証済み団体情報（URLパラメータ経由で自動セット） -->
+          <input type="hidden" id="auth-org-id" name="orgId" value="">
+          <input type="hidden" id="auth-org-token" name="orgToken" value="">
+
+          <!-- 入口選択 -->
           <div class="form-group">
-            <label class="form-label" for="inquiry-type">お問い合わせ種別<span class="required-mark">必須</span></label>
-            <select id="inquiry-type" name="inquiryType" class="form-control" required>
-              <option value="">選択してください</option>
-              <option value="event-request">イベント掲載依頼</option>
-              <option value="event-edit">掲載内容の修正依頼</option>
-              <option value="event-delete">掲載削除依頼</option>
-              <option value="org-info">団体情報の掲載・修正</option>
-              <option value="sponsor">広告・協賛について</option>
-              <option value="bug-report">不具合報告</option>
-              <option value="other">その他</option>
-            </select>
-            <p class="field-error" id="error-inquiryType"></p>
+            <label class="form-label">ご用件を選択してください<span class="required-mark">必須</span></label>
+            <div class="entry-options" id="entry-options">
+              <label class="entry-option">
+                <input type="radio" name="entryChoice" value="new-org">
+                <span>初めて掲載依頼をする</span>
+              </label>
+              <label class="entry-option">
+                <input type="radio" name="entryChoice" value="returning-org">
+                <span>登録済み団体として掲載依頼をする</span>
+              </label>
+              <label class="entry-option">
+                <input type="radio" name="entryChoice" value="edit-delete">
+                <span>掲載内容を修正・削除したい</span>
+              </label>
+              <label class="entry-option">
+                <input type="radio" name="entryChoice" value="org-info">
+                <span>団体情報の登録・修正をしたい</span>
+              </label>
+              <label class="entry-option">
+                <input type="radio" name="entryChoice" value="sponsor">
+                <span>広告・協賛について相談したい</span>
+              </label>
+              <label class="entry-option">
+                <input type="radio" name="entryChoice" value="bug-report">
+                <span>不具合報告をしたい</span>
+              </label>
+              <label class="entry-option">
+                <input type="radio" name="entryChoice" value="other">
+                <span>その他のお問い合わせ</span>
+              </label>
+            </div>
+            <p class="field-error" id="error-entryChoice"></p>
           </div>
 
-          <div class="form-group">
-            <label class="form-label" for="first-time">Waseda Calendarへのお問い合わせは初めてですか？<span class="required-mark">必須</span></label>
-            <select id="first-time" name="firstTimeSelfReport" class="form-control" required>
-              <option value="">選択してください</option>
-              <option value="first">初めて</option>
-              <option value="repeat">以前にも問い合わせたことがある</option>
-              <option value="unknown">わからない</option>
-            </select>
-            <p class="field-error" id="error-firstTimeSelfReport"></p>
+          <!-- 登録済み団体の認証 -->
+          <div class="conditional-fields" data-show-for-entry="returning-org">
+            <div class="org-auth-box" id="org-auth-pending">
+              <p class="org-auth-note">確認メールに記載されたURLからアクセスした場合は自動で認証されます。手動で入力する場合は、団体IDと認証トークンを入力してください。</p>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="manual-org-id">団体ID</label>
+                  <input type="text" id="manual-org-id" class="form-control" placeholder="WCORG-001">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="manual-org-token">認証トークン</label>
+                  <input type="text" id="manual-org-token" class="form-control">
+                </div>
+              </div>
+              <button type="button" id="org-lookup-btn" class="btn btn-ghost btn-sm">確認する</button>
+              <p class="field-error" id="error-orgLookup"></p>
+            </div>
+
+            <div class="org-auth-box org-auth-success" id="org-auth-success" style="display:none;">
+              <p class="org-auth-banner">✓ 登録済み団体として入力中です</p>
+              <div class="form-checkbox-row">
+                <input type="checkbox" id="edit-org-info">
+                <label for="edit-org-info">団体情報を変更する</label>
+              </div>
+              <div class="form-group" style="margin-top:1rem;">
+                <label class="form-label" for="event-image">イベント画像・資料を添付（任意）</label>
+                <input type="file" id="event-image" name="eventImage" accept="image/*" class="form-control">
+                <p class="form-note" style="text-align:left;margin-top:0.4rem;">イベントのポスター画像などを直接アップロードできます（5MBまで）。</p>
+                <p class="field-error" id="error-eventImage"></p>
+              </div>
+            </div>
           </div>
 
           <hr class="form-divider">
 
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label" for="contact-name">お名前<span class="required-mark">必須</span></label>
+              <label class="form-label" for="contact-name">お名前（担当者名）<span class="required-mark">必須</span></label>
               <input type="text" id="contact-name" name="name" class="form-control" required>
               <p class="field-error" id="error-name"></p>
             </div>
@@ -132,16 +179,51 @@
             </div>
           </div>
 
-          <!-- 対象イベント名: イベント掲載依頼・修正依頼・削除依頼で共通表示 -->
-          <div class="conditional-fields" data-show-for="event-request,event-edit,event-delete">
+          <!-- 団体情報（新規登録・登録済み団体・団体情報のみ、で表示） -->
+          <div class="conditional-fields" data-show-for-entry="new-org,returning-org,org-info">
             <div class="form-group">
-              <label class="form-label" for="target-event-name">対象イベント名</label>
-              <input type="text" id="target-event-name" name="targetEventName" class="form-control">
+              <label class="form-label" for="org-sns">団体のInstagram / X / WebサイトURL</label>
+              <input type="url" id="org-sns" name="orgSns" class="form-control" placeholder="https://">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="org-description">団体紹介文</label>
+              <textarea id="org-description" name="orgDescription" class="form-control" rows="3" placeholder="団体の活動内容などを簡単にご記入ください。"></textarea>
             </div>
           </div>
 
-          <!-- イベント掲載依頼のみ -->
-          <div class="conditional-fields" data-show-for="event-request">
+          <!-- イベント詳細（新規掲載依頼のみ） -->
+          <div class="conditional-fields" data-show-for-entry="new-org,returning-org">
+            <p class="form-section-title">イベント詳細</p>
+            <div class="form-group">
+              <label class="form-label" for="event-name">イベント名<span class="required-mark">必須</span></label>
+              <input type="text" id="event-name" name="eventName" class="form-control">
+              <p class="field-error" id="error-eventName"></p>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="event-date">開催日<span class="required-mark">必須</span></label>
+                <input type="date" id="event-date" name="eventDate" class="form-control">
+                <p class="field-error" id="error-eventDate"></p>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="event-location">場所</label>
+                <input type="text" id="event-location" name="eventLocation" class="form-control">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="event-start-time">開始時間</label>
+                <input type="time" id="event-start-time" name="eventStartTime" class="form-control">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="event-end-time">終了時間</label>
+                <input type="time" id="event-end-time" name="eventEndTime" class="form-control">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="event-description">イベント内容</label>
+              <textarea id="event-description" name="eventDescription" class="form-control" rows="4" placeholder="イベントの内容をご記入ください。"></textarea>
+            </div>
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="desired-date">希望掲載日</label>
@@ -154,24 +236,32 @@
             </div>
           </div>
 
-          <!-- 修正・削除依頼のみ -->
-          <div class="conditional-fields" data-show-for="event-edit,event-delete">
+          <!-- 修正・削除 -->
+          <div class="conditional-fields" data-show-for-entry="edit-delete">
+            <p class="form-section-title">修正・削除の詳細</p>
             <div class="form-group">
-              <label class="form-label" for="target-page-url">対象ページURL</label>
-              <input type="url" id="target-page-url" name="targetPageUrl" class="form-control" placeholder="https://">
+              <label class="form-label" for="edit-delete-type">修正・削除どちらですか？<span class="required-mark">必須</span></label>
+              <select id="edit-delete-type" name="editDeleteType" class="form-control">
+                <option value="">選択してください</option>
+                <option value="event-edit">修正したい</option>
+                <option value="event-delete">削除したい</option>
+              </select>
+              <p class="field-error" id="error-editDeleteType"></p>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="target-event-name">対象イベント名</label>
+                <input type="text" id="target-event-name" name="targetEventName" class="form-control">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="target-page-url">対象ページURL</label>
+                <input type="url" id="target-page-url" name="targetPageUrl" class="form-control" placeholder="https://">
+              </div>
             </div>
           </div>
 
-          <!-- 団体情報の掲載・修正のみ -->
-          <div class="conditional-fields" data-show-for="org-info">
-            <div class="form-group">
-              <label class="form-label" for="org-url">団体のInstagram / X / WebサイトURL</label>
-              <input type="url" id="org-url" name="organizationUrl" class="form-control" placeholder="https://">
-            </div>
-          </div>
-
-          <!-- 広告・協賛についてのみ -->
-          <div class="conditional-fields" data-show-for="sponsor">
+          <!-- 広告・協賛 -->
+          <div class="conditional-fields" data-show-for-entry="sponsor">
             <div class="form-group">
               <label class="form-label" for="budget-range">広告・協賛に関する予算感</label>
               <select id="budget-range" name="budgetRange" class="form-control">
@@ -189,7 +279,7 @@
 
           <div class="form-group">
             <label class="form-label" for="contact-message">お問い合わせ内容<span class="required-mark">必須</span></label>
-            <textarea id="contact-message" name="message" class="form-control" rows="6" placeholder="掲載してほしい内容、修正・削除してほしい内容、広告・協賛のご希望（掲載場所・期間など）、ご相談内容などをご記入ください。"></textarea>
+            <textarea id="contact-message" name="message" class="form-control" rows="5" placeholder="その他、補足したい内容があればご記入ください。"></textarea>
             <p class="field-error" id="error-message"></p>
           </div>
 

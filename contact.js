@@ -6,26 +6,139 @@
  */
 const CONTACT_GAS_URL = 'https://script.google.com/macros/s/AKfycbzcXPoaemMJXb02y_9FprUvVoHSiDV5RCwSxfxEDW-iF2Z8nXWM64_ZJtaV-FMjd9tK/exec';
 
-/** 条件付き表示の対象となるinquiryTypeの値一覧（data-show-forで使用） */
+/** 団体情報フィールド（登録済み団体認証時に自動入力・読み取り専用化する対象） */
+const ORG_INFO_FIELD_IDS = ['contact-name', 'contact-org', 'contact-email', 'contact-email-confirm', 'org-sns', 'org-description'];
+
+/** 画像添付（登録済み団体のみ）の最大サイズ */
+const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
+
 const CONDITIONAL_FIELD_GROUPS = document.querySelectorAll('.conditional-fields');
 
 let isSubmitting = false;
 
 /* ============================================================
-   条件付き表示
+   入口選択・条件付き表示
    ============================================================ */
+function getEntryChoice() {
+  const checked = document.querySelector('input[name="entryChoice"]:checked');
+  return checked ? checked.value : '';
+}
+
 function updateConditionalFields() {
-  const typeSelect = document.getElementById('inquiry-type');
-  const currentType = typeSelect ? typeSelect.value : '';
+  const currentEntry = getEntryChoice();
 
   CONDITIONAL_FIELD_GROUPS.forEach(group => {
-    const targets = (group.dataset.showFor || '').split(',').map(s => s.trim());
-    if (targets.includes(currentType)) {
+    const targets = (group.dataset.showForEntry || '').split(',').map(s => s.trim());
+    if (targets.includes(currentEntry)) {
       group.classList.add('show');
     } else {
       group.classList.remove('show');
     }
   });
+}
+
+function resolveInquiryType(entryChoice, editDeleteType) {
+  if (entryChoice === 'new-org' || entryChoice === 'returning-org') return 'event-request';
+  if (entryChoice === 'edit-delete') return editDeleteType || '';
+  return entryChoice;
+}
+
+/* ============================================================
+   団体認証（団体ID・認証トークン）
+   ============================================================ */
+function setOrgFieldsReadOnly(readOnly) {
+  ORG_INFO_FIELD_IDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.readOnly = readOnly;
+  });
+}
+
+function fillOrgFields(org) {
+  const map = {
+    'contact-name': org.contactName,
+    'contact-org': org.name,
+    'contact-email': org.email,
+    'contact-email-confirm': org.email,
+    'org-sns': org.sns,
+    'org-description': org.description
+  };
+  Object.keys(map).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = map[id] || '';
+  });
+}
+
+function showOrgAuthSuccess() {
+  const pending = document.getElementById('org-auth-pending');
+  const success = document.getElementById('org-auth-success');
+  if (pending) pending.style.display = 'none';
+  if (success) success.style.display = '';
+}
+
+function showOrgAuthPending() {
+  const pending = document.getElementById('org-auth-pending');
+  const success = document.getElementById('org-auth-success');
+  if (pending) pending.style.display = '';
+  if (success) success.style.display = 'none';
+}
+
+async function lookupOrg(orgId, token) {
+  const errorEl = document.getElementById('error-orgLookup');
+  if (errorEl) errorEl.textContent = '';
+
+  if (!orgId || !token) return false;
+
+  try {
+    const url = `${CONTACT_GAS_URL}?action=lookupOrg&orgId=${encodeURIComponent(orgId)}&token=${encodeURIComponent(token)}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data && data.success && data.org) {
+      document.getElementById('auth-org-id').value = orgId;
+      document.getElementById('auth-org-token').value = token;
+      fillOrgFields(data.org);
+      setOrgFieldsReadOnly(true);
+      showOrgAuthSuccess();
+      return true;
+    }
+  } catch (err) {
+    // ネットワークエラー等は下のfalse処理に合流
+  }
+
+  document.getElementById('auth-org-id').value = '';
+  document.getElementById('auth-org-token').value = '';
+  if (errorEl) errorEl.textContent = '団体ID・認証トークンを確認できませんでした。確認メールのURLからアクセスし直すか、内容をご確認ください。';
+  showOrgAuthPending();
+  return false;
+}
+
+function setupOrgAuth() {
+  const editCheckbox = document.getElementById('edit-org-info');
+  if (editCheckbox) {
+    editCheckbox.addEventListener('change', () => {
+      setOrgFieldsReadOnly(!editCheckbox.checked);
+    });
+  }
+
+  const lookupBtn = document.getElementById('org-lookup-btn');
+  if (lookupBtn) {
+    lookupBtn.addEventListener('click', () => {
+      const orgId = document.getElementById('manual-org-id').value.trim();
+      const token = document.getElementById('manual-org-token').value.trim();
+      lookupOrg(orgId, token);
+    });
+  }
+
+  // URLパラメータ（確認メールのURLからアクセスした場合）に orgId/token があれば自動認証
+  const params = new URLSearchParams(window.location.search);
+  const urlOrgId = params.get('orgId');
+  const urlToken = params.get('token');
+  if (urlOrgId && urlToken) {
+    const returningRadio = document.querySelector('input[name="entryChoice"][value="returning-org"]');
+    if (returningRadio) returningRadio.checked = true;
+    updateConditionalFields();
+    lookupOrg(urlOrgId, urlToken);
+  }
 }
 
 /* ============================================================
@@ -48,9 +161,55 @@ function validateForm(form) {
   clearAllErrors();
   let isValid = true;
 
+  const entryChoice = getEntryChoice();
+  if (!entryChoice) {
+    setFieldError('entryChoice', 'ご用件を選択してください');
+    isValid = false;
+  }
+
+  if (entryChoice === 'returning-org') {
+    const orgId = document.getElementById('auth-org-id').value;
+    const orgToken = document.getElementById('auth-org-token').value;
+    if (!orgId || !orgToken) {
+      setFieldError('orgLookup', '団体ID・認証トークンで確認を行ってください。');
+      isValid = false;
+    }
+
+    const imageInput = document.getElementById('event-image');
+    const imageFile = imageInput && imageInput.files[0] ? imageInput.files[0] : null;
+    if (imageFile) {
+      if (!imageFile.type.startsWith('image/')) {
+        setFieldError('eventImage', '画像ファイルのみアップロードできます');
+        isValid = false;
+      } else if (imageFile.size > MAX_IMAGE_SIZE_BYTES) {
+        setFieldError('eventImage', 'ファイルサイズは5MBまでです');
+        isValid = false;
+      }
+    }
+  }
+
+  if (entryChoice === 'edit-delete') {
+    const editDeleteEl = form.elements['editDeleteType'];
+    if (!editDeleteEl || !editDeleteEl.value) {
+      setFieldError('editDeleteType', '修正・削除のどちらかを選択してください', editDeleteEl);
+      isValid = false;
+    }
+  }
+
+  if (entryChoice === 'new-org' || entryChoice === 'returning-org') {
+    const eventNameEl = form.elements['eventName'];
+    if (!eventNameEl || !eventNameEl.value.trim()) {
+      setFieldError('eventName', 'イベント名を入力してください', eventNameEl);
+      isValid = false;
+    }
+    const eventDateEl = form.elements['eventDate'];
+    if (!eventDateEl || !eventDateEl.value) {
+      setFieldError('eventDate', '開催日を入力してください', eventDateEl);
+      isValid = false;
+    }
+  }
+
   const requiredTextFields = [
-    { name: 'inquiryType', label: 'お問い合わせ種別を選択してください' },
-    { name: 'firstTimeSelfReport', label: '初めてかどうかを選択してください' },
     { name: 'name', label: 'お名前を入力してください' },
     { name: 'organization', label: '団体名・所属を入力してください' },
     { name: 'message', label: 'お問い合わせ内容を入力してください' }
@@ -95,6 +254,21 @@ function validateForm(form) {
 }
 
 /* ============================================================
+   画像添付（登録済み団体のみ）
+   ============================================================ */
+function readFileAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result || '';
+      resolve(String(result).split(',')[1] || '');
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ============================================================
    送信結果メッセージ
    ============================================================ */
 function showResult(type, message) {
@@ -115,19 +289,41 @@ function clearResult() {
 /* ============================================================
    送信処理
    ============================================================ */
-function buildPayload(form) {
+async function buildPayload(form) {
+  const entryChoice = getEntryChoice();
+  const editDeleteType = form.elements['editDeleteType'] ? form.elements['editDeleteType'].value : '';
+
   const fields = [
-    'inquiryType', 'firstTimeSelfReport', 'name', 'organization', 'email', 'emailConfirm',
-    'targetEventName', 'desiredPublishDate', 'applicationUrl', 'targetPageUrl',
-    'organizationUrl', 'budgetRange', 'message'
+    'name', 'organization', 'email', 'emailConfirm', 'orgSns', 'orgDescription',
+    'eventName', 'eventDate', 'eventStartTime', 'eventEndTime', 'eventLocation', 'eventDescription',
+    'desiredPublishDate', 'applicationUrl', 'targetEventName', 'targetPageUrl',
+    'budgetRange', 'message'
   ];
   const payload = {};
   fields.forEach(name => {
     const el = form.elements[name];
     payload[name] = el ? el.value.trim() : '';
   });
+
+  payload.entryChoice = entryChoice;
+  payload.inquiryType = resolveInquiryType(entryChoice, editDeleteType);
+  payload.orgId = document.getElementById('auth-org-id').value;
+  payload.orgToken = document.getElementById('auth-org-token').value;
+  payload.editOrgInfo = !!(document.getElementById('edit-org-info') && document.getElementById('edit-org-info').checked);
   payload.consent = !!(form.elements['consent'] && form.elements['consent'].checked);
   payload.website = form.elements['website'] ? form.elements['website'].value : '';
+
+  payload.imageBase64 = '';
+  payload.imageFileName = '';
+  payload.imageMimeType = '';
+  const imageInput = document.getElementById('event-image');
+  if (entryChoice === 'returning-org' && imageInput && imageInput.files[0]) {
+    const file = imageInput.files[0];
+    payload.imageBase64 = await readFileAsBase64(file);
+    payload.imageFileName = file.name;
+    payload.imageMimeType = file.type;
+  }
+
   return payload;
 }
 
@@ -143,7 +339,7 @@ async function handleSubmit(e) {
     return;
   }
 
-  const payload = buildPayload(form);
+  const payload = await buildPayload(form);
   const submitBtn = document.getElementById('contact-submit');
 
   // honeypot: botが入力していたら実際の送信は行わず、通常の完了表示だけ行う
@@ -171,6 +367,8 @@ async function handleSubmit(e) {
       const receiptText = data.receiptNumber ? `（受付番号: ${data.receiptNumber}）` : '';
       showResult('success', `お問い合わせを受け付けました${receiptText}。入力いただいたメールアドレス宛に確認メールをお送りしました。`);
       form.reset();
+      setOrgFieldsReadOnly(false);
+      showOrgAuthPending();
       updateConditionalFields();
     } else {
       showResult('error', (data && data.error) || '送信に失敗しました。時間をおいて再度お試しください。');
@@ -213,9 +411,12 @@ function setupContactNav() {
 document.addEventListener('DOMContentLoaded', () => {
   setupContactNav();
 
-  const typeSelect = document.getElementById('inquiry-type');
-  if (typeSelect) typeSelect.addEventListener('change', updateConditionalFields);
+  document.querySelectorAll('input[name="entryChoice"]').forEach(radio => {
+    radio.addEventListener('change', updateConditionalFields);
+  });
   updateConditionalFields();
+
+  setupOrgAuth();
 
   const form = document.getElementById('contact-form');
   if (form) form.addEventListener('submit', handleSubmit);

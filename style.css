@@ -899,6 +899,42 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 .form-result.success { padding: 1rem 1.25rem; background: #ECFDF5; border: 1.5px solid #A7F3D0; color: #065F46; }
 .form-result.error { padding: 1rem 1.25rem; background: #FEF2F2; border: 1.5px solid #FECACA; color: #991B1B; }
 .btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none !important; }
+.form-control[readonly] { background: var(--gray-50); color: var(--text-secondary); cursor: default; }
+
+/* ---- 入口選択（7択） ---- */
+.entry-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.6rem;
+}
+.entry-option {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 0.9rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition);
+}
+.entry-option:hover { border-color: var(--enjy-light); background: var(--enjy-pale); }
+.entry-option input[type="radio"] { width: 16px; height: 16px; flex-shrink: 0; accent-color: var(--enjy); }
+.entry-option input[type="radio"]:checked ~ span { color: var(--enjy); font-weight: 700; }
+.entry-option:has(input:checked) { border-color: var(--enjy); background: var(--enjy-pale); }
+
+/* ---- 団体認証ボックス ---- */
+.org-auth-box {
+  background: var(--gray-50);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.1rem;
+  margin: 1rem 0;
+}
+.org-auth-note { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem; }
+.org-auth-success { background: var(--enjy-pale); border-color: rgba(139,0,0,0.2); }
+.org-auth-banner { font-size: 0.88rem; font-weight: 700; color: var(--enjy); margin-bottom: 0.6rem; }
 
 /* ============================================================
    掲載団体一覧
