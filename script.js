@@ -800,32 +800,6 @@ function renderAll() {
 }
 
 /* ============================================================
-   掲載依頼フォーム: 問い合わせ種別による動的表示
-   ============================================================ */
-function setupContactForm() {
-  const typeSelect  = document.getElementById('contact-type');
-  const eventFields = document.getElementById('event-request-fields');
-  if (!typeSelect || !eventFields) return;
-
-  typeSelect.addEventListener('change', () => {
-    if (typeSelect.value === 'event-request') {
-      eventFields.classList.add('show');
-    } else {
-      eventFields.classList.remove('show');
-    }
-  });
-
-  // フォーム送信（現時点では送信処理なし）
-  const form = document.getElementById('contact-form');
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      alert('お問い合わせありがとうございます。\n現在、フォームの送信機能は準備中です。\nメール等でお問い合わせください。');
-    });
-  }
-}
-
-/* ============================================================
    スムーズスクロール
    ============================================================ */
 function scrollToSection(id) {
@@ -895,6 +869,5 @@ document.addEventListener('DOMContentLoaded', () => {
   setupFilters();
   setupRankingControls();
   setupModal();
-  setupContactForm();
   renderAll();
 });

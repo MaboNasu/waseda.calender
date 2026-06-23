@@ -870,11 +870,35 @@ select.form-control {
 textarea.form-control { resize: vertical; min-height: 120px; }
 .form-divider { margin: 1.5rem 0; border: none; border-top: 1.5px dashed var(--border); }
 .form-section-title { font-size: 0.88rem; font-weight: 700; color: var(--enjy); margin-bottom: 1rem; }
-.event-fields { display: none; }
-.event-fields.show { display: block; }
+.conditional-fields { display: none; }
+.conditional-fields.show { display: block; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .form-submit-area { margin-top: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
 .form-note { font-size: 0.75rem; color: var(--text-muted); text-align: center; }
+.field-error { font-size: 0.78rem; color: #B91C1C; margin-top: 0.35rem; min-height: 1em; }
+.form-control.invalid { border-color: #B91C1C; }
+.form-control.invalid:focus { box-shadow: 0 0 0 3px rgba(185,28,28,0.12); }
+.honeypot-field { position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.form-checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin: 1.25rem 0 0.25rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.form-checkbox-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+  accent-color: var(--enjy);
+}
+.form-result { margin-top: 1.25rem; border-radius: var(--radius-md); font-size: 0.88rem; line-height: 1.7; text-align: center; }
+.form-result:empty { display: none; }
+.form-result.success { padding: 1rem 1.25rem; background: #ECFDF5; border: 1.5px solid #A7F3D0; color: #065F46; }
+.form-result.error { padding: 1rem 1.25rem; background: #FEF2F2; border: 1.5px solid #FECACA; color: #991B1B; }
+.btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none !important; }
 
 /* ============================================================
    掲載団体一覧
@@ -1100,8 +1124,7 @@ textarea.form-control { resize: vertical; min-height: 120px; }
     min-width: 0;
   }
   .form-row { grid-template-columns: 1fr; }
-  .form-submit-area .btn,
-  #contact-section .btn { width: 100%; }
+  .form-submit-area .btn { width: 100%; }
   .section { padding: 2rem 0; }
   .section-title { font-size: 1.15rem; }
   .org-layout { grid-template-columns: 1fr; }

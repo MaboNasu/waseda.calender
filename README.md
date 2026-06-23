@@ -29,6 +29,17 @@
 ├── organizations.html # 掲載団体一覧ページ
 ├── organizations.js   # 掲載団体データ管理ファイル
 ├── organizations-page.js # 掲載団体一覧ページ用JavaScript
+├── contact.html   # お問い合わせページ
+├── contact.js     # お問い合わせフォームのJavaScript（バリデーション・送信処理）
+├── gas/
+│   └── contactForm.gs # お問い合わせ受付用 Google Apps Script
+├── docs/
+│   └── google-apps-script-setup.md # contactForm.gs のセットアップ手順
+├── assets/
+│   ├── favicon.svg    # サイトアイコン
+│   └── manifest.json  # PWA用マニフェスト
+├── robots.txt     # 検索エンジン向けクロール設定
+├── sitemap.xml    # 検索エンジン向けサイトマップ
 └── README.md      # このファイル
 ```
 
@@ -158,30 +169,15 @@ isPublished: false,
 
 ---
 
-## 問い合わせフォームに送信機能を追加する場合の選択肢
+## お問い合わせフォームについて
 
-### 選択肢1: Formspree（最も簡単）
-```html
-<!-- index.html の <form> タグを以下に変更 -->
-<form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-```
-→ Formspree（https://formspree.io）でアカウント作成・フォームIDを取得
+「掲載依頼・問い合わせ」は外部Googleフォームへのリンクではなく、サイトデザインに統一された自作フォーム（[contact.html](contact.html)）です。
 
-### 選択肢2: Googleフォーム埋め込み
-- Googleフォームを作成し、`<iframe>` で埋め込む
-- または、Googleフォームの送信URLにリダイレクト
+- フロントエンド: [contact.html](contact.html) + [contact.js](contact.js)（条件付き項目表示・バリデーション・honeypotスパム対策・送信処理）
+- バックエンド: [gas/contactForm.gs](gas/contactForm.gs)（Google Apps Script Webアプリ）。送信内容をスプレッドシートに記録し、受付番号の発行、初回/複数回問い合わせの自動判定、優先度の自動判定、送信者への確認メールと管理者への通知メールを行う
+- セットアップ手順: [docs/google-apps-script-setup.md](docs/google-apps-script-setup.md)（スプレッドシート作成からデプロイ、`contact.js`へのURL設定までの手順）
 
-### 選択肢3: Google Apps Script
-```javascript
-// Apps Script側でPOSTを受け取り、Gmailで通知 + スプレッドシートに記録
-const ENDPOINT = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
-// script.js の form.addEventListener('submit', ...) 内でfetchを追加
-```
-
-### 選択肢4: メールリンク（最も簡易）
-```html
-<a href="mailto:contact@example.com?subject=掲載依頼">メールで問い合わせ</a>
-```
+`contact.js` 先頭の `CONTACT_GAS_URL` を、デプロイしたApps Script WebアプリのURLに差し替えることで動作します。
 
 ---
 
