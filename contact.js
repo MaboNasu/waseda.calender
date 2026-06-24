@@ -4,7 +4,7 @@
  * 送信先のGoogle Apps Script WebアプリURL。
  * docs/google-apps-script-setup.md の手順でデプロイしたURLに差し替えてください。
  */
-const CONTACT_GAS_URL = 'https://script.google.com/macros/s/AKfycbzcXPoaemMJXb02y_9FprUvVoHSiDV5RCwSxfxEDW-iF2Z8nXWM64_ZJtaV-FMjd9tK/exec';
+const CONTACT_GAS_URL = 'https://script.google.com/macros/s/AKfycbyMvwohPTX0DpWwHc_B65SFAOqO0j0nhMtGTqWpxLwF9H6GU76pkqK0FFlMgx43iG7m/exec';
 
 /** 団体情報フィールド（登録済み団体認証時に自動入力・読み取り専用化する対象） */
 const ORG_INFO_FIELD_IDS = ['contact-name', 'contact-org', 'contact-email', 'contact-email-confirm', 'org-sns', 'org-description'];
