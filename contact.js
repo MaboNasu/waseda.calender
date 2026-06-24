@@ -365,7 +365,7 @@ async function handleSubmit(e) {
 
     if (data && data.success) {
       const receiptText = data.receiptNumber ? `（受付番号: ${data.receiptNumber}）` : '';
-      showResult('success', `お問い合わせを受け付けました${receiptText}。入力いただいたメールアドレス宛に確認メールをお送りしました。`);
+      showResult('success', `お問い合わせを受け付けました${receiptText}。入力いただいたメールアドレス宛に確認メールをお送りしました。届かない場合は迷惑メールフォルダもご確認ください。`);
       form.reset();
       setOrgFieldsReadOnly(false);
       showOrgAuthPending();

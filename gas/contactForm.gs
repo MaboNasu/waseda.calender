@@ -107,12 +107,17 @@ function doPost(e) {
       return jsonResponse({ success: false, error: result.error });
     }
 
+    // 確認メール・通知メールは個別にtryで囲み、片方の失敗が他方をブロックしないようにする
+    // （スプレッドシートへの保存自体はすでに完了しているため、メール送信に失敗しても送信成功として返す）
     try {
       sendConfirmationEmail(payload, result);
+    } catch (mailErr) {
+      Logger.log('確認メール送信エラー: ' + mailErr);
+    }
+    try {
       sendAdminNotification(payload, result);
     } catch (mailErr) {
-      // メール送信に失敗してもスプレッドシートへの保存自体は完了しているため、送信成功として返す
-      Logger.log('メール送信エラー: ' + mailErr);
+      Logger.log('管理者通知メール送信エラー: ' + mailErr);
     }
 
     return jsonResponse({ success: true, receiptNumber: result.receiptNumber });
@@ -417,51 +422,50 @@ function saveImageToDrive(base64Data, fileName, mimeType) {
 function buildOrgUrlLine(result) {
   if (!result.orgId || !result.orgToken) return '';
   const url = SITE_BASE_URL + 'contact.html?orgId=' + encodeURIComponent(result.orgId) + '&token=' + encodeURIComponent(result.orgToken);
-  return '\n次回からは以下の専用URLからアクセスすると、団体情報の入力を省略できます。\n' + url + '\n';
+  return '次回からは以下の専用URLからアクセスすると、団体情報の入力を省略できます。\n' + url + '\n\n';
 }
 
+/** メール送信元の表示名（受信者が見覚えのない個人アドレスだと判断し、迷惑メール扱いされるのを防ぐ） */
+const MAIL_SENDER_NAME = 'Waseda Calendar';
+
 function sendConfirmationEmail(payload, result) {
-  const subject = '【Waseda Calendar】お問い合わせを受け付けました';
+  const subject = '【Waseda Calendar】お問い合わせを受け付けました（受付番号: ' + result.receiptNumber + '）';
   const nowText = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy年MM月dd日 HH:mm');
   const body = payload.name + ' 様\n\n' +
-    'お問い合わせいただきありがとうございます。\n' +
-    '以下の内容で受け付けました。内容を確認のうえ、必要に応じてご連絡します。\n\n' +
-    '----------------------------------------\n' +
-    '受付番号: ' + result.receiptNumber + '\n' +
-    'お問い合わせ種別: ' + (INQUIRY_TYPE_LABELS[payload.inquiryType] || payload.inquiryType) + '\n' +
-    '団体名・所属: ' + payload.organization + '\n' +
-    'イベント名: ' + (payload.eventName || payload.targetEventName || '（指定なし）') + '\n' +
-    '送信日時: ' + nowText + '\n\n' +
-    'お問い合わせ内容:\n' + payload.message + '\n' +
-    '----------------------------------------\n' +
-    buildOrgUrlLine(result) + '\n' +
+    'お問い合わせいただきありがとうございます。以下の内容で受け付けました。\n' +
+    '内容を確認のうえ、必要に応じてご連絡します。\n\n' +
+    '受付番号　　：' + result.receiptNumber + '\n' +
+    'お問い合わせ種別：' + (INQUIRY_TYPE_LABELS[payload.inquiryType] || payload.inquiryType) + '\n' +
+    '団体名・所属　：' + payload.organization + '\n' +
+    'イベント名　　：' + (payload.eventName || payload.targetEventName || '（指定なし）') + '\n' +
+    '送信日時　　　：' + nowText + '\n\n' +
+    'お問い合わせ内容\n' + payload.message + '\n\n' +
+    buildOrgUrlLine(result) +
     'このメールは送信専用です。ご返信いただいても対応できない場合があります。\n\n' +
     'Waseda Calendar\n' +
     SITE_BASE_URL;
 
-  MailApp.sendEmail(payload.email, subject, body);
+  MailApp.sendEmail({ to: payload.email, name: MAIL_SENDER_NAME, subject: subject, body: body });
 }
 
 function sendAdminNotification(payload, result) {
   const subject = '【Waseda Calendar】新規お問い合わせ（' + result.priority + '）' + result.receiptNumber;
   const body = '新しいお問い合わせがありました。\n\n' +
-    '----------------------------------------\n' +
-    '受付番号: ' + result.receiptNumber + '\n' +
-    '団体ID: ' + (result.orgId || '（未登録）') + '\n' +
-    'お問い合わせ種別: ' + (INQUIRY_TYPE_LABELS[payload.inquiryType] || payload.inquiryType) + '\n' +
-    '優先度: ' + result.priority + '\n' +
-    '初回/複数回判定: ' + result.autoJudgment + '（メールアドレス一致: ' + result.pastCount + '件）\n' +
-    'お名前: ' + payload.name + '\n' +
-    'メールアドレス: ' + payload.email + '\n' +
-    '団体名・所属: ' + payload.organization + '\n' +
-    'イベント名: ' + (payload.eventName || payload.targetEventName || '（指定なし）') + '\n' +
-    '開催日: ' + (payload.eventDate || '（指定なし）') + '\n' +
-    '対象ページURL: ' + (payload.targetPageUrl || '（指定なし）') + '\n\n' +
-    'お問い合わせ内容:\n' + payload.message + '\n' +
-    '----------------------------------------\n\n' +
+    '受付番号　　　：' + result.receiptNumber + '\n' +
+    '団体ID　　　　：' + (result.orgId || '（未登録）') + '\n' +
+    'お問い合わせ種別：' + (INQUIRY_TYPE_LABELS[payload.inquiryType] || payload.inquiryType) + '\n' +
+    '優先度　　　　：' + result.priority + '\n' +
+    '初回/複数回判定：' + result.autoJudgment + '（メールアドレス一致: ' + result.pastCount + '件）\n' +
+    'お名前　　　　：' + payload.name + '\n' +
+    'メールアドレス：' + payload.email + '\n' +
+    '団体名・所属　：' + payload.organization + '\n' +
+    'イベント名　　：' + (payload.eventName || payload.targetEventName || '（指定なし）') + '\n' +
+    '開催日　　　　：' + (payload.eventDate || '（指定なし）') + '\n' +
+    '対象ページURL　：' + (payload.targetPageUrl || '（指定なし）') + '\n\n' +
+    'お問い合わせ内容\n' + payload.message + '\n\n' +
     'スプレッドシートで詳細を確認してください。';
 
-  MailApp.sendEmail(ADMIN_EMAIL, subject, body);
+  MailApp.sendEmail({ to: ADMIN_EMAIL, name: MAIL_SENDER_NAME, subject: subject, body: body });
 }
 
 // ============================================================
