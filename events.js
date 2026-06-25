@@ -35,36 +35,159 @@
 const EVENTS = [
 
   // ========================================
-  // サンプルイベント（実運用時は削除してください）
+  // 2026年度 学事日程
   // ========================================
 
-  // {
-  //   id: "evt-001",
-  //   title: "早稲田大学 春の演劇祭",
-  //   date: "2025-06-20",
-  //   startTime: "14:00",
-  //   endTime: "17:00",
-  //   location: "大隈記念講堂",
-  //   campus: "waseda",
-  //   organizer: "早稲田大学演劇倶楽部",
-  //   category: "theater",
-  //   target: ["student", "public"],
-  //   feeType: "free",
-  //   feeText: "無料",
-  //   description: "早稲田大学演劇倶楽部による春の公演です。3本の短編を上演します。",
-  //   reactions: {
-  //     interested: 12,
-  //     wantToGo: 5,
-  //     going: 3
-  //   },
-  //   externalUrl: "https://example.com",
-  //   lastUpdated: "2025-06-01",
-  //   isPublished: true
-  // },
-
-  // ========================================
-  // ここから実際のイベントを追加してください
-  // ========================================
+  {
+    id: "evt-001",
+    title: "春学期授業12週目（7/2〜7/8）",
+    date: "2026-07-02",
+    location: "",
+    campus: "waseda",
+    organizer: "早稲田大学",
+    category: "other",
+    target: ["student"],
+    feeType: "free",
+    feeText: "無料",
+    description: "春学期の授業期間（12週目）です。",
+    lastUpdated: "2026-06-25",
+    isPublished: true
+  },
+  {
+    id: "evt-002",
+    title: "春学期授業13週目（7/9〜7/15）",
+    date: "2026-07-09",
+    location: "",
+    campus: "waseda",
+    organizer: "早稲田大学",
+    category: "other",
+    target: ["student"],
+    feeType: "free",
+    feeText: "無料",
+    description: "春学期の授業期間（13週目）です。",
+    lastUpdated: "2026-06-25",
+    isPublished: true
+  },
+  {
+    id: "evt-003",
+    title: "春学期授業14週目（7/16〜7/22）",
+    date: "2026-07-16",
+    location: "",
+    campus: "waseda",
+    organizer: "早稲田大学",
+    category: "other",
+    target: ["student"],
+    feeType: "free",
+    feeText: "無料",
+    description: "春学期の授業期間（14週目）です。",
+    lastUpdated: "2026-06-25",
+    isPublished: true
+  },
+  {
+    id: "evt-004",
+    title: "授業予備週（7/23〜7/29）",
+    date: "2026-07-23",
+    location: "",
+    campus: "waseda",
+    organizer: "早稲田大学",
+    category: "other",
+    target: ["student"],
+    feeType: "free",
+    feeText: "無料",
+    description: "授業予備週の期間です。",
+    lastUpdated: "2026-06-25",
+    isPublished: true
+  },
+  {
+    id: "evt-005",
+    title: "夏季休業開始",
+    date: "2026-07-30",
+    location: "",
+    campus: "waseda",
+    organizer: "早稲田大学",
+    category: "other",
+    target: ["student"],
+    feeType: "free",
+    feeText: "無料",
+    description: "夏季休業の開始日です。",
+    lastUpdated: "2026-06-25",
+    isPublished: true
+  },
+  {
+    id: "evt-006",
+    title: "オープンキャンパス（8/1〜8/2）",
+    date: "2026-08-01",
+    location: "",
+    campus: "waseda",
+    organizer: "早稲田大学",
+    category: "other",
+    target: ["applicant", "public"],
+    feeType: "free",
+    feeText: "無料",
+    description: "オープンキャンパス開催期間です。",
+    lastUpdated: "2026-06-25",
+    isPublished: true
+  },
+  {
+    id: "evt-007",
+    title: "9月卒業式",
+    date: "2026-09-19",
+    location: "",
+    campus: "waseda",
+    organizer: "早稲田大学",
+    category: "other",
+    target: ["student", "public"],
+    feeType: "free",
+    feeText: "無料",
+    description: "9月卒業式です。",
+    lastUpdated: "2026-06-25",
+    isPublished: true
+  },
+  {
+    id: "evt-008",
+    title: "夏季休業終了",
+    date: "2026-09-20",
+    location: "",
+    campus: "waseda",
+    organizer: "早稲田大学",
+    category: "other",
+    target: ["student"],
+    feeType: "free",
+    feeText: "無料",
+    description: "夏季休業の終了日です。",
+    lastUpdated: "2026-06-25",
+    isPublished: true
+  },
+  {
+    id: "evt-009",
+    title: "9月入学式",
+    date: "2026-09-26",
+    location: "",
+    campus: "waseda",
+    organizer: "早稲田大学",
+    category: "other",
+    target: ["student", "public"],
+    feeType: "free",
+    feeText: "無料",
+    description: "9月入学式です。",
+    lastUpdated: "2026-06-25",
+    isPublished: true
+  },
+  {
+    id: "evt-010",
+    title: "秋学期授業1週目（10/1〜10/7）",
+    date: "2026-10-01",
+    location: "",
+    campus: "waseda",
+    organizer: "早稲田大学",
+    category: "other",
+    target: ["student"],
+    feeType: "free",
+    feeText: "無料",
+    description: "秋学期授業1週目の期間です。",
+    lastUpdated: "2026-06-25",
+    isPublished: true
+  }
 
 ];
 
