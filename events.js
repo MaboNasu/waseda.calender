@@ -11,6 +11,10 @@
  * 日付形式: YYYY-MM-DD (例: 2025-06-15)
  * 時間形式: HH:MM (例: 14:00)
  *
+ * endDate（任意）:
+ *   複数日にわたるイベントの終了日。指定すると、カレンダー上で開始日(date)から
+ *   終了日(endDate)まで連続したバーとして表示されます。省略した場合は単日イベントとして扱われます。
+ *
  * category の選択肢:
  *   "sports" | "culture" | "music" | "theater" | "lecture" | "community" | "other"
  *
@@ -40,8 +44,9 @@ const EVENTS = [
 
   {
     id: "evt-001",
-    title: "春学期授業12週目（7/2〜7/8）",
+    title: "春学期授業12週目",
     date: "2026-07-02",
+    endDate: "2026-07-08",
     location: "",
     campus: "waseda",
     organizer: "早稲田大学",
@@ -55,8 +60,9 @@ const EVENTS = [
   },
   {
     id: "evt-002",
-    title: "春学期授業13週目（7/9〜7/15）",
+    title: "春学期授業13週目",
     date: "2026-07-09",
+    endDate: "2026-07-15",
     location: "",
     campus: "waseda",
     organizer: "早稲田大学",
@@ -70,8 +76,9 @@ const EVENTS = [
   },
   {
     id: "evt-003",
-    title: "春学期授業14週目（7/16〜7/22）",
+    title: "春学期授業14週目",
     date: "2026-07-16",
+    endDate: "2026-07-22",
     location: "",
     campus: "waseda",
     organizer: "早稲田大学",
@@ -85,8 +92,9 @@ const EVENTS = [
   },
   {
     id: "evt-004",
-    title: "授業予備週（7/23〜7/29）",
+    title: "授業予備週",
     date: "2026-07-23",
+    endDate: "2026-07-29",
     location: "",
     campus: "waseda",
     organizer: "早稲田大学",
@@ -115,8 +123,9 @@ const EVENTS = [
   },
   {
     id: "evt-006",
-    title: "オープンキャンパス（8/1〜8/2）",
+    title: "オープンキャンパス",
     date: "2026-08-01",
+    endDate: "2026-08-02",
     location: "",
     campus: "waseda",
     organizer: "早稲田大学",
@@ -175,8 +184,9 @@ const EVENTS = [
   },
   {
     id: "evt-010",
-    title: "秋学期授業1週目（10/1〜10/7）",
+    title: "秋学期授業1週目",
     date: "2026-10-01",
+    endDate: "2026-10-07",
     location: "",
     campus: "waseda",
     organizer: "早稲田大学",

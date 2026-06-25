@@ -146,6 +146,9 @@ function validatePayload(payload) {
   if (payload.entryChoice === 'new-org' || payload.entryChoice === 'returning-org') {
     if (!payload.eventName) return 'イベント名が未入力です。';
     if (!payload.eventDate) return '開催日が未入力です。';
+    if (payload.eventEndDate && payload.eventEndDate < payload.eventDate) {
+      return '終了日は開催日より後の日付にしてください。';
+    }
   }
 
   if (payload.imageBase64) {
@@ -284,17 +287,18 @@ function upsertOrg(payload) {
 // ============================================================
 
 /**
- * 列の並び（0始まり）。既存の運用データと互換性を保つため、もとの21列はそのままに、
- * 団体ID・イベント日時・参考URL関連の列を末尾に追加している。
- * [0]受付番号 [7]メールアドレス
+ * 列の並び（0始まり）。先頭に「掲載OK」チェックボックス列を追加したため、
+ * 以降の列は元の並びから+1ずれている。
+ * [0]掲載OK [1]受付番号 [8]メールアドレス
  */
 const INQUIRY_COL = {
-  receiptNumber: 0, timestamp: 1, inquiryType: 2, firstTimeSelfReport: 3, autoJudgment: 4,
-  pastCount: 5, name: 6, email: 7, organization: 8, orgUrl: 9, eventName: 10,
-  targetPageUrl: 11, desiredPublishDate: 12, applicationUrl: 13, budget: 14, message: 15,
-  status: 16, priority: 17, assignee: 18, memo: 19, updatedAt: 20,
+  approved: 0, receiptNumber: 1, timestamp: 2, inquiryType: 3, firstTimeSelfReport: 4, autoJudgment: 5,
+  pastCount: 6, name: 7, email: 8, organization: 9, orgUrl: 10, eventName: 11,
+  targetPageUrl: 12, desiredPublishDate: 13, applicationUrl: 14, budget: 15, message: 16,
+  status: 17, priority: 18, assignee: 19, memo: 20, updatedAt: 21,
   // 末尾に追加した列
-  orgId: 21, eventDate: 22, eventStartTime: 23, eventEndTime: 24, eventLocation: 25, referenceUrl: 26
+  orgId: 22, eventDate: 23, eventStartTime: 24, eventEndTime: 25, eventLocation: 26, referenceUrl: 27,
+  eventEndDate: 28
 };
 
 function appendInquiry(payload, orgId) {
@@ -330,6 +334,7 @@ function appendInquiry(payload, orgId) {
     : payload.message;
 
   const row = [];
+  row[INQUIRY_COL.approved] = false;
   row[INQUIRY_COL.receiptNumber] = receiptNumber;
   row[INQUIRY_COL.timestamp] = now;
   row[INQUIRY_COL.inquiryType] = INQUIRY_TYPE_LABELS[payload.inquiryType] || payload.inquiryType;
@@ -353,6 +358,7 @@ function appendInquiry(payload, orgId) {
   row[INQUIRY_COL.updatedAt] = now;
   row[INQUIRY_COL.orgId] = orgId || '';
   row[INQUIRY_COL.eventDate] = payload.eventDate || '';
+  row[INQUIRY_COL.eventEndDate] = payload.eventEndDate || '';
   row[INQUIRY_COL.eventStartTime] = payload.eventStartTime || '';
   row[INQUIRY_COL.eventEndTime] = payload.eventEndTime || '';
   row[INQUIRY_COL.eventLocation] = payload.eventLocation || '';
@@ -428,6 +434,15 @@ function buildOrgUrlLine(result) {
 /** メール送信元の表示名（受信者が見覚えのない個人アドレスだと判断し、迷惑メール扱いされるのを防ぐ） */
 const MAIL_SENDER_NAME = 'Waseda Calendar';
 
+/** 開催日の表示（終了日があれば範囲表示） */
+function formatEventDateRange(payload) {
+  if (!payload.eventDate) return '（指定なし）';
+  if (payload.eventEndDate && payload.eventEndDate !== payload.eventDate) {
+    return payload.eventDate + ' 〜 ' + payload.eventEndDate;
+  }
+  return payload.eventDate;
+}
+
 function sendConfirmationEmail(payload, result) {
   const subject = '【Waseda Calendar】お問い合わせを受け付けました（受付番号: ' + result.receiptNumber + '）';
   const nowText = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy年MM月dd日 HH:mm');
@@ -438,6 +453,7 @@ function sendConfirmationEmail(payload, result) {
     'お問い合わせ種別：' + (INQUIRY_TYPE_LABELS[payload.inquiryType] || payload.inquiryType) + '\n' +
     '団体名・所属　：' + payload.organization + '\n' +
     'イベント名　　：' + (payload.eventName || payload.targetEventName || '（指定なし）') + '\n' +
+    '開催日　　　　：' + formatEventDateRange(payload) + '\n' +
     '送信日時　　　：' + nowText + '\n\n' +
     'お問い合わせ内容\n' + payload.message + '\n\n' +
     buildOrgUrlLine(result) +
@@ -460,7 +476,7 @@ function sendAdminNotification(payload, result) {
     'メールアドレス：' + payload.email + '\n' +
     '団体名・所属　：' + payload.organization + '\n' +
     'イベント名　　：' + (payload.eventName || payload.targetEventName || '（指定なし）') + '\n' +
-    '開催日　　　　：' + (payload.eventDate || '（指定なし）') + '\n' +
+    '開催日　　　　：' + formatEventDateRange(payload) + '\n' +
     '対象ページURL　：' + (payload.targetPageUrl || '（指定なし）') + '\n\n' +
     'お問い合わせ内容\n' + payload.message + '\n\n' +
     'スプレッドシートで詳細を確認してください。';

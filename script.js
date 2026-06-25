@@ -82,6 +82,35 @@ function formatDateDisplay(dateStr) {
   return `${y}年${m}月${d}日（${WEEKDAY_JP[date.getDay()]}）`;
 }
 
+/** イベントの日付表示。endDateがあれば範囲表示にする（例: 2026年7月2日（木）〜7月8日（水）） */
+function formatEventDateDisplay(ev) {
+  if (!isMultiDay(ev)) return formatDateDisplay(ev.date);
+  const [ey, em, ed] = ev.endDate.split('-').map(Number);
+  const endDate = new Date(ey, em - 1, ed);
+  return `${formatDateDisplay(ev.date)}〜${em}月${ed}日（${WEEKDAY_JP[endDate.getDay()]}）`;
+}
+
+/** 複数日イベントの終了日（endDate未指定ならdateと同日） */
+function getEventEnd(ev) {
+  return ev.endDate || ev.date;
+}
+
+/** dateStrがイベントの開催期間内（date〜endDate）かどうか */
+function isEventOnDate(ev, dateStr) {
+  return ev.date <= dateStr && dateStr <= getEventEnd(ev);
+}
+
+/** 複数日（endDateがdateと異なる）イベントかどうか */
+function isMultiDay(ev) {
+  return getEventEnd(ev) !== ev.date;
+}
+
+/** YYYY-MM-DD → M/D（年を省いた簡易表示。期間バッジ等に使用） */
+function formatShortDate(dateStr) {
+  const [, m, d] = dateStr.split('-').map(Number);
+  return `${m}/${d}`;
+}
+
 /** 時間表示（HH:MM〜HH:MM） */
 function formatTime(start, end) {
   if (!start) return '';
@@ -247,7 +276,13 @@ function createEventCardHTML(ev, showDate = true) {
   const dateRow = showDate ? `
     <div class="event-info-row">
       <span class="event-info-icon">📅</span>
-      <span>${formatDateDisplay(ev.date)}</span>
+      <span>${formatEventDateDisplay(ev)}</span>
+    </div>` : '';
+
+  const timeRow = ev.startTime ? `
+    <div class="event-info-row">
+      <span class="event-info-icon">🕐</span>
+      <span>${escapeHtml(formatTime(ev.startTime, ev.endTime))}</span>
     </div>` : '';
 
   const extLink = ev.externalUrl
@@ -265,10 +300,7 @@ function createEventCardHTML(ev, showDate = true) {
         <h3 class="event-card-title">${escapeHtml(ev.title)}</h3>
         <div class="event-card-info">
           ${dateRow}
-          <div class="event-info-row">
-            <span class="event-info-icon">🕐</span>
-            <span>${escapeHtml(formatTime(ev.startTime, ev.endTime))}</span>
-          </div>
+          ${timeRow}
           <div class="event-info-row">
             <span class="event-info-icon">📍</span>
             <span>${escapeHtml(ev.location || campusLabel(ev.campus))}</span>
@@ -305,7 +337,7 @@ function renderTodayEvents() {
   if (!el) return;
 
   const today    = getTodayStr();
-  const filtered = getFilteredEvents().filter(ev => ev.date === today);
+  const filtered = getFilteredEvents().filter(ev => isEventOnDate(ev, today));
 
   const countEl = document.getElementById('today-count');
   if (countEl) countEl.textContent = `${filtered.length}件`;
@@ -324,7 +356,7 @@ function renderUpcomingEvents() {
 
   const today    = getTodayStr();
   const filtered = getFilteredEvents()
-    .filter(ev => ev.date > today)
+    .filter(ev => ev.date > today || isEventOnDate(ev, today))
     .sort((a, b) => a.date.localeCompare(b.date));
 
   const countEl = document.getElementById('upcoming-count');
@@ -351,7 +383,7 @@ function createRankingCardHTML(ev, index, reactionType) {
         </div>
         <h3 class="ranking-title">${escapeHtml(ev.title)}</h3>
         <div class="ranking-meta">
-          <span>📅 ${formatDateDisplay(ev.date)}</span>
+          <span>📅 ${formatEventDateDisplay(ev)}</span>
           <span>🕐 ${escapeHtml(formatTime(ev.startTime, ev.endTime))}</span>
           <span>📍 ${escapeHtml(ev.location || campusLabel(ev.campus))}</span>
         </div>
@@ -391,53 +423,113 @@ function renderCalendarGrid() {
   const wrap = document.getElementById('calendar-grid');
   if (!wrap) return;
 
-  const filtered  = getFilteredEvents();
-  const evByDate  = {};
-  filtered.forEach(ev => {
-    if (!evByDate[ev.date]) evByDate[ev.date] = [];
-    evByDate[ev.date].push(ev);
-  });
-
+  const filtered = getFilteredEvents();
   const today    = getTodayStr();
   const firstDay = new Date(calendarYear, calendarMonth, 1);
   const lastDay  = new Date(calendarYear, calendarMonth + 1, 0);
   const startCol = (firstDay.getDay() + 6) % 7;
   const total    = lastDay.getDate();
+  const remaining = (7 - ((startCol + total) % 7)) % 7;
 
+  // 1. 前月末〜当月〜次月頭の全セルを作る（週ごとのバー計算のため、jsDowも事前に持たせる）
+  const cells = [];
+  for (let i = startCol; i > 0; i--) {
+    const d = new Date(calendarYear, calendarMonth, 1 - i);
+    cells.push({ dateStr: formatDateStr(d), dayNum: d.getDate(), otherMonth: true, jsDow: d.getDay() });
+  }
+  for (let d = 1; d <= total; d++) {
+    const dateObj = new Date(calendarYear, calendarMonth, d);
+    cells.push({ dateStr: formatDateStr(dateObj), dayNum: d, otherMonth: false, jsDow: dateObj.getDay() });
+  }
+  for (let d = 1; d <= remaining; d++) {
+    const dateObj = new Date(calendarYear, calendarMonth + 1, d);
+    cells.push({ dateStr: formatDateStr(dateObj), dayNum: d, otherMonth: true, jsDow: dateObj.getDay() });
+  }
+
+  // 2. 単日イベントと複数日イベントを分ける（複数日イベントは週単位のバーとして別途描画）
+  const multiDayEvents = filtered.filter(isMultiDay);
+  const singleDayByDate = {};
+  filtered.filter(ev => !isMultiDay(ev)).forEach(ev => {
+    if (!singleDayByDate[ev.date]) singleDayByDate[ev.date] = [];
+    singleDayByDate[ev.date].push(ev);
+  });
+
+  const BAR_HEIGHT = 18; // px（1レーンあたりの高さ。style.cssの.event-barと合わせること）
   let html = '';
 
-  // 前月の空白
-  for (let i = 0; i < startCol; i++) {
-    const d = new Date(calendarYear, calendarMonth, -startCol + i + 1);
-    html += `<div class="calendar-day other-month"><span class="day-num">${d.getDate()}</span></div>`;
-  }
+  // 3. 週（7日）ごとに描画
+  for (let w = 0; w < cells.length; w += 7) {
+    const week      = cells.slice(w, w + 7);
+    const weekStart = week[0].dateStr;
+    const weekEnd   = week[6].dateStr;
 
-  // 当月
-  for (let d = 1; d <= total; d++) {
-    const dateStr  = `${calendarYear}-${String(calendarMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const holiday = getHolidayName(dateStr);
-    const jsDow    = new Date(calendarYear, calendarMonth, d).getDay();
-    const isToday  = dateStr === today;
-    const dayEvs   = evByDate[dateStr] || [];
-    const classes  = ['calendar-day', isToday ? 'today' : '', holiday ? 'holiday' : '', jsDow === 0 ? 'sunday' : '', jsDow === 6 ? 'saturday' : ''].filter(Boolean).join(' ');
-    const holidayTitle = holiday ? ` title="${escapeHtml(holiday)}"` : '';
-　　const holidayMark = holiday ? `<span class="holiday-mark" title="${escapeHtml(holiday)}">(祝)</span>` : '';
+    // この週にかかる複数日イベントのバー区間を計算
+    const bars = [];
+    multiDayEvents.forEach(ev => {
+      const evEnd = getEventEnd(ev);
+      if (ev.date > weekEnd || evEnd < weekStart) return;
+      const segStart = ev.date > weekStart ? ev.date : weekStart;
+      const segEnd   = evEnd < weekEnd ? evEnd : weekEnd;
+      const startCol2 = week.findIndex(c => c.dateStr === segStart);
+      const endCol2   = week.findIndex(c => c.dateStr === segEnd);
+      if (startCol2 === -1 || endCol2 === -1) return;
+      bars.push({
+        ev, startCol: startCol2, span: endCol2 - startCol2 + 1,
+        continuesBefore: ev.date < weekStart,
+        continuesAfter: evEnd > weekEnd
+      });
+    });
 
-    const maxShow  = 3;
-    const chips    = dayEvs.slice(0, maxShow).map(ev =>
-      `<div class="day-event-chip" onclick="openModal('${escapeHtml(String(ev.id))}')" title="${escapeHtml(ev.title)}">${escapeHtml(ev.title)}</div>`
-    ).join('');
-    const moreBtn  = dayEvs.length > maxShow
-      ? `<div class="day-more" onclick="showDayEvents('${dateStr}')">他${dayEvs.length - maxShow}件</div>`
-      : '';
+    // レーン割り当て（貪欲法。開始列が早い順に、重ならない最小のレーンへ）
+    bars.sort((a, b) => a.startCol - b.startCol);
+    const laneEndCols = [];
+    bars.forEach(bar => {
+      let lane = 0;
+      while (lane < laneEndCols.length && laneEndCols[lane] >= bar.startCol) lane++;
+      laneEndCols[lane] = bar.startCol + bar.span - 1;
+      bar.lane = lane;
+    });
+    const maxLanes = laneEndCols.length;
+    const dayEventsOffset = maxLanes > 0 ? `${maxLanes * BAR_HEIGHT + 6}px` : '';
 
-    html += `<div class="${classes}"${holidayTitle}>${holidayMark}<span class="day-num">${d}</span><div class="day-events">${chips}${moreBtn}</div></div>`;
-  }
+    // 日セルのHTML
+    const dayCellsHtml = week.map(cell => {
+      if (cell.otherMonth) {
+        return `<div class="calendar-day other-month"><span class="day-num">${cell.dayNum}</span></div>`;
+      }
+      const holiday  = getHolidayName(cell.dateStr);
+      const isToday  = cell.dateStr === today;
+      const dayEvs   = singleDayByDate[cell.dateStr] || [];
+      const classes  = ['calendar-day', isToday ? 'today' : '', holiday ? 'holiday' : '', cell.jsDow === 0 ? 'sunday' : '', cell.jsDow === 6 ? 'saturday' : ''].filter(Boolean).join(' ');
+      const holidayTitle = holiday ? ` title="${escapeHtml(holiday)}"` : '';
+      const holidayMark  = holiday ? `<span class="holiday-mark" title="${escapeHtml(holiday)}">(祝)</span>` : '';
 
-  // 次月の空白
-  const remaining = (7 - ((startCol + total) % 7)) % 7;
-  for (let d = 1; d <= remaining; d++) {
-    html += `<div class="calendar-day other-month"><span class="day-num">${d}</span></div>`;
+      const maxShow = 3;
+      const chips   = dayEvs.slice(0, maxShow).map(ev =>
+        `<div class="day-event-chip" onclick="openModal('${escapeHtml(String(ev.id))}')" title="${escapeHtml(ev.title)}">${escapeHtml(ev.title)}</div>`
+      ).join('');
+      const moreBtn = dayEvs.length > maxShow
+        ? `<div class="day-more" onclick="showDayEvents('${cell.dateStr}')">他${dayEvs.length - maxShow}件</div>`
+        : '';
+      const dayEventsStyle = dayEventsOffset ? ` style="margin-top:${dayEventsOffset}"` : '';
+
+      return `<div class="${classes}"${holidayTitle}>${holidayMark}<span class="day-num">${cell.dayNum}</span><div class="day-events"${dayEventsStyle}>${chips}${moreBtn}</div></div>`;
+    }).join('');
+
+    // 複数日イベントのバーHTML（週の7列に対する絶対配置オーバーレイ）
+    const barsHtml = bars.map(bar => {
+      const leftPct  = (bar.startCol / 7) * 100;
+      const widthPct = (bar.span / 7) * 100;
+      const topPx    = bar.lane * BAR_HEIGHT;
+      const edgeClasses = [
+        bar.continuesBefore ? 'bar-continues-before' : '',
+        bar.continuesAfter ? 'bar-continues-after' : ''
+      ].filter(Boolean).join(' ');
+      return `<div class="event-bar ${edgeClasses}" style="left:${leftPct}%;width:${widthPct}%;top:${topPx}px;" onclick="openModal('${escapeHtml(String(bar.ev.id))}')" title="${escapeHtml(bar.ev.title)}">${escapeHtml(bar.ev.title)}</div>`;
+    }).join('');
+    const weekBarsHtml = bars.length > 0 ? `<div class="week-bars">${barsHtml}</div>` : '';
+
+    html += `<div class="calendar-week">${dayCellsHtml}${weekBarsHtml}</div>`;
   }
 
   wrap.innerHTML = html;
@@ -454,13 +546,13 @@ function renderCalendarList() {
   const today    = getTodayStr();
   const evByDate = {};
 
-  filtered.forEach(ev => {
-    const [y, m] = ev.date.split('-').map(Number);
-    if (y === calendarYear && (m - 1) === calendarMonth) {
-      if (!evByDate[ev.date]) evByDate[ev.date] = [];
-      evByDate[ev.date].push(ev);
-    }
-  });
+  // 複数日イベントも、その月にかかる日すべてに表示する（isEventOnDateで判定）
+  const totalDays = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+  for (let d = 1; d <= totalDays; d++) {
+    const dateStr = formatDateStr(new Date(calendarYear, calendarMonth, d));
+    const dayEvs = filtered.filter(ev => isEventOnDate(ev, dateStr));
+    if (dayEvs.length > 0) evByDate[dateStr] = dayEvs;
+  }
 
   const dates = Object.keys(evByDate).sort();
 
@@ -477,14 +569,20 @@ function renderCalendarList() {
     const isToday   = dateStr === today;
     const dayEvs    = evByDate[dateStr];
 
-    const items = dayEvs.map(ev => `
+    const items = dayEvs.map(ev => {
+      const rangeBadge = isMultiDay(ev)
+        ? `<span class="cal-event-range-badge">${formatShortDate(ev.date)}〜${formatShortDate(ev.endDate)}</span>`
+        : '';
+      const timeText = ev.startTime ? escapeHtml(ev.startTime) : (isMultiDay(ev) ? '終日' : '—');
+      return `
       <div class="cal-list-event-item" onclick="openModal('${escapeHtml(String(ev.id))}')">
-        <span class="cal-event-time">${escapeHtml(ev.startTime || '—')}</span>
+        <span class="cal-event-time">${timeText}</span>
         <div>
-          <div class="cal-event-title">${escapeHtml(ev.title)}</div>
+          <div class="cal-event-title">${escapeHtml(ev.title)} ${rangeBadge}</div>
           <div class="cal-event-loc">${escapeHtml(ev.location || campusLabel(ev.campus))}</div>
         </div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
 
     html += `
       <div class="cal-list-day ${isToday ? 'today' : ''} has-events">
@@ -582,11 +680,11 @@ function openModal(eventId) {
   document.getElementById('modal-detail-content').innerHTML = `
     <div class="modal-detail-item">
       <span class="modal-detail-label">日付</span>
-      <span class="modal-detail-value">${formatDateDisplay(ev.date)}</span>
+      <span class="modal-detail-value">${formatEventDateDisplay(ev)}</span>
     </div>
     <div class="modal-detail-item">
       <span class="modal-detail-label">時間</span>
-      <span class="modal-detail-value">${escapeHtml(formatTime(ev.startTime, ev.endTime))}</span>
+      <span class="modal-detail-value">${ev.startTime ? escapeHtml(formatTime(ev.startTime, ev.endTime)) : '終日'}</span>
     </div>
     <div class="modal-detail-item">
       <span class="modal-detail-label">場所</span>

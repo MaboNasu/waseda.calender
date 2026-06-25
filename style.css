@@ -353,7 +353,7 @@ ul, ol { list-style: none; }
 .tag-free      { background: #D1FAE5; color: #065F46; }
 .tag-paid      { background: #FEE2E2; color: #991B1B; }
 .event-card-title {
-  font-family: var(--font-heading);
+  font-family: var(--font-main);
   font-size: 1rem;
   font-weight: 600;
   color: var(--gray-800);
@@ -529,7 +529,7 @@ ul, ol { list-style: none; }
 .ranking-rank.top-2,
 .ranking-rank.top-3 { background: var(--enjy-pale); color: var(--enjy); }
 .ranking-title {
-  font-family: var(--font-heading);
+  font-family: var(--font-main);
   font-size: 1rem;
   font-weight: 600;
   color: var(--gray-800);
@@ -605,7 +605,29 @@ ul, ol { list-style: none; }
 }
 .calendar-weekday.sun { color: var(--enjy); }
 .calendar-weekday.sat { color: #1D4ED8; }
-.calendar-days { display: grid; grid-template-columns: repeat(7, 1fr); }
+.calendar-days { display: flex; flex-direction: column; }
+.calendar-week { position: relative; display: grid; grid-template-columns: repeat(7, 1fr); }
+.week-bars { position: absolute; top: 34px; left: 0; width: 100%; pointer-events: none; z-index: 3; }
+.event-bar {
+  position: absolute;
+  height: 16px;
+  line-height: 16px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--white);
+  background: var(--enjy);
+  padding: 0 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  pointer-events: auto;
+  border-radius: 3px;
+  transition: background var(--transition);
+}
+.event-bar:hover { background: var(--enjy-dark); }
+.event-bar.bar-continues-before { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.event-bar.bar-continues-after { border-top-right-radius: 0; border-bottom-right-radius: 0; }
 .calendar-day {
   min-height: 90px;
   border-right: 1px solid var(--gray-100);
@@ -727,6 +749,17 @@ ul, ol { list-style: none; }
 .cal-list-event-item:hover { background: var(--enjy-pale); }
 .cal-event-time { font-size: 0.75rem; color: var(--enjy); font-weight: 700; white-space: nowrap; padding-top: 1px; }
 .cal-event-title { font-size: 0.85rem; font-weight: 600; }
+.cal-event-range-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--enjy);
+  background: var(--enjy-pale);
+  border-radius: 99px;
+  padding: 0.1rem 0.5rem;
+  margin-left: 0.3rem;
+  white-space: nowrap;
+}
 .cal-event-loc { font-size: 0.75rem; color: var(--text-muted); }
 
 /* ============================================================
@@ -770,7 +803,7 @@ ul, ol { list-style: none; }
   position: sticky;
   top: 0;
 }
-.modal-title { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 600; line-height: 1.4; }
+.modal-title { font-family: var(--font-main); font-size: 1.1rem; font-weight: 600; line-height: 1.4; }
 .modal-close {
   background: rgba(255,255,255,0.2);
   border: none;

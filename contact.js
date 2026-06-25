@@ -207,6 +207,12 @@ function validateForm(form) {
       setFieldError('eventDate', '開催日を入力してください', eventDateEl);
       isValid = false;
     }
+
+    const eventEndDateEl = form.elements['eventEndDate'];
+    if (eventDateEl && eventEndDateEl && eventEndDateEl.value && eventEndDateEl.value < eventDateEl.value) {
+      setFieldError('eventEndDate', '終了日は開催日より後の日付にしてください', eventEndDateEl);
+      isValid = false;
+    }
   }
 
   const requiredTextFields = [
@@ -295,7 +301,7 @@ async function buildPayload(form) {
 
   const fields = [
     'name', 'organization', 'email', 'emailConfirm', 'orgSns', 'orgDescription',
-    'eventName', 'eventDate', 'eventStartTime', 'eventEndTime', 'eventLocation', 'eventDescription',
+    'eventName', 'eventDate', 'eventEndDate', 'eventStartTime', 'eventEndTime', 'eventLocation', 'eventDescription',
     'desiredPublishDate', 'applicationUrl', 'targetEventName', 'targetPageUrl',
     'budgetRange', 'message'
   ];
