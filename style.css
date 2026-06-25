@@ -174,6 +174,30 @@ ul, ol { list-style: none; }
 }
 .scroll-target { scroll-margin-top: calc(var(--header-h) + 1rem); }
 
+/* ---- 表示密度切り替え ---- */
+.section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.section-title-row .section-title { margin-bottom: 0; }
+.density-toggle { display: inline-flex; gap: 0.4rem; }
+.density-btn {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.3rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: all var(--transition);
+}
+.density-btn:hover { border-color: var(--enjy-light); }
+.density-btn.active { background: var(--enjy); border-color: var(--enjy); color: var(--white); }
+
 /* ============================================================
    ヒーロー
    ============================================================ */
@@ -404,6 +428,21 @@ ul, ol { list-style: none; }
 }
 .btn-detail:hover { background: var(--enjy-dark); }
 .event-external-link { font-size: 0.75rem; color: var(--enjy); }
+
+/* ---- コンパクト表示 ---- */
+.events-grid.density-compact {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.6rem;
+}
+.events-grid.density-compact .event-card-body { padding: 0.7rem; }
+.events-grid.density-compact .event-card-title { font-size: 0.82rem; margin-bottom: 0.35rem; line-height: 1.35; }
+.events-grid.density-compact .event-card-meta { margin-bottom: 0.4rem; }
+.events-grid.density-compact .event-card-info { font-size: 0.7rem; gap: 0.15rem; margin-bottom: 0.4rem; }
+.events-grid.density-compact .event-card-desc,
+.events-grid.density-compact .reaction-summary { display: none; }
+.events-grid.density-compact .event-card-footer { padding: 0.5rem 0.7rem; }
+.events-grid.density-compact .btn-detail { padding: 0.3rem 0.6rem; font-size: 0.72rem; }
+.events-grid.density-compact .event-external-link { font-size: 0.68rem; }
 .empty-state {
   text-align: center;
   padding: 3rem 1rem;

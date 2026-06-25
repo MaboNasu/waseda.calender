@@ -186,10 +186,16 @@
      ============================================================ -->
 <section class="section scroll-target" id="today-section">
   <div class="container">
-    <h2 class="section-title">
-      本日のイベント
-      <span id="today-count" style="font-size:0.85rem;font-weight:500;color:#6B7280;font-family:var(--font-main);margin-left:0.25rem;"></span>
-    </h2>
+    <div class="section-title-row">
+      <h2 class="section-title">
+        本日のイベント
+        <span id="today-count" style="font-size:0.85rem;font-weight:500;color:#6B7280;font-family:var(--font-main);margin-left:0.25rem;"></span>
+      </h2>
+      <div class="density-toggle" role="group" aria-label="表示密度">
+        <button type="button" class="density-btn active" data-density="large">大きめ</button>
+        <button type="button" class="density-btn" data-density="compact">コンパクト</button>
+      </div>
+    </div>
     <div id="today-events">
       <!-- JSで描画 -->
     </div>
@@ -202,10 +208,16 @@
      ============================================================ -->
 <section class="section scroll-target" id="upcoming-section" style="background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
   <div class="container">
-    <h2 class="section-title">
-      近日開催のイベント
-      <span id="upcoming-count" style="font-size:0.85rem;font-weight:500;color:#6B7280;font-family:var(--font-main);margin-left:0.25rem;"></span>
-    </h2>
+    <div class="section-title-row">
+      <h2 class="section-title">
+        近日開催のイベント
+        <span id="upcoming-count" style="font-size:0.85rem;font-weight:500;color:#6B7280;font-family:var(--font-main);margin-left:0.25rem;"></span>
+      </h2>
+      <div class="density-toggle" role="group" aria-label="表示密度">
+        <button type="button" class="density-btn active" data-density="large">大きめ</button>
+        <button type="button" class="density-btn" data-density="compact">コンパクト</button>
+      </div>
+    </div>
     <div id="upcoming-events">
       <!-- JSで描画 -->
     </div>

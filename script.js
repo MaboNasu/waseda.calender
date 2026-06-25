@@ -889,12 +889,52 @@ function injectEventsJsonLd() {
 /* ============================================================
    まとめて再描画
    ============================================================ */
+/* ============================================================
+   表示密度切り替え（大きめ／コンパクト）
+   ============================================================ */
+const DENSITY_STORAGE_KEY = 'wc-events-density';
+
+function getStoredDensity() {
+  try {
+    return localStorage.getItem(DENSITY_STORAGE_KEY) || 'large';
+  } catch (e) {
+    return 'large';
+  }
+}
+
+function setStoredDensity(value) {
+  try {
+    localStorage.setItem(DENSITY_STORAGE_KEY, value);
+  } catch (e) {
+    // localStorageが使えない環境（プライベートモード等）では保存をスキップ
+  }
+}
+
+function applyDensity(density) {
+  document.querySelectorAll('.events-grid').forEach(grid => {
+    grid.classList.toggle('density-compact', density === 'compact');
+  });
+  document.querySelectorAll('.density-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.density === density);
+  });
+}
+
+function setupDensityToggle() {
+  document.querySelectorAll('.density-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setStoredDensity(btn.dataset.density);
+      applyDensity(btn.dataset.density);
+    });
+  });
+}
+
 function renderAll() {
   renderTodayEvents();
   renderUpcomingEvents();
   renderReactionRanking();
   renderCalendar();
   injectEventsJsonLd();
+  applyDensity(getStoredDensity());
 }
 
 /* ============================================================
@@ -967,5 +1007,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setupFilters();
   setupRankingControls();
   setupModal();
+  setupDensityToggle();
   renderAll();
 });
