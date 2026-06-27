@@ -289,9 +289,15 @@ function createEventCardHTML(ev, showDate = true) {
     ? `<a href="${escapeHtml(ev.externalUrl)}" target="_blank" rel="noopener noreferrer" class="event-external-link">公式サイト ↗</a>`
     : '<span></span>';
 
+  const id = escapeHtml(String(ev.id));
+  const checked = selectedEventIds.has(String(ev.id)) ? 'checked' : '';
+
   return `
-    <div class="event-card" data-id="${escapeHtml(ev.id)}">
+    <div class="event-card" data-id="${id}">
       <div class="event-card-accent"></div>
+      <label class="event-card-select" title="カレンダー一括追加に選択">
+        <input type="checkbox" ${checked} onclick="event.stopPropagation()" onchange="toggleEventSelection('${id}', this.checked)">
+      </label>
       <div class="event-card-body">
         <div class="event-card-meta">
           <span class="tag ${categoryClass(ev.category)}">${categoryLabel(ev.category)}</span>
@@ -745,6 +751,40 @@ function closeModal() {
 }
 
 /* ============================================================
+   イベントの複数選択（一括カレンダー追加）
+   ============================================================ */
+const selectedEventIds = new Set();
+
+function toggleEventSelection(eventId, checked) {
+  const id = String(eventId);
+  if (checked) selectedEventIds.add(id);
+  else selectedEventIds.delete(id);
+  renderSelectionBar();
+}
+
+function clearEventSelection() {
+  selectedEventIds.clear();
+  document.querySelectorAll('.event-card-select input[type="checkbox"]').forEach(cb => { cb.checked = false; });
+  renderSelectionBar();
+}
+
+function renderSelectionBar() {
+  const bar = document.getElementById('selection-bar');
+  if (!bar) return;
+  const count = selectedEventIds.size;
+  if (count === 0) {
+    bar.classList.remove('active');
+    bar.innerHTML = '';
+    return;
+  }
+  bar.classList.add('active');
+  bar.innerHTML = `
+    <span class="selection-bar-count">${count}件選択中</span>
+    <button type="button" class="btn btn-enjy btn-sm" onclick="downloadIcsForSelectedEvents()">📅 選択したイベントをカレンダーに追加</button>
+    <button type="button" class="btn btn-ghost btn-sm" onclick="clearEventSelection()">選択を解除</button>`;
+}
+
+/* ============================================================
    カレンダー追加（.ics ダウンロード）・SNSシェア
    ============================================================ */
 function pad2(n) { return String(n).padStart(2, '0'); }
@@ -770,12 +810,8 @@ function escapeIcsText(str) {
   return String(str || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
 }
 
-/** イベントを.icsファイルとしてダウンロード（Google/Apple/Outlookカレンダーに追加用） */
-function downloadIcsForEvent(eventId) {
-  const allEvents = typeof EVENTS !== 'undefined' ? EVENTS : [];
-  const ev = allEvents.find(e => String(e.id) === String(eventId));
-  if (!ev) return;
-
+/** イベント1件分のVEVENTブロックの行配列を作る */
+function buildIcsVeventLines(ev) {
   let dtStartLine, dtEndLine;
   if (ev.startTime) {
     dtStartLine = `DTSTART;TZID=Asia/Tokyo:${icsDateTime(ev.date, ev.startTime)}`;
@@ -785,11 +821,7 @@ function downloadIcsForEvent(eventId) {
     dtEndLine   = `DTEND;VALUE=DATE:${icsDateTime(addOneDay(ev.date))}`;
   }
 
-  const lines = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//Waseda Calendar//JP',
-    'CALSCALE:GREGORIAN',
+  return [
     'BEGIN:VEVENT',
     `UID:${escapeIcsText(ev.id)}@wasedacalendar.com`,
     `DTSTAMP:${icsTimestampUTC()}`,
@@ -798,7 +830,20 @@ function downloadIcsForEvent(eventId) {
     `SUMMARY:${escapeIcsText(ev.title)}`,
     `DESCRIPTION:${escapeIcsText(ev.description || '')}`,
     `LOCATION:${escapeIcsText(ev.location || campusLabel(ev.campus))}`,
-    'END:VEVENT',
+    'END:VEVENT'
+  ];
+}
+
+/** イベント配列を1つの.icsファイルとしてダウンロード（Google/Apple/Outlookカレンダーに追加用） */
+function downloadIcsForEvents(events, filename) {
+  if (!events.length) return;
+
+  const lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Waseda Calendar//JP',
+    'CALSCALE:GREGORIAN',
+    ...events.flatMap(buildIcsVeventLines),
     'END:VCALENDAR'
   ];
 
@@ -806,11 +851,44 @@ function downloadIcsForEvent(eventId) {
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
   a.href     = url;
-  a.download = `${ev.id}.ics`;
+  a.download = filename;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+}
+
+/** イベントを.icsファイルとしてダウンロード（Google/Apple/Outlookカレンダーに追加用） */
+function downloadIcsForEvent(eventId) {
+  const allEvents = typeof EVENTS !== 'undefined' ? EVENTS : [];
+  const ev = allEvents.find(e => String(e.id) === String(eventId));
+  if (!ev) return;
+  downloadIcsForEvents([ev], `${ev.id}.ics`);
+}
+
+/** 選択中の複数イベントを1つの.icsファイルとしてダウンロード */
+function downloadIcsForSelectedEvents() {
+  const allEvents = typeof EVENTS !== 'undefined' ? EVENTS : [];
+  const events = allEvents.filter(e => selectedEventIds.has(String(e.id)));
+  if (!events.length) return;
+  downloadIcsForEvents(events, `wasedacalendar-events-${events.length}.ics`);
+}
+
+/** Googleカレンダーの「予定作成」テンプレートURLを組み立てる（1クリック追加用） */
+function buildGoogleCalendarUrl(ev) {
+  const datesParam = ev.startTime
+    ? `${icsDateTime(ev.date, ev.startTime)}/${icsDateTime(ev.date, ev.endTime || ev.startTime)}`
+    : `${icsDateTime(ev.date)}/${icsDateTime(addOneDay(ev.date))}`;
+
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: ev.title || '',
+    dates: datesParam,
+    details: ev.description || '',
+    location: ev.location || campusLabel(ev.campus),
+    ctz: 'Asia/Tokyo'
+  });
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
 
 function shareEventOnLine(eventId) {
@@ -834,7 +912,8 @@ function shareEventOnX(eventId) {
 function createModalShareActionsHTML(ev) {
   const id = escapeHtml(String(ev.id));
   return `
-    <button type="button" class="btn btn-ghost btn-sm" onclick="downloadIcsForEvent('${id}')">📅 カレンダーに追加</button>
+    <a class="btn btn-ghost btn-sm" href="${escapeHtml(buildGoogleCalendarUrl(ev))}" target="_blank" rel="noopener noreferrer">📅 Googleカレンダーに追加</a>
+    <button type="button" class="btn btn-ghost btn-sm" onclick="downloadIcsForEvent('${id}')">⬇️ カレンダーファイル(.ics)を保存</button>
     <button type="button" class="btn btn-ghost btn-sm" onclick="shareEventOnLine('${id}')">LINEで共有</button>
     <button type="button" class="btn btn-ghost btn-sm" onclick="shareEventOnX('${id}')">Xで共有</button>`;
 }
@@ -935,6 +1014,7 @@ function renderAll() {
   renderCalendar();
   injectEventsJsonLd();
   applyDensity(getStoredDensity());
+  renderSelectionBar();
 }
 
 /* ============================================================
