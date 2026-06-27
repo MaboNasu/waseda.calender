@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=7">
+  <link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
 
@@ -37,7 +37,9 @@
       <a class="nav-btn" href="index.html#calendar-section">カレンダー</a>
       <a class="nav-btn" href="organizations.html">掲載団体一覧</a>
       <a class="nav-btn" href="contact.html">掲載依頼</a>
+      <a class="nav-btn" href="mypage.html">マイページ</a>
     </nav>
+    <div id="header-auth" class="header-auth"></div>
     <button class="hamburger" id="hamburger-btn" aria-label="メニューを開く" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -50,6 +52,7 @@
   <a class="nav-btn" href="index.html#calendar-section">カレンダー</a>
   <a class="nav-btn" href="organizations.html">掲載団体一覧</a>
   <a class="nav-btn" href="contact.html">掲載依頼・問い合わせ</a>
+  <a class="nav-btn" href="mypage.html">マイページ</a>
 </nav>
 
 <main>
@@ -87,8 +90,16 @@
         </p>
 
         <h2 style="font-size:1rem;margin-bottom:0.5rem;">アクセス解析について</h2>
-        <p class="status-muted">
+        <p class="status-muted" style="margin-bottom:1rem;">
           本サイトはGoogle Analytics（GA4）を利用し、アクセス状況を匿名で解析しています。これにより個人を特定する情報を収集することはありません。
+        </p>
+
+        <h2 style="font-size:1rem;margin-bottom:0.5rem;">マイページ（ログイン機能）について</h2>
+        <p class="status-muted" style="margin-bottom:1rem;">
+          マイページ機能をご利用いただく場合、Googleログインにより取得する氏名・メールアドレス・プロフィール画像と、お気に入り登録したイベントの情報を、Google Cloud Firestore（Firebaseのデータベース）に保存します。これらの情報は、マイページでのお気に入り表示など、ログイン機能の提供のためにのみ利用し、上記の問い合わせ対応等の目的には使用しません。
+        </p>
+        <p class="status-muted">
+          保存されたデータは本人のみが読み書きできるようアクセス制御されており、他の利用者がお互いのお気に入り情報を見ることはできません。
         </p>
       </div>
     </div>
@@ -132,5 +143,7 @@
     });
   });
 </script>
+<script type="module" src="firebase-init.js?v=1"></script>
+<script src="auth-ui.js?v=1"></script>
 </body>
 </html>

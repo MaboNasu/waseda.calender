@@ -105,6 +105,21 @@ ul, ol { list-style: none; }
   background: rgba(255,255,255,0.15);
   border-color: rgba(255,255,255,0.6);
 }
+.header-auth { display: flex; align-items: center; flex-shrink: 0; }
+.header-auth .btn-ghost,
+.header-login-btn {
+  background: transparent;
+  border: 1.5px solid rgba(255,255,255,0.5);
+  color: var(--white);
+}
+.header-auth .btn-ghost:hover,
+.header-login-btn:hover { background: rgba(255,255,255,0.15); }
+.header-auth-user { display: flex; align-items: center; gap: 0.5rem; }
+.header-auth-avatar { width: 24px; height: 24px; border-radius: 50%; }
+.header-auth-name { color: var(--white); font-size: 0.8rem; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 768px) {
+  .header-auth-name { display: none; }
+}
 .hamburger {
   display: none;
   flex-direction: column;
@@ -567,6 +582,8 @@ ul, ol { list-style: none; }
 }
 .reaction-btn strong { color: var(--enjy); }
 .reaction-icon { color: var(--enjy); font-weight: 700; }
+.reaction-btn.active { background: var(--enjy); border-color: var(--enjy); color: var(--white); }
+.reaction-btn.active strong, .reaction-btn.active .reaction-icon { color: var(--white); }
 .reaction-note {
   margin-top: 0.6rem;
   font-size: 0.72rem;

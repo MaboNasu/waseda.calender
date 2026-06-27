@@ -40,7 +40,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- スタイルシート -->
-  <link rel="stylesheet" href="style.css?v=7">
+  <link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
 
@@ -62,7 +62,10 @@
       <button class="nav-btn" onclick="scrollToSection('calendar-section')">カレンダー</button>
       <a class="nav-btn" href="organizations.html">掲載団体一覧</a>
       <a class="nav-btn" href="contact.html">掲載依頼</a>
+      <a class="nav-btn" href="mypage.html">マイページ</a>
     </nav>
+
+    <div id="header-auth" class="header-auth"></div>
 
     <!-- ハンバーガー（スマホ） -->
     <button class="hamburger" id="hamburger-btn" aria-label="メニューを開く" aria-expanded="false">
@@ -78,6 +81,7 @@
   <button class="nav-btn" onclick="scrollToSection('calendar-section')">カレンダー</button>
   <a class="nav-btn" href="organizations.html">掲載団体一覧</a>
   <a class="nav-btn" href="contact.html">掲載依頼・問い合わせ</a>
+  <a class="nav-btn" href="mypage.html">マイページ</a>
 </nav>
 
 
@@ -366,7 +370,9 @@
      スクリプト読み込み（events.js → script.js の順）
      ============================================================ -->
 <script src="events.js?v=3"></script>
-<script src="script.js?v=5"></script>
+<script src="script.js?v=6"></script>
+<script type="module" src="firebase-init.js?v=1"></script>
+<script src="auth-ui.js?v=1"></script>
 
 </body>
 </html>

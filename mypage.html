@@ -11,11 +11,11 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Waseda Calendarへの掲載依頼・お問い合わせの審査状況を確認できるページです。">
+  <meta name="description" content="Waseda Calendarのマイページ。気になる・行きたいイベントをお気に入りに保存して、後から見返せます。">
   <meta name="robots" content="noindex, nofollow">
-  <link rel="canonical" href="https://wasedacalendar.com/status.html">
+  <link rel="canonical" href="https://wasedacalendar.com/mypage.html">
   <meta name="theme-color" content="#8B0000">
-  <title>申請状況の確認 – Waseda Calendar</title>
+  <title>マイページ – Waseda Calendar</title>
   <link rel="icon" type="image/png" href="assets/icon.png?v=2">
   <link rel="manifest" href="assets/manifest.json?v=2">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,7 +37,7 @@
       <a class="nav-btn" href="index.html#calendar-section">カレンダー</a>
       <a class="nav-btn" href="organizations.html">掲載団体一覧</a>
       <a class="nav-btn" href="contact.html">掲載依頼</a>
-      <a class="nav-btn" href="mypage.html">マイページ</a>
+      <a class="nav-btn" href="mypage.html" aria-current="page">マイページ</a>
     </nav>
     <div id="header-auth" class="header-auth"></div>
     <button class="hamburger" id="hamburger-btn" aria-label="メニューを開く" aria-expanded="false">
@@ -52,34 +52,23 @@
   <a class="nav-btn" href="index.html#calendar-section">カレンダー</a>
   <a class="nav-btn" href="organizations.html">掲載団体一覧</a>
   <a class="nav-btn" href="contact.html">掲載依頼・問い合わせ</a>
-  <a class="nav-btn" href="mypage.html">マイページ</a>
+  <a class="nav-btn" href="mypage.html" aria-current="page">マイページ</a>
 </nav>
 
 <main>
   <section class="section org-hero">
     <div class="container">
-      <span class="hero-badge">申請状況の確認</span>
-      <h1>申請状況の確認</h1>
-      <p>確認メールに記載のURL（団体ID・専用トークン付き）からアクセスすると、これまでの掲載依頼・お問い合わせの審査状況を確認できます。</p>
+      <span class="hero-badge">マイページ</span>
+      <h1>マイページ</h1>
+      <p>「気になる」「行きたい」「参加予定」にしたイベントを後から見返せます。</p>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <div id="status-auth-form" class="status-card">
-        <p class="status-muted">URLに団体ID・トークンが含まれていない場合は、以下に入力してください（確認メール本文に記載のURLをご確認ください）。</p>
-        <div class="filter-group">
-          <label for="status-org-id">団体ID</label>
-          <input id="status-org-id" class="filter-input" type="text" placeholder="WCORG-001">
-        </div>
-        <div class="filter-group">
-          <label for="status-org-token">専用トークン</label>
-          <input id="status-org-token" class="filter-input" type="text" placeholder="確認メールに記載のトークン">
-        </div>
-        <button id="status-lookup-btn" type="button" class="btn btn-enjy">確認する</button>
+      <div id="mypage-content">
+        <!-- JSで描画 -->
       </div>
-
-      <div id="status-result"></div>
     </div>
   </section>
 </main>
@@ -104,8 +93,37 @@
   </div>
 </footer>
 
-<script src="status.js?v=4"></script>
+<!-- ============================================================
+     イベント詳細モーダル（index.htmlと同じ構造、script.jsのopenModalが利用）
+     ============================================================ -->
+<div class="modal-overlay" id="event-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-title"></h2>
+      <button class="modal-close" onclick="closeModal()" aria-label="閉じる">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-tags mb-2" id="modal-tags"></div>
+      <div class="modal-detail-grid" id="modal-detail-content"></div>
+      <div id="modal-reactions"></div>
+      <div class="modal-share-actions" id="modal-share-actions"></div>
+      <div id="modal-desc-section">
+        <p class="modal-desc-label">イベント説明</p>
+        <p class="modal-desc-text" id="modal-desc-text"></p>
+      </div>
+      <div class="modal-footer" id="modal-footer-section">
+        <span class="modal-updated" id="modal-updated"></span>
+        <a id="modal-ext-link" href="#" target="_blank" rel="noopener noreferrer"
+          class="btn btn-ghost btn-sm" style="display:none;">公式サイトを見る ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="events.js?v=3"></script>
+<script src="script.js?v=6"></script>
 <script type="module" src="firebase-init.js?v=1"></script>
 <script src="auth-ui.js?v=1"></script>
+<script src="mypage.js?v=1"></script>
 </body>
 </html>

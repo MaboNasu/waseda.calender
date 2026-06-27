@@ -189,14 +189,14 @@ function createReactionButtonsHTML(ev) {
         ${Object.keys(REACTION_TYPES).map(type => {
           const meta = REACTION_TYPES[type];
           return `
-            <button class="reaction-btn" type="button" onclick="handleReactionClick('${type}', '${id}')">
+            <button class="reaction-btn" type="button" onclick="handleReactionClick('${type}', '${id}', this)">
               <span class="reaction-icon">${meta.icon}</span>
               <span>${meta.label}</span>
               <strong>${reactionCount(ev, type)}</strong>
             </button>`;
         }).join('')}
       </div>
-      <p class="reaction-note">ログイン機能の実装後に利用できます。</p>
+      <p class="reaction-note">ボタンを押すとマイページのお気に入りに保存されます（Googleログインが必要です）。1イベントにつき選べるリアクションは1つです。</p>
     </div>`;
 }
 
@@ -211,8 +211,33 @@ function createReactionSummaryHTML(ev, activeType = '') {
     </div>`;
 }
 
-function handleReactionClick() {
-  alert('この機能は準備中です。ログイン機能の実装後に利用できます。');
+async function handleReactionClick(type, eventId, btnEl) {
+  if (!window.WC || !window.WC.auth) {
+    alert('準備中です。少し待ってから再度お試しください。');
+    return;
+  }
+  if (!window.WC.currentUser) {
+    if (confirm('お気に入り登録にはログインが必要です。Googleでログインしますか？')) {
+      window.WC.auth.signInWithGoogle().catch(() => {});
+    }
+    return;
+  }
+
+  if (btnEl) btnEl.disabled = true;
+  try {
+    const existing = await window.WC.auth.getFavorite(eventId);
+    const isFavorited = !!(existing && existing.reactionType === type);
+    await window.WC.auth.setFavorite(eventId, type, isFavorited);
+    if (btnEl) {
+      const panel = btnEl.closest('.reaction-buttons');
+      if (panel) panel.querySelectorAll('.reaction-btn').forEach(b => b.classList.remove('active'));
+      btnEl.classList.toggle('active', !isFavorited);
+    }
+  } catch (err) {
+    alert('お気に入りの更新に失敗しました。時間をおいて再度お試しください。');
+  } finally {
+    if (btnEl) btnEl.disabled = false;
+  }
 }
 
 /** XSS防止エスケープ */
