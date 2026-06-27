@@ -11,11 +11,11 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Waseda Calendarに掲載されているイベントの詳細情報。">
+  <meta name="description" content="Waseda Calendarのプライバシーポリシー。お問い合わせ・掲載依頼でお預かりする情報の利用目的と保存先について説明します。">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://wasedacalendar.com/event.html">
+  <link rel="canonical" href="https://wasedacalendar.com/privacy.html">
   <meta name="theme-color" content="#8B0000">
-  <title id="event-page-title">イベント詳細 – Waseda Calendar</title>
+  <title>プライバシーポリシー – Waseda Calendar</title>
   <link rel="icon" type="image/png" href="assets/icon.png?v=2">
   <link rel="manifest" href="assets/manifest.json?v=2">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,10 +53,43 @@
 </nav>
 
 <main>
-  <section class="section">
+  <section class="section org-hero">
     <div class="container">
-      <div id="event-detail" class="event-detail-page">
-        <!-- JSで描画 -->
+      <span class="hero-badge">プライバシーポリシー</span>
+      <h1>プライバシーポリシー</h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container" style="max-width:720px;">
+      <div class="status-card">
+        <h2 style="font-size:1rem;margin-bottom:0.5rem;">お預かりする情報</h2>
+        <p class="status-muted" style="margin-bottom:1rem;">
+          掲載依頼・お問い合わせフォーム（contact.html）でご入力いただいた、お名前・団体名・メールアドレス・イベント内容・添付画像などの情報をお預かりします。
+        </p>
+
+        <h2 style="font-size:1rem;margin-bottom:0.5rem;">保存先</h2>
+        <p class="status-muted" style="margin-bottom:1rem;">
+          ご入力いただいた情報は、Google スプレッドシート（Waseda Calendar 運営者が管理するGoogleアカウント内）に保存されます。添付画像をアップロードいただいた場合は、同アカウントのGoogle Driveに保存されます。
+        </p>
+
+        <h2 style="font-size:1rem;margin-bottom:0.5rem;">利用目的</h2>
+        <p class="status-muted" style="margin-bottom:1rem;">
+          お預かりした情報は、以下の目的にのみ利用します。
+        </p>
+        <ul class="status-muted" style="margin:0 0 1rem 1.2rem;">
+          <li>掲載依頼・お問い合わせへの対応、確認・通知メールの送信</li>
+          <li>イベント情報のサイトへの掲載</li>
+          <li>団体専用URL（団体ID・認証トークン）による、次回以降の入力省略・申請状況確認機能の提供</li>
+        </ul>
+        <p class="status-muted" style="margin-bottom:1rem;">
+          上記以外の目的（第三者への提供・販売など）には利用しません。
+        </p>
+
+        <h2 style="font-size:1rem;margin-bottom:0.5rem;">アクセス解析について</h2>
+        <p class="status-muted">
+          本サイトはGoogle Analytics（GA4）を利用し、アクセス状況を匿名で解析しています。これにより個人を特定する情報を収集することはありません。
+        </p>
       </div>
     </div>
   </section>
@@ -82,8 +115,22 @@
   </div>
 </footer>
 
-<script src="events.js?v=3"></script>
-<script src="script.js?v=5"></script>
-<script src="event-page.js?v=1"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('hamburger-btn');
+    const nav = document.getElementById('mobile-nav');
+    if (!btn || !nav) return;
+    btn.addEventListener('click', () => {
+      nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', nav.classList.contains('open') ? 'true' : 'false');
+    });
+    document.addEventListener('click', (e) => {
+      if (!btn.contains(e.target) && !nav.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+</script>
 </body>
 </html>

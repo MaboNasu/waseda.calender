@@ -33,7 +33,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
 
@@ -76,6 +76,9 @@
   <section class="section">
     <div class="container" style="max-width:720px;">
       <div class="form-wrapper">
+        <p class="form-privacy-note">
+          ご入力いただいた情報は、お問い合わせ対応・イベント掲載のためにGoogleスプレッドシート上で保管し、上記の目的以外には利用しません。詳しくは<a href="privacy.html" target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>をご確認ください。
+        </p>
         <form id="contact-form" novalidate>
 
           <!-- honeypot: 通常ユーザーには見えない欄。botがここに入力したら送信を無視する -->
@@ -217,6 +220,20 @@
                 <p class="field-error" id="error-eventEndDate"></p>
               </div>
             </div>
+
+            <div class="form-checkbox-row">
+              <input type="checkbox" id="is-recurring">
+              <label for="is-recurring">毎週・毎月など、定期的に開催する（複数の開催日をまとめて伝える）</label>
+            </div>
+            <div class="recurring-fields" id="recurring-dates-group" style="display:none;">
+              <div class="form-group">
+                <label class="form-label">追加の開催日</label>
+                <div id="recurring-date-list"></div>
+                <button type="button" id="add-recurring-date-btn" class="btn btn-ghost btn-sm">+ 日付を追加</button>
+                <p class="form-note" style="text-align:left;margin-top:0.4rem;">上の「開催日」に加えて、開催する日付を追加できます。</p>
+              </div>
+            </div>
+
             <div class="form-group">
               <label class="form-label" for="event-location">場所</label>
               <input type="text" id="event-location" name="eventLocation" class="form-control">
@@ -322,6 +339,7 @@
       <a href="index.html#calendar-section">カレンダー</a>
       <a href="organizations.html">掲載団体一覧</a>
       <a href="contact.html">掲載依頼・問い合わせ</a>
+      <a href="privacy.html">プライバシーポリシー</a>
     </nav>
     <div class="footer-disclaimers">
       <p>⚠ このサイトは早稲田大学公式サイトではありません。</p>
@@ -331,6 +349,6 @@
   </div>
 </footer>
 
-<script src="contact.js?v=2"></script>
+<script src="contact.js?v=3"></script>
 </body>
 </html>

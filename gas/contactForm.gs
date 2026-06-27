@@ -362,7 +362,7 @@ const INQUIRY_COL = {
   status: 17, priority: 18, assignee: 19, memo: 20, updatedAt: 21,
   // 末尾に追加した列
   orgId: 22, eventDate: 23, eventStartTime: 24, eventEndTime: 25, eventLocation: 26, referenceUrl: 27,
-  eventEndDate: 28
+  eventEndDate: 28, recurringDates: 29
 };
 
 function appendInquiry(payload, orgId) {
@@ -427,6 +427,7 @@ function appendInquiry(payload, orgId) {
   row[INQUIRY_COL.eventEndTime] = payload.eventEndTime || '';
   row[INQUIRY_COL.eventLocation] = payload.eventLocation || '';
   row[INQUIRY_COL.referenceUrl] = payload.referenceUrl || '';
+  row[INQUIRY_COL.recurringDates] = payload.recurringDates || '';
 
   sheet.appendRow(row);
 

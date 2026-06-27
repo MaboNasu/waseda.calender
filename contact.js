@@ -142,6 +142,51 @@ function setupOrgAuth() {
 }
 
 /* ============================================================
+   定期開催（複数開催日のまとめ入力）
+   ============================================================ */
+function addRecurringDateRow() {
+  const list = document.getElementById('recurring-date-list');
+  if (!list) return;
+
+  const row = document.createElement('div');
+  row.className = 'recurring-date-row';
+  row.innerHTML = `
+    <input type="date" class="form-control recurring-date-input">
+    <button type="button" class="btn btn-ghost btn-sm recurring-date-remove" aria-label="この日付を削除">×</button>`;
+  row.querySelector('.recurring-date-remove').addEventListener('click', () => row.remove());
+  list.appendChild(row);
+}
+
+/** 「開催日」+ 追加した日付一覧 をカンマ区切りの文字列にまとめる（定期開催チェック時のみ） */
+function collectRecurringDates(form) {
+  const checkbox = document.getElementById('is-recurring');
+  if (!checkbox || !checkbox.checked) return '';
+
+  const mainDate = form.elements['eventDate'] ? form.elements['eventDate'].value : '';
+  const extraDates = Array.from(document.querySelectorAll('.recurring-date-input'))
+    .map(el => el.value)
+    .filter(Boolean);
+
+  const allDates = [mainDate, ...extraDates].filter(Boolean);
+  return allDates.join(',');
+}
+
+function setupRecurringDates() {
+  const checkbox = document.getElementById('is-recurring');
+  const group = document.getElementById('recurring-dates-group');
+  const addBtn = document.getElementById('add-recurring-date-btn');
+
+  if (checkbox && group) {
+    checkbox.addEventListener('change', () => {
+      group.style.display = checkbox.checked ? '' : 'none';
+    });
+  }
+  if (addBtn) {
+    addBtn.addEventListener('click', addRecurringDateRow);
+  }
+}
+
+/* ============================================================
    バリデーション
    ============================================================ */
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -313,6 +358,7 @@ async function buildPayload(form) {
 
   payload.entryChoice = entryChoice;
   payload.inquiryType = resolveInquiryType(entryChoice, editDeleteType);
+  payload.recurringDates = collectRecurringDates(form);
   payload.orgId = document.getElementById('auth-org-id').value;
   payload.orgToken = document.getElementById('auth-org-token').value;
   payload.editOrgInfo = !!(document.getElementById('edit-org-info') && document.getElementById('edit-org-info').checked);
@@ -376,6 +422,10 @@ async function handleSubmit(e) {
       setOrgFieldsReadOnly(false);
       showOrgAuthPending();
       updateConditionalFields();
+      const recurringGroup = document.getElementById('recurring-dates-group');
+      if (recurringGroup) recurringGroup.style.display = 'none';
+      const recurringList = document.getElementById('recurring-date-list');
+      if (recurringList) recurringList.innerHTML = '';
     } else {
       showResult('error', (data && data.error) || '送信に失敗しました。時間をおいて再度お試しください。');
     }
@@ -423,6 +473,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateConditionalFields();
 
   setupOrgAuth();
+  setupRecurringDates();
 
   const form = document.getElementById('contact-form');
   if (form) form.addEventListener('submit', handleSubmit);
