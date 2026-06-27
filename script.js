@@ -155,9 +155,10 @@ function feeClass(key) {
   return key === 'free' ? 'tag-free' : 'tag-paid';
 }
 
-/** 公開イベントのみ取得 */
+/** 公開イベントのみ取得（終了済み = 本日がendDateより後のイベントは通常表示から除外し、団体実績ページにのみ表示する） */
 function getPublishedEvents() {
-  return (typeof EVENTS !== 'undefined' ? EVENTS : []).filter(ev => ev.isPublished);
+  const today = getTodayStr();
+  return (typeof EVENTS !== 'undefined' ? EVENTS : []).filter(ev => ev.isPublished && getEventEnd(ev) >= today);
 }
 
 /** reactions未定義でも0件として扱う */
@@ -891,12 +892,17 @@ function buildGoogleCalendarUrl(ev) {
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
 
+/** イベント個別ページの絶対URL（SNSシェア・パーマリンクに使用） */
+function buildEventPageUrl(ev) {
+  return `https://wasedacalendar.com/event.html?id=${encodeURIComponent(ev.id)}`;
+}
+
 function shareEventOnLine(eventId) {
   const allEvents = typeof EVENTS !== 'undefined' ? EVENTS : [];
   const ev = allEvents.find(e => String(e.id) === String(eventId));
   if (!ev) return;
   const text = `${ev.title} | Waseda Calendar`;
-  const url  = 'https://wasedacalendar.com/';
+  const url  = buildEventPageUrl(ev);
   window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
 }
 
@@ -905,7 +911,7 @@ function shareEventOnX(eventId) {
   const ev = allEvents.find(e => String(e.id) === String(eventId));
   if (!ev) return;
   const text = `${ev.title} | Waseda Calendar`;
-  const url  = 'https://wasedacalendar.com/';
+  const url  = buildEventPageUrl(ev);
   window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer');
 }
 
@@ -914,6 +920,7 @@ function createModalShareActionsHTML(ev) {
   return `
     <a class="btn btn-ghost btn-sm" href="${escapeHtml(buildGoogleCalendarUrl(ev))}" target="_blank" rel="noopener noreferrer">📅 Googleカレンダーに追加</a>
     <button type="button" class="btn btn-ghost btn-sm" onclick="downloadIcsForEvent('${id}')">⬇️ カレンダーファイル(.ics)を保存</button>
+    <a class="btn btn-ghost btn-sm" href="${escapeHtml(buildEventPageUrl(ev))}">🔗 個別ページを開く</a>
     <button type="button" class="btn btn-ghost btn-sm" onclick="shareEventOnLine('${id}')">LINEで共有</button>
     <button type="button" class="btn btn-ghost btn-sm" onclick="shareEventOnX('${id}')">Xで共有</button>`;
 }

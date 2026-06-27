@@ -71,6 +71,9 @@ function doGet(e) {
   if (action === 'lookupOrg') {
     return jsonResponse(lookupOrgByIdAndToken(e.parameter.orgId, e.parameter.token));
   }
+  if (action === 'myInquiries') {
+    return jsonResponse(listInquiriesByOrg(e.parameter.orgId, e.parameter.token));
+  }
   return ContentService.createTextOutput('Waseda Calendar contact form endpoint is running.');
 }
 
@@ -218,6 +221,67 @@ function lookupOrgByIdAndToken(orgId, token) {
   }
   // 該当なし・トークン不一致のどちらでも同じレスポンス（団体IDの存在を推測されないようにする）
   return { success: false };
+}
+
+/**
+ * 内部の自由記述status/approved列を、団体側に見せる3段階のステータスに変換する。
+ * 却下判定はstatus列に「却下」という文字列が含まれているかどうかで行う運用とする
+ * （管理者がスプレッドシートのステータス列に「却下」と入力する想定）。
+ */
+function mapInquiryStatusLabel(approved, statusText) {
+  if (approved === true) return '掲載済み';
+  const text = String(statusText || '');
+  if (text.indexOf('却下') !== -1) return '却下';
+  return '審査中';
+}
+
+/**
+ * orgId + token が一致する場合のみ、その団体に紐づく申請一覧を返す。
+ * lookupOrgByIdAndToken と同じ方針：該当なし・トークン不一致のどちらでも詳細を明かさない。
+ */
+function listInquiriesByOrg(orgId, token) {
+  if (!orgId || !token) return { success: false };
+
+  const orgCheck = lookupOrgByIdAndToken(orgId, token);
+  if (!orgCheck.success) return { success: false };
+
+  try {
+    const sheet = getInquirySheet();
+    const data = sheet.getDataRange().getValues();
+    const inquiries = [];
+
+    for (let i = 1; i < data.length; i++) {
+      const row = data[i];
+      if (String(row[INQUIRY_COL.orgId] || '') !== String(orgId)) continue;
+
+      const statusLabel = mapInquiryStatusLabel(row[INQUIRY_COL.approved], row[INQUIRY_COL.status]);
+      inquiries.push({
+        receiptNumber: row[INQUIRY_COL.receiptNumber],
+        eventName: row[INQUIRY_COL.eventName],
+        eventDate: formatDateValueForDisplay(row[INQUIRY_COL.eventDate]),
+        status: statusLabel,
+        priority: row[INQUIRY_COL.priority],
+        memo: statusLabel === '却下' ? String(row[INQUIRY_COL.memo] || '') : ''
+      });
+    }
+
+    // 新しい申請が上に来るよう、受付番号の降順（≒受付日時の新しい順）で返す
+    inquiries.sort((a, b) => String(b.receiptNumber).localeCompare(String(a.receiptNumber)));
+
+    return { success: true, org: orgCheck.org, inquiries: inquiries };
+  } catch (err) {
+    Logger.log('listInquiriesByOrg エラー: ' + err);
+    return { success: false };
+  }
+}
+
+/** eventDate列はDateオブジェクトと文字列の両方が入りうるため、表示用に文字列へ揃える */
+function formatDateValueForDisplay(value) {
+  if (!value) return '';
+  if (Object.prototype.toString.call(value) === '[object Date]') {
+    return Utilities.formatDate(value, 'Asia/Tokyo', 'yyyy-MM-dd');
+  }
+  return String(value);
 }
 
 function findOrgRowNumberByIdAndToken(sheet, orgId, token) {
@@ -428,7 +492,9 @@ function saveImageToDrive(base64Data, fileName, mimeType) {
 function buildOrgUrlLine(result) {
   if (!result.orgId || !result.orgToken) return '';
   const url = SITE_BASE_URL + 'contact.html?orgId=' + encodeURIComponent(result.orgId) + '&token=' + encodeURIComponent(result.orgToken);
-  return '次回からは以下の専用URLからアクセスすると、団体情報の入力を省略できます。\n' + url + '\n\n';
+  const statusUrl = SITE_BASE_URL + 'status.html?orgId=' + encodeURIComponent(result.orgId) + '&token=' + encodeURIComponent(result.orgToken);
+  return '次回からは以下の専用URLからアクセスすると、団体情報の入力を省略できます。\n' + url + '\n\n' +
+    '申請の審査状況は以下の専用URLから確認できます。\n' + statusUrl + '\n\n';
 }
 
 /** メール送信元の表示名（受信者が見覚えのない個人アドレスだと判断し、迷惑メール扱いされるのを防ぐ） */

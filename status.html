@@ -11,22 +11,11 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Waseda Calendar に掲載されている早稲田大学関係の団体・サークル一覧。">
-  <link rel="canonical" href="https://wasedacalendar.com/organizations.html">
+  <meta name="description" content="Waseda Calendarへの掲載依頼・お問い合わせの審査状況を確認できるページです。">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://wasedacalendar.com/status.html">
   <meta name="theme-color" content="#8B0000">
-  <!-- OGP -->
-  <meta property="og:title" content="掲載団体一覧 – Waseda Calendar">
-  <meta property="og:description" content="Waseda Calendar に掲載されている早稲田大学関係の団体・サークル一覧。">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://wasedacalendar.com/organizations.html">
-  <meta property="og:image" content="https://wasedacalendar.com/assets/og-image.png?v=1">
-  <meta property="og:image:width" content="1731">
-  <meta property="og:image:height" content="909">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="掲載団体一覧 – Waseda Calendar">
-  <meta name="twitter:description" content="Waseda Calendar に掲載されている早稲田大学関係の団体・サークル一覧。">
-  <meta name="twitter:image" content="https://wasedacalendar.com/assets/og-image.png?v=1">
-  <title>掲載団体一覧 – Waseda Calendar</title>
+  <title>申請状況の確認 – Waseda Calendar</title>
   <link rel="icon" type="image/png" href="assets/icon.png?v=2">
   <link rel="manifest" href="assets/manifest.json?v=2">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,7 +23,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=5">
 </head>
-<body class="organizations-page">
+<body>
 
 <header class="site-header" role="banner">
   <div class="header-inner">
@@ -46,7 +35,7 @@
       <a class="nav-btn" href="index.html#today-section">本日のイベント</a>
       <a class="nav-btn" href="index.html#upcoming-section">近日開催</a>
       <a class="nav-btn" href="index.html#calendar-section">カレンダー</a>
-      <a class="nav-btn" href="organizations.html" aria-current="page">掲載団体一覧</a>
+      <a class="nav-btn" href="organizations.html">掲載団体一覧</a>
       <a class="nav-btn" href="contact.html">掲載依頼</a>
     </nav>
     <button class="hamburger" id="hamburger-btn" aria-label="メニューを開く" aria-expanded="false">
@@ -59,49 +48,35 @@
   <a class="nav-btn" href="index.html#today-section">本日のイベント</a>
   <a class="nav-btn" href="index.html#upcoming-section">近日開催</a>
   <a class="nav-btn" href="index.html#calendar-section">カレンダー</a>
-  <a class="nav-btn" href="organizations.html" aria-current="page">掲載団体一覧</a>
+  <a class="nav-btn" href="organizations.html">掲載団体一覧</a>
   <a class="nav-btn" href="contact.html">掲載依頼・問い合わせ</a>
 </nav>
 
 <main>
   <section class="section org-hero">
     <div class="container">
-      <span class="hero-badge">掲載団体一覧</span>
-      <h1>掲載団体一覧</h1>
-      <p>Waseda Calendar に掲載されている主催団体・サークル・学生団体を探せます。</p>
+      <span class="hero-badge">申請状況の確認</span>
+      <h1>申請状況の確認</h1>
+      <p>確認メールに記載のURL（団体ID・専用トークン付き）からアクセスすると、これまでの掲載依頼・お問い合わせの審査状況を確認できます。</p>
     </div>
   </section>
 
   <section class="section">
-    <div class="container org-layout">
-      <div class="org-main">
-        <div class="filter-section">
-          <div class="filter-title">団体を探す <span id="organizations-count" class="section-count"></span></div>
-          <div class="org-controls">
-            <div class="filter-group">
-              <label for="org-keyword">検索</label>
-              <input id="org-keyword" class="filter-input" type="text" placeholder="団体名・読み仮名・ジャンルで検索">
-            </div>
-            <div class="filter-group">
-              <label for="org-genre">ジャンル</label>
-              <select id="org-genre" class="filter-select"></select>
-            </div>
-            <div class="filter-group">
-              <label for="org-sort">並び替え</label>
-              <select id="org-sort" class="filter-select">
-                <option value="kana">五十音順</option>
-                <option value="alphabet">アルファベット順</option>
-              </select>
-            </div>
-          </div>
+    <div class="container">
+      <div id="status-auth-form" class="status-card">
+        <p class="status-muted">URLに団体ID・トークンが含まれていない場合は、以下に入力してください（確認メール本文に記載のURLをご確認ください）。</p>
+        <div class="filter-group">
+          <label for="status-org-id">団体ID</label>
+          <input id="status-org-id" class="filter-input" type="text" placeholder="WCORG-001">
         </div>
-        <div id="organizations-list" class="org-grid">
-          <!-- JSで描画 -->
+        <div class="filter-group">
+          <label for="status-org-token">専用トークン</label>
+          <input id="status-org-token" class="filter-input" type="text" placeholder="確認メールに記載のトークン">
         </div>
+        <button id="status-lookup-btn" type="button" class="btn btn-enjy">確認する</button>
       </div>
-      <aside id="organization-detail" class="org-detail" aria-live="polite">
-        <!-- JSで描画 -->
-      </aside>
+
+      <div id="status-result"></div>
     </div>
   </section>
 </main>
@@ -125,8 +100,6 @@
   </div>
 </footer>
 
-<script src="events.js?v=3"></script>
-<script src="organizations.js?v=3"></script>
-<script src="organizations-page.js?v=3"></script>
+<script src="status.js?v=3"></script>
 </body>
 </html>

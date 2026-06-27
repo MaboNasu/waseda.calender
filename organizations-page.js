@@ -25,10 +25,38 @@ function getOrganizations() {
   return typeof ORGANIZATIONS !== 'undefined' ? ORGANIZATIONS : [];
 }
 
+/** 今日の日付文字列 YYYY-MM-DD（script.jsのgetTodayStrと同じ仕様） */
+function orgPageTodayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+/** イベントの終了日（endDate未指定ならdateと同日） */
+function orgPageEventEnd(ev) {
+  return ev.endDate || ev.date;
+}
+
+/** 団体に紐づくイベントかどうか（orgIdでの紐づけ、または団体側のrelatedEventIdsでの紐づけの両方に対応） */
+function isEventRelatedToOrg(ev, org) {
+  if (ev.orgId && String(ev.orgId) === String(org.id)) return true;
+  const ids = Array.isArray(org.relatedEventIds) ? org.relatedEventIds.map(String) : [];
+  return ids.includes(String(ev.id));
+}
+
+/** 団体の開催予定イベント（終了していない、公開済みのもの） */
 function getEventsForOrganization(org) {
   const events = typeof EVENTS !== 'undefined' ? EVENTS : [];
-  const ids = Array.isArray(org.relatedEventIds) ? org.relatedEventIds.map(String) : [];
-  return events.filter(ev => ids.includes(String(ev.id)) && ev.isPublished);
+  const today = orgPageTodayStr();
+  return events.filter(ev => ev.isPublished && isEventRelatedToOrg(ev, org) && orgPageEventEnd(ev) >= today);
+}
+
+/** 団体の開催実績（終了済み・公開済みのイベント、開催日の新しい順） */
+function getPastEventsForOrganization(org) {
+  const events = typeof EVENTS !== 'undefined' ? EVENTS : [];
+  const today = orgPageTodayStr();
+  return events
+    .filter(ev => ev.isPublished && isEventRelatedToOrg(ev, org) && orgPageEventEnd(ev) < today)
+    .sort((a, b) => b.date.localeCompare(a.date));
 }
 
 function renderGenreOptions() {
@@ -140,6 +168,21 @@ function renderOrganizationDetail(org) {
           <strong>${orgEscapeHtml(ev.title)}</strong>
           <span>${orgEscapeHtml(ev.date)} ${orgEscapeHtml(ev.startTime || '')}</span>
         </a>`).join('')}
+    </div>
+    ${renderOrgPastEventsHTML(org)}`;
+}
+
+/** 団体の開催実績（終了済みイベント）セクションのHTML */
+function renderOrgPastEventsHTML(org) {
+  const past = getPastEventsForOrganization(org);
+  return `
+    <div class="org-related org-archive">
+      <h3>開催実績</h3>
+      ${past.length === 0 ? '<p class="org-muted">開催実績はまだありません。</p>' : past.map(ev => `
+        <div class="org-related-event org-archive-event">
+          <strong>${orgEscapeHtml(ev.title)}</strong>
+          <span>${orgEscapeHtml(ev.date)}${ev.endDate && ev.endDate !== ev.date ? `〜${orgEscapeHtml(ev.endDate)}` : ''}</span>
+        </div>`).join('')}
     </div>`;
 }
 
@@ -189,8 +232,16 @@ function setupOrganizationNav() {
   });
 }
 
+/** ?id=org-001 のようなURLでアクセスした場合、該当団体を初期選択状態にする */
+function applyOrganizationIdFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  if (id) organizationState.selectedId = id;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   setupOrganizationNav();
   setupOrganizationFilters();
+  applyOrganizationIdFromUrl();
   renderOrganizationCards();
 });

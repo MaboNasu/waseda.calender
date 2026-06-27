@@ -950,6 +950,20 @@ ul, ol { list-style: none; }
 .modal-share-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
 
 /* ============================================================
+   イベント個別ページ (event.html) - モーダルと同じ見た目のカードを使用
+   ============================================================ */
+.event-detail-page {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  max-width: 700px;
+  margin: 0 auto;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+.event-page-header { position: static; }
+.event-page-header .modal-title { color: var(--white); }
+
+/* ============================================================
    問い合わせフォーム
    ============================================================ */
 .contact-intro { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.8; }
@@ -1194,6 +1208,7 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   font-size: 0.78rem;
   color: var(--text-muted);
 }
+.org-archive-event strong { color: var(--gray-600); }
 
 /* ============================================================
    フッター
@@ -1297,3 +1312,34 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   .calendar-day { min-height: 75px; }
   .day-event-chip { font-size: 0.62rem; }
 }
+
+/* ============================================================
+   申請ステータス確認ページ (status.html)
+   ============================================================ */
+.status-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.status-muted { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.75rem; }
+.status-org-name { font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; }
+.status-list { display: flex; flex-direction: column; gap: 1rem; }
+.status-card-head { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+.status-receipt { font-size: 0.78rem; color: var(--text-muted); }
+.status-event-name { font-size: 1rem; font-weight: 600; color: var(--gray-800); margin-bottom: 0.3rem; }
+.status-event-date { font-size: 0.85rem; color: var(--text-secondary); }
+.status-view-count { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem; }
+.status-memo { margin-top: 0.5rem; font-size: 0.85rem; color: var(--enjy-dark); background: var(--enjy-pale); border-radius: var(--radius-sm); padding: 0.6rem 0.8rem; }
+.status-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+}
+.status-badge-pending   { background: #FEF3C7; color: #92400E; }
+.status-badge-published { background: #D1FAE5; color: #065F46; }
+.status-badge-rejected  { background: #FEE2E2; color: #991B1B; }
