@@ -14,11 +14,20 @@ function authUiEscapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
+/** ログアウト直後に1回だけ「ログアウトしました」を表示するためのフラグ */
+let pendingLogoutToast = false;
+
 function renderHeaderAuth(user) {
   const el = document.getElementById('header-auth');
   if (!el) return;
 
   if (!user) {
+    if (pendingLogoutToast) {
+      pendingLogoutToast = false;
+      el.innerHTML = `<span class="header-auth-toast">ログアウトしました</span>`;
+      setTimeout(() => renderHeaderAuth(null), 1500);
+      return;
+    }
     el.innerHTML = `<button type="button" class="btn btn-ghost btn-sm header-login-btn" id="header-login-btn">Googleでログイン</button>`;
     const btn = document.getElementById('header-login-btn');
     if (btn) btn.addEventListener('click', () => window.WC.auth.signInWithGoogle().catch(() => {}));
@@ -34,7 +43,11 @@ function renderHeaderAuth(user) {
       <button type="button" class="btn btn-ghost btn-sm" id="header-logout-btn">ログアウト</button>
     </div>`;
   const logoutBtn = document.getElementById('header-logout-btn');
-  if (logoutBtn) logoutBtn.addEventListener('click', () => window.WC.auth.signOutUser().catch(() => {}));
+  if (logoutBtn) logoutBtn.addEventListener('click', () => {
+    if (!confirm('ログアウトしますか？')) return;
+    pendingLogoutToast = true;
+    window.WC.auth.signOutUser().catch(() => { pendingLogoutToast = false; });
+  });
 }
 
 window.addEventListener('wc-auth-changed', (e) => {
