@@ -510,6 +510,12 @@ function formatEventDateRange(payload) {
   return payload.eventDate;
 }
 
+/** 定期開催で複数日が指定されている場合のメール表示行（指定なしなら空文字） */
+function formatRecurringDatesLine(payload) {
+  if (!payload.recurringDates) return '';
+  return '定期開催の開催日一覧：' + payload.recurringDates + '\n';
+}
+
 function sendConfirmationEmail(payload, result) {
   const subject = '【Waseda Calendar】お問い合わせを受け付けました（受付番号: ' + result.receiptNumber + '）';
   const nowText = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy年MM月dd日 HH:mm');
@@ -521,6 +527,7 @@ function sendConfirmationEmail(payload, result) {
     '団体名・所属　：' + payload.organization + '\n' +
     'イベント名　　：' + (payload.eventName || payload.targetEventName || '（指定なし）') + '\n' +
     '開催日　　　　：' + formatEventDateRange(payload) + '\n' +
+    formatRecurringDatesLine(payload) +
     '送信日時　　　：' + nowText + '\n\n' +
     'お問い合わせ内容\n' + payload.message + '\n\n' +
     buildOrgUrlLine(result) +
@@ -544,6 +551,7 @@ function sendAdminNotification(payload, result) {
     '団体名・所属　：' + payload.organization + '\n' +
     'イベント名　　：' + (payload.eventName || payload.targetEventName || '（指定なし）') + '\n' +
     '開催日　　　　：' + formatEventDateRange(payload) + '\n' +
+    formatRecurringDatesLine(payload) +
     '対象ページURL　：' + (payload.targetPageUrl || '（指定なし）') + '\n\n' +
     'お問い合わせ内容\n' + payload.message + '\n\n' +
     'スプレッドシートで詳細を確認してください。';

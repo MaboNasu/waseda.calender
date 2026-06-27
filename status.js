@@ -66,7 +66,6 @@ function renderStatusResult(data) {
           </div>
           <h3 class="status-event-name">${statusEscapeHtml(item.eventName || '（イベント名未指定）')}</h3>
           <p class="status-event-date">📅 ${statusEscapeHtml(item.eventDate || '（指定なし）')}</p>
-          <p class="status-view-count">👁 累計閲覧数: 集計準備中</p>
           ${item.status === '却下' && item.memo ? `<p class="status-memo">却下理由: ${statusEscapeHtml(item.memo)}</p>` : ''}
         </article>`).join('')}
     </div>`;

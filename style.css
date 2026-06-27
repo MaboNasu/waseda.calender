@@ -1344,7 +1344,6 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 .status-receipt { font-size: 0.78rem; color: var(--text-muted); }
 .status-event-name { font-size: 1rem; font-weight: 600; color: var(--gray-800); margin-bottom: 0.3rem; }
 .status-event-date { font-size: 0.85rem; color: var(--text-secondary); }
-.status-view-count { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem; }
 .status-memo { margin-top: 0.5rem; font-size: 0.85rem; color: var(--enjy-dark); background: var(--enjy-pale); border-radius: var(--radius-sm); padding: 0.6rem 0.8rem; }
 .status-badge {
   display: inline-block;
