@@ -32,6 +32,9 @@
  *   true → サイトに表示する
  *   false → 非表示（下書き）
  *
+ * imageUrl（任意）:
+ *   検索結果の構造化データ（schema.org/Event）に使う画像URL。未指定の場合はサイト共通のOGP画像が使われる。
+ *
  * orgId（任意）:
  *   organizations.js の団体IDと紐づける場合に指定（例: "org-001"）。
  *   指定すると、終了済み（today > endDate）になった際にその団体のプロフィールページの

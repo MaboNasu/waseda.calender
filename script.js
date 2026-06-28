@@ -953,8 +953,19 @@ function createModalShareActionsHTML(ev) {
 /* ============================================================
    構造化データ（schema.org/Event） SEO用
    ============================================================ */
+/** キャンパスごとの所在地（早稲田大学公式サイト記載の住所。場所が定まらない区分は含めない） */
+const CAMPUS_ADDRESS = {
+  waseda:      { addressRegion: '東京都', addressLocality: '新宿区', streetAddress: '戸塚町1-104' },
+  toyama:      { addressRegion: '東京都', addressLocality: '新宿区', streetAddress: '戸山1-24-1' },
+  nishiwaseda: { addressRegion: '東京都', addressLocality: '新宿区', streetAddress: '大久保3-4-1' },
+  tokorozawa:  { addressRegion: '埼玉県', addressLocality: '所沢市', streetAddress: '三ヶ島2-579-15' }
+};
+
 function buildEventJsonLd(ev) {
   const isOnline = ev.campus === 'online';
+  const campusAddress = CAMPUS_ADDRESS[ev.campus];
+  const isPerformance = ev.category === 'music' || ev.category === 'theater';
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Event',
@@ -967,14 +978,27 @@ function buildEventJsonLd(ev) {
     eventStatus: 'https://schema.org/EventScheduled',
     location: isOnline
       ? { '@type': 'VirtualLocation', url: ev.externalUrl || 'https://wasedacalendar.com/' }
-      : { '@type': 'Place', name: ev.location || campusLabel(ev.campus) },
+      : {
+          '@type': 'Place',
+          name: ev.location || campusLabel(ev.campus),
+          address: campusAddress ? { '@type': 'PostalAddress', addressCountry: 'JP', ...campusAddress } : undefined
+        },
+    image: ev.imageUrl || 'https://wasedacalendar.com/assets/og-image.png',
     description: ev.description || ev.title,
-    organizer: { '@type': 'Organization', name: ev.organizer || 'Waseda Calendar' },
+    organizer: {
+      '@type': 'Organization',
+      name: ev.organizer || 'Waseda Calendar',
+      url: ev.externalUrl || undefined
+    },
+    performer: isPerformance
+      ? { '@type': 'PerformingGroup', name: ev.organizer || 'Waseda Calendar' }
+      : undefined,
     offers: {
       '@type': 'Offer',
       price: ev.feeType === 'free' ? '0' : undefined,
       priceCurrency: 'JPY',
       availability: 'https://schema.org/InStock',
+      validFrom: ev.lastUpdated ? `${ev.lastUpdated}T00:00:00+09:00` : undefined,
       url: 'https://wasedacalendar.com/'
     }
   };
