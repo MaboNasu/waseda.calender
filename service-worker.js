@@ -4,7 +4,9 @@
  * 戦略: stale-while-revalidate（キャッシュがあれば即返し、裏でネットワークから取得して更新する）。
  * 自分のオリジン以外（Firebase/GA4/CDN等）のリクエストは素通りさせ、キャッシュ対象にしない。
  */
-const CACHE_NAME = 'wc-cache-v1';
+/** PRECACHE_URLSの中身（index.html/style.css/script.js/events.js等）を更新する変更をデプロイするたびに、
+ *  このバージョンを上げること。上げないと、インストール済みユーザーに古いキャッシュが残り続ける。 */
+const CACHE_NAME = 'wc-cache-v2';
 
 const PRECACHE_URLS = [
   '/',

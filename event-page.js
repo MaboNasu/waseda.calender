@@ -28,13 +28,38 @@ function trackEventExternalLinkClick(eventId) {
   }
 }
 
+/** OGP用の説明文（改行を除去し、長すぎる場合は切り詰める） */
+function buildOgDescription(ev) {
+  const base = ev.description ? ev.description.replace(/\s+/g, ' ').trim() : '';
+  const text = base || `${formatEventDateDisplay(ev)} ${ev.organizer || ''}`.trim();
+  return text.length > 100 ? text.slice(0, 100) + '…' : text;
+}
+
+/** タイトル・OGP・canonicalを、表示中のイベントの内容に書き換える（JSを実行するクローラー向けの補助。実行しないクローラーには初期値のまま表示される） */
+function updateEventPageMeta(ev) {
+  const pageTitle = `${ev.title} – Waseda Calendar`;
+  const description = buildOgDescription(ev);
+  const url = `https://wasedacalendar.com/event.html?id=${encodeURIComponent(ev.id)}`;
+
+  document.title = pageTitle;
+  const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+  const setAttr = (id, attr, value) => { const el = document.getElementById(id); if (el) el.setAttribute(attr, value); };
+
+  setText('event-page-title', pageTitle);
+  setAttr('event-page-description', 'content', description);
+  setAttr('event-page-canonical', 'href', url);
+  setAttr('event-page-og-title', 'content', pageTitle);
+  setAttr('event-page-og-description', 'content', description);
+  setAttr('event-page-og-url', 'content', url);
+  setAttr('event-page-twitter-title', 'content', pageTitle);
+  setAttr('event-page-twitter-description', 'content', description);
+}
+
 function renderEventDetailPage(ev) {
   const wrap = document.getElementById('event-detail');
   if (!wrap) return;
 
-  document.title = `${ev.title} – Waseda Calendar`;
-  const titleEl = document.getElementById('event-page-title');
-  if (titleEl) titleEl.textContent = `${ev.title} – Waseda Calendar`;
+  updateEventPageMeta(ev);
 
   const extLinkHTML = ev.externalUrl
     ? `<a href="${escapeHtml(ev.externalUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm" onclick="trackEventExternalLinkClick('${escapeHtml(String(ev.id))}')">公式サイトを見る ↗</a>`

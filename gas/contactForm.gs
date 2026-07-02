@@ -94,6 +94,11 @@ function doPost(e) {
       return jsonResponse({ success: false, error: validationError });
     }
 
+    const rateLimitError = checkRateLimit(payload.email);
+    if (rateLimitError) {
+      return jsonResponse({ success: false, error: rateLimitError });
+    }
+
     // 画像アップロードはロック外で処理する（Drive保存は時間がかかるため、ロックの保持時間を最小化する）
     if (payload.entryChoice === 'returning-org' && payload.imageBase64) {
       const driveUrl = saveImageToDrive(payload.imageBase64, payload.imageFileName, payload.imageMimeType);
@@ -161,7 +166,7 @@ function validatePayload(payload) {
     if (payload.entryChoice !== 'returning-org') {
       return '画像添付は登録済み団体のみご利用いただけます。';
     }
-    if (payload.imageMimeType && payload.imageMimeType.indexOf('image/') !== 0) {
+    if (!payload.imageMimeType || payload.imageMimeType.indexOf('image/') !== 0) {
       return '画像ファイル以外はアップロードできません。';
     }
     if (payload.imageBase64.length > MAX_IMAGE_BASE64_LENGTH) {
@@ -169,6 +174,59 @@ function validatePayload(payload) {
     }
   }
   return null;
+}
+
+// ============================================================
+// 簡易レート制限（連打・スクリプトによる大量送信を抑止する応急対策）
+//
+// CacheServiceはリクエスト間で共有される軽量なキー・バリューキャッシュ（正確な集計ではないが、
+// スプレッドシートを読み書きするより高速で、悪用の抑止には十分）。
+// Webアプリのdoアクセスからは送信元IPアドレスを取得できないため、メールアドレスをキーにする。
+// ============================================================
+
+/** 同一メールアドレスからの最短送信間隔（秒）。これより短い間隔での再送信を拒否する */
+const RATE_LIMIT_MIN_INTERVAL_SEC = 20;
+
+/** 同一メールアドレスからの1時間あたりの最大送信回数 */
+const RATE_LIMIT_MAX_PER_HOUR = 10;
+
+/** レート制限チェック。問題があればエラーメッセージ文字列、問題なければnullを返す */
+function checkRateLimit(email) {
+  if (!email) return null;
+  const cache = CacheService.getScriptCache();
+  const key = 'rl_' + String(email).toLowerCase().trim();
+  const now = Date.now();
+
+  const lastTime = cache.get(key + '_last');
+  if (lastTime && (now - Number(lastTime)) < RATE_LIMIT_MIN_INTERVAL_SEC * 1000) {
+    return '送信間隔が短すぎます。しばらく待ってから再度お試しください。';
+  }
+
+  const countKey = key + '_count';
+  const count = Number(cache.get(countKey) || 0);
+  if (count >= RATE_LIMIT_MAX_PER_HOUR) {
+    return '送信回数が上限に達しました。時間をおいて再度お試しください。';
+  }
+
+  cache.put(key + '_last', String(now), 3600);
+  cache.put(countKey, String(count + 1), 3600);
+  return null;
+}
+
+// ============================================================
+// スプレッドシート書き込み用のサニタイズ
+// ============================================================
+
+/**
+ * ユーザー入力をスプレッドシートのセルに書き込む際、数式として解釈されるのを防ぐ。
+ * 先頭が = + - @ の文字列は、Google スプレッドシート上でそのまま数式として実行されてしまうため
+ * （数式インジェクション対策）、先頭にシングルクォートを付けて文字列として固定する。
+ */
+function sanitizeForSheet(value) {
+  if (value === null || value === undefined) return value;
+  const str = String(value);
+  if (/^[=+\-@]/.test(str)) return "'" + str;
+  return str;
 }
 
 // ============================================================
@@ -325,11 +383,11 @@ function upsertOrg(payload) {
       return { error: '団体情報の認証に失敗しました。確認メールのURLからアクセスし直してください。' };
     }
     if (payload.editOrgInfo) {
-      orgSheet.getRange(rowNum, ORG_COL.name + 1).setValue(payload.organization);
-      orgSheet.getRange(rowNum, ORG_COL.contactName + 1).setValue(payload.name);
-      orgSheet.getRange(rowNum, ORG_COL.email + 1).setValue(payload.email);
-      orgSheet.getRange(rowNum, ORG_COL.sns + 1).setValue(payload.orgSns || '');
-      orgSheet.getRange(rowNum, ORG_COL.description + 1).setValue(payload.orgDescription || '');
+      orgSheet.getRange(rowNum, ORG_COL.name + 1).setValue(sanitizeForSheet(payload.organization));
+      orgSheet.getRange(rowNum, ORG_COL.contactName + 1).setValue(sanitizeForSheet(payload.name));
+      orgSheet.getRange(rowNum, ORG_COL.email + 1).setValue(sanitizeForSheet(payload.email));
+      orgSheet.getRange(rowNum, ORG_COL.sns + 1).setValue(sanitizeForSheet(payload.orgSns || ''));
+      orgSheet.getRange(rowNum, ORG_COL.description + 1).setValue(sanitizeForSheet(payload.orgDescription || ''));
     }
     const pastCount = Number(orgSheet.getRange(rowNum, ORG_COL.pastCount + 1).getValue()) || 0;
     orgSheet.getRange(rowNum, ORG_COL.pastCount + 1).setValue(pastCount + 1);
@@ -342,8 +400,8 @@ function upsertOrg(payload) {
   const orgId = generateOrgId(orgSheet);
   const token = Utilities.getUuid();
   orgSheet.appendRow([
-    orgId, now, payload.organization, payload.name, payload.email,
-    payload.orgSns || '', payload.orgDescription || '', token,
+    orgId, now, sanitizeForSheet(payload.organization), sanitizeForSheet(payload.name), sanitizeForSheet(payload.email),
+    sanitizeForSheet(payload.orgSns || ''), sanitizeForSheet(payload.orgDescription || ''), token,
     1, now, ''
   ]);
   return { orgId: orgId, orgToken: token };
@@ -408,29 +466,29 @@ function appendInquiry(payload, orgId) {
   row[INQUIRY_COL.firstTimeSelfReport] = payload.entryChoice === 'returning-org' ? '以前にも問い合わせたことがある' : '初めて';
   row[INQUIRY_COL.autoJudgment] = autoJudgment;
   row[INQUIRY_COL.pastCount] = emailMatchCount;
-  row[INQUIRY_COL.name] = payload.name;
-  row[INQUIRY_COL.email] = payload.email;
-  row[INQUIRY_COL.organization] = payload.organization;
-  row[INQUIRY_COL.orgUrl] = payload.orgSns || '';
-  row[INQUIRY_COL.eventName] = payload.eventName || payload.targetEventName || '';
-  row[INQUIRY_COL.targetPageUrl] = payload.targetPageUrl || '';
-  row[INQUIRY_COL.desiredPublishDate] = payload.desiredPublishDate || '';
-  row[INQUIRY_COL.applicationUrl] = payload.applicationUrl || '';
-  row[INQUIRY_COL.budget] = BUDGET_LABELS[payload.budgetRange] || (payload.budgetRange || '');
-  row[INQUIRY_COL.message] = eventDescriptionNote;
+  row[INQUIRY_COL.name] = sanitizeForSheet(payload.name);
+  row[INQUIRY_COL.email] = sanitizeForSheet(payload.email);
+  row[INQUIRY_COL.organization] = sanitizeForSheet(payload.organization);
+  row[INQUIRY_COL.orgUrl] = sanitizeForSheet(payload.orgSns || '');
+  row[INQUIRY_COL.eventName] = sanitizeForSheet(payload.eventName || payload.targetEventName || '');
+  row[INQUIRY_COL.targetPageUrl] = sanitizeForSheet(payload.targetPageUrl || '');
+  row[INQUIRY_COL.desiredPublishDate] = sanitizeForSheet(payload.desiredPublishDate || '');
+  row[INQUIRY_COL.applicationUrl] = sanitizeForSheet(payload.applicationUrl || '');
+  row[INQUIRY_COL.budget] = BUDGET_LABELS[payload.budgetRange] || sanitizeForSheet(payload.budgetRange || '');
+  row[INQUIRY_COL.message] = sanitizeForSheet(eventDescriptionNote);
   row[INQUIRY_COL.status] = '未対応';
   row[INQUIRY_COL.priority] = priority;
   row[INQUIRY_COL.assignee] = '';
   row[INQUIRY_COL.memo] = '';
   row[INQUIRY_COL.updatedAt] = now;
   row[INQUIRY_COL.orgId] = orgId || '';
-  row[INQUIRY_COL.eventDate] = payload.eventDate || '';
-  row[INQUIRY_COL.eventEndDate] = payload.eventEndDate || '';
-  row[INQUIRY_COL.eventStartTime] = payload.eventStartTime || '';
-  row[INQUIRY_COL.eventEndTime] = payload.eventEndTime || '';
-  row[INQUIRY_COL.eventLocation] = payload.eventLocation || '';
-  row[INQUIRY_COL.referenceUrl] = payload.referenceUrl || '';
-  row[INQUIRY_COL.recurringDates] = payload.recurringDates || '';
+  row[INQUIRY_COL.eventDate] = sanitizeForSheet(payload.eventDate || '');
+  row[INQUIRY_COL.eventEndDate] = sanitizeForSheet(payload.eventEndDate || '');
+  row[INQUIRY_COL.eventStartTime] = sanitizeForSheet(payload.eventStartTime || '');
+  row[INQUIRY_COL.eventEndTime] = sanitizeForSheet(payload.eventEndTime || '');
+  row[INQUIRY_COL.eventLocation] = sanitizeForSheet(payload.eventLocation || '');
+  row[INQUIRY_COL.referenceUrl] = sanitizeForSheet(payload.referenceUrl || '');
+  row[INQUIRY_COL.recurringDates] = sanitizeForSheet(payload.recurringDates || '');
 
   sheet.appendRow(row);
 
@@ -503,6 +561,12 @@ const GCAL_ICAL_URL_PREFIX = 'https://calendar.google.com/calendar/ical/';
 /** 取得する予定の最大件数 */
 const GCAL_MAX_EVENTS = 20;
 
+/** 解析するVEVENTブロックの上限件数（巨大なカレンダーによる実行時間・メモリの浪費を防ぐ） */
+const GCAL_MAX_PARSE_BLOCKS = 500;
+
+/** 取得するICS本文の最大サイズ（約2MB。通常のカレンダーで十分な余裕がある） */
+const GCAL_MAX_ICS_LENGTH = 2000000;
+
 function fetchGCalEvents(icalUrl) {
   if (!icalUrl || icalUrl.indexOf(GCAL_ICAL_URL_PREFIX) !== 0) {
     return { success: false, error: 'GoogleカレンダーのiCal形式URL（https://calendar.google.com/calendar/ical/... で始まるもの）を入力してください。' };
@@ -510,7 +574,8 @@ function fetchGCalEvents(icalUrl) {
 
   let res;
   try {
-    res = UrlFetchApp.fetch(icalUrl, { muteHttpExceptions: true, followRedirects: true });
+    // followRedirects:false — 指定URLのホストがリダイレクト経由で意図しない先に迂回されるのを防ぐ
+    res = UrlFetchApp.fetch(icalUrl, { muteHttpExceptions: true, followRedirects: false });
   } catch (err) {
     Logger.log('fetchGCalEvents 取得エラー: ' + err);
     return { success: false, error: 'カレンダーの取得に失敗しました。URLをご確認ください。' };
@@ -519,9 +584,14 @@ function fetchGCalEvents(icalUrl) {
     return { success: false, error: 'カレンダーが見つかりませんでした。URLと公開設定をご確認ください。' };
   }
 
+  const contentText = res.getContentText();
+  if (contentText.length > GCAL_MAX_ICS_LENGTH) {
+    return { success: false, error: 'カレンダーのデータが大きすぎるため取得できませんでした。' };
+  }
+
   let events;
   try {
-    events = parseIcsEvents(res.getContentText());
+    events = parseIcsEvents(contentText);
   } catch (err) {
     Logger.log('fetchGCalEvents 解析エラー: ' + err);
     return { success: false, error: 'カレンダーの内容を読み取れませんでした。' };
@@ -537,7 +607,7 @@ function fetchGCalEvents(icalUrl) {
 /** ICS本文をパースし、本日以降のVEVENTを開始日時順に返す（簡易パーサー・繰り返し予定の展開は行わない） */
 function parseIcsEvents(icsText) {
   const unfolded = icsText.replace(/\r\n/g, '\n').replace(/\n[ \t]/g, '');
-  const blocks = unfolded.split('BEGIN:VEVENT').slice(1).map(b => b.split('END:VEVENT')[0]);
+  const blocks = unfolded.split('BEGIN:VEVENT').slice(1, GCAL_MAX_PARSE_BLOCKS + 1).map(b => b.split('END:VEVENT')[0]);
   const today = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd');
 
   const events = [];

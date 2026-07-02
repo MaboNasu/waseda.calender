@@ -31,18 +31,35 @@ function isEventInReminderWindow(ev, today, windowEnd) {
   return start <= windowEnd && end >= today;
 }
 
+/**
+ * フォロー中団体に紐づくイベントIDの集合を作る。
+ * organizations-page.js の isEventRelatedToOrg と同じ方針（ev.orgId一致 または 団体側のrelatedEventIds）で判定する。
+ */
+function collectFollowedOrgEventIds(followedOrgIds) {
+  const allOrgs = typeof ORGANIZATIONS !== 'undefined' ? ORGANIZATIONS : [];
+  const ids = new Set();
+  allOrgs
+    .filter(org => followedOrgIds.includes(String(org.id)))
+    .forEach(org => {
+      (Array.isArray(org.relatedEventIds) ? org.relatedEventIds : []).forEach(id => ids.add(String(id)));
+    });
+  return ids;
+}
+
 /** リマインド対象イベントを収集する（お気に入り・フォロー中団体のイベントのうち、今日〜明後日に該当するもの） */
 function collectReminderEvents(favorites, followedOrgIds) {
   const allEvents = typeof EVENTS !== 'undefined' ? EVENTS : [];
   const { today, end } = getReminderWindow();
   const favoriteIds = favorites.map(f => String(f.id));
+  const followedOrgEventIds = collectFollowedOrgEventIds(followedOrgIds);
   const reasonById = new Map();
 
   allEvents.forEach(ev => {
     if (!ev.isPublished || !isEventInReminderWindow(ev, today, end)) return;
     const reasons = [];
     if (favoriteIds.includes(String(ev.id))) reasons.push('お気に入り');
-    if (ev.orgId && followedOrgIds.includes(String(ev.orgId))) reasons.push('フォロー団体');
+    const isFollowedOrgEvent = (ev.orgId && followedOrgIds.includes(String(ev.orgId))) || followedOrgEventIds.has(String(ev.id));
+    if (isFollowedOrgEvent) reasons.push('フォロー団体');
     if (reasons.length > 0) reasonById.set(ev, reasons);
   });
 
