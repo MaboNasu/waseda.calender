@@ -158,6 +158,8 @@ function renderOrganizationDetail(org) {
       <h2>${orgEscapeHtml(org.name)}</h2>
       <p>${orgEscapeHtml(org.nameKana || '')}</p>
       <p>${orgEscapeHtml(org.alphabetName || '')}</p>
+      <button type="button" class="btn btn-ghost btn-sm org-follow-btn" id="org-follow-btn"
+        onclick="handleOrgFollowClick('${orgEscapeHtml(org.id)}', this)" disabled>フォローする</button>
     </div>
     <p class="org-detail-desc">${orgEscapeHtml(org.description || '団体概要は準備中です。')}</p>
     ${organizationLinksHTML(org)}
@@ -170,7 +172,64 @@ function renderOrganizationDetail(org) {
         </a>`).join('')}
     </div>
     ${renderOrgPastEventsHTML(org)}`;
+
+  refreshOrgFollowButton(org.id);
 }
+
+/* ============================================================
+   団体フォロー（Googleログイン必須。状態はFirestoreに保存）
+   ============================================================ */
+
+/** フォローボタンの表示を現在のログイン状態・フォロー状態に合わせて更新する */
+async function refreshOrgFollowButton(orgId) {
+  const btn = document.getElementById('org-follow-btn');
+  if (!btn) return;
+
+  if (!window.WC || !window.WC.auth || !window.WC.currentUser) {
+    btn.textContent = 'フォローする';
+    btn.classList.remove('following');
+    btn.disabled = false;
+    return;
+  }
+
+  try {
+    const follows = await window.WC.auth.getOrgFollows();
+    const isFollowing = follows.includes(String(orgId));
+    btn.textContent = isFollowing ? '✓ フォロー中' : 'フォローする';
+    btn.classList.toggle('following', isFollowing);
+  } catch (err) {
+    btn.textContent = 'フォローする';
+    btn.classList.remove('following');
+  }
+  btn.disabled = false;
+}
+
+async function handleOrgFollowClick(orgId, btnEl) {
+  if (!window.WC || !window.WC.auth) {
+    alert('準備中です。少し待ってから再度お試しください。');
+    return;
+  }
+  if (!window.WC.currentUser) {
+    if (confirm('団体のフォローにはログインが必要です。Googleでログインしますか？')) {
+      window.WC.auth.signInWithGoogle().catch(() => {});
+    }
+    return;
+  }
+
+  const isFollowing = btnEl.classList.contains('following');
+  btnEl.disabled = true;
+  try {
+    await window.WC.auth.setOrgFollow(orgId, isFollowing);
+  } catch (err) {
+    alert('通信エラーが発生しました。時間をおいて再度お試しください。');
+  }
+  refreshOrgFollowButton(orgId);
+}
+
+/** ログイン・ログアウトした時に、表示中の団体のフォローボタンを再判定する */
+window.addEventListener('wc-auth-changed', () => {
+  if (organizationState.selectedId) refreshOrgFollowButton(organizationState.selectedId);
+});
 
 /** 団体の開催実績（終了済みイベント）セクションのHTML */
 function renderOrgPastEventsHTML(org) {

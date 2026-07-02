@@ -587,6 +587,42 @@ ul, ol { list-style: none; }
 .empty-state-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
 .empty-state p { font-size: 0.9rem; }
 
+/* マイページ（お気に入り・団体フォロー・リマインド） */
+.mypage-section + .mypage-section { margin-top: 2.5rem; }
+.mypage-reminder {
+  background: var(--enjy-pale);
+  border: 1.5px solid var(--enjy-light);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+}
+.reminder-card-wrap { display: flex; flex-direction: column; gap: 0.4rem; }
+.reminder-reasons { display: flex; gap: 0.4rem; }
+.reminder-reason-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--enjy);
+  border-radius: 99px;
+  padding: 0.15rem 0.6rem;
+  width: fit-content;
+}
+.org-follow-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.org-follow-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.1rem;
+}
+.org-follow-card h3 { font-family: var(--font-heading); font-size: 1rem; margin: 0.3rem 0 0; }
+.org-follow-card h3 a { color: var(--gray-800); }
+.org-follow-card h3 a:hover { color: var(--enjy); }
+
 /* ============================================================
    リアクション / ランキング
    ============================================================ */
@@ -660,76 +696,6 @@ ul, ol { list-style: none; }
   font-size: 0.72rem;
   color: var(--text-muted);
 }
-.ranking-panel {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
-}
-.ranking-controls {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(180px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-}
-.ranking-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-}
-.ranking-card {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 1rem;
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 1rem;
-}
-.ranking-rank {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--gray-100);
-  color: var(--gray-700);
-  font-weight: 800;
-}
-.ranking-card-main { min-width: 0; }
-.ranking-rank.top-1 { background: var(--enjy); color: var(--white); }
-.ranking-rank.top-2,
-.ranking-rank.top-3 { background: var(--enjy-pale); color: var(--enjy); }
-.ranking-title {
-  font-family: var(--font-main);
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--gray-800);
-  margin: 0.25rem 0 0.35rem;
-  overflow-wrap: break-word;
-}
-.ranking-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem 0.8rem;
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  margin-bottom: 0.45rem;
-}
-.ranking-count {
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--enjy);
-  background: var(--enjy-pale);
-  border-radius: 99px;
-  padding: 0.2rem 0.6rem;
-}
-
 /* ============================================================
    カレンダー
    ============================================================ */
@@ -1292,6 +1258,9 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   color: var(--text-muted);
   font-size: 0.78rem;
 }
+.org-follow-btn { margin-top: 0.6rem; }
+.org-follow-btn.following { background: var(--enjy); color: var(--white); border-color: var(--enjy); }
+.org-follow-btn.following:hover { background: var(--enjy-dark); }
 .org-related {
   border-top: 1px solid var(--border);
   margin-top: 1rem;
@@ -1375,16 +1344,6 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   .filter-actions { justify-content: stretch; }
   .filter-actions .btn { flex: 1; text-align: center; }
   .events-grid { grid-template-columns: 1fr; }
-  .ranking-panel { padding: 1rem; }
-  .ranking-controls { grid-template-columns: 1fr; }
-  .ranking-card {
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: start;
-  }
-  .ranking-card .btn-detail {
-    grid-column: 1 / -1;
-    width: 100%;
-  }
   .reaction-buttons { grid-template-columns: 1fr; }
   .calendar-grid-view { display: none; }
   .calendar-list-view { display: block; }

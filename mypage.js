@@ -1,6 +1,7 @@
 /**
- * mypage.js - マイページ（お気に入りイベント一覧）
- * script.js の createEventCardHTML 等を再利用し、Firestoreのお気に入りデータと events.js を突き合わせて表示する。
+ * mypage.js - マイページ（お気に入りイベント一覧・フォロー中の団体一覧）
+ * script.js の createEventCardHTML 等を再利用し、Firestoreのお気に入り/団体フォローデータと
+ * events.js / organizations.js を突き合わせて表示する。
  */
 function renderMypageLoggedOut() {
   const wrap = document.getElementById('mypage-content');
@@ -15,44 +16,140 @@ function renderMypageLoggedOut() {
   if (btn) btn.addEventListener('click', () => window.WC.auth.signInWithGoogle().catch(() => {}));
 }
 
-async function renderMypageLoggedIn() {
-  const wrap = document.getElementById('mypage-content');
-  if (!wrap) return;
-  wrap.innerHTML = `<div class="empty-state"><p>読み込み中...</p></div>`;
+/** 今日から2日後（今日・明日・明後日）までの日付文字列 [today, today+2] */
+function getReminderWindow() {
+  const today = getTodayStr();
+  const end = new Date();
+  end.setDate(end.getDate() + 2);
+  return { today, end: formatDateStr(end) };
+}
 
-  let favorites = [];
-  try {
-    favorites = await window.WC.auth.getFavorites();
-  } catch (err) {
-    wrap.innerHTML = `<div class="empty-state"><div class="empty-state-icon">⚠</div><p>お気に入りの読み込みに失敗しました。時間をおいて再度お試しください。</p></div>`;
-    return;
-  }
+/** イベントの開催期間が [today, today+2] の範囲に重なっているか（開催中の複数日イベントも含む） */
+function isEventInReminderWindow(ev, today, windowEnd) {
+  const start = ev.date;
+  const end = ev.endDate || ev.date;
+  return start <= windowEnd && end >= today;
+}
 
-  if (favorites.length === 0) {
-    wrap.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-state-icon">📭</div>
-        <p>まだお気に入りのイベントがありません。イベント詳細の「気になる」「行きたい」「参加予定」ボタンから追加できます。</p>
-      </div>`;
-    return;
-  }
+/** リマインド対象イベントを収集する（お気に入り・フォロー中団体のイベントのうち、今日〜明後日に該当するもの） */
+function collectReminderEvents(favorites, followedOrgIds) {
+  const allEvents = typeof EVENTS !== 'undefined' ? EVENTS : [];
+  const { today, end } = getReminderWindow();
+  const favoriteIds = favorites.map(f => String(f.id));
+  const reasonById = new Map();
 
+  allEvents.forEach(ev => {
+    if (!ev.isPublished || !isEventInReminderWindow(ev, today, end)) return;
+    const reasons = [];
+    if (favoriteIds.includes(String(ev.id))) reasons.push('お気に入り');
+    if (ev.orgId && followedOrgIds.includes(String(ev.orgId))) reasons.push('フォロー団体');
+    if (reasons.length > 0) reasonById.set(ev, reasons);
+  });
+
+  return [...reasonById.entries()]
+    .sort((a, b) => a[0].date.localeCompare(b[0].date));
+}
+
+/** リマインドセクションのHTML（対象が無い場合は空文字＝非表示） */
+function renderMypageReminderHTML(favorites, followedOrgIds) {
+  const items = collectReminderEvents(favorites, followedOrgIds);
+  if (items.length === 0) return '';
+
+  return `
+    <div class="mypage-section mypage-reminder">
+      <h2 class="section-title">🔔 まもなく開催（今日・明日・明後日）</h2>
+      <div class="events-grid">${items.map(([ev, reasons]) => `
+        <div class="reminder-card-wrap">
+          <div class="reminder-reasons">${reasons.map(r => `<span class="reminder-reason-tag">${escapeHtml(r)}</span>`).join('')}</div>
+          ${createEventCardHTML(ev, true)}
+        </div>`).join('')}</div>
+    </div>`;
+}
+
+/** お気に入りイベント一覧のHTML（見出し込み） */
+function renderMypageFavoritesHTML(favorites) {
   const allEvents = typeof EVENTS !== 'undefined' ? EVENTS : [];
   const favoriteIds = favorites.map(f => String(f.id));
   const events = allEvents
     .filter(ev => ev.isPublished && favoriteIds.includes(String(ev.id)))
     .sort((a, b) => a.date.localeCompare(b.date));
 
-  if (events.length === 0) {
-    wrap.innerHTML = `
-      <div class="empty-state">
+  const body = events.length === 0
+    ? `<div class="empty-state">
         <div class="empty-state-icon">📭</div>
-        <p>お気に入りに登録されているイベントは、現在掲載されていないか終了済みのようです。</p>
-      </div>`;
+        <p>${favorites.length === 0
+          ? 'まだお気に入りのイベントがありません。イベント詳細の「気になる」「行きたい」「参加予定」ボタンから追加できます。'
+          : 'お気に入りに登録されているイベントは、現在掲載されていないか終了済みのようです。'}</p>
+      </div>`
+    : `<div class="events-grid">${events.map(ev => createEventCardHTML(ev, true)).join('')}</div>`;
+
+  return `
+    <div class="mypage-section">
+      <h2 class="section-title">お気に入りイベント</h2>
+      ${body}
+    </div>`;
+}
+
+/** フォロー中の団体一覧のHTML（見出し込み） */
+function renderMypageOrgFollowsHTML(followedOrgIds) {
+  const allOrgs = typeof ORGANIZATIONS !== 'undefined' ? ORGANIZATIONS : [];
+  const orgs = allOrgs
+    .filter(org => followedOrgIds.includes(String(org.id)))
+    .sort((a, b) => String(a.nameKana || a.name).localeCompare(String(b.nameKana || b.name), 'ja'));
+
+  const body = orgs.length === 0
+    ? `<div class="empty-state">
+        <div class="empty-state-icon">📭</div>
+        <p>まだフォロー中の団体がありません。<a href="organizations.html">掲載団体一覧</a>の団体詳細から「フォローする」で追加できます。</p>
+      </div>`
+    : `<div class="org-follow-list">${orgs.map(org => `
+        <article class="org-follow-card">
+          <div>
+            <span class="org-genre">${escapeHtml(org.genre || 'その他')}</span>
+            <h3><a href="organizations.html?id=${encodeURIComponent(org.id)}">${escapeHtml(org.name)}</a></h3>
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="handleMypageUnfollow('${escapeHtml(String(org.id))}', this)">フォロー解除</button>
+        </article>`).join('')}</div>`;
+
+  return `
+    <div class="mypage-section">
+      <h2 class="section-title">フォロー中の団体</h2>
+      ${body}
+    </div>`;
+}
+
+async function renderMypageLoggedIn() {
+  const wrap = document.getElementById('mypage-content');
+  if (!wrap) return;
+  wrap.innerHTML = `<div class="empty-state"><p>読み込み中...</p></div>`;
+
+  let favorites = [];
+  let followedOrgIds = [];
+  try {
+    [favorites, followedOrgIds] = await Promise.all([
+      window.WC.auth.getFavorites(),
+      window.WC.auth.getOrgFollows()
+    ]);
+  } catch (err) {
+    wrap.innerHTML = `<div class="empty-state"><div class="empty-state-icon">⚠</div><p>データの読み込みに失敗しました。時間をおいて再度お試しください。</p></div>`;
     return;
   }
 
-  wrap.innerHTML = `<div class="events-grid">${events.map(ev => createEventCardHTML(ev, true)).join('')}</div>`;
+  wrap.innerHTML = renderMypageReminderHTML(favorites, followedOrgIds)
+    + renderMypageFavoritesHTML(favorites)
+    + renderMypageOrgFollowsHTML(followedOrgIds);
+}
+
+/** マイページの「フォロー解除」ボタン */
+async function handleMypageUnfollow(orgId, btnEl) {
+  if (!window.WC || !window.WC.auth) return;
+  if (btnEl) btnEl.disabled = true;
+  try {
+    await window.WC.auth.setOrgFollow(orgId, true);
+  } catch (err) {
+    alert('通信エラーが発生しました。時間をおいて再度お試しください。');
+  }
+  renderMypageLoggedIn();
 }
 
 function renderMypage(user) {

@@ -422,55 +422,6 @@ function renderUpcomingEvents() {
 }
 
 /* ============================================================
-   リアクションランキング
-   ============================================================ */
-function createRankingCardHTML(ev, index, reactionType) {
-  const count = reactionCount(ev, reactionType);
-  const rankClass = index < 3 ? ` top-${index + 1}` : '';
-  return `
-    <article class="ranking-card">
-      <div class="ranking-rank${rankClass}">${index + 1}</div>
-      <div class="ranking-card-main">
-        <div class="event-card-meta">
-          <span class="tag ${categoryClass(ev.category)}">${categoryLabel(ev.category)}</span>
-          <span class="ranking-count">${reactionLabel(reactionType)} ${count}</span>
-        </div>
-        <h3 class="ranking-title">${escapeHtml(ev.title)}</h3>
-        <div class="ranking-meta">
-          <span>📅 ${formatEventDateDisplay(ev)}</span>
-          <span>🕐 ${escapeHtml(formatTime(ev.startTime, ev.endTime))}</span>
-          <span>📍 ${escapeHtml(ev.location || campusLabel(ev.campus))}</span>
-        </div>
-        ${createReactionSummaryHTML(ev, reactionType)}
-      </div>
-      <button class="btn-detail" onclick="openModal('${escapeHtml(String(ev.id))}')">詳細を見る</button>
-    </article>`;
-}
-
-function renderReactionRanking() {
-  const wrap = document.getElementById('reaction-ranking');
-  if (!wrap) return;
-
-  const reactionSelect = document.getElementById('ranking-reaction');
-  const sortSelect = document.getElementById('ranking-sort');
-  const reactionType = reactionSelect?.value || 'interested';
-  const sortType = sortSelect?.value || 'countDesc';
-  const items = [...getPublishedEvents()];
-
-  items.sort((a, b) => {
-    if (sortType === 'dateAsc') return a.date.localeCompare(b.date) || a.title.localeCompare(b.title, 'ja');
-    if (sortType === 'dateDesc') return b.date.localeCompare(a.date) || a.title.localeCompare(b.title, 'ja');
-    return reactionCount(b, reactionType) - reactionCount(a, reactionType)
-      || a.date.localeCompare(b.date)
-      || a.title.localeCompare(b.title, 'ja');
-  });
-
-  wrap.innerHTML = items.length === 0
-    ? emptyStateHTML('ランキングに表示できるイベントはまだありません。')
-    : items.map((ev, index) => createRankingCardHTML(ev, index, reactionType)).join('');
-}
-
-/* ============================================================
    カレンダー（PC: グリッド表示）
    ============================================================ */
 function renderCalendarGrid() {
@@ -1088,7 +1039,6 @@ function setupDensityToggle() {
 function renderAll() {
   renderTodayEvents();
   renderUpcomingEvents();
-  renderReactionRanking();
   renderCalendar();
   injectEventsJsonLd();
   applyDensity(getStoredDensity());
@@ -1136,13 +1086,6 @@ function setupFilters() {
   });
 }
 
-function setupRankingControls() {
-  const reactionSelect = document.getElementById('ranking-reaction');
-  const sortSelect = document.getElementById('ranking-sort');
-  if (reactionSelect) reactionSelect.addEventListener('change', renderReactionRanking);
-  if (sortSelect) sortSelect.addEventListener('change', renderReactionRanking);
-}
-
 /* ============================================================
    モーダル: オーバーレイクリック / Escで閉じる
    ============================================================ */
@@ -1164,7 +1107,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setupHamburger();
   setupScopeToggle();
   setupFilters();
-  setupRankingControls();
   setupModal();
   setupDensityToggle();
   renderAll();
