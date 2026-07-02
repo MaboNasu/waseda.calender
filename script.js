@@ -1002,37 +1002,51 @@ function injectEventsJsonLd() {
    ============================================================ */
 const DENSITY_STORAGE_KEY = 'wc-events-density';
 
-function getStoredDensity() {
+/** セクションごと（本日のイベント/近日開催）に独立して密度設定を保存・復元する */
+function getStoredDensity(sectionId) {
   try {
-    return localStorage.getItem(DENSITY_STORAGE_KEY) || 'large';
+    return localStorage.getItem(`${DENSITY_STORAGE_KEY}-${sectionId}`) || 'large';
   } catch (e) {
     return 'large';
   }
 }
 
-function setStoredDensity(value) {
+function setStoredDensity(sectionId, value) {
   try {
-    localStorage.setItem(DENSITY_STORAGE_KEY, value);
+    localStorage.setItem(`${DENSITY_STORAGE_KEY}-${sectionId}`, value);
   } catch (e) {
     // localStorageが使えない環境（プライベートモード等）では保存をスキップ
   }
 }
 
-function applyDensity(density) {
-  document.querySelectorAll('.events-grid').forEach(grid => {
+/** 指定セクション内の表示密度（大きめ/コンパクト）だけを適用する（他セクションには影響しない） */
+function applyDensity(sectionEl, density) {
+  if (!sectionEl) return;
+  sectionEl.querySelectorAll('.events-grid').forEach(grid => {
     grid.classList.toggle('density-compact', density === 'compact');
   });
-  document.querySelectorAll('.density-btn').forEach(btn => {
+  sectionEl.querySelectorAll('.density-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.density === density);
   });
 }
 
 function setupDensityToggle() {
-  document.querySelectorAll('.density-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      setStoredDensity(btn.dataset.density);
-      applyDensity(btn.dataset.density);
+  document.querySelectorAll('.density-toggle').forEach(toggle => {
+    const sectionEl = toggle.closest('section');
+    if (!sectionEl) return;
+    toggle.querySelectorAll('.density-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        setStoredDensity(sectionEl.id, btn.dataset.density);
+        applyDensity(sectionEl, btn.dataset.density);
+      });
     });
+  });
+}
+
+function applyAllStoredDensities() {
+  document.querySelectorAll('.density-toggle').forEach(toggle => {
+    const sectionEl = toggle.closest('section');
+    if (sectionEl) applyDensity(sectionEl, getStoredDensity(sectionEl.id));
   });
 }
 
@@ -1041,7 +1055,7 @@ function renderAll() {
   renderUpcomingEvents();
   renderCalendar();
   injectEventsJsonLd();
-  applyDensity(getStoredDensity());
+  applyAllStoredDensities();
   renderSelectionBar();
 }
 
