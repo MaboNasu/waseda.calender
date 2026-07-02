@@ -5,7 +5,7 @@
  * - 本日のイベント表示
  * - 近日開催のイベント一覧表示
  * - カレンダー表示（PC:グリッド / スマホ:リスト）
- * - 絞り込み機能（カテゴリ・対象者・場所・参加費・キーワード）
+ * - 絞り込み機能（大枠タブ：全部・学事日程・サークルイベント／詳細：カテゴリ・対象者・場所・参加費・キーワード）
  * - イベント詳細モーダル
  * - 掲載依頼フォームの動的切替
  * - ハンバーガーメニュー
@@ -50,6 +50,7 @@ const REACTION_TYPES = {
 let calendarYear, calendarMonth;
 
 let activeFilters = {
+  scope:    '',
   category: '',
   target:   '',
   campus:   '',
@@ -121,6 +122,11 @@ function formatTime(start, end) {
 /** カテゴリキー → 日本語 */
 function categoryLabel(key) {
   return (typeof CATEGORY_LABELS !== 'undefined' && CATEGORY_LABELS[key]) || key || '—';
+}
+
+/** イベントの大枠区分（scope）を取得。未指定の場合は「サークルイベント」扱い */
+function getEventScope(ev) {
+  return ev.scope === 'schedule' ? 'schedule' : 'circle';
 }
 
 /** 対象者（配列 or 文字列）→ 日本語 */
@@ -258,6 +264,7 @@ function escapeHtml(str) {
 /** EVENTSにフィルタを適用（isPublished:true のみ） */
 function getFilteredEvents() {
   return getPublishedEvents().filter(ev => {
+    if (activeFilters.scope    && getEventScope(ev) !== activeFilters.scope) return false;
     if (activeFilters.category && ev.category !== activeFilters.category) return false;
     if (activeFilters.campus   && ev.campus   !== activeFilters.campus)   return false;
     if (activeFilters.feeType  && ev.feeType  !== activeFilters.feeType)  return false;
@@ -285,7 +292,7 @@ function readFilters() {
 
 /** フィルターをリセット */
 function resetFilters() {
-  activeFilters = { category: '', target: '', campus: '', feeType: '', keyword: '' };
+  activeFilters = { scope: activeFilters.scope, category: '', target: '', campus: '', feeType: '', keyword: '' };
   ['filter-category','filter-target','filter-campus','filter-fee'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
@@ -293,6 +300,21 @@ function resetFilters() {
   const kw = document.getElementById('filter-keyword');
   if (kw) kw.value = '';
   renderAll();
+}
+
+/** 大枠フィルタ（全部・学事日程・サークルイベント）のタブ切替 */
+function setupScopeToggle() {
+  const buttons = document.querySelectorAll('.scope-btn');
+  if (!buttons.length) return;
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilters.scope = btn.dataset.scope || '';
+      renderAll();
+    });
+  });
 }
 
 /* ============================================================
@@ -1140,6 +1162,7 @@ document.addEventListener('DOMContentLoaded', () => {
   calendarMonth  = now.getMonth();
 
   setupHamburger();
+  setupScopeToggle();
   setupFilters();
   setupRankingControls();
   setupModal();

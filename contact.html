@@ -206,6 +206,29 @@
           <!-- イベント詳細（新規掲載依頼のみ） -->
           <div class="conditional-fields" data-show-for-entry="new-org,returning-org">
             <p class="form-section-title">イベント詳細</p>
+
+            <div class="gcal-import-box">
+              <label class="form-label" for="gcal-ical-url">Googleカレンダーから予定を取り込む（任意）</label>
+              <div class="form-row" style="align-items:flex-start;">
+                <div class="form-group" style="flex:1;margin-bottom:0;">
+                  <input type="url" id="gcal-ical-url" class="form-control"
+                    placeholder="https://calendar.google.com/calendar/ical/... のiCal形式URL">
+                </div>
+                <button type="button" id="gcal-fetch-btn" class="btn btn-ghost btn-sm">予定を取得</button>
+              </div>
+              <p class="form-note" style="text-align:left;margin-top:0.4rem;">
+                Googleカレンダーの「設定と共有」→ 対象カレンダーの「カレンダーの統合」にある
+                「限定公開URL」または「公開URL」（iCal形式）を貼り付けてください。
+                取得した予定を下のリストから選ぶと、イベント名・日程・場所などが自動入力されます。
+              </p>
+              <div class="form-group" id="gcal-event-picker" style="display:none;margin-top:0.75rem;">
+                <label class="form-label" for="gcal-event-select">取り込む予定を選択</label>
+                <select id="gcal-event-select" class="form-control"></select>
+              </div>
+              <p class="field-error" id="error-gcalImport"></p>
+            </div>
+            <hr class="form-divider">
+
             <div class="form-group">
               <label class="form-label" for="event-name">イベント名<span class="required-mark">必須</span></label>
               <input type="text" id="event-name" name="eventName" class="form-control">

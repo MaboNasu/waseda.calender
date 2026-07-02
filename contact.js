@@ -187,6 +187,101 @@ function setupRecurringDates() {
 }
 
 /* ============================================================
+   Googleカレンダーから予定を取り込む（入力補助・任意機能）
+   ============================================================ */
+let gcalFetchedEvents = [];
+
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, ch => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[ch]));
+}
+
+function formatGcalEventLabel(ev) {
+  const range = ev.endDate ? `${ev.date}〜${ev.endDate}` : ev.date;
+  const time = ev.startTime ? `${ev.startTime}${ev.endTime ? '〜' + ev.endTime : ''} ` : '';
+  return `${range} ${time}${ev.title}`;
+}
+
+function applyGcalEventToForm(ev) {
+  if (!ev) return;
+  const map = {
+    'event-name': ev.title,
+    'event-date': ev.date,
+    'event-end-date': ev.endDate || '',
+    'event-location': ev.location,
+    'event-start-time': ev.startTime,
+    'event-end-time': ev.endTime,
+    'event-description': ev.description
+  };
+  Object.keys(map).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = map[id] || '';
+  });
+}
+
+function renderGcalEventPicker() {
+  const picker = document.getElementById('gcal-event-picker');
+  const select = document.getElementById('gcal-event-select');
+  if (!picker || !select) return;
+
+  select.innerHTML = gcalFetchedEvents
+    .map((ev, i) => `<option value="${i}">${escapeHtml(formatGcalEventLabel(ev))}</option>`)
+    .join('');
+  picker.style.display = '';
+
+  applyGcalEventToForm(gcalFetchedEvents[0]);
+}
+
+async function fetchGcalEvents(icalUrl) {
+  const errorEl = document.getElementById('error-gcalImport');
+  const picker = document.getElementById('gcal-event-picker');
+  if (errorEl) errorEl.textContent = '';
+  if (picker) picker.style.display = 'none';
+  gcalFetchedEvents = [];
+
+  if (!icalUrl) {
+    if (errorEl) errorEl.textContent = 'GoogleカレンダーのiCal形式URLを入力してください。';
+    return;
+  }
+
+  const fetchBtn = document.getElementById('gcal-fetch-btn');
+  if (fetchBtn) { fetchBtn.disabled = true; fetchBtn.textContent = '取得中...'; }
+
+  try {
+    const url = `${CONTACT_GAS_URL}?action=fetchGCalEvents&icalUrl=${encodeURIComponent(icalUrl)}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data && data.success && Array.isArray(data.events) && data.events.length) {
+      gcalFetchedEvents = data.events;
+      renderGcalEventPicker();
+    } else if (errorEl) {
+      errorEl.textContent = (data && data.error) || '予定を取得できませんでした。';
+    }
+  } catch (err) {
+    if (errorEl) errorEl.textContent = '通信エラーが発生しました。時間をおいて再度お試しください。';
+  } finally {
+    if (fetchBtn) { fetchBtn.disabled = false; fetchBtn.textContent = '予定を取得'; }
+  }
+}
+
+function setupGcalImport() {
+  const fetchBtn = document.getElementById('gcal-fetch-btn');
+  const urlInput = document.getElementById('gcal-ical-url');
+  const select = document.getElementById('gcal-event-select');
+
+  if (fetchBtn && urlInput) {
+    fetchBtn.addEventListener('click', () => fetchGcalEvents(urlInput.value.trim()));
+  }
+  if (select) {
+    select.addEventListener('change', () => {
+      applyGcalEventToForm(gcalFetchedEvents[Number(select.value)]);
+    });
+  }
+}
+
+/* ============================================================
    バリデーション
    ============================================================ */
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -474,6 +569,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setupOrgAuth();
   setupRecurringDates();
+  setupGcalImport();
 
   const form = document.getElementById('contact-form');
   if (form) form.addEventListener('submit', handleSubmit);

@@ -263,6 +263,21 @@ ul, ol { list-style: none; }
 .density-btn:hover { border-color: var(--enjy-light); }
 .density-btn.active { background: var(--enjy); border-color: var(--enjy); color: var(--white); }
 
+/* 大枠フィルタ（全部・学事日程・サークルイベント） */
+.scope-toggle { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.scope-btn {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  padding: 0.55rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  transition: all var(--transition);
+}
+.scope-btn:hover { border-color: var(--enjy-light); }
+.scope-btn.active { background: var(--enjy); border-color: var(--enjy); color: var(--white); }
+
 /* ============================================================
    ヒーロー
    ============================================================ */

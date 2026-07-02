@@ -18,6 +18,13 @@
  * category の選択肢:
  *   "sports" | "culture" | "music" | "theater" | "lecture" | "community" | "other"
  *
+ * scope の選択肢:
+ *   "schedule" | "circle"
+ *   トップページの大枠フィルタ（全部・学事日程・サークルイベント）で使う分類。
+ *   "schedule" → 学事日程（授業期間・休業・式典など、大学が主体の日程）
+ *   "circle"   → サークル・団体が主催する個別イベント（掲載依頼経由で追加するものは基本これ）
+ *   省略した場合は "circle" として扱われる。
+ *
  * target の選択肢:
  *   "student" | "obog" | "public" | "applicant"
  *   ※ 複数選択可（配列で指定）
@@ -60,6 +67,7 @@ const EVENTS = [
     campus: "waseda",
     organizer: "早稲田大学",
     category: "other",
+    scope: "schedule",
     target: ["student"],
     feeType: "free",
     feeText: "無料",
@@ -76,6 +84,7 @@ const EVENTS = [
     campus: "waseda",
     organizer: "早稲田大学",
     category: "other",
+    scope: "schedule",
     target: ["student"],
     feeType: "free",
     feeText: "無料",
@@ -92,6 +101,7 @@ const EVENTS = [
     campus: "waseda",
     organizer: "早稲田大学",
     category: "other",
+    scope: "schedule",
     target: ["student"],
     feeType: "free",
     feeText: "無料",
@@ -108,6 +118,7 @@ const EVENTS = [
     campus: "waseda",
     organizer: "早稲田大学",
     category: "other",
+    scope: "schedule",
     target: ["student"],
     feeType: "free",
     feeText: "無料",
@@ -123,6 +134,7 @@ const EVENTS = [
     campus: "waseda",
     organizer: "早稲田大学",
     category: "other",
+    scope: "schedule",
     target: ["student"],
     feeType: "free",
     feeText: "無料",
@@ -139,6 +151,7 @@ const EVENTS = [
     campus: "waseda",
     organizer: "早稲田大学",
     category: "other",
+    scope: "schedule",
     target: ["applicant", "public"],
     feeType: "free",
     feeText: "無料",
@@ -154,6 +167,7 @@ const EVENTS = [
     campus: "waseda",
     organizer: "早稲田大学",
     category: "other",
+    scope: "schedule",
     target: ["student", "public"],
     feeType: "free",
     feeText: "無料",
@@ -169,6 +183,7 @@ const EVENTS = [
     campus: "waseda",
     organizer: "早稲田大学",
     category: "other",
+    scope: "schedule",
     target: ["student"],
     feeType: "free",
     feeText: "無料",
@@ -184,6 +199,7 @@ const EVENTS = [
     campus: "waseda",
     organizer: "早稲田大学",
     category: "other",
+    scope: "schedule",
     target: ["student", "public"],
     feeType: "free",
     feeText: "無料",
@@ -200,6 +216,7 @@ const EVENTS = [
     campus: "waseda",
     organizer: "早稲田大学",
     category: "other",
+    scope: "schedule",
     target: ["student"],
     feeType: "free",
     feeText: "無料",
@@ -221,6 +238,14 @@ const CATEGORY_LABELS = {
   lecture:   "講演",
   community: "地域",
   other:     "その他"
+};
+
+/**
+ * 大枠フィルタ（scope）の日本語ラベル定義
+ */
+const SCOPE_LABELS = {
+  schedule: "学事日程",
+  circle:   "サークルイベント"
 };
 
 /**

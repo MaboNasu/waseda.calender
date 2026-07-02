@@ -74,6 +74,9 @@ function doGet(e) {
   if (action === 'myInquiries') {
     return jsonResponse(listInquiriesByOrg(e.parameter.orgId, e.parameter.token));
   }
+  if (action === 'fetchGCalEvents') {
+    return jsonResponse(fetchGCalEvents(e.parameter.icalUrl));
+  }
   return ContentService.createTextOutput('Waseda Calendar contact form endpoint is running.');
 }
 
@@ -484,6 +487,161 @@ function saveImageToDrive(base64Data, fileName, mimeType) {
     Logger.log('画像保存エラー: ' + err);
     return '';
   }
+}
+
+// ============================================================
+// Googleカレンダー取り込み（掲載依頼フォームの入力補助・任意機能）
+//
+// 団体が自分のGoogleカレンダーの公開/限定公開のiCal URLを貼り付けると、
+// そのカレンダーの直近の予定一覧を取得してフォームに自動入力できるようにする。
+// スプレッドシートへの書き込みは行わない、その場限りの読み取り専用機能。
+// ============================================================
+
+/** 取得を許可するiCal URLのホスト・パスの接頭辞（任意URLへのアクセスを防ぐため） */
+const GCAL_ICAL_URL_PREFIX = 'https://calendar.google.com/calendar/ical/';
+
+/** 取得する予定の最大件数 */
+const GCAL_MAX_EVENTS = 20;
+
+function fetchGCalEvents(icalUrl) {
+  if (!icalUrl || icalUrl.indexOf(GCAL_ICAL_URL_PREFIX) !== 0) {
+    return { success: false, error: 'GoogleカレンダーのiCal形式URL（https://calendar.google.com/calendar/ical/... で始まるもの）を入力してください。' };
+  }
+
+  let res;
+  try {
+    res = UrlFetchApp.fetch(icalUrl, { muteHttpExceptions: true, followRedirects: true });
+  } catch (err) {
+    Logger.log('fetchGCalEvents 取得エラー: ' + err);
+    return { success: false, error: 'カレンダーの取得に失敗しました。URLをご確認ください。' };
+  }
+  if (res.getResponseCode() !== 200) {
+    return { success: false, error: 'カレンダーが見つかりませんでした。URLと公開設定をご確認ください。' };
+  }
+
+  let events;
+  try {
+    events = parseIcsEvents(res.getContentText());
+  } catch (err) {
+    Logger.log('fetchGCalEvents 解析エラー: ' + err);
+    return { success: false, error: 'カレンダーの内容を読み取れませんでした。' };
+  }
+
+  if (events.length === 0) {
+    return { success: false, error: '今後の予定が見つかりませんでした。' };
+  }
+
+  return { success: true, events: events };
+}
+
+/** ICS本文をパースし、本日以降のVEVENTを開始日時順に返す（簡易パーサー・繰り返し予定の展開は行わない） */
+function parseIcsEvents(icsText) {
+  const unfolded = icsText.replace(/\r\n/g, '\n').replace(/\n[ \t]/g, '');
+  const blocks = unfolded.split('BEGIN:VEVENT').slice(1).map(b => b.split('END:VEVENT')[0]);
+  const today = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd');
+
+  const events = [];
+  blocks.forEach(block => {
+    try {
+      const ev = parseIcsEventBlock(block);
+      if (!ev) return;
+      const effectiveEnd = ev.endDate || ev.date;
+      if (effectiveEnd < today) return;
+      events.push(ev);
+    } catch (err) {
+      Logger.log('VEVENT解析エラー（1件スキップ）: ' + err);
+    }
+  });
+
+  events.sort((a, b) => {
+    const aKey = a.date + ' ' + (a.startTime || '00:00');
+    const bKey = b.date + ' ' + (b.startTime || '00:00');
+    return aKey < bKey ? -1 : aKey > bKey ? 1 : 0;
+  });
+
+  return events.slice(0, GCAL_MAX_EVENTS);
+}
+
+function parseIcsEventBlock(block) {
+  const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+  const props = {};
+  lines.forEach(line => {
+    const colonIdx = line.indexOf(':');
+    if (colonIdx === -1) return;
+    const rawName = line.slice(0, colonIdx);
+    const value = line.slice(colonIdx + 1);
+    const name = rawName.split(';')[0].toUpperCase();
+    const isDateValue = /VALUE=DATE(?!-TIME)/.test(rawName);
+    // 同名プロパティが複数出た場合は最初の1件のみ採用
+    if (!(name in props)) props[name] = { value: value, isDateValue: isDateValue };
+  });
+
+  if (!props.DTSTART) return null;
+
+  const start = parseIcsDateTime(props.DTSTART.value, props.DTSTART.isDateValue);
+  let endDate = '';
+  if (props.DTEND) {
+    const end = parseIcsDateTime(props.DTEND.value, props.DTEND.isDateValue);
+    endDate = props.DTEND.isDateValue ? addDaysToDateStr(end.date, -1) : end.date;
+    if (endDate === start.date) endDate = '';
+  }
+
+  return {
+    uid: props.UID ? unescapeIcsText(props.UID.value) : '',
+    title: props.SUMMARY ? unescapeIcsText(props.SUMMARY.value) : '（無題の予定）',
+    date: start.date,
+    endDate: endDate,
+    startTime: start.time,
+    endTime: (props.DTEND && !props.DTEND.isDateValue) ? parseIcsDateTime(props.DTEND.value, false).time : '',
+    location: props.LOCATION ? unescapeIcsText(props.LOCATION.value) : '',
+    description: props.DESCRIPTION ? unescapeIcsText(props.DESCRIPTION.value) : ''
+  };
+}
+
+/** ICSの日付・日時文字列を { date: 'YYYY-MM-DD', time: 'HH:MM' } に変換する（簡易実装）
+ *  UTC（末尾Z）はAsia/Tokyoに変換する。TZID指定・フローティング時刻はそのままJSTの値として扱う。 */
+function parseIcsDateTime(value, isDateValue) {
+  const digits = value.replace('Z', '');
+  const y  = digits.slice(0, 4);
+  const mo = digits.slice(4, 6);
+  const d  = digits.slice(6, 8);
+
+  if (isDateValue || digits.length <= 8) {
+    return { date: y + '-' + mo + '-' + d, time: '' };
+  }
+
+  const hh = digits.slice(9, 11);
+  const mm = digits.slice(11, 13);
+  const ss = digits.slice(13, 15) || '00';
+
+  if (value.charAt(value.length - 1) === 'Z') {
+    const utcDate = new Date(Date.UTC(Number(y), Number(mo) - 1, Number(d), Number(hh), Number(mm), Number(ss)));
+    return {
+      date: Utilities.formatDate(utcDate, 'Asia/Tokyo', 'yyyy-MM-dd'),
+      time: Utilities.formatDate(utcDate, 'Asia/Tokyo', 'HH:mm')
+    };
+  }
+
+  return { date: y + '-' + mo + '-' + d, time: hh + ':' + mm };
+}
+
+/** YYYY-MM-DD にday日を加算（負数可） */
+function addDaysToDateStr(dateStr, days) {
+  const parts = dateStr.split('-').map(Number);
+  const d = new Date(parts[0], parts[1] - 1, parts[2]);
+  d.setDate(d.getDate() + days);
+  const mo = String(d.getMonth() + 1).padStart(2, '0');
+  const da = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mo + '-' + da;
+}
+
+/** ICSのテキストエスケープ（\, \; \, \\ \n）を復元する */
+function unescapeIcsText(value) {
+  return String(value)
+    .replace(/\\n/gi, '\n')
+    .replace(/\\,/g, ',')
+    .replace(/\\;/g, ';')
+    .replace(/\\\\/g, '\\');
 }
 
 // ============================================================
