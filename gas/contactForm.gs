@@ -187,8 +187,9 @@ function validatePayload(payload) {
 /** 同一メールアドレスからの最短送信間隔（秒）。これより短い間隔での再送信を拒否する */
 const RATE_LIMIT_MIN_INTERVAL_SEC = 20;
 
-/** 同一メールアドレスからの1時間あたりの最大送信回数 */
-const RATE_LIMIT_MAX_PER_HOUR = 10;
+/** 同一メールアドレスからの1時間あたりの最大送信回数（主な悪用対策は上の送信間隔側。
+ *  こちらは通常利用でまず届かない値にし、大量連打だけを弾く保険として設定する） */
+const RATE_LIMIT_MAX_PER_HOUR = 30;
 
 /** レート制限チェック。問題があればエラーメッセージ文字列、問題なければnullを返す */
 function checkRateLimit(email) {
