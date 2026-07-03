@@ -551,10 +551,17 @@ function renderCalendarList() {
   const today    = getTodayStr();
   const evByDate = {};
 
+  // 表示中が「今月」の場合のみ、今日より前の日付は一覧から省く
+  // （スマホ横幅の都合でリスト表示になった時、過ぎた日付を延々スクロールしなくて済むように。
+  //  前月以前に移動した時は、その月の内容をそのまま全部見られるようにする）
+  const now = new Date();
+  const isCurrentMonth = calendarYear === now.getFullYear() && calendarMonth === now.getMonth();
+
   // 複数日イベントも、その月にかかる日すべてに表示する（isEventOnDateで判定）
   const totalDays = new Date(calendarYear, calendarMonth + 1, 0).getDate();
   for (let d = 1; d <= totalDays; d++) {
     const dateStr = formatDateStr(new Date(calendarYear, calendarMonth, d));
+    if (isCurrentMonth && dateStr < today) continue;
     const dayEvs = filtered.filter(ev => isEventOnDate(ev, dateStr));
     if (dayEvs.length > 0) evByDate[dateStr] = dayEvs;
   }
