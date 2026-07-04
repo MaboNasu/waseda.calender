@@ -99,6 +99,10 @@ function doPost(e) {
       return jsonResponse({ success: false, error: rateLimitError });
     }
 
+    if (isDailySubmissionLimitReached()) {
+      return jsonResponse({ success: false, error: '本日は多くのお問い合わせをいただいたため、受付を終了しました。恐れ入りますが、明日以降に改めてお試しください。' });
+    }
+
     // 画像アップロードはロック外で処理する（Drive保存は時間がかかるため、ロックの保持時間を最小化する）
     if (payload.entryChoice === 'returning-org' && payload.imageBase64) {
       const driveUrl = saveImageToDrive(payload.imageBase64, payload.imageFileName, payload.imageMimeType);
@@ -125,10 +129,14 @@ function doPost(e) {
     } catch (mailErr) {
       Logger.log('確認メール送信エラー: ' + mailErr);
     }
-    try {
-      sendAdminNotification(payload, result);
-    } catch (mailErr) {
-      Logger.log('管理者通知メール送信エラー: ' + mailErr);
+    // 管理者通知は優先度「高」（修正・削除・広告協賛）のみ即時送信する。
+    // 通常の掲載依頼はスプレッドシートを定期的に確認する運用とし、送信メール数を抑える。
+    if (result.priority === '高') {
+      try {
+        sendAdminNotification(payload, result);
+      } catch (mailErr) {
+        Logger.log('管理者通知メール送信エラー: ' + mailErr);
+      }
     }
 
     return jsonResponse({ success: true, receiptNumber: result.receiptNumber });
@@ -212,6 +220,38 @@ function checkRateLimit(email) {
   cache.put(key + '_last', String(now), 3600);
   cache.put(countKey, String(count + 1), 3600);
   return null;
+}
+
+// ============================================================
+// 1日あたりの受付件数のグローバル上限
+//
+// 上のレート制限はメールアドレス単位のため、送信のたびにメールアドレスを変えられたり、
+// 1時間ごとの上限を使い切りながら1日中送り続けられたりすると、結局Googleアカウントの
+// メール送信数上限（無料アカウントで1日100通）を超えてしまう。
+// ここではメールアドレスに関係なく、本日すでに何件受け付けたかをPropertiesServiceで数え、
+// 実際に守りたい上限（メール送信数）に対して十分な余裕を残して受付件数そのものを制限する。
+// PropertiesServiceを使うのは、CacheServiceの有効期限が最大6時間までしか設定できず、
+// 1日単位のカウンタには向かないため。
+// ============================================================
+
+/** 1日あたりに受け付ける件数の上限（1件につき最大2通のメールを送るため、
+ *  Googleアカウントのメール送信上限（無料アカウントで1日100通）に対して余裕を持たせた値にする） */
+const DAILY_SUBMISSION_LIMIT = 45;
+
+/** 本日の受付件数が上限に達しているかを判定する。達していなければカウントを1増やしてfalseを返す */
+function isDailySubmissionLimitReached() {
+  const props = PropertiesService.getScriptProperties();
+  const today = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd');
+  const storedDate = props.getProperty('dailySubmissionDate');
+  const count = storedDate === today ? Number(props.getProperty('dailySubmissionCount') || 0) : 0;
+
+  if (count >= DAILY_SUBMISSION_LIMIT) {
+    return true;
+  }
+
+  props.setProperty('dailySubmissionDate', today);
+  props.setProperty('dailySubmissionCount', String(count + 1));
+  return false;
 }
 
 // ============================================================
