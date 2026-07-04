@@ -96,8 +96,17 @@ function getEventEnd(ev) {
   return ev.endDate || ev.date;
 }
 
+/** 学事日程（category:"other"かつscope:"schedule"の授業週・休業日などのマーカー）は、
+ *  日曜日は授業日ではないため、日曜日には表示しない（早稲田祭などcategoryが違う実イベントは対象外） */
+function isHiddenOnSunday(ev, dateStr) {
+  if (getEventScope(ev) !== 'schedule' || ev.category !== 'other') return false;
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return new Date(y, m - 1, d).getDay() === 0;
+}
+
 /** dateStrがイベントの開催期間内（date〜endDate）かどうか */
 function isEventOnDate(ev, dateStr) {
+  if (isHiddenOnSunday(ev, dateStr)) return false;
   return ev.date <= dateStr && dateStr <= getEventEnd(ev);
 }
 
@@ -455,6 +464,7 @@ function renderCalendarGrid() {
   const multiDayEvents = filtered.filter(isMultiDay);
   const singleDayByDate = {};
   filtered.filter(ev => !isMultiDay(ev)).forEach(ev => {
+    if (isHiddenOnSunday(ev, ev.date)) return;
     if (!singleDayByDate[ev.date]) singleDayByDate[ev.date] = [];
     singleDayByDate[ev.date].push(ev);
   });
@@ -475,9 +485,14 @@ function renderCalendarGrid() {
       if (ev.date > weekEnd || evEnd < weekStart) return;
       const segStart = ev.date > weekStart ? ev.date : weekStart;
       const segEnd   = evEnd < weekEnd ? evEnd : weekEnd;
-      const startCol2 = week.findIndex(c => c.dateStr === segStart);
-      const endCol2   = week.findIndex(c => c.dateStr === segEnd);
+      let startCol2 = week.findIndex(c => c.dateStr === segStart);
+      let endCol2   = week.findIndex(c => c.dateStr === segEnd);
       if (startCol2 === -1 || endCol2 === -1) return;
+
+      // 学事日程（授業週等）は日曜日（列インデックス6）を非表示にする。日曜日だけの区間になった場合はバー自体を出さない
+      if (endCol2 === 6 && isHiddenOnSunday(ev, week[6].dateStr)) endCol2 = 5;
+      if (startCol2 > endCol2) return;
+
       bars.push({
         ev, startCol: startCol2, span: endCol2 - startCol2 + 1,
         continuesBefore: ev.date < weekStart,
@@ -640,7 +655,7 @@ function renderCalendar() {
    特定日のイベント一覧（「他N件」クリック時）
    ============================================================ */
 function showDayEvents(dateStr) {
-  const filtered  = getFilteredEvents().filter(ev => ev.date === dateStr);
+  const filtered  = getFilteredEvents().filter(ev => ev.date === dateStr && !isHiddenOnSunday(ev, dateStr));
   const dateDisp  = formatDateDisplay(dateStr);
   if (filtered.length === 0) return;
 
