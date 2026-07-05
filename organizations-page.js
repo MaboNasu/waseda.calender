@@ -93,10 +93,25 @@ function organizationLinksHTML(org) {
   if (org.instagramUrl) {
     links.push(`<a href="${orgEscapeHtml(org.instagramUrl)}" target="_blank" rel="noopener noreferrer" class="org-link">Instagram ↗</a>`);
   }
+  if (org.twitterUrl) {
+    links.push(`<a href="${orgEscapeHtml(org.twitterUrl)}" target="_blank" rel="noopener noreferrer" class="org-link">X ↗</a>`);
+  }
   if (org.websiteUrl) {
     links.push(`<a href="${orgEscapeHtml(org.websiteUrl)}" target="_blank" rel="noopener noreferrer" class="org-link">公式サイト ↗</a>`);
   }
+  if (org.guideUrl) {
+    links.push(`<a href="${orgEscapeHtml(org.guideUrl)}" target="_blank" rel="noopener noreferrer" class="org-link">サークルガイド ↗</a>`);
+  }
   return links.length ? `<div class="org-links">${links.join('')}</div>` : '';
+}
+
+/** 実際にイベントが（開催予定・開催実績のいずれかで）紐づいているかどうかで「掲載中」を自動判定する */
+function isOrgListed(org) {
+  return getEventsForOrganization(org).length > 0 || getPastEventsForOrganization(org).length > 0;
+}
+
+function orgListedBadgeHTML(org) {
+  return isOrgListed(org) ? '<span class="org-listed-badge">掲載中</span>' : '';
 }
 
 function renderOrganizationCards() {
@@ -130,6 +145,7 @@ function renderOrganizationCards() {
           ${orgEscapeHtml(org.name)}
         </button>
         <span class="org-genre">${orgEscapeHtml(org.genre || 'その他')}</span>
+        ${orgListedBadgeHTML(org)}
         <p>${orgEscapeHtml(org.description || '団体概要は準備中です。')}</p>
         ${organizationLinksHTML(org)}
         ${related.length ? `<button class="org-related-btn" type="button" onclick="selectOrganization('${orgEscapeHtml(org.id)}')">関連イベント ${related.length}件を見る</button>` : ''}
@@ -155,6 +171,7 @@ function renderOrganizationDetail(org) {
   detail.innerHTML = `
     <div class="org-detail-header">
       <span class="org-genre">${orgEscapeHtml(org.genre || 'その他')}</span>
+      ${orgListedBadgeHTML(org)}
       <h2>${orgEscapeHtml(org.name)}</h2>
       <p>${orgEscapeHtml(org.nameKana || '')}</p>
       <p>${orgEscapeHtml(org.alphabetName || '')}</p>

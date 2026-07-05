@@ -1208,6 +1208,18 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   font-size: 0.7rem;
   font-weight: 700;
 }
+.org-listed-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin: 0.55rem 0 0.55rem 0.4rem;
+  padding: 0.18rem 0.6rem;
+  border-radius: 99px;
+  background: var(--enjy);
+  color: var(--white);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
 .org-card p,
 .org-detail-desc {
   color: var(--text-secondary);
