@@ -15,7 +15,7 @@
   <link rel="canonical" href="https://wasedacalendar.com/organizations.html">
   <meta name="theme-color" content="#8B0000">
   <!-- OGP -->
-  <meta property="og:title" content="掲載団体一覧 – Waseda Calendar">
+  <meta property="og:title" content="公認サークル – Waseda Calendar">
   <meta property="og:description" content="Waseda Calendar に掲載されている早稲田大学関係の団体・サークル一覧。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://wasedacalendar.com/organizations.html">
@@ -23,16 +23,16 @@
   <meta property="og:image:width" content="1731">
   <meta property="og:image:height" content="909">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="掲載団体一覧 – Waseda Calendar">
+  <meta name="twitter:title" content="公認サークル – Waseda Calendar">
   <meta name="twitter:description" content="Waseda Calendar に掲載されている早稲田大学関係の団体・サークル一覧。">
   <meta name="twitter:image" content="https://wasedacalendar.com/assets/og-image.png?v=1">
-  <title>掲載団体一覧 – Waseda Calendar</title>
+  <title>公認サークル – Waseda Calendar</title>
   <link rel="icon" type="image/png" href="assets/icon.png?v=2">
   <link rel="manifest" href="assets/manifest.json?v=2">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=14">
+  <link rel="stylesheet" href="style.css?v=15">
 </head>
 <body class="organizations-page">
 
@@ -46,7 +46,7 @@
       <a class="nav-btn" href="index.html#today-section">本日のイベント</a>
       <a class="nav-btn" href="index.html#upcoming-section">近日開催</a>
       <a class="nav-btn" href="index.html#calendar-section">カレンダー</a>
-      <a class="nav-btn" href="organizations.html" aria-current="page">掲載団体一覧</a>
+      <a class="nav-btn" href="organizations.html" aria-current="page">公認サークル</a>
       <a class="nav-btn" href="contact.html">掲載依頼</a>
       <a class="nav-btn" href="mypage.html">マイページ</a>
     </nav>
@@ -61,7 +61,7 @@
   <a class="nav-btn" href="index.html#today-section">本日のイベント</a>
   <a class="nav-btn" href="index.html#upcoming-section">近日開催</a>
   <a class="nav-btn" href="index.html#calendar-section">カレンダー</a>
-  <a class="nav-btn" href="organizations.html" aria-current="page">掲載団体一覧</a>
+  <a class="nav-btn" href="organizations.html" aria-current="page">公認サークル</a>
   <a class="nav-btn" href="contact.html">掲載依頼・問い合わせ</a>
   <a class="nav-btn" href="mypage.html">マイページ</a>
 </nav>
@@ -69,8 +69,8 @@
 <main>
   <section class="section org-hero">
     <div class="container">
-      <span class="hero-badge">掲載団体一覧</span>
-      <h1>掲載団体一覧</h1>
+      <span class="hero-badge">公認サークル</span>
+      <h1>公認サークル</h1>
       <p>Waseda Calendar に掲載されている主催団体・サークル・学生団体を探せます。</p>
     </div>
   </section>
@@ -92,13 +92,25 @@
             <div class="filter-group">
               <label for="org-sort">並び替え</label>
               <select id="org-sort" class="filter-select">
+                <option value="listed">掲載中を優先</option>
                 <option value="kana">五十音順</option>
                 <option value="alphabet">アルファベット順</option>
               </select>
             </div>
+            <div class="filter-group">
+              <label>1行あたりの件数</label>
+              <div class="org-columns-toggle" role="group" aria-label="1行あたりの表示件数">
+                <button type="button" class="org-columns-btn" data-columns="1">1列</button>
+                <button type="button" class="org-columns-btn" data-columns="2">2列</button>
+                <button type="button" class="org-columns-btn" data-columns="3">3列</button>
+              </div>
+            </div>
           </div>
         </div>
         <div id="organizations-list" class="org-grid">
+          <!-- JSで描画 -->
+        </div>
+        <div id="organizations-pagination">
           <!-- JSで描画 -->
         </div>
       </div>
@@ -117,7 +129,7 @@
     <nav class="footer-links" aria-label="フッターナビゲーション">
       <a href="index.html#today-section">本日のイベント</a>
       <a href="index.html#calendar-section">カレンダー</a>
-      <a href="organizations.html">掲載団体一覧</a>
+      <a href="organizations.html">公認サークル</a>
       <a href="contact.html">掲載依頼・問い合わせ</a>
       <a href="privacy.html">プライバシーポリシー</a>
     </nav>
@@ -129,9 +141,9 @@
   </div>
 </footer>
 
-<script src="events.js?v=5"></script>
-<script src="organizations.js?v=4"></script>
-<script src="organizations-page.js?v=5"></script>
+<script src="events.js?v=6"></script>
+<script src="organizations.js?v=7"></script>
+<script src="organizations-page.js?v=7"></script>
 <script type="module" src="firebase-init.js?v=1"></script>
 <script src="auth-ui.js?v=2"></script>
 <script src="pwa-install.js?v=2"></script>

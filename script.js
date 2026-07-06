@@ -96,10 +96,11 @@ function getEventEnd(ev) {
   return ev.endDate || ev.date;
 }
 
-/** 学事日程（category:"other"かつscope:"schedule"の授業週・休業日などのマーカー）は、
- *  日曜日は授業日ではないため、日曜日には表示しない（早稲田祭などcategoryが違う実イベントは対象外） */
+/** weeklyClassOnly:true が付いた学事日程（授業週・授業予備週など）は、
+ *  日曜日は授業日ではないため、日曜日には表示しない（オープンキャンパス・早稲田祭など
+ *  授業の有無と関係ない学事日程にはこのフラグを付けないので対象外になる） */
 function isHiddenOnSunday(ev, dateStr) {
-  if (getEventScope(ev) !== 'schedule' || ev.category !== 'other') return false;
+  if (!ev.weeklyClassOnly) return false;
   const [y, m, d] = dateStr.split('-').map(Number);
   return new Date(y, m - 1, d).getDay() === 0;
 }
@@ -413,13 +414,21 @@ function renderTodayEvents() {
 /* ============================================================
    近日開催のイベント
    ============================================================ */
+/** 今日からちょうど1ヶ月後の日付文字列（近日開催に表示する範囲の上限に使う） */
+function getOneMonthAheadStr() {
+  const d = new Date();
+  d.setMonth(d.getMonth() + 1);
+  return formatDateStr(d);
+}
+
 function renderUpcomingEvents() {
   const el = document.getElementById('upcoming-events');
   if (!el) return;
 
-  const today    = getTodayStr();
+  const today         = getTodayStr();
+  const oneMonthAhead = getOneMonthAheadStr();
   const filtered = getFilteredEvents()
-    .filter(ev => ev.date > today || isEventOnDate(ev, today))
+    .filter(ev => (ev.date > today || isEventOnDate(ev, today)) && ev.date <= oneMonthAhead)
     .sort((a, b) => a.date.localeCompare(b.date));
 
   const countEl = document.getElementById('upcoming-count');

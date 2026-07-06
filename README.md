@@ -26,9 +26,9 @@
 ├── style.css      # スタイルシート（えんじ色テーマ・レスポンシブ対応）
 ├── script.js      # メインJavaScript（カレンダー・絞り込み・モーダル・ランキング等）
 ├── events.js      # ★ イベントデータ管理ファイル（運営者が編集）
-├── organizations.html # 掲載団体一覧ページ
+├── organizations.html # 公認サークルページ
 ├── organizations.js   # 掲載団体データ管理ファイル
-├── organizations-page.js # 掲載団体一覧ページ用JavaScript
+├── organizations-page.js # 公認サークルページ用JavaScript
 ├── contact.html   # お問い合わせページ
 ├── contact.js     # お問い合わせフォームのJavaScript（バリデーション・送信処理）
 ├── gas/
@@ -219,7 +219,7 @@ reactions: {
 
 ---
 
-## 掲載団体一覧について
+## 公認サークルについて
 
 掲載団体は `organizations.js` の `ORGANIZATIONS` 配列で管理します。
 
@@ -256,7 +256,7 @@ const ORGANIZATIONS = [
 - `websiteUrl`: 公式サイトリンク。ない場合は空文字でOKです
 - `relatedEventIds`: `events.js` のイベントIDを配列で指定します
 
-掲載団体一覧ページでは、ジャンルフィルター、五十音順・アルファベット順の並び替え、キーワード検索が使えます。
+公認サークルページでは、ジャンルフィルター、五十音順・アルファベット順の並び替え、キーワード検索が使えます。
 
 ---
 
@@ -267,7 +267,7 @@ const ORGANIZATIONS = [
 - PC: 月間グリッドカレンダー
 - スマホ: イベントがある日付のみリスト表示
 
-フォーム、検索欄、ランキング、掲載団体一覧はスマホ幅に収まるように調整しています。
+フォーム、検索欄、ランキング、公認サークルはスマホ幅に収まるように調整しています。
 
 ---
 

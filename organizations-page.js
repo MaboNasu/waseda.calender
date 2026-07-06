@@ -1,14 +1,38 @@
 /**
- * organizations-page.js - 掲載団体一覧ページ
+ * organizations-page.js - 公認サークルページ
  */
 
-const ORG_GENRES = ['すべて', 'スポーツ', '文化', '音楽', '演劇', '講演', '地域', 'その他'];
+const ORG_GENRES = ['すべて', 'スポーツ', '文化', '音楽', '演劇', '講演', '地域', '稲門会', 'その他'];
+
+/** 1ページあたりの表示件数 */
+const ORG_PAGE_SIZE = 20;
+
+/** 団体一覧の列数（1〜3列）をlocalStorageに保存するキー */
+const ORG_COLUMNS_STORAGE_KEY = 'wc-org-columns';
+
+function getStoredOrgColumns() {
+  const defaultValue = window.innerWidth < 640 ? '1' : '2';
+  try {
+    return localStorage.getItem(ORG_COLUMNS_STORAGE_KEY) || defaultValue;
+  } catch (e) {
+    return defaultValue;
+  }
+}
+
+function setStoredOrgColumns(value) {
+  try {
+    localStorage.setItem(ORG_COLUMNS_STORAGE_KEY, value);
+  } catch (e) {
+    // localStorageが使えない環境では保存をスキップ
+  }
+}
 
 let organizationState = {
   genre: 'すべて',
-  sort: 'kana',
+  sort: 'listed',
   keyword: '',
-  selectedId: ''
+  selectedId: '',
+  page: 1
 };
 
 function orgEscapeHtml(str) {
@@ -83,6 +107,11 @@ function filteredOrganizations() {
       return haystack.includes(keyword);
     })
     .sort((a, b) => {
+      if (organizationState.sort === 'listed') {
+        const listedDiff = (isOrgListed(b) ? 1 : 0) - (isOrgListed(a) ? 1 : 0);
+        if (listedDiff !== 0) return listedDiff;
+        return String(a.nameKana || a.name).localeCompare(String(b.nameKana || b.name), 'ja');
+      }
       const key = organizationState.sort === 'alphabet' ? 'alphabetName' : 'nameKana';
       return String(a[key] || a.name).localeCompare(String(b[key] || b.name), 'ja');
     });
@@ -114,13 +143,57 @@ function orgListedBadgeHTML(org) {
   return isOrgListed(org) ? '<span class="org-listed-badge">掲載中</span>' : '';
 }
 
+/** ページ番号ボタンのHTML（現在ページ前後2件＋先頭・末尾のみ表示し、間は「…」で省略する） */
+function renderOrgPaginationHTML(totalItems) {
+  const totalPages = Math.ceil(totalItems / ORG_PAGE_SIZE);
+  if (totalPages <= 1) return '';
+
+  const current = organizationState.page;
+  const pages = [];
+  for (let p = 1; p <= totalPages; p++) {
+    if (p === 1 || p === totalPages || Math.abs(p - current) <= 2) {
+      pages.push(p);
+    } else if (pages[pages.length - 1] !== '…') {
+      pages.push('…');
+    }
+  }
+
+  const buttons = pages.map(p =>
+    p === '…'
+      ? `<span class="org-page-ellipsis">…</span>`
+      : `<button type="button" class="org-page-btn${p === current ? ' active' : ''}" onclick="goToOrgPage(${p})" ${p === current ? 'aria-current="page"' : ''}>${p}</button>`
+  ).join('');
+
+  const prevDisabled = current <= 1 ? 'disabled' : '';
+  const nextDisabled = current >= totalPages ? 'disabled' : '';
+
+  return `
+    <nav class="org-pagination" aria-label="ページ送り">
+      <button type="button" class="org-page-btn org-page-nav" onclick="goToOrgPage(${current - 1})" ${prevDisabled}>‹ 前へ</button>
+      ${buttons}
+      <button type="button" class="org-page-btn org-page-nav" onclick="goToOrgPage(${current + 1})" ${nextDisabled}>次へ ›</button>
+    </nav>`;
+}
+
+function goToOrgPage(page) {
+  const totalItems = filteredOrganizations().length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / ORG_PAGE_SIZE));
+  organizationState.page = Math.min(Math.max(1, page), totalPages);
+  renderOrganizationCards();
+  const listEl = document.getElementById('organizations-list');
+  if (listEl) listEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 function renderOrganizationCards() {
   const wrap = document.getElementById('organizations-list');
   const count = document.getElementById('organizations-count');
+  const pagination = document.getElementById('organizations-pagination');
   if (!wrap) return;
 
   const items = filteredOrganizations();
   if (count) count.textContent = `${items.length}件`;
+
+  wrap.className = `org-grid org-grid-cols-${getStoredOrgColumns()}`;
 
   if (items.length === 0) {
     wrap.innerHTML = `
@@ -128,15 +201,20 @@ function renderOrganizationCards() {
         <div class="empty-state-icon">🏫</div>
         <p>条件に一致する団体はありません。</p>
       </div>`;
+    if (pagination) pagination.innerHTML = '';
     renderOrganizationDetail(null);
     return;
   }
 
+  const totalPages = Math.max(1, Math.ceil(items.length / ORG_PAGE_SIZE));
+  if (organizationState.page > totalPages) organizationState.page = totalPages;
+  const pageItems = items.slice((organizationState.page - 1) * ORG_PAGE_SIZE, organizationState.page * ORG_PAGE_SIZE);
+
   if (!organizationState.selectedId || !items.some(org => org.id === organizationState.selectedId)) {
-    organizationState.selectedId = items[0].id;
+    organizationState.selectedId = pageItems[0].id;
   }
 
-  wrap.innerHTML = items.map(org => {
+  wrap.innerHTML = pageItems.map(org => {
     const related = getEventsForOrganization(org);
     const activeClass = org.id === organizationState.selectedId ? ' active' : '';
     return `
@@ -151,6 +229,8 @@ function renderOrganizationCards() {
         ${related.length ? `<button class="org-related-btn" type="button" onclick="selectOrganization('${orgEscapeHtml(org.id)}')">関連イベント ${related.length}件を見る</button>` : ''}
       </article>`;
   }).join('');
+
+  if (pagination) pagination.innerHTML = renderOrgPaginationHTML(items.length);
 
   renderOrganizationDetail(getOrganizations().find(org => org.id === organizationState.selectedId));
 }
@@ -277,16 +357,38 @@ function setupOrganizationFilters() {
   if (genre) genre.addEventListener('change', () => {
     organizationState.genre = genre.value;
     organizationState.selectedId = '';
+    organizationState.page = 1;
     renderOrganizationCards();
   });
   if (sort) sort.addEventListener('change', () => {
     organizationState.sort = sort.value;
+    organizationState.page = 1;
     renderOrganizationCards();
   });
   if (keyword) keyword.addEventListener('input', () => {
     organizationState.keyword = keyword.value;
     organizationState.selectedId = '';
+    organizationState.page = 1;
     renderOrganizationCards();
+  });
+}
+
+/** 1行あたりの表示件数（列数）の切り替え */
+function setupOrgColumnsToggle() {
+  const buttons = document.querySelectorAll('.org-columns-btn');
+  if (!buttons.length) return;
+
+  const stored = getStoredOrgColumns();
+  buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.columns === stored));
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      setStoredOrgColumns(btn.dataset.columns);
+      const wrap = document.getElementById('organizations-list');
+      if (wrap) wrap.className = `org-grid org-grid-cols-${btn.dataset.columns}`;
+    });
   });
 }
 
@@ -318,6 +420,7 @@ function applyOrganizationIdFromUrl() {
 document.addEventListener('DOMContentLoaded', () => {
   setupOrganizationNav();
   setupOrganizationFilters();
+  setupOrgColumnsToggle();
   applyOrganizationIdFromUrl();
   renderOrganizationCards();
 });

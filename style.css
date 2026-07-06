@@ -1141,7 +1141,7 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 .org-auth-banner { font-size: 0.88rem; font-weight: 700; color: var(--enjy); margin-bottom: 0.6rem; }
 
 /* ============================================================
-   掲載団体一覧
+   公認サークル
    ============================================================ */
 .org-hero {
   background: var(--enjy);
@@ -1162,14 +1162,54 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 }
 .org-controls {
   display: grid;
-  grid-template-columns: minmax(220px, 1fr) 180px 180px;
+  grid-template-columns: minmax(220px, 1fr) 180px 180px 180px;
   gap: 1rem;
 }
+.org-columns-toggle { display: inline-flex; gap: 0.4rem; }
+.org-columns-btn {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.3rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: all var(--transition);
+}
+.org-columns-btn:hover { border-color: var(--enjy-light); }
+.org-columns-btn.active { background: var(--enjy); border-color: var(--enjy); color: var(--white); }
 .org-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 1rem;
 }
+.org-grid-cols-1 { grid-template-columns: 1fr; }
+.org-grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.org-grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.org-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 1.5rem;
+}
+.org-page-btn {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  min-width: 2.2rem;
+  transition: all var(--transition);
+}
+.org-page-btn:hover:not(:disabled) { border-color: var(--enjy-light); }
+.org-page-btn.active { background: var(--enjy); border-color: var(--enjy); color: var(--white); }
+.org-page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.org-page-nav { font-weight: 700; }
+.org-page-ellipsis { color: var(--text-muted); padding: 0 0.2rem; }
 .org-card {
   background: var(--white);
   border: 1px solid var(--border);
@@ -1386,7 +1426,6 @@ textarea.form-control { resize: vertical; min-height: 120px; }
     position: static;
     order: -1;
   }
-  .org-grid { grid-template-columns: 1fr; }
   .footer-links { gap: 1rem; }
 }
 
