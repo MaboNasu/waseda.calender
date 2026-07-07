@@ -1187,6 +1187,15 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 .org-grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
 .org-grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
 .org-grid-cols-5 { grid-template-columns: repeat(5, 1fr); }
+
+/* 表示サイズ「小」（5列）はカードが細長くなりがちなので、文字サイズ・余白を詰めて調整する */
+.org-grid-cols-5 .org-card { padding: 0.75rem; }
+.org-grid-cols-5 .org-name-btn { font-size: 0.82rem; line-height: 1.35; }
+.org-grid-cols-5 .org-genre,
+.org-grid-cols-5 .org-listed-badge { font-size: 0.6rem; padding: 0.14rem 0.5rem; margin: 0.4rem 0; }
+.org-grid-cols-5 .org-card p { font-size: 0.72rem; line-height: 1.5; }
+.org-grid-cols-5 .org-link,
+.org-grid-cols-5 .org-related-btn { font-size: 0.65rem; padding: 0.28rem 0.5rem; }
 .org-pagination {
   display: flex;
   flex-wrap: wrap;
