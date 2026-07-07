@@ -7,15 +7,14 @@ const ORG_GENRES = ['すべて', 'スポーツ', '文化', '音楽', '演劇', '
 /** 1ページあたりの表示件数 */
 const ORG_PAGE_SIZE = 20;
 
-/** 団体一覧の列数（1〜3列）をlocalStorageに保存するキー */
+/** 団体一覧の表示サイズ（大=2列/中=3列/小=5列）をlocalStorageに保存するキー */
 const ORG_COLUMNS_STORAGE_KEY = 'wc-org-columns';
 
 function getStoredOrgColumns() {
-  const defaultValue = window.innerWidth < 640 ? '1' : '2';
   try {
-    return localStorage.getItem(ORG_COLUMNS_STORAGE_KEY) || defaultValue;
+    return localStorage.getItem(ORG_COLUMNS_STORAGE_KEY) || '2';
   } catch (e) {
-    return defaultValue;
+    return '2';
   }
 }
 

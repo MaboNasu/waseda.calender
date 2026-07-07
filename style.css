@@ -1184,9 +1184,9 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 1rem;
 }
-.org-grid-cols-1 { grid-template-columns: 1fr; }
 .org-grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
 .org-grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.org-grid-cols-5 { grid-template-columns: repeat(5, 1fr); }
 .org-pagination {
   display: flex;
   flex-wrap: wrap;
