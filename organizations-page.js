@@ -218,7 +218,7 @@ function renderOrganizationCards() {
     const related = getEventsForOrganization(org);
     const activeClass = org.id === organizationState.selectedId ? ' active' : '';
     return `
-      <article class="org-card${activeClass}">
+      <article class="org-card${activeClass}" onclick="selectOrganization('${orgEscapeHtml(org.id)}')">
         <button class="org-name-btn" type="button" onclick="selectOrganization('${orgEscapeHtml(org.id)}')">
           ${orgEscapeHtml(org.name)}
         </button>

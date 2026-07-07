@@ -1161,11 +1161,12 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   align-items: start;
 }
 .org-controls {
-  display: grid;
-  grid-template-columns: minmax(220px, 1fr) 180px 180px 180px;
+  display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 }
-.org-columns-toggle { display: inline-flex; gap: 0.4rem; }
+.org-controls > .filter-group { flex: 1 1 200px; min-width: 0; }
+.org-columns-toggle { display: inline-flex; flex-wrap: wrap; gap: 0.4rem; }
 .org-columns-btn {
   background: var(--white);
   border: 1.5px solid var(--border);
@@ -1217,6 +1218,7 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   padding: 1.1rem;
   box-shadow: var(--shadow-sm);
   transition: border-color var(--transition), box-shadow var(--transition);
+  cursor: pointer;
 }
 .org-card.active,
 .org-card:hover {
@@ -1421,7 +1423,7 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   .section { padding: 2rem 0; }
   .section-title { font-size: 1.15rem; }
   .org-layout { grid-template-columns: 1fr; }
-  .org-controls { grid-template-columns: 1fr; }
+  .org-controls > .filter-group { flex-basis: 100%; }
   .org-detail {
     position: static;
     order: -1;
