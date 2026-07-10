@@ -801,6 +801,30 @@ const EVENTS = [
     description: "秋学期の授業予備期間です。",
     lastUpdated: "2026-07-03",
     isPublished: true
+  },
+
+  // ========================================
+  // サークル・団体イベント
+  // ========================================
+
+  {
+    id: "evt-043",
+    title: "第22回出版甲子園 企画応募受付期間",
+    date: "2026-07-11",
+    endDate: "2026-08-06",
+    location: "",
+    campus: "online",
+    organizer: "出版甲子園実行委員会",
+    category: "culture",
+    scope: "circle",
+    orgId: "C-003",
+    target: ["student"],
+    feeType: "free",
+    feeText: "無料",
+    description: "学生の、学生による、学生のための出版コンテスト「出版甲子園」。「本にしたい企画」を全国の学生から募集し、実行委員会の審査・ブラッシュアップを経て、決勝大会で出版業界関係者にプレゼンします。第22回大会の企画応募受付期間です（フォームより約1000字から応募可）。",
+    externalUrl: "https://spk.picaso.jp/22taikai/application/",
+    lastUpdated: "2026-07-10",
+    isPublished: true
   }
 
 ];

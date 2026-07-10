@@ -1140,6 +1140,27 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 .org-auth-success { background: var(--enjy-pale); border-color: rgba(139,0,0,0.2); }
 .org-auth-banner { font-size: 0.88rem; font-weight: 700; color: var(--enjy); margin-bottom: 0.6rem; }
 
+/* ---- 公認サークル検索（お問い合わせフォーム） ---- */
+.circle-search-results {
+  list-style: none;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  display: none;
+}
+.circle-search-item {
+  padding: 0.55rem 0.9rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition), color var(--transition);
+}
+.circle-search-item:last-child { border-bottom: none; }
+.circle-search-item:hover { background: var(--enjy-pale); color: var(--enjy); }
+
 /* ============================================================
    公認サークル
    ============================================================ */

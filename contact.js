@@ -142,6 +142,111 @@ function setupOrgAuth() {
 }
 
 /* ============================================================
+   公認サークルの自己申告＋検索照合（新規登録・団体情報登録のみ）
+   ============================================================ */
+const CIRCLE_SEARCH_MIN_LENGTH = 2;
+const CIRCLE_SEARCH_MAX_RESULTS = 8;
+
+function getOrganizationsList() {
+  return typeof ORGANIZATIONS !== 'undefined' ? ORGANIZATIONS : [];
+}
+
+function setupCircleMatch() {
+  const yesRadio = document.getElementById('circle-yes');
+  const noRadio = document.getElementById('circle-no');
+  const searchGroup = document.getElementById('circle-search-group');
+  const searchInput = document.getElementById('circle-search-input');
+  const resultsList = document.getElementById('circle-search-results');
+  const statusEl = document.getElementById('circle-search-status');
+  const notFoundBtn = document.getElementById('circle-not-found-btn');
+  const matchedIdInput = document.getElementById('matched-org-id');
+  const orgNameInput = document.getElementById('contact-org');
+
+  if (!yesRadio || !noRadio || !searchGroup || !searchInput || !resultsList || !matchedIdInput || !orgNameInput) return;
+
+  function clearMatch() {
+    matchedIdInput.value = '';
+    orgNameInput.readOnly = false;
+  }
+
+  function resetSearchUI() {
+    clearMatch();
+    searchInput.value = '';
+    searchInput.style.display = '';
+    resultsList.innerHTML = '';
+    resultsList.style.display = 'none';
+    statusEl.textContent = '';
+    notFoundBtn.style.display = '';
+  }
+
+  yesRadio.addEventListener('change', () => {
+    searchGroup.style.display = '';
+    resetSearchUI();
+  });
+
+  noRadio.addEventListener('change', () => {
+    searchGroup.style.display = 'none';
+    clearMatch();
+  });
+
+  searchInput.addEventListener('input', () => {
+    clearMatch();
+    const query = searchInput.value.trim();
+    resultsList.innerHTML = '';
+
+    if (query.length < CIRCLE_SEARCH_MIN_LENGTH) {
+      resultsList.style.display = 'none';
+      statusEl.textContent = query ? 'あと数文字入力してください。' : '';
+      return;
+    }
+
+    const lower = query.toLowerCase();
+    const matches = getOrganizationsList().filter(org =>
+      (org.name && org.name.toLowerCase().includes(lower)) ||
+      (org.nameKana && org.nameKana.includes(query))
+    );
+
+    if (matches.length === 0) {
+      resultsList.style.display = 'none';
+      statusEl.textContent = '該当する団体が見つかりません。表記を変えて検索するか、下の「見つからない場合」からお進みください。';
+      return;
+    }
+
+    statusEl.textContent = matches.length > CIRCLE_SEARCH_MAX_RESULTS
+      ? `候補が${matches.length}件あります。もう少し具体的に入力してください（上位${CIRCLE_SEARCH_MAX_RESULTS}件を表示中）。`
+      : '';
+
+    resultsList.innerHTML = matches.slice(0, CIRCLE_SEARCH_MAX_RESULTS).map(org =>
+      `<li class="circle-search-item" data-org-id="${escapeHtml(org.id)}">${escapeHtml(org.name)}</li>`
+    ).join('');
+    resultsList.style.display = '';
+  });
+
+  resultsList.addEventListener('click', (e) => {
+    const item = e.target.closest('.circle-search-item');
+    if (!item) return;
+    const org = getOrganizationsList().find(o => o.id === item.dataset.orgId);
+    if (!org) return;
+
+    orgNameInput.value = org.name;
+    orgNameInput.readOnly = true;
+    matchedIdInput.value = org.id;
+    searchInput.value = '';
+    searchInput.style.display = 'none';
+    resultsList.innerHTML = '';
+    resultsList.style.display = 'none';
+    statusEl.textContent = `「${org.name}」を選択しました。`;
+    notFoundBtn.style.display = 'none';
+  });
+
+  notFoundBtn.addEventListener('click', () => {
+    resetSearchUI();
+    orgNameInput.value = '';
+    orgNameInput.focus();
+  });
+}
+
+/* ============================================================
    定期開催（複数開催日のまとめ入力）
    ============================================================ */
 function addRecurringDateRow() {
@@ -356,7 +461,6 @@ function validateForm(form) {
   }
 
   const requiredTextFields = [
-    { name: 'name', label: 'お名前を入力してください' },
     { name: 'organization', label: '団体名・所属を入力してください' },
     { name: 'message', label: 'お問い合わせ内容を入力してください' }
   ];
@@ -456,6 +560,8 @@ async function buildPayload(form) {
   payload.recurringDates = collectRecurringDates(form);
   payload.orgId = document.getElementById('auth-org-id').value;
   payload.orgToken = document.getElementById('auth-org-token').value;
+  const matchedOrgIdEl = document.getElementById('matched-org-id');
+  payload.matchedOrgId = matchedOrgIdEl ? matchedOrgIdEl.value : '';
   payload.editOrgInfo = !!(document.getElementById('edit-org-info') && document.getElementById('edit-org-info').checked);
   payload.consent = !!(form.elements['consent'] && form.elements['consent'].checked);
   payload.website = form.elements['website'] ? form.elements['website'].value : '';
@@ -568,6 +674,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateConditionalFields();
 
   setupOrgAuth();
+  setupCircleMatch();
   setupRecurringDates();
   setupGcalImport();
 

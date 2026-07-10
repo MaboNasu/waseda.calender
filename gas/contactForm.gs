@@ -153,7 +153,6 @@ function doPost(e) {
 function validatePayload(payload) {
   if (!payload.entryChoice) return 'ご用件が選択されていません。';
   if (!payload.inquiryType) return 'お問い合わせ種別を特定できませんでした。';
-  if (!payload.name) return 'お名前が未入力です。';
   if (!payload.organization) return '団体名・所属が未入力です。';
   if (!payload.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) return 'メールアドレスが正しくありません。';
   if (!payload.message) return 'お問い合わせ内容が未入力です。';
@@ -295,7 +294,9 @@ function getOrgSheet() {
 /** 団体マスタの列インデックス（0始まり） */
 const ORG_COL = {
   id: 0, registeredAt: 1, name: 2, contactName: 3, email: 4,
-  sns: 5, description: 6, token: 7, pastCount: 8, lastRequestAt: 9, memo: 10
+  sns: 5, description: 6, token: 7, pastCount: 8, lastRequestAt: 9, memo: 10,
+  // 末尾に追加した列
+  circleId: 11
 };
 
 function lookupOrgByIdAndToken(orgId, token) {
@@ -443,7 +444,7 @@ function upsertOrg(payload) {
   orgSheet.appendRow([
     orgId, now, sanitizeForSheet(payload.organization), sanitizeForSheet(payload.name), sanitizeForSheet(payload.email),
     sanitizeForSheet(payload.orgSns || ''), sanitizeForSheet(payload.orgDescription || ''), token,
-    1, now, ''
+    1, now, '', sanitizeForSheet(payload.matchedOrgId || '')
   ]);
   return { orgId: orgId, orgToken: token };
 }
@@ -770,6 +771,13 @@ function buildOrgUrlLine(result) {
 /** メール送信元の表示名（受信者が見覚えのない個人アドレスだと判断し、迷惑メール扱いされるのを防ぐ） */
 const MAIL_SENDER_NAME = 'Waseda Calendar';
 
+/** お名前（担当者名）は任意項目のため、未入力の場合は団体名、それも無ければ汎用の敬称にフォールバックする */
+function buildGreetingName(payload) {
+  if (payload.name) return payload.name + ' 様';
+  if (payload.organization) return payload.organization + ' ご担当者様';
+  return 'ご担当者様';
+}
+
 /** 開催日の表示（終了日があれば範囲表示） */
 function formatEventDateRange(payload) {
   if (!payload.eventDate) return '（指定なし）';
@@ -788,7 +796,7 @@ function formatRecurringDatesLine(payload) {
 function sendConfirmationEmail(payload, result) {
   const subject = '【Waseda Calendar】お問い合わせを受け付けました（受付番号: ' + result.receiptNumber + '）';
   const nowText = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy年MM月dd日 HH:mm');
-  const body = payload.name + ' 様\n\n' +
+  const body = buildGreetingName(payload) + '\n\n' +
     'お問い合わせいただきありがとうございます。以下の内容で受け付けました。\n' +
     '内容を確認のうえ、必要に応じてご連絡します。\n\n' +
     '受付番号　　：' + result.receiptNumber + '\n' +

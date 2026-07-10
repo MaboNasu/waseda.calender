@@ -167,8 +167,8 @@
 
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label" for="contact-name">お名前（担当者名）<span class="required-mark">必須</span></label>
-              <input type="text" id="contact-name" name="name" class="form-control" required>
+              <label class="form-label" for="contact-name">お名前（担当者名）</label>
+              <input type="text" id="contact-name" name="name" class="form-control">
               <p class="field-error" id="error-name"></p>
             </div>
             <div class="form-group">
@@ -176,6 +176,31 @@
               <input type="text" id="contact-org" name="organization" class="form-control" required>
               <p class="field-error" id="error-organization"></p>
             </div>
+          </div>
+
+          <!-- 公認サークルの自己申告＋検索照合（新規登録・団体情報登録のみ） -->
+          <div class="conditional-fields" data-show-for-entry="new-org,org-info">
+            <div class="form-group">
+              <label class="form-label">早稲田大学公認サークルですか？</label>
+              <div class="entry-options">
+                <label class="entry-option">
+                  <input type="radio" name="isCertifiedCircle" value="yes" id="circle-yes">
+                  <span>はい</span>
+                </label>
+                <label class="entry-option">
+                  <input type="radio" name="isCertifiedCircle" value="no" id="circle-no">
+                  <span>いいえ</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-group" id="circle-search-group" style="display:none;">
+              <label class="form-label" for="circle-search-input">団体名を検索して選択してください</label>
+              <input type="text" id="circle-search-input" class="form-control" autocomplete="off" placeholder="団体名を入力（例: 出版甲子園）">
+              <ul class="circle-search-results" id="circle-search-results"></ul>
+              <p class="form-note" id="circle-search-status" style="text-align:left;margin-top:0.4rem;"></p>
+              <button type="button" id="circle-not-found-btn" class="btn btn-ghost btn-sm">一覧に見つからない場合はこちら</button>
+            </div>
+            <input type="hidden" id="matched-org-id" name="matchedOrgId" value="">
           </div>
 
           <div class="form-row">
@@ -375,6 +400,7 @@
   </div>
 </footer>
 
+<script src="organizations.js?v=1"></script>
 <script src="contact.js?v=4"></script>
 <script type="module" src="firebase-init.js?v=1"></script>
 <script src="auth-ui.js?v=2"></script>
