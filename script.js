@@ -151,6 +151,13 @@ function campusLabel(key) {
   return (typeof CAMPUS_LABELS !== 'undefined' && CAMPUS_LABELS[key]) || key || '—';
 }
 
+/** 主催団体の表示。orgIdが設定されている場合は団体ページへのリンクにする */
+function organizerHTML(ev) {
+  const text = escapeHtml(ev.organizer || '—');
+  if (!ev.orgId) return text;
+  return `<a href="organizations.html?id=${encodeURIComponent(ev.orgId)}" class="organizer-link">${text}</a>`;
+}
+
 /** 参加費キー → 日本語 */
 function feeLabel(key) {
   return (typeof FEE_LABELS !== 'undefined' && FEE_LABELS[key]) || key || '—';
@@ -371,7 +378,7 @@ function createEventCardHTML(ev, showDate = true) {
           </div>
           <div class="event-info-row">
             <span class="event-info-icon">🏫</span>
-            <span>${escapeHtml(ev.organizer || '—')}</span>
+            <span>${organizerHTML(ev)}</span>
           </div>
         </div>
         ${createReactionSummaryHTML(ev)}
@@ -732,7 +739,7 @@ function openModal(eventId) {
     </div>
     <div class="modal-detail-item">
       <span class="modal-detail-label">主催団体</span>
-      <span class="modal-detail-value">${escapeHtml(ev.organizer || '—')}</span>
+      <span class="modal-detail-value">${organizerHTML(ev)}</span>
     </div>
     <div class="modal-detail-item">
       <span class="modal-detail-label">対象者</span>
@@ -950,6 +957,7 @@ function createModalShareActionsHTML(ev) {
     <a class="btn btn-ghost btn-sm" href="${escapeHtml(buildGoogleCalendarUrl(ev))}" target="_blank" rel="noopener noreferrer">📅 Googleカレンダーに追加</a>
     <button type="button" class="btn btn-ghost btn-sm" onclick="downloadIcsForEvent('${id}')">⬇️ カレンダーファイル(.ics)を保存</button>
     <a class="btn btn-ghost btn-sm" href="${escapeHtml(buildEventPageUrl(ev))}">🔗 個別ページを開く</a>
+    <button type="button" class="btn btn-ghost btn-sm" onclick="generatePostImageForEvent('${id}')">🖼️ 投稿用画像を生成</button>
     <button type="button" class="btn btn-ghost btn-sm" onclick="shareEventOnLine('${id}')">LINEで共有</button>
     <button type="button" class="btn btn-ghost btn-sm" onclick="shareEventOnX('${id}')">Xで共有</button>`;
 }

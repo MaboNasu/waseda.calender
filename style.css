@@ -979,6 +979,8 @@ ul, ol { list-style: none; }
   text-transform: uppercase;
 }
 .modal-detail-value { font-size: 0.9rem; color: var(--text-primary); font-weight: 500; overflow-wrap: break-word; }
+.organizer-link { color: var(--enjy); text-decoration: underline; text-underline-offset: 2px; }
+.organizer-link:hover { color: var(--enjy-light); }
 .modal-desc-label {
   font-size: 0.72rem;
   font-weight: 700;
