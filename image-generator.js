@@ -18,7 +18,7 @@ const POST_IMAGE_COLORS = {
 const POST_IMAGE_SERIF_FONT = 'Noto Serif JP';
 const POST_IMAGE_SANS_FONT = 'Noto Sans JP';
 /** AIで生成した背景画像（用意できていない場合はグラデーションにフォールバックする） */
-const POST_IMAGE_BG_URL = 'assets/post-template-bg.png';
+const POST_IMAGE_BG_URL = 'assets/post-template-bg.jpg';
 
 /** 背景画像を読み込む。存在しない・読み込み失敗の場合はnullを返す（呼び出し側でグラデーションにフォールバック） */
 function loadPostImageBackground() {
@@ -116,17 +116,19 @@ function drawPostImageCanvas(ev, bgImage) {
     ctx.fillRect(0, 0, size, size);
   }
 
-  // 上部：サイトのロゴ文言
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'alphabetic';
-  ctx.fillStyle = c.white;
-  ctx.font = `700 44px "${POST_IMAGE_SERIF_FONT}", serif`;
-  ctx.fillText('Waseda Calendar', size / 2, 110);
-  ctx.font = `400 22px "${POST_IMAGE_SANS_FONT}", sans-serif`;
-  ctx.fillText('早稲田のイベントを、ひとつのカレンダーで。', size / 2, 145);
+  // 上部：サイトのロゴ文言（背景画像がある場合はロゴが焼き込み済みのため描かない）
+  if (!bgImage) {
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = c.white;
+    ctx.font = `700 44px "${POST_IMAGE_SERIF_FONT}", serif`;
+    ctx.fillText('Waseda Calendar', size / 2, 110);
+    ctx.font = `400 22px "${POST_IMAGE_SANS_FONT}", sans-serif`;
+    ctx.fillText('早稲田のイベントを、ひとつのカレンダーで。', size / 2, 145);
+  }
 
-  // 中央：白いカード
-  const cardX = 70, cardY = 210, cardWidth = size - cardX * 2, cardHeight = 650;
+  // 中央：白いカード（背景画像側の白いカード枠の実測値に合わせた座標）
+  const cardX = 111, cardY = 268, cardWidth = 858, cardHeight = 523;
   ctx.save();
   ctx.shadowColor = 'rgba(0,0,0,0.25)';
   ctx.shadowBlur = 30;
@@ -187,13 +189,15 @@ function drawPostImageCanvas(ev, bgImage) {
   ctx.fillStyle = c.textSecondary;
   ctx.fillText('🏫 ' + (ev.organizer || ''), innerX, cursorY);
 
-  // 下部：SNSハンドル・URL
-  ctx.textAlign = 'center';
-  ctx.fillStyle = c.white;
-  ctx.font = `700 30px "${POST_IMAGE_SANS_FONT}", sans-serif`;
-  ctx.fillText('@waseda_calendar', size / 2, 960);
-  ctx.font = `400 24px "${POST_IMAGE_SANS_FONT}", sans-serif`;
-  ctx.fillText('wasedacalendar.com', size / 2, 1000);
+  // 下部：SNSハンドル・URL（背景画像がある場合は焼き込み済みのため描かない）
+  if (!bgImage) {
+    ctx.textAlign = 'center';
+    ctx.fillStyle = c.white;
+    ctx.font = `700 30px "${POST_IMAGE_SANS_FONT}", sans-serif`;
+    ctx.fillText('@waseda_calendar', size / 2, 960);
+    ctx.font = `400 24px "${POST_IMAGE_SANS_FONT}", sans-serif`;
+    ctx.fillText('wasedacalendar.com', size / 2, 1000);
+  }
 
   return canvas;
 }
