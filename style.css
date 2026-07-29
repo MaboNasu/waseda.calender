@@ -506,6 +506,7 @@ ul, ol { list-style: none; }
 .tag-other     { background: var(--gray-100); color: var(--gray-600); }
 .tag-free      { background: #D1FAE5; color: #065F46; }
 .tag-paid      { background: #FEE2E2; color: #991B1B; }
+.tag-unknown   { background: var(--gray-100); color: var(--gray-600); }
 .event-card-title {
   font-family: var(--font-main);
   font-size: 1rem;
