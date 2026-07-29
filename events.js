@@ -997,7 +997,7 @@ const EVENTS = [
   },
   {
     id: "evt-053",
-    title: "弓道部(男子) リーグ戦練習試合 vs青山学院大学",
+    title: "弓道部(女子) リーグ戦練習試合 vs青山学院大学",
     date: "2026-07-04",
     location: "早稲田大学弓道部 本道場",
     campus: "waseda",
@@ -1253,7 +1253,7 @@ const EVENTS = [
   },
   {
     id: "evt-068",
-    title: "弓道部(女子) 同志社大学定期戦",
+    title: "弓道部(男子) 同志社大学定期戦",
     date: "2026-08-23",
     location: "同志社大学",
     campus: "outside",
@@ -1263,14 +1263,14 @@ const EVENTS = [
     target: ["student", "obog", "public"],
     feeType: "unknown",
     feeText: "料金不明",
-    description: "早稲田大学弓道部(女子)と同志社大学の伝統の定期戦。",
+    description: "早稲田大学弓道部(男子)と同志社大学の伝統の定期戦。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
     lastUpdated: "2026-07-30",
     isPublished: true
   },
   {
     id: "evt-069",
-    title: "弓道部(男子) リーグ戦練習試合 vs東京都市大学",
+    title: "弓道部(女子) リーグ戦練習試合 vs東京都市大学",
     date: "2026-08-23",
     location: "早稲田大学弓道部 本道場",
     campus: "waseda",
@@ -1344,7 +1344,6 @@ const EVENTS = [
     id: "evt-073",
     title: "飛込 日本学生選手権水泳競技大会",
     date: "2026-08-29",
-    endDate: "2026-08-30",
     location: "Asue大阪プール",
     campus: "outside",
     organizer: "早稲田大学水泳部",
@@ -1360,7 +1359,7 @@ const EVENTS = [
   },
   {
     id: "evt-074",
-    title: "競泳 日本学生選手権水泳競技大会(横浜)",
+    title: "競泳・アーティスティックスイミング 日本学生選手権水泳競技大会(横浜)",
     date: "2026-08-30",
     location: "横浜国際プール",
     campus: "outside",
@@ -1370,7 +1369,7 @@ const EVENTS = [
     target: ["student", "obog", "public"],
     feeType: "unknown",
     feeText: "料金不明",
-    description: "第102回日本学生選手権水泳競技大会 競泳競技。早稲田大学水泳部(競泳)が出場。",
+    description: "第102回日本学生選手権水泳競技大会 競泳・アーティスティックスイミング(AS)競技。早稲田大学水泳部が出場。",
     externalUrl: "https://wasedaswim.com/schedule",
     lastUpdated: "2026-07-30",
     isPublished: true
@@ -1395,7 +1394,7 @@ const EVENTS = [
   },
   {
     id: "evt-076",
-    title: "水球(男女) 日本学生選手権水泳競技大会",
+    title: "水球(男子) 日本学生選手権水泳競技大会",
     date: "2026-09-10",
     endDate: "2026-09-13",
     location: "千葉国際総合水泳場",
@@ -1406,7 +1405,7 @@ const EVENTS = [
     target: ["student", "obog", "public"],
     feeType: "unknown",
     feeText: "料金不明",
-    description: "第102回日本学生選手権水泳競技大会 水球競技。早稲田大学水泳部(男女)が出場。",
+    description: "第102回日本学生選手権水泳競技大会 水球競技。早稲田大学水泳部(水球男子)が出場。",
     externalUrl: "https://wasedaswim.com/schedule",
     lastUpdated: "2026-07-30",
     isPublished: true
@@ -2590,6 +2589,24 @@ const EVENTS = [
     feeText: "料金不明",
     description: "早稲田大学応援部の伝統行事「北風祭」。開祭式11:00、応援部ステージ11:20〜。",
     externalUrl: "http://www.w-ouen.com/",
+    lastUpdated: "2026-07-30",
+    isPublished: true
+  },
+  {
+    id: "evt-142",
+    title: "水球(女子) 日本学生選手権水泳競技大会",
+    date: "2026-09-11",
+    endDate: "2026-09-13",
+    location: "千葉国際総合水泳場",
+    campus: "outside",
+    organizer: "早稲田大学水泳部",
+    category: "sports",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "第102回日本学生選手権水泳競技大会 水球競技。早稲田大学水泳部(水球女子)が出場。",
+    externalUrl: "https://wasedaswim.com/schedule",
     lastUpdated: "2026-07-30",
     isPublished: true
   }
