@@ -2092,23 +2092,7 @@ const EVENTS = [
   },
 
   // ---- 空手部 ----
-  {
-    id: "evt-114",
-    title: "早慶戦(空手部) 第84回早慶空手定期戦",
-    date: "2026-12-07",
-    location: "早稲田アリーナ",
-    campus: "toyama",
-    organizer: "早稲田大学空手部",
-    category: "sports",
-    scope: "circle",
-    target: ["student", "obog", "public"],
-    feeType: "unknown",
-    feeText: "料金不明",
-    description: "早稲田大学空手部と慶應義塾大学による第84回早慶空手定期戦。",
-    externalUrl: "https://www.waseda-karatebu.org/",
-    lastUpdated: "2026-07-30",
-    isPublished: true
-  },
+  // (第84回早慶空手定期戦は2025-12-07に開催済み。2026年度・第85回の日程は未確認のため掲載なし)
 
   // ---- ラクロス部(男子・RED BATS) ----
   {
@@ -2372,7 +2356,7 @@ const EVENTS = [
     target: ["student", "obog", "public"],
     feeType: "unknown",
     feeText: "料金不明",
-    description: "早稲田大学自動車部が出場する全日本学生ダートトライアル選手権大会。",
+    description: "早稲田大学自動車部が出場する全日本学生ダートトライアル選手権大会。部公式サイトの日程表は「去年度準拠」との注記があり、変更の可能性あり。",
     externalUrl: "http://wuac.com/posts/schedule/",
     lastUpdated: "2026-07-30",
     isPublished: true
@@ -2389,7 +2373,7 @@ const EVENTS = [
     target: ["student", "obog", "public"],
     feeType: "unknown",
     feeText: "料金不明",
-    description: "早稲田大学自動車部が出場する全日本学生ジムカーナ選手権大会。連盟公式発表では8/29〜30の可能性あり(要確認)。",
+    description: "早稲田大学自動車部が出場する全日本学生ジムカーナ選手権大会。部公式サイトの日程表は「去年度準拠」との注記あり。同サイトの観戦案内欄では「8/20前日練習・8/21大会本番」とも記載されており、月間予定表の8/30表記と矛盾がある(要確認)。連盟公式発表では8/29〜30の可能性も。",
     externalUrl: "http://wuac.com/posts/schedule/",
     lastUpdated: "2026-07-30",
     isPublished: true
@@ -2406,7 +2390,7 @@ const EVENTS = [
     target: ["student", "obog", "public"],
     feeType: "unknown",
     feeText: "料金不明",
-    description: "早稲田大学自動車部が出場する全日本学生自動車運転競技選手権大会。全日本学生自動車連盟の公式発表とは日程が異なり(要確認)。",
+    description: "早稲田大学自動車部が出場する全日本学生自動車運転競技選手権大会。部公式サイトの日程表は「去年度準拠」との注記あり、全日本学生自動車連盟の公式発表(11/3)とは日程が異なる(要確認)。",
     externalUrl: "http://wuac.com/posts/schedule/",
     lastUpdated: "2026-07-30",
     isPublished: true
