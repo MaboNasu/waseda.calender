@@ -12,6 +12,9 @@ const ORG_INFO_FIELD_IDS = ['contact-name', 'contact-org', 'contact-email', 'con
 /** 画像添付（登録済み団体のみ）の最大サイズ */
 const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
 
+/** 画像添付で許可するMIMEタイプ（サーバー側 gas/contactForm.gs の IMAGE_MAGIC_BYTES と揃える） */
+const ALLOWED_IMAGE_MIME_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+
 const CONDITIONAL_FIELD_GROUPS = document.querySelectorAll('.conditional-fields');
 
 let isSubmitting = false;
@@ -423,8 +426,8 @@ function validateForm(form) {
     const imageInput = document.getElementById('event-image');
     const imageFile = imageInput && imageInput.files[0] ? imageInput.files[0] : null;
     if (imageFile) {
-      if (!imageFile.type.startsWith('image/')) {
-        setFieldError('eventImage', '画像ファイルのみアップロードできます');
+      if (!ALLOWED_IMAGE_MIME_TYPES.includes(imageFile.type)) {
+        setFieldError('eventImage', '対応していない画像形式です（png / jpeg / gif / webpのみアップロードできます）');
         isValid = false;
       } else if (imageFile.size > MAX_IMAGE_SIZE_BYTES) {
         setFieldError('eventImage', 'ファイルサイズは5MBまでです');

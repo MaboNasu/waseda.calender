@@ -9,7 +9,7 @@
  */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 import {
-  getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
+  getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 import {
   getFirestore, doc, setDoc, deleteDoc, getDoc, getDocs, collection, serverTimestamp
@@ -29,8 +29,18 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
+/**
+ * ポップアップでのログインを試み、ポップアップがブロックされている場合はリダイレクト方式に切り替える。
+ * リダイレクト方式の結果は、遷移後のページ読み込み時にonAuthStateChanged経由で反映される
+ * （下の getRedirectResult 呼び出しはエラー検知のみに使う）。
+ */
 function signInWithGoogle() {
-  return signInWithPopup(auth, provider);
+  return signInWithPopup(auth, provider).catch((err) => {
+    if (err && err.code === 'auth/popup-blocked') {
+      return signInWithRedirect(auth, provider);
+    }
+    throw err;
+  });
 }
 
 function signOutUser() {
@@ -95,8 +105,16 @@ window.WC = window.WC || {};
 window.WC.auth = {
   signInWithGoogle, signOutUser, getFavorites, getFavorite, setFavorite, setOrgFollow, getOrgFollows
 };
+window.WC.authLoading = true;
+
+// リダイレクト方式でログインした場合のエラー（ポップアップと異なりtry/catchで拾えないため）を
+// 'wc-auth-error' イベントとして通知する。成功時はonAuthStateChanged側で拾われるため、ここでは何もしない。
+getRedirectResult(auth).catch((err) => {
+  window.dispatchEvent(new CustomEvent('wc-auth-error', { detail: { error: err } }));
+});
 
 onAuthStateChanged(auth, (user) => {
+  window.WC.authLoading = false;
   window.WC.currentUser = user;
   window.dispatchEvent(new CustomEvent('wc-auth-changed', { detail: { user } }));
 });

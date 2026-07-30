@@ -69,15 +69,44 @@ const PRIORITY_MAP = {
 function doGet(e) {
   const action = e.parameter.action;
   if (action === 'lookupOrg') {
+    const limitError = checkOrgLookupRateLimit(e.parameter.orgId);
+    if (limitError) return jsonResponse({ success: false, error: limitError });
     return jsonResponse(lookupOrgByIdAndToken(e.parameter.orgId, e.parameter.token));
   }
   if (action === 'myInquiries') {
+    const limitError = checkOrgLookupRateLimit(e.parameter.orgId);
+    if (limitError) return jsonResponse({ success: false, error: limitError });
     return jsonResponse(listInquiriesByOrg(e.parameter.orgId, e.parameter.token));
   }
   if (action === 'fetchGCalEvents') {
     return jsonResponse(fetchGCalEvents(e.parameter.icalUrl));
   }
   return ContentService.createTextOutput('Waseda Calendar contact form endpoint is running.');
+}
+
+// ============================================================
+// 団体ID・トークン照合(lookupOrg / myInquiries)の総当たり対策
+//
+// doPost側のメールアドレス単位レート制限とは別に、GET側は送信元を識別する手がかりが
+// orgIdしかない（Webアプリのdoアクセスからは送信元IPを取得できない）ため、
+// 「同一orgIdに対する試行回数」を制限する。正しいorgIdを知っている正規団体が
+// 短時間に何度もアクセスすることは通常想定しにくいため、緩めの上限で足りる。
+// ============================================================
+
+/** 同一orgIdに対する1時間あたりの最大照合試行回数 */
+const ORG_LOOKUP_MAX_PER_HOUR = 20;
+
+/** 照合試行の総当たり対策。上限に達していればエラーメッセージ、問題なければnullを返す */
+function checkOrgLookupRateLimit(orgId) {
+  if (!orgId) return null;
+  const cache = CacheService.getScriptCache();
+  const key = 'orglookup_' + String(orgId).trim();
+  const count = Number(cache.get(key) || 0);
+  if (count >= ORG_LOOKUP_MAX_PER_HOUR) {
+    return '試行回数が上限に達しました。時間をおいて再度お試しください。';
+  }
+  cache.put(key, String(count + 1), 3600);
+  return null;
 }
 
 function doPost(e) {
@@ -105,6 +134,10 @@ function doPost(e) {
 
     // 画像アップロードはロック外で処理する（Drive保存は時間がかかるため、ロックの保持時間を最小化する）
     if (payload.entryChoice === 'returning-org' && payload.imageBase64) {
+      const magicByteError = checkImageMagicBytes(payload.imageBase64, payload.imageMimeType);
+      if (magicByteError) {
+        return jsonResponse({ success: false, error: magicByteError });
+      }
       const driveUrl = saveImageToDrive(payload.imageBase64, payload.imageFileName, payload.imageMimeType);
       if (driveUrl) payload.referenceUrl = driveUrl;
     }
@@ -173,11 +206,49 @@ function validatePayload(payload) {
     if (payload.entryChoice !== 'returning-org') {
       return '画像添付は登録済み団体のみご利用いただけます。';
     }
-    if (!payload.imageMimeType || payload.imageMimeType.indexOf('image/') !== 0) {
-      return '画像ファイル以外はアップロードできません。';
+    if (!payload.imageMimeType || !(payload.imageMimeType in IMAGE_MAGIC_BYTES)) {
+      return '対応していない画像形式です（png / jpeg / gif / webpのみアップロードできます）。';
     }
     if (payload.imageBase64.length > MAX_IMAGE_BASE64_LENGTH) {
       return '画像ファイルが大きすぎます（5MBまで）。';
+    }
+  }
+  return null;
+}
+
+// ============================================================
+// 画像の内容検証（マジックバイト）
+//
+// クライアント側・validatePayload側のMIMEチェックは imageMimeType（＝File.type、
+// ブラウザや拡張子から推測された値であり偽装可能）しか見ていない。
+// ここではBase64デコード後の先頭バイト列を実際のファイル形式と突き合わせ、
+// 拡張子やヘッダーを偽装したファイルの通過を防ぐ。
+// ============================================================
+
+/** 許可する画像形式ごとの先頭バイト列（マジックナンバー） */
+const IMAGE_MAGIC_BYTES = {
+  'image/png': [0x89, 0x50, 0x4E, 0x47],
+  'image/jpeg': [0xFF, 0xD8, 0xFF],
+  'image/gif': [0x47, 0x49, 0x46, 0x38],
+  'image/webp': [0x52, 0x49, 0x46, 0x46] // 'RIFF'（WEBPは12〜15バイト目が'WEBP'だが、先頭4バイトの一致で十分実用的に判定できる）
+};
+
+/** Base64画像データの先頭バイトが、申告されたMIMEタイプと一致するか検証する。問題なければnullを返す */
+function checkImageMagicBytes(base64Data, mimeType) {
+  const expected = IMAGE_MAGIC_BYTES[mimeType];
+  if (!expected) {
+    return '対応していない画像形式です（png / jpeg / gif / webpのみアップロードできます）。';
+  }
+  let head;
+  try {
+    // 先頭16バイト分だけあれば十分なので、Base64文字列も先頭のみデコードする
+    head = Utilities.base64Decode(base64Data.slice(0, 32));
+  } catch (err) {
+    return '画像データを読み取れませんでした。';
+  }
+  for (let i = 0; i < expected.length; i++) {
+    if (head[i] !== expected[i]) {
+      return '画像ファイルの内容が拡張子と一致しません。別のファイルをお試しください。';
     }
   }
   return null;

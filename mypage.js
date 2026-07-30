@@ -3,6 +3,27 @@
  * script.js の createEventCardHTML 等を再利用し、Firestoreのお気に入り/団体フォローデータと
  * events.js / organizations.js を突き合わせて表示する。
  */
+let mypageLoginInProgress = false;
+
+async function handleMypageLoginClick(btn) {
+  if (mypageLoginInProgress) return;
+  mypageLoginInProgress = true;
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'ログイン中…';
+  try {
+    await window.WC.auth.signInWithGoogle();
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = originalText;
+    if (err && err.code !== 'auth/popup-closed-by-user' && err.code !== 'auth/cancelled-popup-request') {
+      alert('ログインに失敗しました。時間をおいて再度お試しください。');
+    }
+  } finally {
+    mypageLoginInProgress = false;
+  }
+}
+
 function renderMypageLoggedOut() {
   const wrap = document.getElementById('mypage-content');
   if (!wrap) return;
@@ -13,7 +34,7 @@ function renderMypageLoggedOut() {
       <p><button type="button" class="btn btn-enjy btn-sm" id="mypage-login-btn">Googleでログイン</button></p>
     </div>`;
   const btn = document.getElementById('mypage-login-btn');
-  if (btn) btn.addEventListener('click', () => window.WC.auth.signInWithGoogle().catch(() => {}));
+  if (btn) btn.addEventListener('click', () => handleMypageLoginClick(btn));
 }
 
 /** 今日から2日後（今日・明日・明後日）までの日付文字列 [today, today+2] */

@@ -118,6 +118,8 @@ ul, ol { list-style: none; }
 .header-auth-avatar { width: 24px; height: 24px; border-radius: 50%; }
 .header-auth-name { color: var(--white); font-size: 0.8rem; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .header-auth-toast { color: rgba(255,255,255,0.85); font-size: 0.8rem; }
+.header-auth-loading { color: rgba(255,255,255,0.7); font-size: 0.8rem; }
+.header-auth-error { color: #FFD1D1; font-size: 0.75rem; margin-left: 0.5rem; }
 
 /* ============================================================
    PWA「ホーム画面に追加」バナー
