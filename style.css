@@ -565,22 +565,42 @@ ul, ol { list-style: none; }
 .btn-detail:hover { background: var(--enjy-dark); }
 .event-external-link { font-size: 0.75rem; color: var(--enjy); }
 
-/* ---- コンパクト表示 ----
-   情報量そのものを絞り、正方形に近い小さいカードにする（縦長のまま縮めるだけにしない）。
+/* ---- 表示密度: 中・小 ----
+   中(medium): 大きめと小さめのちょうど中間。場所は残し、主催・説明・リアクションは非表示。
+   小(small): 情報量そのものを絞り、正方形に近い小さいカードにする（縦長のまま縮めるだけにしない）。
    表示するのはカテゴリ/参加費タグ・タイトル・日時のみ。場所・主催・説明・リアクション・
-   公式サイトリンクは非表示にし、詳細はカードクリックで開くモーダルに任せる。 */
-.events-grid.density-compact {
+   公式サイトリンクは非表示にし、詳細はカードクリックで開くモーダルに任せる。
+   どちらも、タイトルを2行クランプしているため、grid既定のalign-items:stretchのままでも
+   同じ行のカード間で極端な高さ差は出ない（1枚だけ突出して他を巻き込み縦長にする、ということが起きない）。 */
+.events-grid.density-medium {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.9rem;
+}
+.events-grid.density-medium .event-card-body { padding: 0.9rem; }
+.events-grid.density-medium .event-card-title {
+  font-size: 0.88rem;
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.events-grid.density-medium .event-card-info { font-size: 0.75rem; gap: 0.2rem; margin-bottom: 0.5rem; }
+.events-grid.density-medium .event-card-desc,
+.events-grid.density-medium .reaction-summary,
+.events-grid.density-medium .event-info-row-organizer { display: none; }
+.events-grid.density-medium .event-card-footer { padding: 0.6rem 0.9rem; }
+.events-grid.density-medium .btn-detail { padding: 0.3rem 0.7rem; font-size: 0.75rem; }
+
+.events-grid.density-small {
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 0.6rem;
-  /* グリッドの既定(stretch)だと同じ行の一番背の高いカードに全カードが揃ってしまうため、
-     各カードが自分の中身の高さだけで収まるようにする（正方形に近い小さいカードにするため） */
-  align-items: start;
 }
-.events-grid.density-compact .event-card-body { flex: none; }
-.events-grid.density-compact .event-card-info { flex: none; }
-.events-grid.density-compact .event-card-accent { height: 3px; }
-.events-grid.density-compact .event-card-body { padding: 0.6rem; }
-.events-grid.density-compact .event-card-title {
+.events-grid.density-small .event-card-accent { height: 3px; }
+.events-grid.density-small .event-card-body { padding: 0.6rem; }
+.events-grid.density-small .event-card-title {
   font-size: 0.78rem;
   margin-bottom: 0.3rem;
   line-height: 1.3;
@@ -590,22 +610,22 @@ ul, ol { list-style: none; }
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.events-grid.density-compact .event-card-meta { margin-bottom: 0.3rem; gap: 0.3rem; }
-.events-grid.density-compact .event-card-meta .tag-sports,
-.events-grid.density-compact .event-card-meta .tag-culture,
-.events-grid.density-compact .event-card-meta .tag-music,
-.events-grid.density-compact .event-card-meta .tag-theater,
-.events-grid.density-compact .event-card-meta .tag-lecture,
-.events-grid.density-compact .event-card-meta .tag-community,
-.events-grid.density-compact .event-card-meta .tag-other { display: none; }
-.events-grid.density-compact .event-card-info { font-size: 0.68rem; gap: 0.1rem; margin-bottom: 0.4rem; }
-.events-grid.density-compact .event-card-desc,
-.events-grid.density-compact .reaction-summary,
-.events-grid.density-compact .event-info-row-location,
-.events-grid.density-compact .event-info-row-organizer,
-.events-grid.density-compact .event-external-link { display: none; }
-.events-grid.density-compact .event-card-footer { padding: 0.4rem 0.6rem; justify-content: center; }
-.events-grid.density-compact .btn-detail { padding: 0.25rem 0.6rem; font-size: 0.68rem; width: 100%; }
+.events-grid.density-small .event-card-meta { margin-bottom: 0.3rem; gap: 0.3rem; }
+.events-grid.density-small .event-card-meta .tag-sports,
+.events-grid.density-small .event-card-meta .tag-culture,
+.events-grid.density-small .event-card-meta .tag-music,
+.events-grid.density-small .event-card-meta .tag-theater,
+.events-grid.density-small .event-card-meta .tag-lecture,
+.events-grid.density-small .event-card-meta .tag-community,
+.events-grid.density-small .event-card-meta .tag-other { display: none; }
+.events-grid.density-small .event-card-info { font-size: 0.68rem; gap: 0.1rem; margin-bottom: 0.4rem; }
+.events-grid.density-small .event-card-desc,
+.events-grid.density-small .reaction-summary,
+.events-grid.density-small .event-info-row-location,
+.events-grid.density-small .event-info-row-organizer,
+.events-grid.density-small .event-external-link { display: none; }
+.events-grid.density-small .event-card-footer { padding: 0.4rem 0.6rem; justify-content: center; }
+.events-grid.density-small .btn-detail { padding: 0.25rem 0.6rem; font-size: 0.68rem; width: 100%; }
 .empty-state {
   text-align: center;
   padding: 3rem 1rem;

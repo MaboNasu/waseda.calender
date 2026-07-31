@@ -40,7 +40,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- スタイルシート -->
-  <link rel="stylesheet" href="style.css?v=19">
+  <link rel="stylesheet" href="style.css?v=20">
 </head>
 <body>
 
@@ -201,8 +201,9 @@
         <span id="today-count" style="font-size:0.85rem;font-weight:500;color:#6B7280;font-family:var(--font-main);margin-left:0.25rem;"></span>
       </h2>
       <div class="density-toggle" role="group" aria-label="表示密度">
-        <button type="button" class="density-btn active" data-density="large">大きめ</button>
-        <button type="button" class="density-btn" data-density="compact">コンパクト</button>
+        <button type="button" class="density-btn active" data-density="large">大</button>
+        <button type="button" class="density-btn" data-density="medium">中</button>
+        <button type="button" class="density-btn" data-density="small">小</button>
       </div>
     </div>
     <div id="today-events">
@@ -223,8 +224,9 @@
         <span id="upcoming-count" style="font-size:0.85rem;font-weight:500;color:#6B7280;font-family:var(--font-main);margin-left:0.25rem;"></span>
       </h2>
       <div class="density-toggle" role="group" aria-label="表示密度">
-        <button type="button" class="density-btn active" data-density="large">大きめ</button>
-        <button type="button" class="density-btn" data-density="compact">コンパクト</button>
+        <button type="button" class="density-btn active" data-density="large">大</button>
+        <button type="button" class="density-btn" data-density="medium">中</button>
+        <button type="button" class="density-btn" data-density="small">小</button>
       </div>
     </div>
     <div id="upcoming-events">
@@ -341,7 +343,7 @@
      スクリプト読み込み（events.js → script.js の順）
      ============================================================ -->
 <script src="events.js?v=6"></script>
-<script src="script.js?v=14"></script>
+<script src="script.js?v=15"></script>
 <script src="image-generator.js?v=3"></script>
 <script type="module" src="firebase-init.js?v=2"></script>
 <script src="auth-ui.js?v=3"></script>

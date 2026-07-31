@@ -1046,7 +1046,10 @@ const DENSITY_STORAGE_KEY = 'wc-events-density';
 /** セクションごと（本日のイベント/近日開催）に独立して密度設定を保存・復元する */
 function getStoredDensity(sectionId) {
   try {
-    return localStorage.getItem(`${DENSITY_STORAGE_KEY}-${sectionId}`) || 'large';
+    const stored = localStorage.getItem(`${DENSITY_STORAGE_KEY}-${sectionId}`);
+    // 旧バージョン（大きめ/コンパクトの2択）で保存された値を新しい3段階に読み替える
+    if (stored === 'compact') return 'small';
+    return stored || 'large';
   } catch (e) {
     return 'large';
   }
@@ -1060,11 +1063,12 @@ function setStoredDensity(sectionId, value) {
   }
 }
 
-/** 指定セクション内の表示密度（大きめ/コンパクト）だけを適用する（他セクションには影響しない） */
+/** 指定セクション内の表示密度（大/中/小）だけを適用する（他セクションには影響しない） */
 function applyDensity(sectionEl, density) {
   if (!sectionEl) return;
   sectionEl.querySelectorAll('.events-grid').forEach(grid => {
-    grid.classList.toggle('density-compact', density === 'compact');
+    grid.classList.toggle('density-medium', density === 'medium');
+    grid.classList.toggle('density-small', density === 'small');
   });
   sectionEl.querySelectorAll('.density-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.density === density);
