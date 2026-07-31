@@ -815,11 +815,31 @@ ul, ol { list-style: none; }
   cursor: pointer;
   pointer-events: auto;
   border-radius: 3px;
-  transition: background var(--transition);
+  transition: filter var(--transition), background var(--transition);
 }
 .event-bar:hover { background: var(--enjy-dark); }
 .event-bar.bar-continues-before { border-top-left-radius: 0; border-bottom-left-radius: 0; }
 .event-bar.bar-continues-after { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+
+/* カレンダーの月表示・日表示チップは、塗りつぶし一色だと視覚的に重くなるため
+   （特に長期開催の展示が毎週繰り返し表示される場合）、イベントカードのタグと同じ
+   カテゴリ配色を薄い背景+左端の色帯で使う。文字色もカテゴリごとの濃色にして可読性を保つ。 */
+.event-bar.tag-sports,    .day-event-chip.tag-sports    { background: #DBEAFE; color: #1D4ED8; border-left: 3px solid #1D4ED8; }
+.event-bar.tag-culture,   .day-event-chip.tag-culture   { background: #D1FAE5; color: #065F46; border-left: 3px solid #065F46; }
+.event-bar.tag-music,     .day-event-chip.tag-music     { background: #EDE9FE; color: #5B21B6; border-left: 3px solid #5B21B6; }
+.event-bar.tag-theater,   .day-event-chip.tag-theater   { background: #FEF3C7; color: #92400E; border-left: 3px solid #92400E; }
+.event-bar.tag-lecture,   .day-event-chip.tag-lecture   { background: #E0F2FE; color: #0369A1; border-left: 3px solid #0369A1; }
+.event-bar.tag-community, .day-event-chip.tag-community { background: #FCE7F3; color: #9D174D; border-left: 3px solid #9D174D; }
+.event-bar.tag-other,     .day-event-chip.tag-other     { background: var(--gray-100); color: var(--gray-600); border-left: 3px solid var(--gray-400); }
+.event-bar[class*="tag-"]:hover,
+.day-event-chip[class*="tag-"]:hover { filter: brightness(0.93); }
+.event-bar.tag-sports.bar-continues-before,
+.event-bar.tag-culture.bar-continues-before,
+.event-bar.tag-music.bar-continues-before,
+.event-bar.tag-theater.bar-continues-before,
+.event-bar.tag-lecture.bar-continues-before,
+.event-bar.tag-community.bar-continues-before,
+.event-bar.tag-other.bar-continues-before { border-left: none; }
 .calendar-day {
   min-height: 90px;
   min-width: 0;
@@ -830,7 +850,9 @@ ul, ol { list-style: none; }
 }
 .calendar-day:nth-child(7n) { border-right: none; }
 .calendar-day.other-month { background: var(--gray-50); }
-.calendar-day.today { background: var(--enjy-pale); }
+/* --enjy-paleはボタンのホバー等サイト全体で共用しているため、「今日」セルだけは
+   専用の色でもう少し濃く塗る（他箇所への影響を避けるためここだけ固定値にする） */
+.calendar-day.today { background: #F5D6D6; }
 .day-num {
   font-size: 0.82rem;
   font-weight: 700;

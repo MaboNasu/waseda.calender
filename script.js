@@ -544,7 +544,7 @@ function renderCalendarGrid() {
 
       const maxShow = 3;
       const chips   = dayEvs.slice(0, maxShow).map(ev =>
-        `<div class="day-event-chip" onclick="openModal('${escapeHtml(String(ev.id))}')" title="${escapeHtml(ev.title)}">${escapeHtml(ev.title)}</div>`
+        `<div class="day-event-chip ${categoryClass(ev.category)}" onclick="openModal('${escapeHtml(String(ev.id))}')" title="${escapeHtml(ev.title)}">${escapeHtml(ev.title)}</div>`
       ).join('');
       const moreBtn = dayEvs.length > maxShow
         ? `<div class="day-more" onclick="showDayEvents('${cell.dateStr}')">他${dayEvs.length - maxShow}件</div>`
@@ -563,7 +563,7 @@ function renderCalendarGrid() {
         bar.continuesBefore ? 'bar-continues-before' : '',
         bar.continuesAfter ? 'bar-continues-after' : ''
       ].filter(Boolean).join(' ');
-      return `<div class="event-bar ${edgeClasses}" style="left:${leftPct}%;width:${widthPct}%;top:${topPx}px;" onclick="openModal('${escapeHtml(String(bar.ev.id))}')" title="${escapeHtml(bar.ev.title)}">${escapeHtml(bar.ev.title)}</div>`;
+      return `<div class="event-bar ${categoryClass(bar.ev.category)} ${edgeClasses}" style="left:${leftPct}%;width:${widthPct}%;top:${topPx}px;" onclick="openModal('${escapeHtml(String(bar.ev.id))}')" title="${escapeHtml(bar.ev.title)}">${escapeHtml(bar.ev.title)}</div>`;
     }).join('');
     const weekBarsHtml = bars.length > 0 ? `<div class="week-bars">${barsHtml}</div>` : '';
 
