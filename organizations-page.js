@@ -307,7 +307,10 @@ async function handleOrgFollowClick(orgId, btnEl) {
   }
   if (!window.WC.currentUser) {
     if (confirm('団体のフォローにはログインが必要です。Googleでログインしますか？')) {
-      window.WC.auth.signInWithGoogle().catch(() => {});
+      window.WC.auth.signInWithGoogle().catch((err) => {
+        const message = typeof translateAuthError === 'function' ? translateAuthError(err) : 'ログインに失敗しました。時間をおいて再度お試しください。';
+        if (message && typeof renderHeaderAuthError === 'function') renderHeaderAuthError(message);
+      });
     }
     return;
   }

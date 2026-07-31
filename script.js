@@ -243,7 +243,10 @@ async function handleReactionClick(type, eventId, btnEl) {
   }
   if (!window.WC.currentUser) {
     if (confirm('お気に入り登録にはログインが必要です。Googleでログインしますか？')) {
-      window.WC.auth.signInWithGoogle().catch(() => {});
+      window.WC.auth.signInWithGoogle().catch((err) => {
+        const message = typeof translateAuthError === 'function' ? translateAuthError(err) : 'ログインに失敗しました。時間をおいて再度お試しください。';
+        if (message && typeof renderHeaderAuthError === 'function') renderHeaderAuthError(message);
+      });
     }
     return;
   }
@@ -915,13 +918,14 @@ function escapeIcsText(str) {
 
 /** イベント1件分のVEVENTブロックの行配列を作る */
 function buildIcsVeventLines(ev) {
+  const endDate = getEventEnd(ev);
   let dtStartLine, dtEndLine;
   if (ev.startTime) {
     dtStartLine = `DTSTART;TZID=Asia/Tokyo:${icsDateTime(ev.date, ev.startTime)}`;
-    dtEndLine   = `DTEND;TZID=Asia/Tokyo:${icsDateTime(ev.date, ev.endTime || ev.startTime)}`;
+    dtEndLine   = `DTEND;TZID=Asia/Tokyo:${icsDateTime(endDate, ev.endTime || ev.startTime)}`;
   } else {
     dtStartLine = `DTSTART;VALUE=DATE:${icsDateTime(ev.date)}`;
-    dtEndLine   = `DTEND;VALUE=DATE:${icsDateTime(addOneDay(ev.date))}`;
+    dtEndLine   = `DTEND;VALUE=DATE:${icsDateTime(addOneDay(endDate))}`;
   }
 
   return [
@@ -979,9 +983,10 @@ function downloadIcsForSelectedEvents() {
 
 /** Googleカレンダーの「予定作成」テンプレートURLを組み立てる（1クリック追加用） */
 function buildGoogleCalendarUrl(ev) {
+  const endDate = getEventEnd(ev);
   const datesParam = ev.startTime
-    ? `${icsDateTime(ev.date, ev.startTime)}/${icsDateTime(ev.date, ev.endTime || ev.startTime)}`
-    : `${icsDateTime(ev.date)}/${icsDateTime(addOneDay(ev.date))}`;
+    ? `${icsDateTime(ev.date, ev.startTime)}/${icsDateTime(endDate, ev.endTime || ev.startTime)}`
+    : `${icsDateTime(ev.date)}/${icsDateTime(addOneDay(endDate))}`;
 
   const params = new URLSearchParams({
     action: 'TEMPLATE',
@@ -1056,7 +1061,7 @@ function buildEventJsonLd(ev, pageUrl) {
     name: ev.title,
     url,
     startDate: ev.startTime ? `${ev.date}T${ev.startTime}:00+09:00` : ev.date,
-    endDate: ev.endTime ? `${ev.date}T${ev.endTime}:00+09:00` : (ev.endDate || undefined),
+    endDate: ev.endTime ? `${getEventEnd(ev)}T${ev.endTime}:00+09:00` : (ev.endDate || undefined),
     eventAttendanceMode: isOnline
       ? 'https://schema.org/OnlineEventAttendanceMode'
       : 'https://schema.org/OfflineEventAttendanceMode',
