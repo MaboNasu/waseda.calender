@@ -341,13 +341,13 @@ function setupScopeToggle() {
    ============================================================ */
 function createEventCardHTML(ev, showDate = true) {
   const dateRow = showDate ? `
-    <div class="event-info-row">
+    <div class="event-info-row event-info-row-datetime">
       <span class="event-info-icon">📅</span>
       <span>${formatEventDateDisplay(ev)}</span>
     </div>` : '';
 
   const timeRow = ev.startTime ? `
-    <div class="event-info-row">
+    <div class="event-info-row event-info-row-datetime">
       <span class="event-info-icon">🕐</span>
       <span>${escapeHtml(formatTime(ev.startTime, ev.endTime))}</span>
     </div>` : '';
@@ -374,11 +374,11 @@ function createEventCardHTML(ev, showDate = true) {
         <div class="event-card-info">
           ${dateRow}
           ${timeRow}
-          <div class="event-info-row">
+          <div class="event-info-row event-info-row-location">
             <span class="event-info-icon">📍</span>
             <span>${escapeHtml(ev.location || campusLabel(ev.campus))}</span>
           </div>
-          <div class="event-info-row">
+          <div class="event-info-row event-info-row-organizer">
             <span class="event-info-icon">🏫</span>
             <span>${organizerHTML(ev)}</span>
           </div>
