@@ -181,7 +181,15 @@ function drawPostImageCanvas(ev, bgImage) {
   ctx.font = `700 32px "${POST_IMAGE_FONT}", sans-serif`;
   ctx.fillStyle = c.textSecondary;
   ctx.fillText('📅 ' + dateText, innerX, cursorY);
-  cursorY += 60;
+  cursorY += 50;
+
+  // 会場（未確認等で空の場合は行ごと省略）
+  if (ev.location) {
+    ctx.font = `700 32px "${POST_IMAGE_FONT}", sans-serif`;
+    ctx.fillStyle = c.textSecondary;
+    ctx.fillText('📍 ' + ev.location, innerX, cursorY);
+    cursorY += 50;
+  }
 
   // 主催団体
   ctx.font = `700 32px "${POST_IMAGE_FONT}", sans-serif`;

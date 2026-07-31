@@ -2241,7 +2241,7 @@ const EVENTS = [
     id: "evt-123",
     title: "ラクロス部(女子) 準リーグ vs法政大学",
     date: "2026-08-01",
-    location: "",
+    location: "早稲田大学東伏見アメフト場",
     campus: "outside",
     organizer: "早稲田大学ラクロス部(女子)",
     category: "sports",
@@ -2249,9 +2249,9 @@ const EVENTS = [
     target: ["student", "obog", "public"],
     feeType: "unknown",
     feeText: "料金不明",
-    description: "関東学生女子ラクロス準リーグ。早稲田大学 対 法政大学。会場は未確認。",
+    description: "関東学生女子ラクロス準リーグ。早稲田大学 対 法政大学。",
     externalUrl: "http://w-lax.com/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-07-31",
     isPublished: true
   },
   {
