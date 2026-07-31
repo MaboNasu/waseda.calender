@@ -883,6 +883,8 @@ ul, ol { list-style: none; }
   z-index: 0;
   isolation: isolate;
 }
+.day-num-clickable { cursor: pointer; transition: transform var(--transition); }
+.day-num-clickable:hover { transform: scale(1.15); }
 
 .calendar-day.sunday .day-num,
 .calendar-day.holiday .day-num { color: var(--enjy); }

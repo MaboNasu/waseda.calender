@@ -612,8 +612,10 @@ function renderCalendarGrid() {
         ? `<div class="day-more" onclick="showDayEvents('${cell.dateStr}')">他${dayEvs.length - maxShow}件</div>`
         : '';
       const dayEventsStyle = dayEventsOffset ? ` style="margin-top:${dayEventsOffset}"` : '';
+      const dayNumClass = dayEvs.length > 0 ? 'day-num day-num-clickable' : 'day-num';
+      const dayNumClick = dayEvs.length > 0 ? ` onclick="showDayEvents('${cell.dateStr}')"` : '';
 
-      return `<div class="${classes}"${holidayTitle}>${holidayMark}<span class="day-num">${cell.dayNum}</span><div class="day-events"${dayEventsStyle}>${chips}${moreBtn}</div></div>`;
+      return `<div class="${classes}"${holidayTitle}>${holidayMark}<span class="${dayNumClass}"${dayNumClick}>${cell.dayNum}</span><div class="day-events"${dayEventsStyle}>${chips}${moreBtn}</div></div>`;
     }).join('');
 
     // 複数日イベントのバーHTML（週の7列に対する絶対配置オーバーレイ）
