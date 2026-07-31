@@ -402,6 +402,68 @@ function emptyStateHTML(message) {
     </div>`;
 }
 
+/** イベントグリッドの後ろに「さらに表示」ボタンの入れ物を付けたHTMLを組み立てる */
+function eventsGridWithShowMoreHTML(cardsHtml, sectionId) {
+  return `<div class="events-grid">${cardsHtml}</div>
+    <div class="show-more-wrap"><button type="button" class="show-more-btn" style="display:none;" onclick="toggleShowMore('${sectionId}')"></button></div>`;
+}
+
+/**
+ * カレンダーまでの導線を近くするため、本日/近日開催のグリッドはデフォルトで1行分だけ表示し、
+ * 2行目以降がある場合だけ「さらに表示」ボタンを出す。密度切替・ウィンドウ幅変更のたびに
+ * 呼び直して1行の高さを再計算する。ユーザーが展開した後は、明示的に「閉じる」を押すまで
+ * 展開状態を保つ（再描画や密度切替が起きるとリセットされる＝毎回デフォルトの折りたたみに戻る）。
+ */
+function collapseGridToOneRow(sectionEl) {
+  if (!sectionEl) return;
+  const grid = sectionEl.querySelector('.events-grid');
+  const btn = sectionEl.querySelector('.show-more-btn');
+  if (!grid || !btn) return;
+
+  if (grid.dataset.expanded === 'true') return;
+
+  grid.style.maxHeight = '';
+  grid.style.overflow = '';
+  const cards = Array.from(grid.children);
+  if (cards.length === 0) { btn.style.display = 'none'; return; }
+
+  const firstTop = cards[0].offsetTop;
+  const firstRowCount = cards.filter(c => c.offsetTop === firstTop).length;
+
+  if (firstRowCount >= cards.length) {
+    // 全カードが1行に収まっている場合はボタン不要
+    btn.style.display = 'none';
+    return;
+  }
+
+  grid.style.maxHeight = `${cards[0].offsetHeight}px`;
+  grid.style.overflow = 'hidden';
+  btn.textContent = `さらに表示（他${cards.length - firstRowCount}件）`;
+  btn.dataset.action = 'expand';
+  btn.style.display = '';
+}
+
+/** 「さらに表示」/「閉じる」ボタンの切り替え */
+function toggleShowMore(sectionId) {
+  const sectionEl = document.getElementById(sectionId);
+  if (!sectionEl) return;
+  const grid = sectionEl.querySelector('.events-grid');
+  const btn = sectionEl.querySelector('.show-more-btn');
+  if (!grid || !btn) return;
+
+  if (btn.dataset.action === 'expand') {
+    grid.style.maxHeight = '';
+    grid.style.overflow = '';
+    grid.dataset.expanded = 'true';
+    btn.textContent = '閉じる';
+    btn.dataset.action = 'collapse';
+  } else {
+    grid.dataset.expanded = 'false';
+    collapseGridToOneRow(sectionEl);
+    sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
 /* ============================================================
    本日のイベント
    ============================================================ */
@@ -417,7 +479,7 @@ function renderTodayEvents() {
 
   el.innerHTML = filtered.length === 0
     ? emptyStateHTML('本日のイベントは0件です。')
-    : `<div class="events-grid">${filtered.map(ev => createEventCardHTML(ev, false)).join('')}</div>`;
+    : eventsGridWithShowMoreHTML(filtered.map(ev => createEventCardHTML(ev, false)).join(''), 'today-events');
 }
 
 /* ============================================================
@@ -445,7 +507,7 @@ function renderUpcomingEvents() {
 
   el.innerHTML = filtered.length === 0
     ? emptyStateHTML('近日開催のイベントは0件です。')
-    : `<div class="events-grid">${filtered.map(ev => createEventCardHTML(ev, true)).join('')}</div>`;
+    : eventsGridWithShowMoreHTML(filtered.map(ev => createEventCardHTML(ev, true)).join(''), 'upcoming-events');
 }
 
 /* ============================================================
@@ -969,33 +1031,40 @@ function createModalShareActionsHTML(ev) {
    ============================================================ */
 /** キャンパスごとの所在地（早稲田大学公式サイト記載の住所。場所が定まらない区分は含めない） */
 const CAMPUS_ADDRESS = {
-  waseda:      { addressRegion: '東京都', addressLocality: '新宿区', streetAddress: '戸塚町1-104' },
+  waseda:      { addressRegion: '東京都', addressLocality: '新宿区', streetAddress: '西早稲田1-6-1' },
   toyama:      { addressRegion: '東京都', addressLocality: '新宿区', streetAddress: '戸山1-24-1' },
   nishiwaseda: { addressRegion: '東京都', addressLocality: '新宿区', streetAddress: '大久保3-4-1' },
   tokorozawa:  { addressRegion: '埼玉県', addressLocality: '所沢市', streetAddress: '三ヶ島2-579-15' }
 };
 
-function buildEventJsonLd(ev) {
+/**
+ * schema.org/Event のJSON-LDを組み立てる。ホームページの一覧用と、イベント個別ページ用の
+ * 両方から呼ばれる共有関数（pageUrlを省略するとホームページURLになる）。
+ * 画面に表示していない・確認できない情報（不明な参加費を無料扱いにする等）は入れない。
+ */
+function buildEventJsonLd(ev, pageUrl) {
+  const url = pageUrl || 'https://wasedacalendar.com/';
   const isOnline = ev.campus === 'online';
   const campusAddress = CAMPUS_ADDRESS[ev.campus];
   const isPerformance = ev.category === 'music' || ev.category === 'theater';
 
-  return {
+  const data = {
     '@context': 'https://schema.org',
     '@type': 'Event',
     name: ev.title,
+    url,
     startDate: ev.startTime ? `${ev.date}T${ev.startTime}:00+09:00` : ev.date,
-    endDate: ev.endTime ? `${ev.date}T${ev.endTime}:00+09:00` : undefined,
+    endDate: ev.endTime ? `${ev.date}T${ev.endTime}:00+09:00` : (ev.endDate || undefined),
     eventAttendanceMode: isOnline
       ? 'https://schema.org/OnlineEventAttendanceMode'
       : 'https://schema.org/OfflineEventAttendanceMode',
     eventStatus: 'https://schema.org/EventScheduled',
     location: isOnline
-      ? { '@type': 'VirtualLocation', url: ev.externalUrl || 'https://wasedacalendar.com/' }
+      ? { '@type': 'VirtualLocation', url: ev.externalUrl || url }
       : {
           '@type': 'Place',
           name: ev.location || campusLabel(ev.campus),
-          address: campusAddress ? { '@type': 'PostalAddress', addressCountry: 'JP', ...campusAddress } : undefined
+          address: campusAddress ? { '@type': 'PostalAddress', addressCountry: 'JP', ...campusAddress } : { '@type': 'PostalAddress', addressCountry: 'JP' }
         },
     image: ev.imageUrl || 'https://wasedacalendar.com/assets/og-image.png',
     description: ev.description || ev.title,
@@ -1006,16 +1075,23 @@ function buildEventJsonLd(ev) {
     },
     performer: isPerformance
       ? { '@type': 'PerformingGroup', name: ev.organizer || 'Waseda Calendar' }
-      : undefined,
-    offers: {
+      : undefined
+  };
+
+  // 参加費が「無料」と明確に分かっている場合のみofferを載せる。有料・不明な場合は金額を推測しない
+  // （offersを付けた上でpriceだけ空にすると、Search Consoleで「price」欠落として警告される）
+  if (ev.feeType === 'free') {
+    data.offers = {
       '@type': 'Offer',
-      price: ev.feeType === 'free' ? '0' : undefined,
+      price: '0',
       priceCurrency: 'JPY',
       availability: 'https://schema.org/InStock',
       validFrom: ev.lastUpdated ? `${ev.lastUpdated}T00:00:00+09:00` : undefined,
-      url: 'https://wasedacalendar.com/'
-    }
-  };
+      url
+    };
+  }
+
+  return data;
 }
 
 /** 公開済み・本日以降のイベントをJSON-LDとして<head>に埋め込む（検索エンジン向け） */
@@ -1032,7 +1108,8 @@ function injectEventsJsonLd() {
     script.id = 'events-jsonld';
     document.head.appendChild(script);
   }
-  script.textContent = JSON.stringify(upcoming.map(buildEventJsonLd));
+  // map(buildEventJsonLd) だと map が渡す第2引数(index)がpageUrlに紛れ込むため、明示的に1引数で呼ぶ
+  script.textContent = JSON.stringify(upcoming.map(ev => buildEventJsonLd(ev)));
 }
 
 /* ============================================================
@@ -1083,6 +1160,10 @@ function setupDensityToggle() {
       btn.addEventListener('click', () => {
         setStoredDensity(sectionEl.id, btn.dataset.density);
         applyDensity(sectionEl, btn.dataset.density);
+        // 密度が変わると1行の高さも変わるため、展開状態をリセットして1行分に折りたたみ直す
+        const grid = sectionEl.querySelector('.events-grid');
+        if (grid) grid.dataset.expanded = 'false';
+        collapseGridToOneRow(sectionEl);
       });
     });
   });
@@ -1091,7 +1172,13 @@ function setupDensityToggle() {
 function applyAllStoredDensities() {
   document.querySelectorAll('.density-toggle').forEach(toggle => {
     const sectionEl = toggle.closest('section');
-    if (sectionEl) applyDensity(sectionEl, getStoredDensity(sectionEl.id));
+    if (!sectionEl) return;
+    applyDensity(sectionEl, getStoredDensity(sectionEl.id));
+    // 密度クラスを当てた後（＝グリッドの実際のカードサイズが確定した後）でないと
+    // 1行分の高さを正しく測れないため、必ずこの後で折りたたみを行う
+    const grid = sectionEl.querySelector('.events-grid');
+    if (grid) grid.dataset.expanded = 'false';
+    collapseGridToOneRow(sectionEl);
   });
 }
 
@@ -1169,4 +1256,14 @@ document.addEventListener('DOMContentLoaded', () => {
   setupModal();
   setupDensityToggle();
   renderAll();
+
+  // 画面幅が変わると1行に入るカード枚数（＝1行の高さ）も変わるため、折りたたみ中の
+  // セクションだけ高さを測り直す（展開済みのセクションはそのまま維持する）
+  let resizeTimer = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      document.querySelectorAll('#today-events, #upcoming-events').forEach(collapseGridToOneRow);
+    }, 200);
+  });
 });

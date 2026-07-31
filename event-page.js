@@ -35,71 +35,20 @@ function buildOgDescription(ev) {
   return text.length > 100 ? text.slice(0, 100) + '…' : text;
 }
 
-/** date(+startTime) を Asia/Tokyo(+09:00) のISO 8601文字列にする。時刻が無ければ日付のみ返す（終日イベント向けの有効な表現） */
-function toIsoDateTime(dateStr, timeStr) {
-  if (!dateStr) return undefined;
-  return timeStr ? `${dateStr}T${timeStr}:00+09:00` : dateStr;
-}
-
 /**
- * schema.org/Event のJSON-LD構造化データを組み立てる。
- * 画面に表示していない情報・確認できない情報（不明な参加費を無料扱いにする等）は入れない。
+ * イベント個別ページのJSON-LDを<head>に埋め込む。
+ * buildEventJsonLd()・CAMPUS_ADDRESS は script.js 側で定義済み（ホームページの一覧用と共有）。
+ * ここでは個別ページ自身のURLを渡すことで、ホームページ向けの汎用URLではなく
+ * このイベント固有のURLがJSON-LDに入るようにする。
  */
-function buildEventJsonLd(ev) {
-  const url = `https://wasedacalendar.com/event.html?id=${encodeURIComponent(ev.id)}`;
-  const isOnline = ev.campus === 'online';
-
-  const data = {
-    '@context': 'https://schema.org',
-    '@type': 'Event',
-    name: ev.title,
-    startDate: toIsoDateTime(ev.date, ev.startTime),
-    endDate: toIsoDateTime(ev.endDate || ev.date, ev.endTime) || undefined,
-    eventStatus: 'https://schema.org/EventScheduled',
-    eventAttendanceMode: isOnline
-      ? 'https://schema.org/OnlineEventAttendanceMode'
-      : 'https://schema.org/OfflineEventAttendanceMode',
-    url,
-    image: ['https://wasedacalendar.com/assets/og-image.png']
-  };
-
-  if (isOnline) {
-    data.location = {
-      '@type': 'VirtualLocation',
-      url: ev.externalUrl || url
-    };
-  } else {
-    data.location = {
-      '@type': 'Place',
-      name: ev.location || campusLabel(ev.campus),
-      address: { '@type': 'PostalAddress', addressCountry: 'JP' }
-    };
-  }
-
-  if (ev.description) data.description = ev.description;
-  if (ev.organizer) data.organizer = { '@type': 'Organization', name: ev.organizer };
-
-  // 参加費が「無料」と明確に分かっている場合のみofferを載せる。有料・不明な場合は金額を推測しない
-  if (ev.feeType === 'free') {
-    data.offers = {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'JPY',
-      availability: 'https://schema.org/InStock',
-      url
-    };
-  }
-
-  return data;
-}
-
 function injectEventJsonLd(ev) {
   const existing = document.getElementById('event-page-jsonld');
   if (existing) existing.remove();
+  const pageUrl = `https://wasedacalendar.com/event.html?id=${encodeURIComponent(ev.id)}`;
   const script = document.createElement('script');
   script.type = 'application/ld+json';
   script.id = 'event-page-jsonld';
-  script.textContent = JSON.stringify(buildEventJsonLd(ev));
+  script.textContent = JSON.stringify(buildEventJsonLd(ev, pageUrl));
   document.head.appendChild(script);
 }
 

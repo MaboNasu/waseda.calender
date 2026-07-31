@@ -256,9 +256,10 @@ ul, ol { list-style: none; }
   background: var(--white);
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
-  padding: 0.3rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 600;
+  padding: 0.5rem 1.1rem;
+  min-width: 44px;
+  font-size: 0.95rem;
+  font-weight: 700;
   color: var(--text-secondary);
   transition: all var(--transition);
 }
@@ -425,7 +426,21 @@ ul, ol { list-style: none; }
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.25rem;
+  transition: max-height var(--transition);
 }
+.show-more-wrap { display: flex; justify-content: center; margin-top: 1.25rem; }
+.show-more-btn {
+  background: var(--white);
+  border: 1.5px solid var(--enjy);
+  color: var(--enjy);
+  border-radius: 999px;
+  padding: 0.55rem 1.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.show-more-btn:hover { background: var(--enjy); color: var(--white); }
 .event-card {
   background: var(--white);
   border: 1px solid var(--border);
@@ -1486,6 +1501,19 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 @media (max-width: 768px) {
   :root { --header-h: 56px; }
   .container { padding: 0 1rem; }
+  /* ロゴ・ログインボタン・ハンバーガーが3つとも幅固定(flex-shrink:0)だと、
+     細い画面で合計幅が入りきらずheader-authが画面外へはみ出す。ここだけ縮められるようにする */
+  .header-inner { padding: 0 0.75rem; gap: 0.4rem; }
+  .logo-sub { display: none; }
+  .logo-main { font-size: 1.1rem; }
+  .header-auth { flex-shrink: 1; min-width: 0; }
+  .header-auth .btn-ghost,
+  .header-login-btn {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+  .header-auth-user { gap: 0.3rem; }
   .hero { padding: 2.5rem 0 2rem; }
   .hero h1 { font-size: 1.65rem; }
   .hero { padding: 2.5rem 0 2rem; }

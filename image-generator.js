@@ -15,8 +15,7 @@ const POST_IMAGE_COLORS = {
   textPrimary: '#1F2937',
   textSecondary: '#4B5563'
 };
-const POST_IMAGE_SERIF_FONT = 'Noto Serif JP';
-const POST_IMAGE_SANS_FONT = 'Noto Sans JP';
+const POST_IMAGE_FONT = 'Noto Sans JP';
 /** AIで生成した背景画像（用意できていない場合はグラデーションにフォールバックする） */
 const POST_IMAGE_BG_URL = 'assets/post-template-bg.jpg';
 
@@ -65,12 +64,12 @@ function wrapTextForCanvas(ctx, text, maxWidth) {
  */
 function fitEventTitle(ctx, title, maxWidth, maxFontSize, minFontSize, maxLines) {
   for (let size = maxFontSize; size >= minFontSize; size -= 2) {
-    ctx.font = `700 ${size}px "${POST_IMAGE_SERIF_FONT}", serif`;
+    ctx.font = `700 ${size}px "${POST_IMAGE_FONT}", sans-serif`;
     const lines = wrapTextForCanvas(ctx, title, maxWidth);
     if (lines.length <= 1) return { fontSize: size, lines };
   }
 
-  ctx.font = `700 ${minFontSize}px "${POST_IMAGE_SERIF_FONT}", serif`;
+  ctx.font = `700 ${minFontSize}px "${POST_IMAGE_FONT}", sans-serif`;
   let lines = wrapTextForCanvas(ctx, title, maxWidth);
   if (lines.length > maxLines) {
     lines = lines.slice(0, maxLines);
@@ -121,9 +120,9 @@ function drawPostImageCanvas(ev, bgImage) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'alphabetic';
     ctx.fillStyle = c.white;
-    ctx.font = `700 44px "${POST_IMAGE_SERIF_FONT}", serif`;
+    ctx.font = `700 44px "${POST_IMAGE_FONT}", sans-serif`;
     ctx.fillText('Waseda Calendar', size / 2, 110);
-    ctx.font = `400 22px "${POST_IMAGE_SANS_FONT}", sans-serif`;
+    ctx.font = `400 22px "${POST_IMAGE_FONT}", sans-serif`;
     ctx.fillText('早稲田のイベントを、ひとつのカレンダーで。', size / 2, 145);
   }
 
@@ -144,7 +143,7 @@ function drawPostImageCanvas(ev, bgImage) {
 
   // カテゴリタグ
   const categoryText = (typeof categoryLabel === 'function') ? categoryLabel(ev.category) : (ev.category || '');
-  ctx.font = `700 28px "${POST_IMAGE_SANS_FONT}", sans-serif`;
+  ctx.font = `700 28px "${POST_IMAGE_FONT}", sans-serif`;
   const tagPaddingX = 24, tagHeight = 48;
   const tagWidth = ctx.measureText(categoryText).width + tagPaddingX * 2;
   ctx.fillStyle = c.enjyPale;
@@ -160,7 +159,7 @@ function drawPostImageCanvas(ev, bgImage) {
   // イベント名（自動縮小＋自然な改行）
   ctx.textBaseline = 'alphabetic';
   const titleFit = fitEventTitle(ctx, ev.title, innerWidth, 60, 34, 3);
-  ctx.font = `700 ${titleFit.fontSize}px "${POST_IMAGE_SERIF_FONT}", serif`;
+  ctx.font = `700 ${titleFit.fontSize}px "${POST_IMAGE_FONT}", sans-serif`;
   ctx.fillStyle = c.textPrimary;
   const lineHeight = titleFit.fontSize * 1.4;
   titleFit.lines.forEach((line, i) => {
@@ -179,13 +178,13 @@ function drawPostImageCanvas(ev, bgImage) {
 
   // 日時
   const dateText = (typeof formatEventDateDisplay === 'function') ? formatEventDateDisplay(ev) : ev.date;
-  ctx.font = `700 32px "${POST_IMAGE_SANS_FONT}", sans-serif`;
+  ctx.font = `700 32px "${POST_IMAGE_FONT}", sans-serif`;
   ctx.fillStyle = c.textSecondary;
   ctx.fillText('📅 ' + dateText, innerX, cursorY);
   cursorY += 60;
 
   // 主催団体
-  ctx.font = `700 32px "${POST_IMAGE_SANS_FONT}", sans-serif`;
+  ctx.font = `700 32px "${POST_IMAGE_FONT}", sans-serif`;
   ctx.fillStyle = c.textSecondary;
   ctx.fillText('🏫 ' + (ev.organizer || ''), innerX, cursorY);
 
@@ -193,9 +192,9 @@ function drawPostImageCanvas(ev, bgImage) {
   if (!bgImage) {
     ctx.textAlign = 'center';
     ctx.fillStyle = c.white;
-    ctx.font = `700 30px "${POST_IMAGE_SANS_FONT}", sans-serif`;
+    ctx.font = `700 30px "${POST_IMAGE_FONT}", sans-serif`;
     ctx.fillText('@waseda_calendar', size / 2, 960);
-    ctx.font = `400 24px "${POST_IMAGE_SANS_FONT}", sans-serif`;
+    ctx.font = `400 24px "${POST_IMAGE_FONT}", sans-serif`;
     ctx.fillText('wasedacalendar.com', size / 2, 1000);
   }
 
@@ -205,8 +204,7 @@ function drawPostImageCanvas(ev, bgImage) {
 /** Canvas描画前にフォントの読み込みを待つ（未読込のままだとデフォルトフォントで描かれてしまうため） */
 async function ensurePostImageFontsLoaded() {
   const specs = [
-    `400 24px "${POST_IMAGE_SANS_FONT}"`, `700 32px "${POST_IMAGE_SANS_FONT}"`, `700 44px "${POST_IMAGE_SANS_FONT}"`,
-    `700 34px "${POST_IMAGE_SERIF_FONT}"`, `700 60px "${POST_IMAGE_SERIF_FONT}"`
+    `400 24px "${POST_IMAGE_FONT}"`, `700 32px "${POST_IMAGE_FONT}"`
   ];
   try {
     await Promise.all(specs.map(spec => document.fonts.load(spec)));
