@@ -29,6 +29,11 @@ const DRIVE_FOLDER_NAME = 'Waseda Calendar 添付画像';
 /** 画像アップロードの最大サイズ（Base64換算、約5MB相当） */
 const MAX_IMAGE_BASE64_LENGTH = 7000000;
 
+/** 夜間自動巡回ルーティン（Claude Codeのスケジュール実行）が結果通知に使う共有トークン。
+ *  値は公開リポジトリにコミットしないこと。Apps Scriptエディタ上でこのプレースホルダーを
+ *  直接書き換えて使う（SPREADSHEET_ID等と同じ運用）。ルーティン側の設定にも同じ値を渡すこと。 */
+const NIGHTLY_DIGEST_TOKEN = 'ここに共有トークンを入れる';
+
 // ============================================================
 // ラベル・優先度の対応表
 // ============================================================
@@ -113,6 +118,12 @@ function doPost(e) {
   try {
     const payload = JSON.parse(e.postData.contents);
 
+    // 夜間自動巡回ルーティン（Claude Code）からの結果通知。お問い合わせフォームとは別経路なので、
+    // 以降の（ハニーポット・バリデーション・レート制限等の）フォーム送信専用ロジックより先に処理する。
+    if (payload.action === 'nightlyDigest') {
+      return handleNightlyDigest(payload);
+    }
+
     // honeypot: botが入力していたら何もせず成功扱いで返す（ボットに手がかりを与えない）
     if (payload.website) {
       return jsonResponse({ success: true });
@@ -177,6 +188,35 @@ function doPost(e) {
     Logger.log('doPost エラー: ' + err);
     return jsonResponse({ success: false, error: '送信処理中にエラーが発生しました。時間をおいて再度お試しください。' });
   }
+}
+
+// ============================================================
+// 夜間自動巡回ルーティンからの結果通知（doPostの一部）
+//
+// 毎晩3時に情報源を巡回するClaude Codeのスケジュール実行が、結果概要をここにPOSTする。
+// ここでは保存するだけで、実際のメール送信は毎朝7時の時間主導トリガー（sendNightlyDigestEmail）
+// が行う（POSTされた直後に即メール送信すると、深夜3時にメールが届いてしまうため分離している）。
+// ============================================================
+
+/**
+ * 夜間自動巡回ルーティンからの結果通知を受け取り、翌朝のダイジェストメール用に保存する。
+ * トークンが一致しない場合は詳細を明かさず失敗として返す（不正POST対策。lookupOrg等と同じ方針）。
+ */
+function handleNightlyDigest(payload) {
+  if (!payload.token || payload.token !== NIGHTLY_DIGEST_TOKEN) {
+    return jsonResponse({ success: false });
+  }
+  const props = PropertiesService.getScriptProperties();
+  props.setProperty('nightlyDigestData', JSON.stringify({
+    date: Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd'),
+    summary: String(payload.summary || ''),
+    prUrl: String(payload.prUrl || ''),
+    addedCount: Number(payload.addedCount) || 0,
+    needsReview: Array.isArray(payload.needsReview) ? payload.needsReview.map(String) : [],
+    hasError: !!payload.hasError,
+    errorDetail: String(payload.errorDetail || '')
+  }));
+  return jsonResponse({ success: true });
 }
 
 // ============================================================
@@ -905,6 +945,71 @@ function sendAdminNotification(payload, result) {
     'スプレッドシートで詳細を確認してください。';
 
   MailApp.sendEmail({ to: ADMIN_EMAIL, name: MAIL_SENDER_NAME, subject: subject, body: body });
+}
+
+// ============================================================
+// 夜間自動巡回の結果ダイジェストメール
+//
+// 毎朝7時（Asia/Tokyo）に実行されるよう、Apps Scriptエディタの「トリガー」画面で
+// sendNightlyDigestEmail に対する時間主導トリガー（日タイマー・午前7時〜8時・Asia/Tokyo）を
+// 手動で1回だけ設定すること（コードから自動設定はしていない）。
+// ============================================================
+
+/**
+ * 前夜にhandleNightlyDigestで保存された概要を読み、変更・要確認・エラーのいずれかがある
+ * 夜だけメールを送る（完全に変更なしの夜は送信をスキップし、メール疲れを避ける）。
+ */
+function sendNightlyDigestEmail() {
+  const props = PropertiesService.getScriptProperties();
+  const raw = props.getProperty('nightlyDigestData');
+  if (!raw) return; // 前夜のルーティンが未実行、または通知がまだ届いていない
+
+  let data;
+  try {
+    data = JSON.parse(raw);
+  } catch (err) {
+    Logger.log('sendNightlyDigestEmail: 保存データの解析に失敗: ' + err);
+    return;
+  }
+
+  const hasNews = data.hasError || data.prUrl || data.addedCount > 0 || (data.needsReview && data.needsReview.length > 0);
+  if (!hasNews) {
+    props.deleteProperty('nightlyDigestData');
+    return;
+  }
+
+  const subject = data.hasError
+    ? '【Waseda Calendar】夜間巡回でエラーが発生しました（' + data.date + '）'
+    : '【Waseda Calendar】夜間巡回の結果（' + data.date + '）';
+
+  let body = data.date + ' 3:00 の自動巡回結果です。\n\n';
+  if (data.hasError) {
+    body += '⚠ エラーが発生しました。\n' + (data.errorDetail || '詳細不明') + '\n\n';
+  }
+  if (data.summary) {
+    body += data.summary + '\n\n';
+  }
+  if (data.prUrl) {
+    body += '確認・マージ待ちのPR（内容を見て問題なければマージしてください）:\n' + data.prUrl + '\n\n';
+  }
+  if (data.addedCount > 0) {
+    body += '自動反映した件数: ' + data.addedCount + '件\n\n';
+  }
+  if (data.needsReview && data.needsReview.length > 0) {
+    body += '確信が持てず自動反映を見送った項目（手動確認推奨）:\n' +
+      data.needsReview.map(function (s) { return '・' + s; }).join('\n') + '\n\n';
+  }
+  body += 'Waseda Calendar\n' + SITE_BASE_URL;
+
+  MailApp.sendEmail({
+    to: 'waseda.calendar@gmail.com',
+    bcc: 'nagomi2003.100.200@gmail.com',
+    name: MAIL_SENDER_NAME,
+    subject: subject,
+    body: body
+  });
+
+  props.deleteProperty('nightlyDigestData');
 }
 
 // ============================================================
