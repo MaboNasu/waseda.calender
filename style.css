@@ -768,6 +768,22 @@ ul, ol { list-style: none; }
   color: var(--text-muted);
 }
 /* ============================================================
+   要確認ノート（法務系ページの草案で、事実確認が必要な箇所を目立たせる）
+   ============================================================ */
+.review-note {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  color: #92400E;
+}
+.review-note strong { white-space: nowrap; }
+/* ============================================================
    カレンダー
    ============================================================ */
 .calendar-wrapper {
@@ -1607,3 +1623,15 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 .status-badge-pending   { background: #FEF3C7; color: #92400E; }
 .status-badge-published { background: #D1FAE5; color: #065F46; }
 .status-badge-rejected  { background: #FEE2E2; color: #991B1B; }
+
+/* ============================================================
+   アニメーション低減設定への配慮（OS側で「視差効果を減らす」等を有効にしている利用者向け）
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

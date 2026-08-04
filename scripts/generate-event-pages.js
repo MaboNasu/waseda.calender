@@ -299,7 +299,7 @@ function renderEventPageHtml(ev, labelFns) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=26">
+  <link rel="stylesheet" href="/style.css?v=28">
   <script type="application/ld+json" id="event-page-jsonld">${jsonLd}</script>
 </head>
 <body>
@@ -353,6 +353,8 @@ function renderEventPageHtml(ev, labelFns) {
       <a href="/index.html#calendar-section">カレンダー</a>
       <a href="/organizations.html">公認サークル</a>
       <a href="/contact.html">掲載依頼・問い合わせ</a>
+      <a href="/about.html">運営者情報</a>
+      <a href="/terms.html">利用規約</a>
       <a href="/privacy.html">プライバシーポリシー</a>
     </nav>
     <div class="footer-disclaimers">
@@ -364,7 +366,7 @@ function renderEventPageHtml(ev, labelFns) {
 </footer>
 
 <script src="/events.js?v=6"></script>
-<script src="/script.js?v=23"></script>
+<script src="/script.js?v=26"></script>
 <script src="/image-generator.js?v=5"></script>
 <script src="/event-page.js?v=7"></script>
 <script type="module" src="/firebase-init.js?v=3"></script>

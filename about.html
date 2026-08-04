@@ -11,11 +11,11 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Waseda Calendarへの掲載依頼・お問い合わせの審査状況を確認できるページです。">
-  <meta name="robots" content="noindex, nofollow">
-  <link rel="canonical" href="https://wasedacalendar.com/status.html">
+  <meta name="description" content="Waseda Calendarの運営者情報。サービスの目的、運営主体、掲載情報の取り扱いについてご案内します。">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://wasedacalendar.com/about.html">
   <meta name="theme-color" content="#8B0000">
-  <title>申請状況の確認 – Waseda Calendar</title>
+  <title>運営者情報 – Waseda Calendar</title>
   <link rel="icon" type="image/png" href="assets/icon.png?v=2">
   <link rel="manifest" href="assets/manifest.json?v=2">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -58,28 +58,44 @@
 <main>
   <section class="section org-hero">
     <div class="container">
-      <span class="hero-badge">申請状況の確認</span>
-      <h1>申請状況の確認</h1>
-      <p>確認メールに記載のURL（団体ID・専用トークン付き）からアクセスすると、これまでの掲載依頼・お問い合わせの審査状況を確認できます。</p>
+      <span class="hero-badge">運営者情報</span>
+      <h1>運営者情報</h1>
     </div>
   </section>
 
   <section class="section">
-    <div class="container">
-      <div id="status-auth-form" class="status-card">
-        <p class="status-muted">URLに団体ID・トークンが含まれていない場合は、以下に入力してください（確認メール本文に記載のURLをご確認ください）。</p>
-        <div class="filter-group">
-          <label for="status-org-id">団体ID</label>
-          <input id="status-org-id" class="filter-input" type="text" placeholder="WCORG-001">
-        </div>
-        <div class="filter-group">
-          <label for="status-org-token">専用トークン</label>
-          <input id="status-org-token" class="filter-input" type="text" placeholder="確認メールに記載のトークン">
-        </div>
-        <button id="status-lookup-btn" type="button" class="btn btn-enjy">確認する</button>
-      </div>
+    <div class="container" style="max-width:720px;">
+      <div class="status-card">
 
-      <div id="status-result"></div>
+        <h2 style="font-size:1rem;margin-bottom:0.5rem;">Waseda Calendarについて</h2>
+        <p class="status-muted" style="margin-bottom:1rem;">
+          Waseda Calendarは、早稲田大学に関係するサークル・学生団体のイベント、体育各部の試合日程、講演会や学事日程などの情報をひとつのカレンダーにまとめ、学生や関係者が「今日・今週・近日中に参加できるイベント」を見つけやすくすることを目的とした、非公式の情報サイトです。
+        </p>
+
+        <h2 style="font-size:1rem;margin-bottom:0.5rem;">運営主体</h2>
+        <div class="review-note">
+          <strong>[要確認]</strong>
+          <span>ここに運営者の名称（個人／団体名等）をどこまで開示するか、ご本人に確認のうえ記載してください。現時点では確定情報が無いため、下記の暫定文言のままにしています。</span>
+        </div>
+        <p class="status-muted" style="margin-bottom:1rem;">
+          本サービスは、早稲田大学とは独立した個人により企画・運営されています。早稲田大学が公式に運営するサービスではありません。
+        </p>
+
+        <h2 style="font-size:1rem;margin-bottom:0.5rem;">掲載している情報について</h2>
+        <p class="status-muted" style="margin-bottom:1rem;">
+          掲載しているイベント情報は、各団体の公式サイト等で公開されている情報、または<a href="contact.html">掲載依頼フォーム</a>を通じてご提出いただいた情報をもとに作成しています。日時・会場・参加費などの詳細は変更される場合がありますので、参加前に主催団体の公式情報をあわせてご確認ください。
+        </p>
+
+        <h2 style="font-size:1rem;margin-bottom:0.5rem;">情報の修正・削除について</h2>
+        <p class="status-muted" style="margin-bottom:1rem;">
+          掲載内容の誤りや、修正・削除のご希望がある場合は、<a href="contact.html">お問い合わせフォーム</a>より主催団体の方またはイベント関係者の方からご連絡ください。
+        </p>
+
+        <h2 style="font-size:1rem;margin-bottom:0.5rem;">お問い合わせ</h2>
+        <p class="status-muted">
+          サービスに関するご質問・ご意見・広告や協賛のご相談は、<a href="contact.html">お問い合わせフォーム</a>よりお願いいたします。
+        </p>
+      </div>
     </div>
   </section>
 </main>
@@ -106,7 +122,23 @@
   </div>
 </footer>
 
-<script src="status.js?v=4"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('hamburger-btn');
+    const nav = document.getElementById('mobile-nav');
+    if (!btn || !nav) return;
+    btn.addEventListener('click', () => {
+      nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', nav.classList.contains('open') ? 'true' : 'false');
+    });
+    document.addEventListener('click', (e) => {
+      if (!btn.contains(e.target) && !nav.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+</script>
 <script type="module" src="firebase-init.js?v=3"></script>
 <script src="auth-ui.js?v=3"></script>
 <script src="pwa-install.js?v=2"></script>

@@ -811,13 +811,27 @@ function showDayEvents(dateStr) {
   if (shareActions) shareActions.innerHTML = '';
   document.getElementById('modal-desc-section').style.display  = 'none';
   document.getElementById('modal-footer-section').style.display = 'none';
-  document.getElementById('event-modal').classList.add('active');
-  document.body.style.overflow = 'hidden';
+  activateModal();
 }
 
 /* ============================================================
    モーダル（イベント詳細）
    ============================================================ */
+/** モーダルを開いた時点のフォーカス位置を覚えておき（closeModalで復帰させるため）、
+ *  モーダル内に一旦フォーカスを移す（キーボード操作でモーダルの中から始められるように）。 */
+let modalTriggerElement = null;
+function activateModal() {
+  modalTriggerElement = document.activeElement;
+  document.getElementById('event-modal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  // setTimeoutで1テック遅らせる。ボタンのクリック起因で開いた場合、ブラウザがクリック処理の
+  // 一環として発火元のボタンへフォーカスを戻す挙動があり、同期的にfocus()するとそれに上書きされるため。
+  setTimeout(() => {
+    const closeBtn = document.querySelector('#event-modal .modal-close');
+    if (closeBtn) closeBtn.focus();
+  }, 0);
+}
+
 function openModal(eventId) {
   const allEvents = typeof EVENTS !== 'undefined' ? EVENTS : [];
   // String() で統一比較（HTML onclick から渡ると常に文字列になるため）
@@ -888,16 +902,19 @@ function openModal(eventId) {
     extLink.style.display  = 'none';
   }
 
-  document.getElementById('event-modal').classList.add('active');
-  document.body.style.overflow = 'hidden';
+  activateModal();
 }
 
-/** モーダルを閉じる */
+/** モーダルを閉じる。開く前にフォーカスがあった要素に戻す（キーボード・スクリーンリーダー利用者向け）。 */
 function closeModal() {
   document.getElementById('event-modal').classList.remove('active');
   document.body.style.overflow = '';
   document.getElementById('modal-desc-section').style.display    = '';
   document.getElementById('modal-footer-section').style.display  = '';
+  if (modalTriggerElement && typeof modalTriggerElement.focus === 'function') {
+    modalTriggerElement.focus();
+  }
+  modalTriggerElement = null;
 }
 
 /* ============================================================
@@ -1292,7 +1309,23 @@ function setupModal() {
   const overlay = document.getElementById('event-modal');
   if (!overlay) return;
   overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+  document.addEventListener('keydown', (e) => {
+    if (!overlay.classList.contains('active')) return;
+    if (e.key === 'Escape') { closeModal(); return; }
+    // Tabキーでのフォーカスをモーダル内に閉じ込める（モーダル表示中に背後のページへフォーカスが漏れないように）
+    if (e.key !== 'Tab') return;
+    const focusable = overlay.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last  = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
 }
 
 /* ============================================================

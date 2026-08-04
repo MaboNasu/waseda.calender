@@ -47,6 +47,8 @@ function main() {
     urlEntry(`${SITE_ORIGIN}/`, { changefreq: 'daily', priority: '1.0' }),
     urlEntry(`${SITE_ORIGIN}/organizations.html`, { changefreq: 'weekly', priority: '0.7' }),
     urlEntry(`${SITE_ORIGIN}/contact.html`, { changefreq: 'monthly', priority: '0.5' }),
+    urlEntry(`${SITE_ORIGIN}/about.html`, { changefreq: 'monthly', priority: '0.4' }),
+    urlEntry(`${SITE_ORIGIN}/terms.html`, { changefreq: 'yearly', priority: '0.3' }),
     urlEntry(`${SITE_ORIGIN}/privacy.html`, { changefreq: 'yearly', priority: '0.3' })
     // マイページ・申請状況確認ページは利用者固有ページのため、意図的にsitemapへ含めない
     // （mypage.html / status.html はページ側のmeta robotsもnoindex, nofollow）
