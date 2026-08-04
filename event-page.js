@@ -135,6 +135,8 @@ function renderEventDetailPage(ev) {
       </div>
     </div>`;
 
+  refreshLiveReactionCounts([ev.id]);
+
   if (typeof gtag === 'function') {
     gtag('event', 'event_view', { event_id: ev.id });
   }
