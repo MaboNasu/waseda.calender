@@ -182,8 +182,7 @@ function feeClass(key) {
 
 /** 公開イベントのみ取得（終了済み = 本日がendDateより後のイベントは通常表示から除外し、団体実績ページにのみ表示する） */
 function getPublishedEvents() {
-  const today = getTodayStr();
-  return (typeof EVENTS !== 'undefined' ? EVENTS : []).filter(ev => ev.isPublished && getEventEnd(ev) >= today);
+  return (typeof EVENTS !== 'undefined' ? EVENTS : []).filter(ev => ev.isPublished);
 }
 
 /** reactions未定義でも0件として扱う */
