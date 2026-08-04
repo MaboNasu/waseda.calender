@@ -956,13 +956,32 @@ function sendAdminNotification(payload, result) {
 // ============================================================
 
 /**
- * 前夜にhandleNightlyDigestで保存された概要を読み、変更・要確認・エラーのいずれかがある
- * 夜だけメールを送る（完全に変更なしの夜は送信をスキップし、メール疲れを避ける）。
+ * 前夜にhandleNightlyDigestで保存された概要を読み、必ず毎朝メールを送る。
+ * データが無い場合（ルーティン自体が動かなかった、または結果報告の前に力尽きた場合）は、
+ * それ自体を異常として知らせる。変更なしの場合も「正常に動いて、変更が無かった」と
+ * 分かるように送る（サイレントな失敗と「本当に変更が無い」を見分けられるようにするため）。
  */
 function sendNightlyDigestEmail() {
   const props = PropertiesService.getScriptProperties();
   const raw = props.getProperty('nightlyDigestData');
-  if (!raw) return; // 前夜のルーティンが未実行、または通知がまだ届いていない
+
+  if (!raw) {
+    // 前夜の自動巡回ルーティンから結果報告が一切届いていない（ルーティンが実行されなかった、
+    // またはエラー・タイムアウト等で最後の報告ステップまで到達できなかった可能性が高い）。
+    // これが一番気づきたい異常なので、必ずメールで知らせる。
+    MailApp.sendEmail({
+      to: 'waseda.calendar@gmail.com',
+      bcc: 'nagomi2003.100.200@gmail.com',
+      name: MAIL_SENDER_NAME,
+      subject: '【Waseda Calendar】昨夜の自動巡回の結果が届いていません',
+      body: '昨夜3時の自動巡回ルーティンからの結果報告が届いていません。\n' +
+        'ルーティン自体が実行されなかったか、途中で止まってしまった可能性があります。\n\n' +
+        '以下のページで実行状況・ログを確認してください。\n' +
+        'https://claude.ai/code/routines/trig_011G2rsU5Z6MkoneQ5zFcpM7\n\n' +
+        'Waseda Calendar\n' + SITE_BASE_URL
+    });
+    return;
+  }
 
   let data;
   try {
@@ -973,14 +992,12 @@ function sendNightlyDigestEmail() {
   }
 
   const hasNews = data.hasError || data.prUrl || data.addedCount > 0 || (data.needsReview && data.needsReview.length > 0);
-  if (!hasNews) {
-    props.deleteProperty('nightlyDigestData');
-    return;
-  }
 
   const subject = data.hasError
     ? '【Waseda Calendar】夜間巡回でエラーが発生しました（' + data.date + '）'
-    : '【Waseda Calendar】夜間巡回の結果（' + data.date + '）';
+    : (hasNews
+        ? '【Waseda Calendar】夜間巡回の結果（' + data.date + '）'
+        : '【Waseda Calendar】夜間巡回：本日は変更なし（' + data.date + '）');
 
   let body = data.date + ' 3:00 の自動巡回結果です。\n\n';
   if (data.hasError) {
@@ -988,6 +1005,9 @@ function sendNightlyDigestEmail() {
   }
   if (data.summary) {
     body += data.summary + '\n\n';
+  }
+  if (!hasNews) {
+    body += '特に変更・要確認事項はありませんでした。正常に巡回は完了しています。\n\n';
   }
   if (data.prUrl) {
     body += '確認・マージ待ちのPR（内容を見て問題なければマージしてください）:\n' + data.prUrl + '\n\n';
