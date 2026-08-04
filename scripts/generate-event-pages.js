@@ -25,18 +25,28 @@ const ROOT = path.join(__dirname, '..');
 const SITE_ORIGIN = 'https://wasedacalendar.com';
 const OUTPUT_DIR = path.join(ROOT, 'event');
 
-/** events.js は <script> 読み込み前提のプレーンJSなので、vmで安全に実行して必要な値だけ取り出す */
+/** events.js は <script> 読み込み前提のプレーンJSなので、vmで安全に実行して必要な値だけ取り出す。
+ *  events.js側の宣言は全て const/let で、vmのサンドボックスオブジェクトのプロパティとしては
+ *  現れない（varなら現れる）ため、末尾に var 経由で明示的に拾い直す一行を足している。 */
 function loadEventsModule() {
   const src = fs.readFileSync(path.join(ROOT, 'events.js'), 'utf8');
   const sandbox = {};
   vm.createContext(sandbox);
-  vm.runInContext(src, sandbox, { filename: 'events.js' });
+  const exportLine = '\nvar __EXPORTED__ = {' +
+    ' EVENTS: (typeof EVENTS !== "undefined") ? EVENTS : undefined,' +
+    ' CATEGORY_LABELS: (typeof CATEGORY_LABELS !== "undefined") ? CATEGORY_LABELS : undefined,' +
+    ' CAMPUS_LABELS: (typeof CAMPUS_LABELS !== "undefined") ? CAMPUS_LABELS : undefined,' +
+    ' FEE_LABELS: (typeof FEE_LABELS !== "undefined") ? FEE_LABELS : undefined,' +
+    ' TARGET_LABELS: (typeof TARGET_LABELS !== "undefined") ? TARGET_LABELS : undefined' +
+    ' };';
+  vm.runInContext(src + exportLine, sandbox, { filename: 'events.js' });
+  const exported = sandbox.__EXPORTED__ || {};
   return {
-    events: Array.isArray(sandbox.EVENTS) ? sandbox.EVENTS : [],
-    CATEGORY_LABELS: sandbox.CATEGORY_LABELS || {},
-    CAMPUS_LABELS: sandbox.CAMPUS_LABELS || {},
-    FEE_LABELS: sandbox.FEE_LABELS || {},
-    TARGET_LABELS: sandbox.TARGET_LABELS || {}
+    events: Array.isArray(exported.EVENTS) ? exported.EVENTS : [],
+    CATEGORY_LABELS: exported.CATEGORY_LABELS || {},
+    CAMPUS_LABELS: exported.CAMPUS_LABELS || {},
+    FEE_LABELS: exported.FEE_LABELS || {},
+    TARGET_LABELS: exported.TARGET_LABELS || {}
   };
 }
 

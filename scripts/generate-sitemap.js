@@ -13,13 +13,15 @@ const vm = require('vm');
 const ROOT = path.join(__dirname, '..');
 const SITE_ORIGIN = 'https://wasedacalendar.com';
 
-/** events.js は <script> 読み込み前提のプレーンJSなので、vmで安全に実行してEVENTS配列だけ取り出す */
+/** events.js は <script> 読み込み前提のプレーンJSなので、vmで安全に実行してEVENTS配列だけ取り出す。
+ *  events.js は `const EVENTS = [...]` という宣言で、const/letはvmのサンドボックスオブジェクトの
+ *  プロパティとしては現れない（varなら現れる）ため、末尾に var 経由で明示的に拾い直す一行を足している。 */
 function loadEvents() {
   const src = fs.readFileSync(path.join(ROOT, 'events.js'), 'utf8');
   const sandbox = {};
   vm.createContext(sandbox);
-  vm.runInContext(src, sandbox, { filename: 'events.js' });
-  return Array.isArray(sandbox.EVENTS) ? sandbox.EVENTS : [];
+  vm.runInContext(src + '\nvar __EXPORTED_EVENTS__ = (typeof EVENTS !== "undefined") ? EVENTS : undefined;', sandbox, { filename: 'events.js' });
+  return Array.isArray(sandbox.__EXPORTED_EVENTS__) ? sandbox.__EXPORTED_EVENTS__ : [];
 }
 
 function xmlEscape(str) {
