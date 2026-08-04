@@ -51,7 +51,7 @@ function main() {
   ];
 
   const eventEntries = publishedEvents.map((ev) => {
-    const loc = `${SITE_ORIGIN}/event.html?id=${encodeURIComponent(ev.id)}`;
+    const loc = `${SITE_ORIGIN}/event/${encodeURIComponent(ev.id)}.html`;
     return urlEntry(loc, {
       changefreq: 'weekly',
       priority: '0.6',

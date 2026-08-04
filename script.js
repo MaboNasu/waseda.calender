@@ -1043,9 +1043,11 @@ function buildGoogleCalendarUrl(ev) {
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
 
-/** イベント個別ページの絶対URL（SNSシェア・パーマリンクに使用） */
+/** イベント個別ページの絶対URL（SNSシェア・パーマリンクに使用）。
+ *  静的プリレンダリング済みの個別ページ（scripts/generate-event-pages.js が生成）を指す。
+ *  URL形式を変える場合は、あちらのスクリプトと event-page.js のURL生成箇所も合わせて変更すること。 */
 function buildEventPageUrl(ev) {
-  return `https://wasedacalendar.com/event.html?id=${encodeURIComponent(ev.id)}`;
+  return `https://wasedacalendar.com/event/${encodeURIComponent(ev.id)}.html`;
 }
 
 function shareEventOnLine(eventId) {

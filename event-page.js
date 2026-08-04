@@ -44,7 +44,7 @@ function buildOgDescription(ev) {
 function injectEventJsonLd(ev) {
   const existing = document.getElementById('event-page-jsonld');
   if (existing) existing.remove();
-  const pageUrl = `https://wasedacalendar.com/event.html?id=${encodeURIComponent(ev.id)}`;
+  const pageUrl = buildEventPageUrl(ev);
   const script = document.createElement('script');
   script.type = 'application/ld+json';
   script.id = 'event-page-jsonld';
@@ -52,11 +52,14 @@ function injectEventJsonLd(ev) {
   document.head.appendChild(script);
 }
 
-/** タイトル・OGP・canonicalを、表示中のイベントの内容に書き換える（JSを実行するクローラー向けの補助。実行しないクローラーには初期値のまま表示される） */
+/** タイトル・OGP・canonicalを、表示中のイベントの内容に書き換える（JSを実行するクローラー向けの補助。実行しないクローラーには初期値のまま表示される）。
+ *  canonical/og:urlは常に静的プリレンダリング版（buildEventPageUrl）を指す。この関数が動くのは
+ *  ①静的生成された event/{id}.html 自身（値は変わらない）か、②後方互換で残している旧 event.html?id=X
+ *  のどちらか。②の場合、この記述によって検索エンジンには「正規版はevent/{id}.htmlの方」と伝わる。 */
 function updateEventPageMeta(ev) {
   const pageTitle = `${ev.title} – Waseda Calendar`;
   const description = buildOgDescription(ev);
-  const url = `https://wasedacalendar.com/event.html?id=${encodeURIComponent(ev.id)}`;
+  const url = buildEventPageUrl(ev);
 
   document.title = pageTitle;
   const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
@@ -158,8 +161,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // 新URL形式（event/evt-XXX.html）にはクエリパラメータが無いため、パスからも抽出できるようにする。
+  // 旧形式（event.html?id=evt-XXX）は後方互換のため引き続きクエリパラメータを優先的に見る。
   const params = new URLSearchParams(window.location.search);
-  const id = params.get('id');
+  const pathMatch = window.location.pathname.match(/\/event\/([^/]+)\.html$/);
+  const id = params.get('id') || (pathMatch ? decodeURIComponent(pathMatch[1]) : null);
   const ev = id ? findPublishedEventById(id) : null;
 
   if (ev) {
