@@ -12,7 +12,7 @@ import {
   getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 import {
-  getFirestore, doc, setDoc, deleteDoc, getDoc, getDocs, collection, serverTimestamp
+  getFirestore, doc, setDoc, deleteDoc, getDoc, getDocs, collection, serverTimestamp, increment
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -68,17 +68,50 @@ async function getFavorite(eventId) {
   return snap.exists() ? snap.data() : null;
 }
 
-/** お気に入りのON/OFFを切り替える。ログインしていない場合は何もせずfalseを返す */
+/** イベントごとの公開カウンター（eventCounters/{eventId}）を種類ごとに増減する。
+ *  ドキュメントが無ければincrement()が0からの加算として自動作成する。 */
+function adjustEventCounter(eventId, deltas) {
+  const ref = doc(db, 'eventCounters', String(eventId));
+  const payload = {};
+  Object.keys(deltas).forEach((type) => { payload[type] = increment(deltas[type]); });
+  return setDoc(ref, payload, { merge: true });
+}
+
+/** お気に入りのON/OFFを切り替える。ログインしていない場合は何もせずfalseを返す。
+ *  種類を切り替えた場合（例: 気になる→行きたい）は、旧種類を-1・新種類を+1する。 */
 async function setFavorite(eventId, reactionType, isFavorited) {
   const user = auth.currentUser;
   if (!user) return false;
   const ref = doc(db, 'users', user.uid, 'favorites', String(eventId));
+  const existing = await getDoc(ref);
+  const prevType = existing.exists() ? existing.data().reactionType : null;
+
   if (isFavorited) {
     await deleteDoc(ref);
+    if (prevType) await adjustEventCounter(eventId, { [prevType]: -1 });
   } else {
     await setDoc(ref, { reactionType, updatedAt: serverTimestamp() });
+    const deltas = { [reactionType]: 1 };
+    if (prevType && prevType !== reactionType) deltas[prevType] = -1;
+    await adjustEventCounter(eventId, deltas);
   }
   return true;
+}
+
+/** 複数イベント分の公開カウンター（{interested, wantToGo, going}）をまとめて取得する。
+ *  ドキュメントが無いイベントは全て0として扱う。未ログインでも取得可能（公開データのため）。 */
+async function getEventCounters(eventIds) {
+  const uniqueIds = Array.from(new Set((eventIds || []).map(String)));
+  const results = await Promise.all(uniqueIds.map(async (id) => {
+    const snap = await getDoc(doc(db, 'eventCounters', id));
+    const data = snap.exists() ? snap.data() : {};
+    return [id, {
+      interested: Number(data.interested) || 0,
+      wantToGo: Number(data.wantToGo) || 0,
+      going: Number(data.going) || 0
+    }];
+  }));
+  return Object.fromEntries(results);
 }
 
 /** 団体フォローのON/OFFを切り替える（将来の団体フォロー機能用、フォロー中の団体一覧もここから取れる） */
@@ -103,7 +136,7 @@ async function getOrgFollows() {
 
 window.WC = window.WC || {};
 window.WC.auth = {
-  signInWithGoogle, signOutUser, getFavorites, getFavorite, setFavorite, setOrgFollow, getOrgFollows
+  signInWithGoogle, signOutUser, getFavorites, getFavorite, setFavorite, setOrgFollow, getOrgFollows, getEventCounters
 };
 window.WC.authLoading = true;
 

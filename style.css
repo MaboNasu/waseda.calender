@@ -715,6 +715,12 @@ ul, ol { list-style: none; }
   background: var(--enjy-pale);
   border-color: rgba(139,0,0,0.2);
 }
+.reaction-count {
+  display: inline-block;
+  min-width: 1.6em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
 .reaction-panel {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);

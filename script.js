@@ -217,7 +217,7 @@ function createReactionButtonsHTML(ev) {
             <button class="reaction-btn" type="button" onclick="handleReactionClick('${type}', '${id}', this)">
               <span class="reaction-icon">${meta.icon}</span>
               <span>${meta.label}</span>
-              <strong>${reactionCount(ev, type)}</strong>
+              <strong class="reaction-count" data-count-for="${id}:${type}">${reactionCount(ev, type)}</strong>
             </button>`;
         }).join('')}
       </div>
@@ -226,14 +226,40 @@ function createReactionButtonsHTML(ev) {
 }
 
 function createReactionSummaryHTML(ev, activeType = '') {
+  const id = escapeHtml(String(ev.id));
   return `
     <div class="reaction-summary" aria-label="リアクション件数">
       ${Object.keys(REACTION_TYPES).map(type => {
         const meta = REACTION_TYPES[type];
         const activeClass = activeType === type ? ' active' : '';
-        return `<span class="reaction-chip${activeClass}">${meta.label} ${reactionCount(ev, type)}</span>`;
+        return `<span class="reaction-chip${activeClass}">${meta.label} <span class="reaction-count" data-count-for="${id}:${type}">${reactionCount(ev, type)}</span></span>`;
       }).join('')}
     </div>`;
+}
+
+/**
+ * 画面上に表示中の[data-count-for]要素を、Firestoreの公開カウンター（実数）で上書きする。
+ * events.js由来の静的な数値はページ描画直後にすぐ出せる初期表示用、こちらは非同期の実数値。
+ * 取得に失敗しても静的な表示のまま残るだけなので、エラーは握りつぶしてよい。
+ */
+async function refreshLiveReactionCounts(eventIds) {
+  if (!window.WC || !window.WC.auth || !window.WC.auth.getEventCounters) return;
+  const ids = Array.from(new Set((eventIds || []).map(String)));
+  if (ids.length === 0) return;
+  try {
+    const counters = await window.WC.auth.getEventCounters(ids);
+    ids.forEach(id => {
+      const counts = counters[id];
+      if (!counts) return;
+      Object.keys(counts).forEach(type => {
+        document.querySelectorAll(`[data-count-for="${id}:${type}"]`).forEach(el => {
+          el.textContent = counts[type];
+        });
+      });
+    });
+  } catch (err) {
+    // ライブ取得に失敗しても静的な表示が残るだけなので無視する
+  }
 }
 
 async function handleReactionClick(type, eventId, btnEl) {
@@ -483,6 +509,7 @@ function renderTodayEvents() {
   el.innerHTML = filtered.length === 0
     ? emptyStateHTML('本日のイベントは0件です。')
     : eventsGridWithShowMoreHTML(filtered.map(ev => createEventCardHTML(ev, false)).join(''), 'today-events');
+  refreshLiveReactionCounts(filtered.map(ev => ev.id));
 }
 
 /* ============================================================
@@ -511,6 +538,7 @@ function renderUpcomingEvents() {
   el.innerHTML = filtered.length === 0
     ? emptyStateHTML('近日開催のイベントは0件です。')
     : eventsGridWithShowMoreHTML(filtered.map(ev => createEventCardHTML(ev, true)).join(''), 'upcoming-events');
+  refreshLiveReactionCounts(filtered.map(ev => ev.id));
 }
 
 /* ============================================================
@@ -821,6 +849,7 @@ function openModal(eventId) {
 
   const reactions = document.getElementById('modal-reactions');
   if (reactions) reactions.innerHTML = createReactionButtonsHTML(ev);
+  refreshLiveReactionCounts([ev.id]);
 
   // カレンダー追加・シェア
   const shareActions = document.getElementById('modal-share-actions');
