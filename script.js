@@ -261,6 +261,16 @@ async function refreshLiveReactionCounts(eventIds) {
   }
 }
 
+/** クリック直後、書き込みが成功した差分をその場で反映する（再取得を待たず即座に見た目を更新するため） */
+function applyReactionCountDeltas(eventId, deltas) {
+  Object.keys(deltas).forEach(type => {
+    document.querySelectorAll(`[data-count-for="${eventId}:${type}"]`).forEach(el => {
+      const current = Number(el.textContent) || 0;
+      el.textContent = Math.max(0, current + deltas[type]);
+    });
+  });
+}
+
 async function handleReactionClick(type, eventId, btnEl) {
   if (!window.WC || !window.WC.auth) {
     alert('準備中です。少し待ってから再度お試しください。');
@@ -279,13 +289,19 @@ async function handleReactionClick(type, eventId, btnEl) {
   if (btnEl) btnEl.disabled = true;
   try {
     const existing = await window.WC.auth.getFavorite(eventId);
-    const isFavorited = !!(existing && existing.reactionType === type);
+    const prevType = existing ? existing.reactionType : null;
+    const isFavorited = prevType === type;
     await window.WC.auth.setFavorite(eventId, type, isFavorited);
     if (btnEl) {
       const panel = btnEl.closest('.reaction-buttons');
       if (panel) panel.querySelectorAll('.reaction-btn').forEach(b => b.classList.remove('active'));
       btnEl.classList.toggle('active', !isFavorited);
     }
+
+    const deltas = isFavorited ? { [type]: -1 } : { [type]: 1 };
+    if (!isFavorited && prevType && prevType !== type) deltas[prevType] = -1;
+    applyReactionCountDeltas(eventId, deltas);
+    refreshLiveReactionCounts([eventId]);
   } catch (err) {
     alert('お気に入りの更新に失敗しました。時間をおいて再度お試しください。');
   } finally {
