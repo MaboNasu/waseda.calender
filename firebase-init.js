@@ -16,12 +16,12 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBiERMBYoWJmYm2YjD8WtEzo9mrIvJx4Uw",
-  authDomain: "waseda-calendar-1c6b0.firebaseapp.com",
-  projectId: "waseda-calendar-1c6b0",
-  storageBucket: "waseda-calendar-1c6b0.firebasestorage.app",
-  messagingSenderId: "556628204009",
-  appId: "1:556628204009:web:0c7473ba3d40b0ef6fd378"
+  apiKey: "AIzaSyAh8buNP-xCMi-LpeewOqNgutEWYm9r2ng",
+  authDomain: "wasedacalendar-login.firebaseapp.com",
+  projectId: "wasedacalendar-login",
+  storageBucket: "wasedacalendar-login.firebasestorage.app",
+  messagingSenderId: "885369904484",
+  appId: "1:885369904484:web:7c99d978c28ea4e1882e71"
 };
 
 const app = initializeApp(firebaseConfig);
