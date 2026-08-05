@@ -75,6 +75,63 @@ function updateEventPageMeta(ev) {
   setAttr('event-page-twitter-description', 'content', description);
 }
 
+/**
+ * 関連イベントを選ぶ（同主催団体→同カテゴリ→開催日が近い→同キャンパスの順で加点し上位を採用）。
+ * 開催予定のイベントを優先し、無ければ終了済みも許容する（欄が完全に空になるのを避けるため）。
+ */
+function getRelatedEvents(ev, limit = 6) {
+  const today = getTodayStr();
+  const candidates = getPublishedEvents().filter(e => String(e.id) !== String(ev.id));
+  const upcoming = candidates.filter(e => getEventEnd(e) >= today);
+  const pool = upcoming.length > 0 ? upcoming : candidates;
+
+  const scored = pool.map(e => {
+    let score = 0;
+    if (ev.orgId && e.orgId === ev.orgId) score += 100;
+    else if (!ev.orgId && ev.organizer && e.organizer === ev.organizer) score += 90;
+    if (e.category === ev.category) score += 20;
+    if (e.campus === ev.campus) score += 5;
+    const dayDiff = Math.abs(new Date(e.date) - new Date(ev.date)) / 86400000;
+    score += Math.max(0, 10 - dayDiff / 3);
+    return { e, score };
+  });
+  scored.sort((a, b) => b.score - a.score || a.e.date.localeCompare(b.e.date));
+
+  const seen = new Set();
+  const result = [];
+  for (const { e } of scored) {
+    if (seen.has(e.id)) continue;
+    seen.add(e.id);
+    result.push(e);
+    if (result.length >= limit) break;
+  }
+  return result;
+}
+
+/** 個別ページ下部の関連イベント欄。既存のcreateEventCardHTML（一覧と同じカード）をそのまま再利用する。
+ *  該当が無い場合は欄ごと非表示にする。クリックはイベント委譲で1箇所だけ計測する。 */
+function renderRelatedEvents(ev) {
+  const wrap = document.getElementById('event-related');
+  if (!wrap) return;
+  const related = getRelatedEvents(ev);
+  if (related.length === 0) { wrap.innerHTML = ''; return; }
+
+  wrap.innerHTML = `
+    <div class="related-events-section">
+      <h2 class="section-title">関連イベント</h2>
+      <div class="events-grid">
+        ${related.map(e => createEventCardHTML(e, true)).join('')}
+      </div>
+    </div>`;
+
+  wrap.onclick = (e) => {
+    const card = e.target.closest('.event-card');
+    if (card) trackEvent('event_related_click', { event_id: card.dataset.id, from_event_id: ev.id });
+  };
+
+  refreshLiveReactionCounts(related.map(e => e.id));
+}
+
 function renderEventDetailPage(ev) {
   const wrap = document.getElementById('event-detail');
   if (!wrap) return;
@@ -92,6 +149,7 @@ function renderEventDetailPage(ev) {
     </div>
     <div class="modal-body">
       <div class="modal-tags mb-2">
+        ${endedTagHTML(ev)}
         <span class="tag ${categoryClass(ev.category)}">${categoryLabel(ev.category)}</span>
         <span class="tag ${feeClass(ev.feeType)}">${escapeHtml(ev.feeText || feeLabel(ev.feeType))}</span>
       </div>
@@ -139,6 +197,7 @@ function renderEventDetailPage(ev) {
     </div>`;
 
   refreshLiveReactionCounts([ev.id]);
+  renderRelatedEvents(ev);
 
   if (typeof gtag === 'function') {
     gtag('event', 'event_view', { event_id: ev.id });

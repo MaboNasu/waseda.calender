@@ -524,6 +524,7 @@ ul, ol { list-style: none; }
 .tag-free      { background: #D1FAE5; color: #065F46; }
 .tag-paid      { background: #FEE2E2; color: #991B1B; }
 .tag-unknown   { background: var(--gray-100); color: var(--gray-600); }
+.tag-ended     { background: var(--gray-700); color: var(--white); }
 .event-card-title {
   font-family: var(--font-main);
   font-size: 1rem;
@@ -1136,6 +1137,7 @@ ul, ol { list-style: none; }
 }
 .event-page-header { position: static; }
 .event-page-header .modal-title { color: var(--white); }
+.related-events-section { max-width: 700px; margin: 2rem auto 0; }
 
 /* ============================================================
    問い合わせフォーム

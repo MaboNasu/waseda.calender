@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-F4NHVEBKTK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-F4NHVEBKTK');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="お探しのページは見つかりませんでした。">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#8B0000">
+  <title>ページが見つかりません – Waseda Calendar</title>
+  <link rel="icon" type="image/png" href="/assets/icon.png?v=2">
+  <link rel="manifest" href="/assets/manifest.json?v=2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css?v=29">
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="/index.html#top" class="site-logo">
+      <span class="logo-main">Waseda Calendar</span>
+      <span class="logo-sub">早稲田イベント情報</span>
+    </a>
+    <nav class="header-nav" aria-label="メインナビゲーション">
+      <a class="nav-btn" href="/index.html#today-section">本日のイベント</a>
+      <a class="nav-btn" href="/index.html#upcoming-section">近日開催</a>
+      <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
+      <a class="nav-btn" href="/organizations.html">公認サークル</a>
+      <a class="nav-btn" href="/contact.html">掲載依頼</a>
+      <a class="nav-btn" href="/mypage.html">マイページ</a>
+    </nav>
+    <div id="header-auth" class="header-auth"></div>
+    <button class="hamburger" id="hamburger-btn" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="モバイルナビゲーション">
+  <a class="nav-btn" href="/index.html#today-section">本日のイベント</a>
+  <a class="nav-btn" href="/index.html#upcoming-section">近日開催</a>
+  <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
+  <a class="nav-btn" href="/organizations.html">公認サークル</a>
+  <a class="nav-btn" href="/contact.html">掲載依頼・問い合わせ</a>
+  <a class="nav-btn" href="/mypage.html">マイページ</a>
+</nav>
+
+<main>
+  <section class="section">
+    <div class="container" style="max-width:640px;">
+      <div class="empty-state" style="padding:4rem 1.5rem;">
+        <div class="empty-state-icon">📭</div>
+        <h1 style="font-size:1.3rem;margin-bottom:0.75rem;">ページが見つかりませんでした</h1>
+        <p style="margin-bottom:1.75rem;">
+          お探しのページは削除されたか、URLが変更された可能性があります。<br>
+          イベントが終了・非公開になった場合、個別ページが表示されなくなることがあります。
+        </p>
+        <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+          <a class="btn btn-enjy" href="/index.html">トップページへ戻る</a>
+          <a class="btn btn-ghost" href="/index.html#today-section">本日のイベントを見る</a>
+          <a class="btn btn-ghost" href="/index.html#calendar-section">カレンダーで探す</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-logo-wrap">
+      <span class="footer-logo">Waseda Calendar</span>
+    </div>
+    <nav class="footer-links" aria-label="フッターナビゲーション">
+      <a href="/index.html#today-section">本日のイベント</a>
+      <a href="/index.html#calendar-section">カレンダー</a>
+      <a href="/organizations.html">公認サークル</a>
+      <a href="/contact.html">掲載依頼・問い合わせ</a>
+      <a href="/about.html">運営者情報</a>
+      <a href="/terms.html">利用規約</a>
+      <a href="/privacy.html">プライバシーポリシー</a>
+    </nav>
+    <div class="footer-disclaimers">
+      <p>⚠ このサイトは早稲田大学公式サイトではありません。</p>
+      <p>掲載情報は主催団体の公開情報または掲載依頼をもとに作成しています。</p>
+      <p>© 2026 Waseda Calendar. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('hamburger-btn');
+    const nav = document.getElementById('mobile-nav');
+    if (!btn || !nav) return;
+    btn.addEventListener('click', () => {
+      nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', nav.classList.contains('open') ? 'true' : 'false');
+    });
+    document.addEventListener('click', (e) => {
+      if (!btn.contains(e.target) && !nav.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+</script>
+<script type="module" src="/firebase-init.js?v=3"></script>
+<script src="/auth-ui.js?v=3"></script>
+<script src="/pwa-install.js?v=2"></script>
+</body>
+</html>

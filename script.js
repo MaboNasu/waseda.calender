@@ -116,6 +116,17 @@ function isMultiDay(ev) {
   return getEventEnd(ev) !== ev.date;
 }
 
+/** 開催終了済みかどうか（終了日が今日より前）。UI上の「終了しました」表示にのみ使う。
+ *  JSON-LDのeventStatusは架空の完了状態を作らないため、ここの判定とは別に既存のScheduledのまま維持している。 */
+function isEventEnded(ev) {
+  return getEventEnd(ev) < getTodayStr();
+}
+
+/** 「終了しました」タグのHTML（終了していない場合は空文字） */
+function endedTagHTML(ev) {
+  return isEventEnded(ev) ? '<span class="tag tag-ended">終了しました</span>' : '';
+}
+
 /** YYYY-MM-DD → M/D（年を省いた簡易表示。期間バッジ等に使用） */
 function formatShortDate(dateStr) {
   const [, m, d] = dateStr.split('-').map(Number);
@@ -309,6 +320,15 @@ async function handleReactionClick(type, eventId, btnEl) {
   }
 }
 
+/** GA4送信の薄いラッパー。GA4未設定（gtag未定義）でもエラーにならない。
+ *  event_view/event_link_click という既存の命名規則（event_接頭辞）に合わせて命名すること。
+ *  個人情報・メールアドレス・認証トークン・イベント説明全文などは絶対に渡さないこと。 */
+function trackEvent(eventName, params) {
+  if (typeof gtag === 'function') {
+    gtag('event', eventName, params || {});
+  }
+}
+
 /** XSS防止エスケープ */
 function escapeHtml(str) {
   if (str === null || str === undefined) return '';
@@ -411,6 +431,7 @@ function createEventCardHTML(ev, showDate = true) {
       </label>
       <div class="event-card-body">
         <div class="event-card-meta">
+          ${endedTagHTML(ev)}
           <span class="tag ${categoryClass(ev.category)}">${categoryLabel(ev.category)}</span>
           <span class="tag ${feeClass(ev.feeType)}">${escapeHtml(ev.feeText || feeLabel(ev.feeType))}</span>
         </div>
@@ -839,6 +860,9 @@ function activateModal() {
  */
 function handleDetailLinkClick(e, eventId) {
   if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return true; // 新規タブ等の意図的操作は妨げない
+  // モーダルが存在しないページ（個別イベントページ自身。関連イベント欄はここでカードを再利用する）では
+  // 通常のリンク遷移に任せる。そのイベント自身の個別ページへ実際に移動するのが正しい挙動のため。
+  if (!document.getElementById('event-modal')) return true;
   e.preventDefault();
   openModal(eventId);
   return false;
@@ -854,6 +878,7 @@ function openModal(eventId) {
 
   // タグ
   document.getElementById('modal-tags').innerHTML = `
+    ${endedTagHTML(ev)}
     <span class="tag ${categoryClass(ev.category)}">${categoryLabel(ev.category)}</span>
     <span class="tag ${feeClass(ev.feeType)}">${escapeHtml(ev.feeText || feeLabel(ev.feeType))}</span>`;
 
@@ -1044,6 +1069,7 @@ function downloadIcsForEvent(eventId) {
   const ev = allEvents.find(e => String(e.id) === String(eventId));
   if (!ev) return;
   downloadIcsForEvents([ev], `${ev.id}.ics`);
+  trackEvent('event_ics_download', { event_id: eventId });
 }
 
 /** 選択中の複数イベントを1つの.icsファイルとしてダウンロード */
@@ -1086,6 +1112,7 @@ function shareEventOnLine(eventId) {
   const text = `${ev.title} | Waseda Calendar`;
   const url  = buildEventPageUrl(ev);
   window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+  trackEvent('event_share_line', { event_id: eventId });
 }
 
 function shareEventOnX(eventId) {
@@ -1095,17 +1122,100 @@ function shareEventOnX(eventId) {
   const text = `${ev.title} | Waseda Calendar`;
   const url  = buildEventPageUrl(ev);
   window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer');
+  trackEvent('event_share_x', { event_id: eventId });
 }
 
 function createModalShareActionsHTML(ev) {
   const id = escapeHtml(String(ev.id));
+  const webShareBtn = (typeof navigator !== 'undefined' && navigator.share)
+    ? `<button type="button" class="btn btn-ghost btn-sm" onclick="shareEventViaWebShare('${id}')">📤 共有</button>`
+    : '';
   return `
-    <a class="btn btn-ghost btn-sm" href="${escapeHtml(buildGoogleCalendarUrl(ev))}" target="_blank" rel="noopener noreferrer">📅 Googleカレンダーに追加</a>
+    <a class="btn btn-ghost btn-sm" href="${escapeHtml(buildGoogleCalendarUrl(ev))}" target="_blank" rel="noopener noreferrer" onclick="trackEvent('event_calendar_add', {event_id: '${id}'})">📅 Googleカレンダーに追加</a>
     <button type="button" class="btn btn-ghost btn-sm" onclick="downloadIcsForEvent('${id}')">⬇️ カレンダーファイル(.ics)を保存</button>
     <a class="btn btn-ghost btn-sm" href="${escapeHtml(buildEventPageUrl(ev))}">🔗 個別ページを開く</a>
+    <button type="button" class="btn btn-ghost btn-sm" onclick="copyEventUrl('${id}', this)">📋 URLをコピー</button>
+    ${webShareBtn}
     <button type="button" class="btn btn-ghost btn-sm" onclick="generatePostImageForEvent('${id}')">🖼️ 投稿用画像を生成</button>
     <button type="button" class="btn btn-ghost btn-sm" onclick="shareEventOnLine('${id}')">LINEで共有</button>
     <button type="button" class="btn btn-ghost btn-sm" onclick="shareEventOnX('${id}')">Xで共有</button>`;
+}
+
+/** スクリーンリーダー向けの一時的な通知用領域を必要時に作って使い回す（視覚的には非表示）。 */
+function announceShareStatus(message) {
+  let region = document.getElementById('sr-announce-region');
+  if (!region) {
+    region = document.createElement('div');
+    region.id = 'sr-announce-region';
+    region.setAttribute('aria-live', 'polite');
+    region.setAttribute('role', 'status');
+    Object.assign(region.style, {
+      position: 'absolute', width: '1px', height: '1px', overflow: 'hidden',
+      clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap'
+    });
+    document.body.appendChild(region);
+  }
+  region.textContent = '';
+  // 同じ文言が連続すると読み上げられないブラウザがあるため、一旦空にしてから少し遅らせて設定する
+  setTimeout(() => { region.textContent = message; }, 50);
+}
+
+/** イベント個別ページのURLをクリップボードにコピーする。Clipboard API未対応環境向けのフォールバックも用意。 */
+async function copyEventUrl(eventId, btnEl) {
+  const allEvents = typeof EVENTS !== 'undefined' ? EVENTS : [];
+  const ev = allEvents.find(e => String(e.id) === String(eventId));
+  if (!ev) return;
+  const url = buildEventPageUrl(ev);
+  const originalText = btnEl ? btnEl.textContent : '';
+  if (btnEl) btnEl.disabled = true;
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(url);
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = url;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(textarea);
+      if (!ok) throw new Error('execCommand copy failed');
+    }
+    announceShareStatus('URLをコピーしました');
+    if (btnEl) btnEl.textContent = '✅ コピーしました';
+    trackEvent('event_url_copy', { event_id: eventId });
+  } catch (err) {
+    announceShareStatus('URLをコピーできませんでした。アドレスバーからコピーしてください。');
+    if (btnEl) btnEl.textContent = '⚠️ コピー失敗';
+  } finally {
+    if (btnEl) {
+      setTimeout(() => {
+        btnEl.textContent = originalText;
+        btnEl.disabled = false;
+      }, 1800);
+    }
+  }
+}
+
+/** 対応端末ではOSネイティブの共有シートを開く（ボタン自体、非対応環境では描画されない）。 */
+async function shareEventViaWebShare(eventId) {
+  if (!navigator.share) return;
+  const allEvents = typeof EVENTS !== 'undefined' ? EVENTS : [];
+  const ev = allEvents.find(e => String(e.id) === String(eventId));
+  if (!ev) return;
+  try {
+    await navigator.share({
+      title: `${ev.title} | Waseda Calendar`,
+      text: ev.title,
+      url: buildEventPageUrl(ev)
+    });
+    trackEvent('event_web_share', { event_id: eventId });
+  } catch (err) {
+    if (err && err.name !== 'AbortError') {
+      announceShareStatus('共有に失敗しました。');
+    }
+  }
 }
 
 /* ============================================================
