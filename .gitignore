@@ -7,3 +7,7 @@ desktop.ini
 
 # macOS が自動生成するファイル（将来Macで作業する場合用）
 .DS_Store
+
+# check-sources.js が実行のたびに生成する一時ファイル（同一実行内でのみ使用、コミット対象外）
+scripts/last-check-result.json
+scripts/last-check-summary.md
