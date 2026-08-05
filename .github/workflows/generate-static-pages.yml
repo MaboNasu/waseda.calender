@@ -1,14 +1,15 @@
 name: 静的ページの自動生成
 
-# events.js が main に push されたら、sitemap.xml とイベント個別ページ(event/*.html)を
-# 自動で再生成してコミットする。どちらも scripts/generate-*.js が生成する派生ファイルであり、
-# 手動での再生成を忘れるとSEO面での更新が漏れるため自動化している。
+# events.js / organizations.js が main に push されたら、sitemap.xml と個別ページ
+# (event/*.html, org/*.html)を自動で再生成してコミットする。どれも scripts/generate-*.js が
+# 生成する派生ファイルであり、手動での再生成を忘れるとSEO面での更新が漏れるため自動化している。
 
 on:
   push:
     branches: [main]
     paths:
       - 'events.js'
+      - 'organizations.js'
   workflow_dispatch: {}
 
 permissions:
@@ -32,10 +33,13 @@ jobs:
       - name: イベント個別ページを再生成
         run: node scripts/generate-event-pages.js
 
+      - name: 団体個別ページを再生成
+        run: node scripts/generate-org-pages.js
+
       - name: 変更をコミット
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add sitemap.xml event/
-          git diff --cached --quiet || git commit -m "chore: 静的ページ(sitemap.xml / event/*.html)を自動再生成 [skip ci]"
+          git add sitemap.xml event/ org/
+          git diff --cached --quiet || git commit -m "chore: 静的ページ(sitemap.xml / event/*.html / org/*.html)を自動再生成 [skip ci]"
           git push

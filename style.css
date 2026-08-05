@@ -1140,6 +1140,13 @@ ul, ol { list-style: none; }
 .related-events-section { max-width: 700px; margin: 2rem auto 0; }
 
 /* ============================================================
+   団体個別ページ (org.html) - .org-detail はorganizations.htmlのasideと共有だが、
+   asideのsticky配置はここでは不要なので解除する
+   ============================================================ */
+.org-detail-page { max-width: 700px; margin: 0 auto; }
+.org-detail-page .org-detail { position: static; top: auto; }
+
+/* ============================================================
    問い合わせフォーム
    ============================================================ */
 .contact-intro { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.8; }

@@ -59,11 +59,25 @@ function orgPageEventEnd(ev) {
   return ev.endDate || ev.date;
 }
 
-/** 団体に紐づくイベントかどうか（orgIdでの紐づけ、または団体側のrelatedEventIdsでの紐づけの両方に対応） */
+/** 団体に紐づくイベントかどうか（orgIdでの紐づけ、団体側のrelatedEventIdsでの紐づけ、
+ *  主催団体名（organizer）の完全一致のいずれかに対応）。
+ *  events.js側はorgIdがほとんど未設定で、代わりに主催団体名を自由記述のorganizerに
+ *  入れている実態があるため、organizer完全一致も紐づけ対象に含めている。 */
 function isEventRelatedToOrg(ev, org) {
   if (ev.orgId && String(ev.orgId) === String(org.id)) return true;
   const ids = Array.isArray(org.relatedEventIds) ? org.relatedEventIds.map(String) : [];
-  return ids.includes(String(ev.id));
+  if (ids.includes(String(ev.id))) return true;
+  return !!(ev.organizer && org.name && String(ev.organizer).trim() === String(org.name).trim());
+}
+
+/** 団体個別ページの絶対URL。org-page.js / scripts/generate-org-pages.js と同じ形式を維持すること */
+function buildOrgPageUrl(org) {
+  return `https://wasedacalendar.com/org/${encodeURIComponent(org.id)}.html`;
+}
+
+/** イベント個別ページの絶対URL。script.js の buildEventPageUrl と同じ形式を維持すること */
+function orgPageBuildEventPageUrl(ev) {
+  return `https://wasedacalendar.com/event/${encodeURIComponent(ev.id)}.html`;
 }
 
 /** 団体の開催予定イベント（終了していない、公開済みのもの） */
@@ -218,9 +232,9 @@ function renderOrganizationCards() {
     const activeClass = org.id === organizationState.selectedId ? ' active' : '';
     return `
       <article class="org-card${activeClass}" onclick="selectOrganization('${orgEscapeHtml(org.id)}')">
-        <button class="org-name-btn" type="button" onclick="selectOrganization('${orgEscapeHtml(org.id)}')">
+        <a class="org-name-btn" href="${buildOrgPageUrl(org)}" onclick="return handleOrgDetailClick(event, '${orgEscapeHtml(org.id)}')">
           ${orgEscapeHtml(org.name)}
-        </button>
+        </a>
         <span class="org-genre">${orgEscapeHtml(org.genre || 'その他')}</span>
         ${orgListedBadgeHTML(org)}
         <p>${orgEscapeHtml(org.description || '団体概要は準備中です。')}</p>
@@ -234,9 +248,12 @@ function renderOrganizationCards() {
   renderOrganizationDetail(getOrganizations().find(org => org.id === organizationState.selectedId));
 }
 
-function renderOrganizationDetail(org) {
+/** @param {{headingTag?: string}} [options] 団体名の見出しタグ。一覧ページのasideではh2（省略時の既定）、
+ *  団体個別ページ(org.html/org/{id}.html)ではページ内で唯一の見出しとしてh1を渡す。 */
+function renderOrganizationDetail(org, options) {
   const detail = document.getElementById('organization-detail');
   if (!detail) return;
+  const headingTag = (options && options.headingTag) || 'h2';
 
   if (!org) {
     detail.innerHTML = `
@@ -251,7 +268,7 @@ function renderOrganizationDetail(org) {
     <div class="org-detail-header">
       <span class="org-genre">${orgEscapeHtml(org.genre || 'その他')}</span>
       ${orgListedBadgeHTML(org)}
-      <h2>${orgEscapeHtml(org.name)}</h2>
+      <${headingTag}>${orgEscapeHtml(org.name)}</${headingTag}>
       <p>${orgEscapeHtml(org.nameKana || '')}</p>
       <p>${orgEscapeHtml(org.alphabetName || '')}</p>
       <button type="button" class="btn btn-ghost btn-sm org-follow-btn" id="org-follow-btn"
@@ -262,7 +279,7 @@ function renderOrganizationDetail(org) {
     <div class="org-related">
       <h3>関連イベント</h3>
       ${related.length === 0 ? '<p class="org-muted">関連イベントはまだ登録されていません。</p>' : related.map(ev => `
-        <a class="org-related-event" href="index.html#calendar-section">
+        <a class="org-related-event" href="${orgPageBuildEventPageUrl(ev)}">
           <strong>${orgEscapeHtml(ev.title)}</strong>
           <span>${orgEscapeHtml(ev.date)} ${orgEscapeHtml(ev.startTime || '')}</span>
         </a>`).join('')}
@@ -270,6 +287,17 @@ function renderOrganizationDetail(org) {
     ${renderOrgPastEventsHTML(org)}`;
 
   refreshOrgFollowButton(org.id);
+}
+
+/** 団体カードのリンククリック処理。一覧ページ(#organization-detail asideあり)では
+ *  ページ遷移せずasideを更新、団体個別ページ等(aside無し)では通常通り遷移させる
+ *  （script.js の handleDetailLinkClick と同じパターン）。 */
+function handleOrgDetailClick(e, orgId) {
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return true;
+  if (!document.getElementById('organization-detail')) return true;
+  e.preventDefault();
+  selectOrganization(orgId);
+  return false;
 }
 
 /* ============================================================
@@ -337,10 +365,10 @@ function renderOrgPastEventsHTML(org) {
     <div class="org-related org-archive">
       <h3>開催実績</h3>
       ${past.length === 0 ? '<p class="org-muted">開催実績はまだありません。</p>' : past.map(ev => `
-        <div class="org-related-event org-archive-event">
+        <a class="org-related-event org-archive-event" href="${orgPageBuildEventPageUrl(ev)}">
           <strong>${orgEscapeHtml(ev.title)}</strong>
           <span>${orgEscapeHtml(ev.date)}${ev.endDate && ev.endDate !== ev.date ? `〜${orgEscapeHtml(ev.endDate)}` : ''}</span>
-        </div>`).join('')}
+        </a>`).join('')}
     </div>`;
 }
 
