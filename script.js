@@ -432,7 +432,7 @@ function createEventCardHTML(ev, showDate = true) {
       </div>
       <div class="event-card-footer">
         ${extLink}
-        <button class="btn-detail" onclick="openModal('${escapeHtml(String(ev.id))}')">詳細を見る</button>
+        <a class="btn-detail" href="${escapeHtml(buildEventPageUrl(ev))}" onclick="return handleDetailLinkClick(event, '${escapeHtml(String(ev.id))}')">詳細を見る</a>
       </div>
     </div>`;
 }
@@ -830,6 +830,18 @@ function activateModal() {
     const closeBtn = document.querySelector('#event-modal .modal-close');
     if (closeBtn) closeBtn.focus();
   }, 0);
+}
+
+/**
+ * イベントカードの「詳細を見る」はクロール可能な実リンク（href=個別ページURL）だが、
+ * JS有効時はクリックを横取りしてモーダルを開く（ページ遷移せず素早く見られる既存UXを維持）。
+ * JSが動かない・無効な環境やクローラーには、hrefの通常リンクとしてそのまま機能する。
+ */
+function handleDetailLinkClick(e, eventId) {
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return true; // 新規タブ等の意図的操作は妨げない
+  e.preventDefault();
+  openModal(eventId);
+  return false;
 }
 
 function openModal(eventId) {
