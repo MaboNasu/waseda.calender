@@ -122,31 +122,8 @@ ul, ol { list-style: none; }
 .header-auth-error { color: #FFD1D1; font-size: 0.75rem; margin-left: 0.5rem; }
 
 /* ============================================================
-   PWA「ホーム画面に追加」バナー
+   PWA「ホーム画面に追加／ブックマーク」ポップアップ
    ============================================================ */
-.pwa-install-banner {
-  position: fixed;
-  left: 1rem;
-  right: 1rem;
-  bottom: 1rem;
-  z-index: 250;
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  padding: 0.9rem 1.1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-.pwa-install-text { font-size: 0.85rem; color: var(--text-primary); flex: 1; min-width: 200px; }
-.pwa-install-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
-@media (min-width: 700px) {
-  .pwa-install-banner { left: auto; max-width: 420px; }
-}
-
 .pwa-install-modal-overlay {
   position: fixed;
   inset: 0;

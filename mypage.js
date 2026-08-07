@@ -138,7 +138,7 @@ function renderMypageOrgFollowsHTML(followedOrgIds) {
   const body = orgs.length === 0
     ? `<div class="empty-state">
         <div class="empty-state-icon">📭</div>
-        <p>まだフォロー中の団体がありません。<a href="organizations.html">公認サークル</a>の団体詳細から「フォローする」で追加できます。</p>
+        <p>まだフォロー中の団体がありません。<a href="organizations.html">公認団体</a>の団体詳細から「フォローする」で追加できます。</p>
       </div>`
     : `<div class="org-follow-list">${orgs.map(org => `
         <article class="org-follow-card">

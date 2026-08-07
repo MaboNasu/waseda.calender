@@ -1,8 +1,8 @@
 /**
- * organizations-page.js - 公認サークルページ
+ * organizations-page.js - 公認団体ページ
  */
 
-const ORG_GENRES = ['すべて', 'スポーツ', '文化', '音楽', '演劇', '講演', '地域', '稲門会', 'その他'];
+const ORG_GENRES = ['すべて', '体育各部', 'スポーツ', '文化', '音楽', '演劇', '講演', '地域', '稲門会', 'その他'];
 
 /** 1ページあたりの表示件数 */
 const ORG_PAGE_SIZE = 20;

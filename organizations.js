@@ -1,17 +1,20 @@
 /**
  * organizations.js - Waseda Calendar 掲載団体データ
  *
- * 早稲田大学が公表している「2026年度公認サークル一覧」（全482団体）を元に一括登録しています。
- * まだ実際にイベント掲載依頼をしていない団体も含めて全件載っています（早稲田の公認サークルを
- * 網羅した一覧として見せるため）。「掲載中」バッジは relatedEventIds / events.js側のorgId経由で
- * 実際に紐づくイベント（開催予定・開催実績のいずれか）があるかどうかで自動判定されます
- * （organizations-page.js の getEventsForOrganization / getPastEventsForOrganization を参照）。
- * 手動フラグではないため、イベントを追加するだけで自動的にバッジが付きます。
+ * 早稲田大学が公表している「2026年度公認サークル一覧」（全482団体、id: A〜ET系列）を元に
+ * 一括登録しています。まだ実際にイベント掲載依頼をしていない団体も含めて全件載っています
+ * （早稲田の公認サークルを網羅した一覧として見せるため）。加えて、末尾に体育各部22団体
+ * （id: T系列。公認サークルとは別の登録区分だが、サイト上は「公認団体」として一体的に見せている）
+ * を追加しているため、配列全体としては504団体になります。「掲載中」バッジは
+ * relatedEventIds / events.js側のorgId経由で実際に紐づくイベント（開催予定・開催実績のいずれか）
+ * があるかどうかで自動判定されます（organizations-page.js の getEventsForOrganization /
+ * getPastEventsForOrganization を参照）。手動フラグではないため、イベントを追加するだけで
+ * 自動的にバッジが付きます。
  *
- * id は早稲田公式の公認サークル分類番号（例: "A-001"）をそのまま使っています。
- * events.js側のorgIdともこのidで紐づけます。
+ * id は早稲田公式の公認サークル分類番号（例: "A-001"）をそのまま使っています（体育各部のみ例外、
+ * T系列は本サイト独自の採番）。events.js側のorgIdともこのidで紐づけます。
  *
- * genre は organizations.html の絞り込み（スポーツ/文化/音楽/演劇/講演/地域/その他）用。
+ * genre は organizations.html の絞り込み（体育各部/スポーツ/文化/音楽/演劇/講演/地域/その他）用。
  * 団体名に含まれるキーワード（例:「野球」→スポーツ、「演劇」→演劇）で機械的に推定しています。
  * キーワードに当てはまらない団体は「その他」のままです。誤分類の可能性もあるため、
  * 実際に問い合わせ・掲載を進める中で分かり次第、正しいジャンルに更新してください。
@@ -26,7 +29,7 @@
  *
  * instagramUrl / twitterUrl は、早稲田公式のサークル紹介ページに掲載されていた情報、または
  * Web検索で確認できたものを反映しています（機械的な収集のため、抜け漏れの可能性があります）。
- * guideUrl は早稲田公式の「サークル紹介（公認サークルガイド）」ページへのリンクです
+ * guideUrl は早稲田公式の「サークル紹介（公認団体ガイド）」ページへのリンクです
  * （準備中のため空欄の団体もあります）。
  */
 
@@ -6777,6 +6780,323 @@ const ORGANIZATIONS = [
     twitterUrl: "",
     guideUrl: "",
     websiteUrl: "",
+    relatedEventIds: []
+  },
+
+  /**
+   * T-xxx: 体育各部（早稲田大学競技スポーツセンター所属の公式運動部）
+   * 上記482団体（2026年度公認サークル一覧）とは別の登録区分のため、idは既存のA〜ET系列とは
+   * 独立した"T"プレフィックスにしている。guideUrlも公認サークルガイドの仕組みが無いため空欄。
+   * events.js側は現状orgIdではなくorganizer(自由記述)で紐づいているため、nameをevents.jsの
+   * organizer文字列と完全一致させることでisEventRelatedToOrgのフォールバック照合に乗せている
+   * （organizations-page.js参照）。websiteUrlは各部公式サイト（2026-07-30時点で確認済み）。
+   */
+  {
+    id: "T-001",
+    name: "早稲田大学弓道部",
+    nameKana: "わせだだいがくきゅうどうぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "https://www.waseda-kyudo.net/game2026/",
+    relatedEventIds: []
+  },
+  {
+    id: "T-002",
+    name: "早稲田大学ア式蹴球部",
+    nameKana: "わせだだいがくあしきしゅうきゅうぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "https://www.waseda-afc.jp/",
+    relatedEventIds: []
+  },
+  {
+    id: "T-003",
+    name: "早稲田大学ラクロス部(女子)",
+    nameKana: "わせだだいがくらくろすぶ(じょし)",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "https://w-lax.com/schedule/",
+    relatedEventIds: []
+  },
+  {
+    id: "T-004",
+    name: "早稲田大学ラグビー蹴球部",
+    nameKana: "わせだだいがくらぐびーしゅうきゅうぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "https://www.wasedarugby.com/schedule",
+    relatedEventIds: []
+  },
+  {
+    id: "T-005",
+    name: "早稲田大学水泳部",
+    nameKana: "わせだだいがくすいえいぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "https://wasedaswim.com/schedule",
+    relatedEventIds: []
+  },
+  {
+    id: "T-006",
+    name: "早稲田大学バスケットボール部",
+    nameKana: "わせだだいがくばすけっとぼーるぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "https://waseda-basketball.com/schedule",
+    relatedEventIds: []
+  },
+  {
+    id: "T-007",
+    name: "早稲田大学相撲部",
+    nameKana: "わせだだいがくすもうぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "https://wasedasumo-website.com/schedule",
+    relatedEventIds: []
+  },
+  {
+    id: "T-008",
+    name: "早稲田大学野球部",
+    nameKana: "わせだだいがくやきゅうぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "http://www.wasedabbc.org/",
+    relatedEventIds: []
+  },
+  {
+    id: "T-009",
+    name: "早稲田大学自動車部",
+    nameKana: "わせだだいがくじどうしゃぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "http://wuac.com/posts/schedule/",
+    relatedEventIds: []
+  },
+  {
+    id: "T-010",
+    name: "早稲田大学ラクロス部(男子)",
+    nameKana: "わせだだいがくらくろすぶ(だんし)",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "http://wlax-redbats.com/schedule/",
+    relatedEventIds: []
+  },
+  {
+    id: "T-011",
+    name: "早稲田大学準硬式野球部",
+    nameKana: "わせだだいがくじゅんこうしきやきゅうぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "https://w-junkoh.com/schedule",
+    relatedEventIds: []
+  },
+  {
+    id: "T-012",
+    name: "早稲田大学応援部",
+    nameKana: "わせだだいがくおうえんぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "http://www.w-ouen.com/",
+    relatedEventIds: []
+  },
+  {
+    id: "T-013",
+    name: "早稲田大学剣道部",
+    nameKana: "わせだだいがくけんどうぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "http://www.waseda-kendo.com/",
+    relatedEventIds: []
+  },
+  {
+    id: "T-014",
+    name: "早稲田大学バドミントン部",
+    nameKana: "わせだだいがくばどみんとんぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "https://waseda-bad.com/blog/年間スケジュール/",
+    relatedEventIds: []
+  },
+  {
+    id: "T-015",
+    name: "早稲田大学庭球部",
+    nameKana: "わせだだいがくていきゅうぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "https://www.wasedatennis.net/",
+    relatedEventIds: []
+  },
+  {
+    id: "T-016",
+    name: "早稲田大学競走部",
+    nameKana: "わせだだいがくきょうそうぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "https://waseda-ac.jp/competition/schedule",
+    relatedEventIds: []
+  },
+  {
+    id: "T-017",
+    name: "早稲田大学柔道部",
+    nameKana: "わせだだいがくじゅうどうぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "http://www.waseda-judo.com/",
+    relatedEventIds: []
+  },
+  {
+    id: "T-018",
+    name: "早稲田大学少林寺拳法部",
+    nameKana: "わせだだいがくしょうりんじけんぽうぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "http://waseda-shorinji.com/schedule/",
+    relatedEventIds: []
+  },
+  {
+    id: "T-019",
+    name: "早稲田大学射撃部",
+    nameKana: "わせだだいがくしゃげきぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "https://waseda-shooting.com/schedule",
+    relatedEventIds: []
+  },
+  {
+    id: "T-020",
+    name: "早稲田大学ボクシング部",
+    nameKana: "わせだだいがくぼくしんぐぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "http://www.waseda-boxing.com/",
+    relatedEventIds: []
+  },
+  {
+    id: "T-021",
+    name: "早稲田大学フェンシング部",
+    nameKana: "わせだだいがくふぇんしんぐぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "https://wasedafencing.com/schedule/",
+    relatedEventIds: []
+  },
+  {
+    id: "T-022",
+    name: "早稲田大学ウエイトリフティング部",
+    nameKana: "わせだだいがくうえいとりふてぃんぐぶ",
+    alphabetName: "",
+    genre: "体育各部",
+    registrationType: "体育各部",
+    description: "",
+    instagramUrl: "",
+    twitterUrl: "",
+    guideUrl: "",
+    websiteUrl: "https://www.waseda-wl.com/",
     relatedEventIds: []
   }
 ];

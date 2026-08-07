@@ -31,7 +31,7 @@ function buildOrgJsonLd(org, pageUrl) {
     '@type': 'Organization',
     name: org.name,
     url: pageUrl,
-    description: org.description || `${org.name}（早稲田大学公認サークル）`,
+    description: org.description || `${org.name}（早稲田大学公認団体）`,
     memberOf: { '@type': 'CollegeOrUniversity', name: '早稲田大学' },
     sameAs: sameAs.length ? sameAs : undefined
   };
@@ -65,7 +65,7 @@ function updateOrgPageMeta(org) {
   const pageTitle = `${org.name} – Waseda Calendar`;
   const description = org.description
     ? org.description.replace(/\s+/g, ' ').trim().slice(0, 100)
-    : `${org.name}（早稲田大学公認サークル・${org.genre || 'その他'}）の掲載イベント一覧。`;
+    : `${org.name}（早稲田大学公認団体・${org.genre || 'その他'}）の掲載イベント一覧。`;
   const url = buildOrgPageUrl(org);
 
   document.title = pageTitle;

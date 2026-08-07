@@ -7,7 +7,7 @@
  * ビルドツール・npm依存なしで動く単純なNodeスクリプトです（generate-event-pages.js と同じ構成）。
  *
  * なぜ全482団体分を生成するか: organizations.js冒頭のコメントの通り、掲載依頼が来ていない団体も
- * 含めて早稲田公認サークルを網羅した一覧として見せる方針のため。ただし情報が薄い団体（説明文なし・
+ * 含めて早稲田公認団体を網羅した一覧として見せる方針のため。ただし情報が薄い団体（説明文なし・
  * SNS等のリンクなし・関連イベントなし）はrobotsをnoindexにし、sitemap.xmlにも含めない
  * （検索エンジンからは見えないが、サイト内リンクからは通常通り閲覧できる）。
  *
@@ -157,7 +157,7 @@ function buildOrgJsonLd(org, pageUrl) {
     '@type': 'Organization',
     name: org.name,
     url: pageUrl,
-    description: org.description || `${org.name}（早稲田大学公認サークル）`,
+    description: org.description || `${org.name}（早稲田大学公認団体）`,
     memberOf: { '@type': 'CollegeOrUniversity', name: '早稲田大学' },
     sameAs: sameAs.length ? sameAs : undefined
   };
@@ -178,7 +178,7 @@ function renderOrgPageHtml(org, events) {
   const description = escapeHtml(
     org.description
       ? org.description.replace(/\s+/g, ' ').trim().slice(0, 100)
-      : `${org.name}（早稲田大学公認サークル・${org.genre || 'その他'}）の掲載イベント一覧。`
+      : `${org.name}（早稲田大学公認団体・${org.genre || 'その他'}）の掲載イベント一覧。`
   );
   const indexEligible = isOrgIndexEligible(org, events);
   const jsonLd = jsonLdScriptSafe(buildOrgJsonLd(org, pageUrl));
@@ -234,7 +234,7 @@ function renderOrgPageHtml(org, events) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=30">
+  <link rel="stylesheet" href="/style.css?v=31">
   <script type="application/ld+json" id="org-page-jsonld">${jsonLd}</script>
 </head>
 <body>
@@ -249,7 +249,7 @@ function renderOrgPageHtml(org, events) {
       <a class="nav-btn" href="/index.html#today-section">本日のイベント</a>
       <a class="nav-btn" href="/index.html#upcoming-section">近日開催</a>
       <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
-      <a class="nav-btn" href="/organizations.html">公認サークル</a>
+      <a class="nav-btn" href="/organizations.html">公認団体</a>
       <a class="nav-btn" href="/contact.html">掲載依頼</a>
       <a class="nav-btn" href="/mypage.html">マイページ</a>
     </nav>
@@ -264,7 +264,7 @@ function renderOrgPageHtml(org, events) {
   <a class="nav-btn" href="/index.html#today-section">本日のイベント</a>
   <a class="nav-btn" href="/index.html#upcoming-section">近日開催</a>
   <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
-  <a class="nav-btn" href="/organizations.html">公認サークル</a>
+  <a class="nav-btn" href="/organizations.html">公認団体</a>
   <a class="nav-btn" href="/contact.html">掲載依頼・問い合わせ</a>
   <a class="nav-btn" href="/mypage.html">マイページ</a>
 </nav>
@@ -288,7 +288,7 @@ function renderOrgPageHtml(org, events) {
     <nav class="footer-links" aria-label="フッターナビゲーション">
       <a href="/index.html#today-section">本日のイベント</a>
       <a href="/index.html#calendar-section">カレンダー</a>
-      <a href="/organizations.html">公認サークル</a>
+      <a href="/organizations.html">公認団体</a>
       <a href="/contact.html">掲載依頼・問い合わせ</a>
       <a href="/about.html">運営者情報</a>
       <a href="/terms.html">利用規約</a>
@@ -303,8 +303,8 @@ function renderOrgPageHtml(org, events) {
 </footer>
 
 <script src="/events.js?v=6"></script>
-<script src="/organizations.js?v=7"></script>
-<script src="/organizations-page.js?v=11"></script>
+<script src="/organizations.js?v=8"></script>
+<script src="/organizations-page.js?v=12"></script>
 <script src="/org-page.js?v=1"></script>
 <script type="module" src="/firebase-init.js?v=3"></script>
 <script src="/auth-ui.js?v=3"></script>

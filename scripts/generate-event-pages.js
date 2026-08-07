@@ -311,7 +311,7 @@ function renderEventPageHtml(ev, labelFns) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=30">
+  <link rel="stylesheet" href="/style.css?v=31">
   <script type="application/ld+json" id="event-page-jsonld">${jsonLd}</script>
 </head>
 <body>
@@ -326,7 +326,7 @@ function renderEventPageHtml(ev, labelFns) {
       <a class="nav-btn" href="/index.html#today-section">本日のイベント</a>
       <a class="nav-btn" href="/index.html#upcoming-section">近日開催</a>
       <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
-      <a class="nav-btn" href="/organizations.html">公認サークル</a>
+      <a class="nav-btn" href="/organizations.html">公認団体</a>
       <a class="nav-btn" href="/contact.html">掲載依頼</a>
       <a class="nav-btn" href="/mypage.html">マイページ</a>
     </nav>
@@ -341,7 +341,7 @@ function renderEventPageHtml(ev, labelFns) {
   <a class="nav-btn" href="/index.html#today-section">本日のイベント</a>
   <a class="nav-btn" href="/index.html#upcoming-section">近日開催</a>
   <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
-  <a class="nav-btn" href="/organizations.html">公認サークル</a>
+  <a class="nav-btn" href="/organizations.html">公認団体</a>
   <a class="nav-btn" href="/contact.html">掲載依頼・問い合わせ</a>
   <a class="nav-btn" href="/mypage.html">マイページ</a>
 </nav>
@@ -364,7 +364,7 @@ function renderEventPageHtml(ev, labelFns) {
     <nav class="footer-links" aria-label="フッターナビゲーション">
       <a href="/index.html#today-section">本日のイベント</a>
       <a href="/index.html#calendar-section">カレンダー</a>
-      <a href="/organizations.html">公認サークル</a>
+      <a href="/organizations.html">公認団体</a>
       <a href="/contact.html">掲載依頼・問い合わせ</a>
       <a href="/about.html">運営者情報</a>
       <a href="/terms.html">利用規約</a>

@@ -1,13 +1,13 @@
 /**
- * pwa-install.js - Service Worker登録 + 「ホーム画面に追加」の案内
+ * pwa-install.js - Service Worker登録 + 「ホーム画面に追加／ブックマーク」の案内
  *
- * 2つの出し方がある:
- *  - 通常訪問時（未ログイン含む）: 画面下部の控えめなバナー
- *  - ログイン直後: 画面中央のモーダル（エンゲージメントが高い瞬間なので強めに誘導する）
- * いずれも一度閉じたら14日間は再表示しない（localStorageで管理、両者で共有）。
- *
- * Chrome/Android: beforeinstallprompt イベントを使い、独自デザインのUIから誘導する。
- * iOS Safari: beforeinstallprompt 非対応のため、「共有→ホーム画面に追加」の手順を案内する。
+ * 通常訪問時・ログイン直後のいずれも、画面中央のポップアップで案内する
+ * （ホーム画面から起動した場合＝スタンドアロン表示中は一切出さない）。
+ * 端末によって案内内容を変える:
+ *  - スマホ(iOS): 「共有→ホーム画面に追加」の手順を案内（beforeinstallprompt非対応のため）
+ *  - スマホ(Android等): beforeinstallprompt イベントを使い、独自UIの「追加する」ボタンで誘導
+ *  - PC: ブックマーク（Ctrl+D / ⌘+D）を案内。ブラウザ標準機能のためJSからは実行できず、案内のみ
+ * 一度閉じたら14日間は再表示しない（localStorageで管理）。
  */
 const PWA_DISMISS_KEY = 'wc-pwa-install-dismissed-until';
 const PWA_DISMISS_DAYS = 14;
@@ -41,55 +41,56 @@ function isIos() {
   return /iphone|ipad|ipod/i.test(window.navigator.userAgent);
 }
 
+function isMobileDevice() {
+  return isIos() || /android/i.test(window.navigator.userAgent);
+}
+
+function isMacDesktop() {
+  return !isMobileDevice() && /Macintosh/i.test(window.navigator.userAgent);
+}
+
+/** モバイルの「追加する」ボタンは、実際にbeforeinstallpromptが取れている時だけ意味を持つ */
+function hasInstallAction() {
+  return !isIos() && isMobileDevice() && !!deferredInstallEvent;
+}
+
+function installPromptIcon() {
+  return isMobileDevice() ? '📱' : '🔖';
+}
+
 function installPromptMessage() {
-  return isIos()
-    ? 'このサイトをホーム画面に追加できます。共有ボタン（□と↑）→「ホーム画面に追加」を選んでください。'
-    : 'ホーム画面に追加して、アプリのように使えます。';
+  if (isIos()) {
+    return 'このサイトをホーム画面に追加できます。共有ボタン（□と↑）→「ホーム画面に追加」を選んでください。';
+  }
+  if (isMobileDevice()) {
+    return 'ホーム画面に追加して、アプリのように使えます。';
+  }
+  const shortcut = isMacDesktop() ? '「⌘ + D」' : '「Ctrl + D」';
+  return `このサイトをブックマークしておくと、次回からすぐアクセスできます。${shortcut}でブックマークに追加できます。`;
 }
 
 function canShowInstallPrompt() {
-  if (isStandaloneDisplay() || isDismissed()) return false;
-  return isIos() || !!deferredInstallEvent;
+  return !isStandaloneDisplay() && !isDismissed();
 }
 
 function runInstallAction() {
   if (deferredInstallEvent) deferredInstallEvent.prompt();
 }
 
-/** 画面下部の控えめなバナー（通常訪問時） */
-function showInstallBanner() {
-  if (!canShowInstallPrompt() || document.querySelector('.pwa-install-banner')) return;
-
-  const banner = document.createElement('div');
-  banner.className = 'pwa-install-banner';
-  banner.innerHTML = `
-    <span class="pwa-install-text">${installPromptMessage()}</span>
-    <div class="pwa-install-actions">
-      ${isIos() ? '' : '<button type="button" class="btn btn-enjy btn-sm" id="pwa-install-action-btn">追加する</button>'}
-      <button type="button" class="btn btn-ghost btn-sm" id="pwa-install-dismiss-btn">閉じる</button>
-    </div>`;
-  document.body.appendChild(banner);
-
-  const dismissBtn = document.getElementById('pwa-install-dismiss-btn');
-  if (dismissBtn) dismissBtn.addEventListener('click', () => { dismissForNow(); banner.remove(); });
-
-  const actionBtn = document.getElementById('pwa-install-action-btn');
-  if (actionBtn) actionBtn.addEventListener('click', () => { runInstallAction(); banner.remove(); });
-}
-
-/** 画面中央のモーダル（ログイン直後） */
+/** 画面中央のポップアップ（通常訪問時・ログイン直後の両方で使う） */
 function showInstallModal() {
   if (!canShowInstallPrompt() || document.querySelector('.pwa-install-modal-overlay')) return;
+  const showAction = hasInstallAction();
 
   const overlay = document.createElement('div');
   overlay.className = 'pwa-install-modal-overlay';
   overlay.innerHTML = `
     <div class="pwa-install-modal">
-      <p class="pwa-install-modal-icon">📱</p>
+      <p class="pwa-install-modal-icon">${installPromptIcon()}</p>
       <p class="pwa-install-modal-text">${installPromptMessage()}</p>
       <div class="pwa-install-modal-actions">
-        ${isIos() ? '' : '<button type="button" class="btn btn-enjy" id="pwa-install-modal-action-btn">ホーム画面に追加する</button>'}
-        <button type="button" class="btn btn-ghost" id="pwa-install-modal-dismiss-btn">今はしない</button>
+        ${showAction ? '<button type="button" class="btn btn-enjy" id="pwa-install-modal-action-btn">ホーム画面に追加する</button>' : ''}
+        <button type="button" class="btn btn-ghost" id="pwa-install-modal-dismiss-btn">${showAction ? '今はしない' : '閉じる'}</button>
       </div>
     </div>`;
   document.body.appendChild(overlay);
@@ -107,18 +108,19 @@ function setupInstallPrompt() {
     deferredInstallEvent = event;
   });
 
-  // 通常訪問時は下部バナー（iOSはイベントを待たずに案内のみ出せる）
-  if (isIos()) {
-    showInstallBanner();
+  // 通常訪問時: 画面中央のポップアップ。
+  // iOS・PCはbeforeinstallpromptが飛んでこないためその場ですぐ案内し、
+  // Android等は「追加する」ボタンを機能させるためbeforeinstallpromptを待ってから出す。
+  if (isIos() || !isMobileDevice()) {
+    showInstallModal();
   } else {
-    window.addEventListener('beforeinstallprompt', () => showInstallBanner());
+    window.addEventListener('beforeinstallprompt', () => showInstallModal());
   }
 
-  // ログイン直後だけ中央モーダル（「未ログイン→ログイン済み」に変わった瞬間のみ）
+  // ログイン直後、まだ出ていなければ改めて促す（エンゲージメントが高い瞬間のため）
   window.addEventListener('wc-auth-changed', (e) => {
     const isNowLoggedIn = !!(e.detail && e.detail.user);
     if (isNowLoggedIn && !wasLoggedIn) {
-      document.querySelectorAll('.pwa-install-banner').forEach(b => b.remove());
       showInstallModal();
     }
     wasLoggedIn = isNowLoggedIn;
