@@ -7,7 +7,7 @@
       "name": "早稲田大学体育各部 総合ディレクトリ",
       "category": "sports",
       "url": "https://www.waseda.jp/inst/athletic/club/",
-      "lastChecked": "2026-08-07T14:21:41.177Z",
+      "lastChecked": "2026-08-07T18:34:32.597Z",
       "contentHash": "220eff48cea6c33a48ad45f455f0f498cd2ec1838c658bc72d9b156670c9ad5f",
       "notes": "44部一覧・各部紹介ページへのリンク集",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -17,7 +17,7 @@
       "name": "早慶戦 勝敗一覧(早稲田公式)",
       "category": "sports",
       "url": "https://www.waseda.jp/inst/athletic/wasedasports/soukei/",
-      "lastChecked": "2026-08-07T14:21:42.202Z",
+      "lastChecked": "2026-08-07T18:34:33.473Z",
       "contentHash": "ec1b669086f28afdfbb4664872b13b5d8313299c49d00bf88cc7c111dd23f9a9",
       "notes": "早慶戦の日程・結果を横断確認できる一次情報",
       "dateTokensHash": "644d43d588ce93f530ce3994778862c0cb8a1e9dd4f23a7a45317dcf03d39862"
@@ -27,7 +27,7 @@
       "name": "早慶戦 勝敗一覧(慶應PDF)",
       "category": "sports",
       "url": "https://www.uaa.keio.ac.jp/competition/pdf/soukeisen_2026.pdf",
-      "lastChecked": "2026-08-07T14:21:42.637Z",
+      "lastChecked": "2026-08-07T18:34:34.887Z",
       "contentHash": "434ed91f92dc7a7f12be97cb299311e0f9d7497a06250357d7fc0351a4ec5b8d",
       "notes": "早稲田公式より更新が早いことがある",
       "dateTokensHash": "fa9c5018570e738b118368e6a14b0085973907e6346dd3baceef8e362dffc262"
@@ -37,7 +37,7 @@
       "name": "野球部",
       "category": "sports",
       "url": "http://www.wasedabbc.org/schedule/",
-      "lastChecked": "2026-08-07T14:21:43.148Z",
+      "lastChecked": "2026-08-07T18:34:36.103Z",
       "contentHash": "e8fb24157f43ff0becb8f92060983573414ff9a521c8d56c50aed4943236eea3",
       "notes": "",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -47,7 +47,7 @@
       "name": "庭球部",
       "category": "sports",
       "url": "https://www.wasedatennis.net/",
-      "lastChecked": "2026-08-07T14:21:43.365Z",
+      "lastChecked": "2026-08-07T18:34:36.467Z",
       "contentHash": "69e42733b2522b0b442250bafdb47ff9f2b31dd4c846f0ba8e533b1d0059d676",
       "notes": "",
       "dateTokensHash": "5e0213bfef8092ccb6abccf5cb6bbf37525753c8aed187f9c56459cb79ddcf9b"
@@ -57,7 +57,7 @@
       "name": "漕艇部",
       "category": "sports",
       "url": "https://www.wasedarowing.net/",
-      "lastChecked": "2026-08-07T14:21:43.610Z",
+      "lastChecked": "2026-08-07T18:34:37.138Z",
       "contentHash": "5990943c4de91e531638256e9e5f2a5105d34a097781df1a5027d42b2dc4fd78",
       "notes": "自チーム日程は薄い",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -67,7 +67,7 @@
       "name": "剣道部",
       "category": "sports",
       "url": "http://www.waseda-kendo.com/",
-      "lastChecked": "2026-08-07T14:21:44.051Z",
+      "lastChecked": "2026-08-07T18:34:38.157Z",
       "contentHash": "7b3335dd77b574aaa561f3353eb787193827f8736effae72cb5b999b8ff20abd",
       "notes": "SSL証明書期限切れ・年間予定が旧年度のまま更新遅延あり",
       "dateTokensHash": "2d930ab2c8df9916653d1b020c9ade28fa079ec554a38b7822cf5eaa88c9463c"
@@ -77,7 +77,7 @@
       "name": "柔道部",
       "category": "sports",
       "url": "http://www.waseda-judo.com/schedule/",
-      "lastChecked": "2026-08-07T14:21:44.388Z",
+      "lastChecked": "2026-08-07T18:34:38.793Z",
       "contentHash": "140d98deb812f49ccd1e0082c2e8939ebe8d8321fee08dc4952d1184bb45f8eb",
       "notes": "",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -87,7 +87,7 @@
       "name": "弓道部",
       "category": "sports",
       "url": "https://www.waseda-kyudo.net/game2026/",
-      "lastChecked": "2026-08-07T14:21:44.833Z",
+      "lastChecked": "2026-08-07T18:34:39.360Z",
       "contentHash": "63f284630ece46e1f49ec24cf704595829cc8ff411424cb21c766fafc2bcd05d",
       "notes": "44部中もっとも詳細。年度でURLの年数部分が変わる想定（次年度は要URL更新）",
       "dateTokensHash": "adf1e308b3b66202b4af8072c1a7fbc29406b156e76f08d1708528894e304c70"
@@ -97,7 +97,7 @@
       "name": "水泳部",
       "category": "sports",
       "url": "https://wasedaswim.com/schedule",
-      "lastChecked": "2026-08-07T14:21:45.734Z",
+      "lastChecked": "2026-08-07T18:34:40.039Z",
       "contentHash": "80a1e356422068653d6df773e040d15a73781c65bdb250c98a2d7110ed97c0e3",
       "notes": "",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -107,7 +107,7 @@
       "name": "競走部",
       "category": "sports",
       "url": "https://waseda-ac.jp/competition/schedule",
-      "lastChecked": "2026-08-07T14:21:46.001Z",
+      "lastChecked": "2026-08-07T18:34:40.674Z",
       "contentHash": "102f8816cdbedcd5ebe1547ed33c3f04c166224f46eaef07ba1b6b3f887afead",
       "notes": "",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -117,7 +117,7 @@
       "name": "相撲部",
       "category": "sports",
       "url": "https://wasedasumo-website.com/schedule",
-      "lastChecked": "2026-08-07T14:21:46.599Z",
+      "lastChecked": "2026-08-07T18:34:41.522Z",
       "contentHash": "b194e7f188d0839b3daf434570f5c83e21577b1e4665cbc3d8c7bd6e25f4a814",
       "notes": "",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -127,7 +127,7 @@
       "name": "ラグビー蹴球部",
       "category": "sports",
       "url": "https://www.wasedarugby.com/schedule",
-      "lastChecked": "2026-08-07T14:21:46.987Z",
+      "lastChecked": "2026-08-07T18:34:42.665Z",
       "contentHash": "88297d9fef9ba6fa100692226f06f37e41f827ea19124e8bd9b76af70de7c5db",
       "notes": "",
       "dateTokensHash": "e25bffcfbb184af75821611de98894bc5cfac1d5bf49a22b6a28ead6c024b458"
@@ -137,7 +137,7 @@
       "name": "山岳部",
       "category": "sports",
       "url": "http://wasedaalpineclub.com/",
-      "lastChecked": "2026-08-07T14:21:47.805Z",
+      "lastChecked": "2026-08-07T18:34:43.759Z",
       "contentHash": "c9ba6707dbcb63792b0c66a98160adbccb697d45607faa4ef637eb9be7b68efa",
       "notes": "情報なし(2026-07-30時点)。事後報告ブログのみ",
       "dateTokensHash": "497aa4aca6f28ae6b15d157f2e77e03e59845c7e8cea0c2c8fbad03b3703ba5a"
@@ -147,7 +147,7 @@
       "name": "スキー部",
       "category": "sports",
       "url": "https://wasedaski.jp/schedule",
-      "lastChecked": "2026-08-07T14:21:48.208Z",
+      "lastChecked": "2026-08-07T18:34:44.516Z",
       "contentHash": "6e747295e7c71d788dc084d7375b0ba70290420b97510cbed8d2e0f6a3f83023",
       "notes": "情報なし(2026-07-30時点)",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -157,7 +157,7 @@
       "name": "スケート部(ホッケー部門)",
       "category": "sports",
       "url": "http://wasedaicehockey.jp/schedule",
-      "lastChecked": "2026-08-07T14:21:48.829Z",
+      "lastChecked": "2026-08-07T18:34:45.052Z",
       "contentHash": "8102364a2d8967272f313eed4877c394dbffe1458ea56b2b3b59cdeca3afcc42",
       "notes": "",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -167,7 +167,7 @@
       "name": "バスケットボール部",
       "category": "sports",
       "url": "https://waseda-basketball.com/schedule",
-      "lastChecked": "2026-08-07T14:21:49.541Z",
+      "lastChecked": "2026-08-07T18:34:45.809Z",
       "contentHash": "9c2c26c7fdd1f1d18bb9bb99bfd4d4a207ca0721174d65b3467e8cd42938481a",
       "notes": "",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -177,8 +177,8 @@
       "name": "ア式蹴球部(サッカー)",
       "category": "sports",
       "url": "https://www.waseda-afc.jp/",
-      "lastChecked": "2026-08-07T14:21:51.635Z",
-      "contentHash": "ebb5acab5ab63d2d52a08f7bce86b86fb8ed727542017572368f80082917fc61",
+      "lastChecked": "2026-08-07T18:34:48.803Z",
+      "contentHash": "2c12a3b08685aa309684b5ef12f707661b2894f05570a9011e310f29c0623b4c",
       "notes": "",
       "dateTokensHash": "374107acb82177d58ca389228c2a5d976d04e382bed7458401e5b5ce58caff6c"
     },
@@ -187,7 +187,7 @@
       "name": "関東大学サッカーリーグ1部 試合日程",
       "category": "sports",
       "url": "https://football-system.jp/fss/pub_taikaigamelist.php?lid=QyXUlC6jQ18=",
-      "lastChecked": "2026-08-07T14:21:51.922Z",
+      "lastChecked": "2026-08-07T18:34:49.664Z",
       "contentHash": "d7c204434622a30a3acb7eb73be76d6bf1f0cc1395fa5d5e10d8faa0173e8b7a",
       "jsRendered": true,
       "notes": "JS描画のため単純fetchでは取得不可の可能性あり（ヘッドレスブラウザ要検討）",
@@ -198,7 +198,7 @@
       "name": "馬術部",
       "category": "sports",
       "url": "https://whrc1927.wixsite.com/waseda-equestrian",
-      "lastChecked": "2026-08-07T14:21:52.204Z",
+      "lastChecked": "2026-08-07T18:34:49.920Z",
       "contentHash": "03bc6a9fbbdd6512ba7600e90e238ba4d5fb6ef5ec8825f90e2993efe6ad070f",
       "notes": "情報なし(2026-07-30時点)",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -208,7 +208,7 @@
       "name": "卓球部",
       "category": "sports",
       "url": "http://wasedatt.jp/",
-      "lastChecked": "2026-08-07T14:21:52.365Z",
+      "lastChecked": "2026-08-07T18:34:50.690Z",
       "contentHash": "6c98558d34098216761614800d4739881e4bbec3d522f31ba63a24f19bbf147b",
       "notes": "対戦カードまでは載っていない",
       "dateTokensHash": "213eac4445bf3edc2b9e6441e22fe36e653b1a14d46ff874536dff7209b375d9"
@@ -218,7 +218,7 @@
       "name": "ボクシング部",
       "category": "sports",
       "url": "http://www.waseda-boxing.com/",
-      "lastChecked": "2026-08-07T14:21:52.741Z",
+      "lastChecked": "2026-08-07T18:34:52.023Z",
       "contentHash": "b8ce7c42cfcc38040df60fb9798041f070d9b75bee4b1259d57f03e887bdf9a7",
       "notes": "",
       "dateTokensHash": "f620115003d185348c7c422071fe2d40f8d5d8166f95cc2cbbf05e4e8be848f3"
@@ -228,7 +228,7 @@
       "name": "体操部",
       "category": "sports",
       "url": "https://waseda-gymnastics.jp/",
-      "lastChecked": "2026-08-07T14:21:52.922Z",
+      "lastChecked": "2026-08-07T18:34:52.680Z",
       "contentHash": "8cfa34244df747dc0e637fa47d79089c8393b0e96718f361c45e8ba1d9ecea0e",
       "notes": "",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -238,7 +238,7 @@
       "name": "空手部",
       "category": "sports",
       "url": "https://www.waseda-karatebu.org/",
-      "lastChecked": "2026-08-07T14:21:54.614Z",
+      "lastChecked": "2026-08-07T18:34:55.061Z",
       "contentHash": "81179b09d3fe21bbd3bcf18d05cc04a76cff19e27172b725ca2d67073e5e2b74",
       "notes": "",
       "dateTokensHash": "dc4f6a08a678fd2b0f5da50d5cdb2fb65d49fe1c299dd99f5880050e662310f2"
@@ -248,7 +248,7 @@
       "name": "バレーボール部",
       "category": "sports",
       "url": "https://wasedavolley.org/",
-      "lastChecked": "2026-08-07T14:21:55.119Z",
+      "lastChecked": "2026-08-07T18:34:55.682Z",
       "contentHash": "d89cfe30ecc783a21b71e5e1d7e74f26cad5a44948b5df1997351044ca07e2b2",
       "notes": "",
       "dateTokensHash": "dfd39bb58f2479ffa28bc7cb158a6ea78d29044802808a6babf7c2a77c75cc90"
@@ -258,7 +258,7 @@
       "name": "レスリング部",
       "category": "sports",
       "url": "https://waseda-wrestling.net/",
-      "lastChecked": "2026-08-07T14:21:57.991Z",
+      "lastChecked": "2026-08-07T18:34:58.857Z",
       "contentHash": "45472c9c3d060b4e1484899d5081b3393b55d11acde08d9396a84aaf48b58fe0",
       "notes": "情報なし(2026-07-30時点)。日程ページが404",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -268,7 +268,7 @@
       "name": "自動車部",
       "category": "sports",
       "url": "http://wuac.com/posts/schedule/",
-      "lastChecked": "2026-08-07T14:22:00.306Z",
+      "lastChecked": "2026-08-07T18:35:02.000Z",
       "contentHash": "2c267a16892f7f79cff5b16544de86d87d69d6d4032aa446436f5ba77d97cbca",
       "notes": "SSL証明書エラーあり。「去年度準拠」の注記に注意",
       "dateTokensHash": "545f4ee8150e89a85984330ff811d76240e25f0cf7483b4c3b170e0035838a0f"
@@ -278,7 +278,7 @@
       "name": "米式蹴球部(アメフト)",
       "category": "sports",
       "url": "https://www.bigbears.org/game/",
-      "lastChecked": "2026-08-07T14:22:01.428Z",
+      "lastChecked": "2026-08-07T18:35:03.587Z",
       "contentHash": "1bc4f6a1ee17d32aadf0a10c7fc2d6cdbaa37e6dbc82bfcd824fd45e24ff3892",
       "notes": "",
       "dateTokensHash": "bafd78ad371abf282be3c2b568674e459a0301375d015397d8e71a43e7f9e7a7"
@@ -288,7 +288,7 @@
       "name": "ヨット部",
       "category": "sports",
       "url": "https://wasedayacht.net/",
-      "lastChecked": "2026-08-07T14:22:03.506Z",
+      "lastChecked": "2026-08-07T18:35:05.623Z",
       "contentHash": "57a061ec8eabb9bf745c49a95d64d517f57a9d09b044f525ccc46e197ddac670",
       "notes": "情報なし(2026-07-30時点)。日程ページ自体が存在しない",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -298,7 +298,7 @@
       "name": "ハンドボール部",
       "category": "sports",
       "url": "http://wasedahandball.com/",
-      "lastChecked": "2026-08-07T14:22:03.878Z",
+      "lastChecked": "2026-08-07T18:35:06.288Z",
       "contentHash": "af313c74daef5cf836d47ce5388bb95c152e884d094bd73396f27275e3d14199",
       "notes": "情報なし(2026-07-30時点)。SSL証明書エラー",
       "dateTokensHash": "4bd0897389c0e2b34aee6b05224b342f5d7c5b9b6c622fa570418419c862740d"
@@ -308,7 +308,7 @@
       "name": "ホッケー部",
       "category": "sports",
       "url": "http://www.waseda-hockey.com/",
-      "lastChecked": "2026-08-07T14:22:04.521Z",
+      "lastChecked": "2026-08-07T18:35:06.736Z",
       "contentHash": "5d3eb4d71f81ab38446b8d9594e8bebf768034cd66e559bda8d994297522f5d6",
       "notes": "情報なし(2026-07-30時点)",
       "dateTokensHash": "d3c308a51a484a5329963fd15f7430b7c38541b5b20a634057c46d437ac2db99"
@@ -318,7 +318,7 @@
       "name": "フェンシング部",
       "category": "sports",
       "url": "https://wasedafencing.com/schedule/",
-      "lastChecked": "2026-08-07T14:22:05.869Z",
+      "lastChecked": "2026-08-07T18:35:08.169Z",
       "contentHash": "f4ff9128e4092f5196cfb6989962741b7b103775c8316caff9518634453b9369",
       "notes": "",
       "dateTokensHash": "78e2944165e9b41fe421f970e1aab5d2cca9f4c5fde81926ead7946e3f644940"
@@ -328,7 +328,7 @@
       "name": "応援部",
       "category": "sports",
       "url": "http://www.w-ouen.com/",
-      "lastChecked": "2026-08-07T14:22:06.457Z",
+      "lastChecked": "2026-08-07T18:35:09.063Z",
       "contentHash": "0638adf704454198bbdf65dcade26496d5ea73d49af216bd23baa3c1c765c401",
       "notes": "月次「〇月の予定について」記事形式",
       "dateTokensHash": "aefc0853bb40b432d18f4bbd49aa946ba51be375b279d25383da919951fbede1"
@@ -338,7 +338,7 @@
       "name": "軟式庭球部(ソフトテニス)",
       "category": "sports",
       "url": "http://waseda-nantei.com/schedule",
-      "lastChecked": "2026-08-07T14:22:07.156Z",
+      "lastChecked": "2026-08-07T18:35:09.512Z",
       "contentHash": "a6263cd50fb7b24e7823de8bc0d4a9d013f377e4468620e404093a5ec1247868",
       "notes": "SSL証明書不一致、httpのみ",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -348,7 +348,7 @@
       "name": "準硬式野球部",
       "category": "sports",
       "url": "https://w-junkoh.com/schedule",
-      "lastChecked": "2026-08-07T14:22:07.871Z",
+      "lastChecked": "2026-08-07T18:35:10.397Z",
       "contentHash": "c2f53f0f92abd7bcb4428e67b62b21fe115aa91bf7309e86878f3b8651d8bdef",
       "notes": "",
       "dateTokensHash": "bb81c6dea0c34758187e2561449bae96b661518c8b2e194e398fba984fc6bf25"
@@ -358,7 +358,7 @@
       "name": "自転車部",
       "category": "sports",
       "url": "http://wasedacycle.com/",
-      "lastChecked": "2026-08-07T14:22:08.208Z",
+      "lastChecked": "2026-08-07T18:35:10.943Z",
       "contentHash": "5c1ce917f293de5116d69e517cb011b35b0bf8bc5bbdefe291adc3547a913411",
       "notes": "情報なし(2026-07-30時点)。動的読み込みで取得不可",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -368,7 +368,7 @@
       "name": "バドミントン部",
       "category": "sports",
       "url": "https://waseda-bad.com/blog/%E5%B9%B4%E9%96%93%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB/",
-      "lastChecked": "2026-08-07T14:22:08.900Z",
+      "lastChecked": "2026-08-07T18:35:11.778Z",
       "contentHash": "b17a851a1fc8cc5383d9dec313be0e877ee9c169f285ceb15a40187fb1df851a",
       "notes": "",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -378,7 +378,7 @@
       "name": "航空部",
       "category": "sports",
       "url": "http://koukuubu.weebly.com/",
-      "lastChecked": "2026-08-07T14:22:09.423Z",
+      "lastChecked": "2026-08-07T18:35:11.928Z",
       "contentHash": "33267bc5326259f5032202ca133041293383caafa9c789c0dfe206353de38732",
       "notes": "情報なし(2026-07-30時点)",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -388,7 +388,7 @@
       "name": "ワンダーフォーゲル部",
       "category": "sports",
       "url": "https://wasedawangel.sakura.ne.jp/",
-      "lastChecked": "2026-08-07T14:22:09.716Z",
+      "lastChecked": "2026-08-07T18:35:13.373Z",
       "contentHash": "7d6db50e26a60e527056b26ba24d1e76fa1f223c3afd0efa8eff66df47c88c4e",
       "notes": "情報なし(2026-07-30時点)",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -398,7 +398,7 @@
       "name": "ゴルフ部",
       "category": "sports",
       "url": "https://univ.waseda-golf.com/game/",
-      "lastChecked": "2026-08-07T14:22:10.152Z",
+      "lastChecked": "2026-08-07T18:35:14.268Z",
       "contentHash": "04edf13160135e7e1c31dc2d9c6becb750071f2d6ab34ec6602682e915f58ab5",
       "notes": "自サイトは前年度分のみ",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -408,7 +408,7 @@
       "name": "ウエイトリフティング部",
       "category": "sports",
       "url": "https://www.waseda-wl.com/",
-      "lastChecked": "2026-08-07T14:22:10.462Z",
+      "lastChecked": "2026-08-07T18:35:15.076Z",
       "contentHash": "4c1f10865016929522560b25bdee703ed6b6e582fecdd1337460612af52f4f9c",
       "notes": "情報なし(2026-07-30時点)",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -418,7 +418,7 @@
       "name": "射撃部",
       "category": "sports",
       "url": "https://waseda-shooting.com/schedule",
-      "lastChecked": "2026-08-07T14:22:11.456Z",
+      "lastChecked": "2026-08-07T18:35:17.762Z",
       "contentHash": "e25a2375a7b7796e6251f23107063cd4e9ad1842053967b5ebc3c24b4d7e3b68",
       "notes": "",
       "dateTokensHash": "5b023b7eb5849e1ae9579454b4baa793519965835b702672f8195fd126116052"
@@ -428,7 +428,7 @@
       "name": "合気道部",
       "category": "sports",
       "url": "https://www.aikido-waseda.com/",
-      "lastChecked": "2026-08-07T14:22:11.692Z",
+      "lastChecked": "2026-08-07T18:35:19.143Z",
       "contentHash": "39b9e74d5315f988c4fdfebfd879c9d5421bf2f9d8c1bc4921a6e57e5dbb0987",
       "notes": "情報なし(2026-07-30時点)",
       "dateTokensHash": "c76fcbb317a93d9375e1fdc81536deec3b75ea4f58cdabc47262bdc91ad57d4b"
@@ -438,7 +438,7 @@
       "name": "アーチェリー部",
       "category": "sports",
       "url": "http://www.w-archery.info/",
-      "lastChecked": "2026-08-07T14:22:12.277Z",
+      "lastChecked": "2026-08-07T18:35:19.721Z",
       "contentHash": "59199620a3892af7f9eef3d8765208d3e5654353c3a20bc75ddbf8fd4af5a9e1",
       "notes": "情報なし(2026-07-30時点)。SSL証明書期限切れ",
       "dateTokensHash": "5402bf37d05087b5bd30c335ecaa6af816dd068362f2850dec70c8dd947c511b"
@@ -448,7 +448,7 @@
       "name": "ソフトボール部(男子)",
       "category": "sports",
       "url": "http://waseda-softball-man.com/",
-      "lastChecked": "2026-08-07T14:22:13.258Z",
+      "lastChecked": "2026-08-07T18:35:20.994Z",
       "contentHash": "9ad56989d90895ac4f050da163972e98b171416d7ba6052dc0e9b632938baba4",
       "notes": "情報なし(2026-07-30時点)",
       "dateTokensHash": "086c45fc4683c9454d1af47ebc163238cc4091564a0839575f55609caaf886f9"
@@ -458,7 +458,7 @@
       "name": "ソフトボール部(女子)",
       "category": "sports",
       "url": "https://www.wasedasoftball-woman.com/",
-      "lastChecked": "2026-08-07T14:22:13.585Z",
+      "lastChecked": "2026-08-07T18:35:22.786Z",
       "contentHash": "9b6716ef0f9439fa202e9d9f92f0179906e86200d5eb5f12b46442c4349f6fb2",
       "notes": "情報なし(2026-07-30時点)",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -468,7 +468,7 @@
       "name": "日本拳法部",
       "category": "sports",
       "url": "https://wasedanipponkempo.jp/",
-      "lastChecked": "2026-08-07T14:22:13.861Z",
+      "lastChecked": "2026-08-07T18:35:32.804Z",
       "contentHash": null,
       "notes": "情報なし(2026-07-30時点)。DNS不通"
     },
@@ -477,7 +477,7 @@
       "name": "ラクロス部(男子・RED BATS)",
       "category": "sports",
       "url": "http://wlax-redbats.com/schedule/",
-      "lastChecked": "2026-08-07T14:22:14.738Z",
+      "lastChecked": "2026-08-07T18:35:33.753Z",
       "contentHash": "8bfa4fa10c67c867b4391b39f9879fe92ed7fa23e87490ccf1cabaea89d9f779",
       "notes": "",
       "dateTokensHash": "7938d4eeecba10e26d0c9295d5029a72f4d08d3ec4c47ae4f88a82462f99611c"
@@ -487,7 +487,7 @@
       "name": "ラクロス部(女子)",
       "category": "sports",
       "url": "http://w-lax.com/schedule/",
-      "lastChecked": "2026-08-07T14:22:15.282Z",
+      "lastChecked": "2026-08-07T18:35:34.859Z",
       "contentHash": "4c9716ebb75fb2657e61551a38f0adedfdec13866fe6125bb40dd0f289d98f4a",
       "notes": "",
       "dateTokensHash": "70a2c03892e015e799a557c490ef64dbba97c9336b3428ee7252bb4ec99c75e0"
@@ -497,7 +497,7 @@
       "name": "少林寺拳法部",
       "category": "sports",
       "url": "http://waseda-shorinji.com/schedule/",
-      "lastChecked": "2026-08-07T14:22:16.202Z",
+      "lastChecked": "2026-08-07T18:35:35.820Z",
       "contentHash": "81255ea0064fd2a256f5ee1c41b5e06b561f224e1c35c66130fdeb51c7d37413",
       "notes": "",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -507,7 +507,7 @@
       "name": "早稲田大学 イベント情報一覧(全学)",
       "category": "lecture",
       "url": "https://www.waseda.jp/top/event/list",
-      "lastChecked": "2026-08-07T14:22:16.984Z",
+      "lastChecked": "2026-08-07T18:35:37.049Z",
       "contentHash": "1411b5f74e0628c12c24d814a4b6f51fa1dc0781ccc83d13524d73df518db4e9",
       "notes": "公開講座・シンポジウム・展示等を横断確認できる一次情報。月ごとに ?date=2026-08 のようにURLが変わる点に注意",
       "dateTokensHash": "0a4ddfa59303c0e660093fad469179a3b9be4941fff5957f2bfb37c43893d1b5"
@@ -517,7 +517,7 @@
       "name": "會津八一記念博物館 展覧会",
       "category": "culture",
       "url": "https://www.waseda.jp/culture/aizu-museum/exhibitions/",
-      "lastChecked": "2026-08-07T14:22:17.507Z",
+      "lastChecked": "2026-08-07T18:35:38.765Z",
       "contentHash": "af96396f4a5c322c292f978799839ee163b37870b2c263a9668b2453ca85ddf6",
       "notes": "",
       "dateTokensHash": "a7f1f8d83ae9709b8fd6c3ee2e2f96506c9f1b1b1f04a03bbe5b792e05dbc524"
@@ -527,7 +527,7 @@
       "name": "坪内博士記念演劇博物館",
       "category": "culture",
       "url": "https://enpaku.w.waseda.jp/",
-      "lastChecked": "2026-08-07T14:22:17.690Z",
+      "lastChecked": "2026-08-07T18:35:39.562Z",
       "contentHash": "39e64a11c8512dffe10c0fe071442726658450e873fbfbd4267197e0cadba8d3",
       "notes": "",
       "dateTokensHash": "041902675cadfed49f2c0218ebd4731e2a91e75b7c31235775f72c469fae2b27"
@@ -537,7 +537,7 @@
       "name": "国際文学館(村上春樹ライブラリー) 展示",
       "category": "culture",
       "url": "https://www.waseda.jp/culture/wihl/exihibitions/exhibition",
-      "lastChecked": "2026-08-07T14:22:18.238Z",
+      "lastChecked": "2026-08-07T18:35:41.181Z",
       "contentHash": "17ad7da9ab2540e3aabbe49b25712dddd77f5561d0adefbc910111b8d3ee843a",
       "notes": "",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
