@@ -3456,6 +3456,24 @@ const EVENTS = [
     externalUrl: "https://w-junkoh.com/schedule",
     lastUpdated: "2026-08-07",
     isPublished: true
+  },
+  {
+    id: "evt-189",
+    title: "オレゴン2026 U20世界陸上競技選手権大会",
+    date: "2026-08-05",
+    endDate: "2026-08-09",
+    location: "アメリカ・オレゴン州",
+    campus: "outside",
+    organizer: "早稲田大学競走部",
+    category: "sports",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "早稲田大学競走部所属選手が出場する国際大会。日本陸上競技連盟(JAAF)でも開催情報を確認。",
+    externalUrl: "https://waseda-ac.jp/competition/schedule",
+    lastUpdated: "2026-08-07",
+    isPublished: true
   }
 
 ];
