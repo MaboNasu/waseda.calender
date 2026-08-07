@@ -1,19 +1,16 @@
 name: 情報源の変更チェック
 
-# events.js に登録しているイベント情報の一次情報源（scripts/sources.json）を定期的に取得し、
-# 前回チェック時からの変更を機械的に検知する。中身の意味は判断しない。
-# 変更が見つかったら Issue を作成/更新するだけで、events.js は自動更新しない
-# （実際の反映は、Issueを見て Claude Code 等で内容を確認しながら行う想定）。
+# events.js に登録しているイベント情報の一次情報源（scripts/sources.json）を毎晩取得し、
+# 前回チェック時からの変更を機械的に検知する。中身の意味は判断しない（無料・API課金なし）。
+# 変更が見つかったらIssueを作成/更新するだけで、events.jsは自動更新しない。
 #
-# 定期実行(schedule)は無効化している。毎晩3時に同じ検知処理＋events.jsへの反映(PR作成)まで
-# 行うClaude Codeのスケジュールルーティンに役割を移したため、cronを両方有効にすると
-# scripts/sources.json への同時コミットが競合しうる。非常用として手動実行(workflow_dispatch)
-# だけ残してある。
+# 実際の反映（本文の詳細分析・events.js更新）は、運営者が朝このIssueを見て、
+# ローカルのClaude Code側で行う（費用が発生する外部AI APIの直接呼び出しは行わない方針のため）。
 
 on:
-  # schedule:
-  #   毎週月曜 09:00 JST (00:00 UTC) — 夜間ルーティンに役割移行のため無効化中
-  #   - cron: '0 0 * * 1'
+  schedule:
+    # 毎日 03:00 JST = 18:00 UTC(前日)
+    - cron: '0 18 * * *'
   workflow_dispatch: {}
 
 permissions:
