@@ -3474,6 +3474,42 @@ const EVENTS = [
     externalUrl: "https://waseda-ac.jp/competition/schedule",
     lastUpdated: "2026-08-07",
     isPublished: true
+  },
+  {
+    id: "evt-190",
+    title: "O.R.S 第40回関東大学女子サッカーリーグ戦1部 第19節 vs東洋大学",
+    date: "2026-09-01",
+    startTime: "18:00",
+    location: "東洋大学朝霞キャンパスサッカー場",
+    campus: "outside",
+    organizer: "早稲田大学ア式蹴球部",
+    category: "sports",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "早稲田大学ア式蹴球部女子部のリーグ戦。対 東洋大学。",
+    externalUrl: "https://www.waseda-afc.jp/",
+    lastUpdated: "2026-08-12",
+    isPublished: true
+  },
+  {
+    id: "evt-191",
+    title: "第50回総理大臣杯全日本大学サッカートーナメント 1回戦 vs九州産業大学",
+    date: "2026-09-02",
+    startTime: "14:00",
+    location: "セイホクパーク石巻フットボール場",
+    campus: "outside",
+    organizer: "早稲田大学ア式蹴球部",
+    category: "sports",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "早稲田大学ア式蹴球部男子部のトーナメント戦。対 九州産業大学。",
+    externalUrl: "https://www.waseda-afc.jp/",
+    lastUpdated: "2026-08-12",
+    isPublished: true
   }
 
 ];
