@@ -1159,6 +1159,18 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://wasedacalendar.com/event/evt-190.html</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://wasedacalendar.com/event/evt-191.html</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://wasedacalendar.com/org/A-001.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
