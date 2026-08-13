@@ -207,13 +207,14 @@ async function main() {
     'utf8'
   );
 
-  // sync-events-from-sources.js が「どのソースを詳細分析すべきか」を判断するために使う。
-  // changeStatusはsources.json本体には保存しない（意味づけを含む一時的な判定結果のため）が、
-  // このファイルには残す。
+  // 「どのソースを詳細分析すべきか」の判断材料（.claude/skills/source-check が読む）。
+  // 変更が検知されたものに加えて、初回チェック（比較対象がまだ無い、例: 追加したばかりの
+  // Instagramアカウント）も含める。changeStatusはsources.json本体には保存しない
+  // （意味づけを含む一時的な判定結果のため）が、このファイルには残す。
   fs.writeFileSync(
     path.join(__dirname, 'last-check-changed.json'),
     JSON.stringify(
-      changed.map(({ id, name, category, url, notes, jsRendered, changeStatus }) =>
+      changed.concat(firstChecks).map(({ id, name, category, url, notes, jsRendered, changeStatus }) =>
         ({ id, name, category, url, notes: notes || '', jsRendered: !!jsRendered, changeStatus })),
       null, 2
     ),
