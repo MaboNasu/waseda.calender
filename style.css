@@ -127,6 +127,13 @@ ul, ol { list-style: none; }
 .pwa-install-modal-overlay {
   position: fixed;
   inset: 0;
+  /* height/widthを明示しておく。inset:0だけだとAndroid Chromeのアドレスバー分だけ
+     表示中の実ビューポートより高い「仮想的な」領域を基準に中央寄せされ、カードが
+     画面下端に押し出されて見えることがあるため、実際に見えている高さ(svh)を使う。
+     未対応ブラウザ向けに100vhもフォールバックとして残す。 */
+  width: 100vw;
+  height: 100vh;
+  height: 100svh;
   background: rgba(0,0,0,0.55);
   z-index: 260;
   display: flex;
@@ -1319,6 +1326,31 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 .org-grid-cols-5 .org-card p { font-size: 0.72rem; line-height: 1.5; }
 .org-grid-cols-5 .org-link,
 .org-grid-cols-5 .org-related-btn { font-size: 0.65rem; padding: 0.28rem 0.5rem; }
+
+/* 狭い画面では「中」「小」を選んでいても、保存された列数を無視して1カラムに戻す。
+   デスクトップで選んだ列数がlocalStorage経由でスマホ表示にも残ってしまい、
+   カードが極端に細長くなる（文字が縦に割れる）のを防ぐため。 */
+@media (max-width: 560px) {
+  .org-grid-cols-2,
+  .org-grid-cols-3,
+  .org-grid-cols-5 {
+    grid-template-columns: 1fr;
+  }
+  .org-grid-cols-3 .org-card,
+  .org-grid-cols-5 .org-card { padding: 1.1rem; }
+  .org-grid-cols-3 .org-name-btn,
+  .org-grid-cols-5 .org-name-btn { font-size: 1rem; line-height: 1.5; }
+  .org-grid-cols-3 .org-genre,
+  .org-grid-cols-3 .org-listed-badge,
+  .org-grid-cols-5 .org-genre,
+  .org-grid-cols-5 .org-listed-badge { font-size: 0.7rem; padding: 0.18rem 0.6rem; margin: 0.55rem 0; }
+  .org-grid-cols-3 .org-card p,
+  .org-grid-cols-5 .org-card p { font-size: 0.85rem; line-height: 1.7; }
+  .org-grid-cols-3 .org-link,
+  .org-grid-cols-3 .org-related-btn,
+  .org-grid-cols-5 .org-link,
+  .org-grid-cols-5 .org-related-btn { font-size: 0.75rem; padding: 0.35rem 0.65rem; }
+}
 .org-pagination {
   display: flex;
   flex-wrap: wrap;
