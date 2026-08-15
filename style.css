@@ -1109,6 +1109,34 @@ ul, ol { list-style: none; }
 .modal-share-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
 
 /* ============================================================
+   サイトコンテキストバー - イベント/団体の個別ページ先頭に表示。
+   検索・SNS経由でこのページに直接来た人にも、Waseda Calendarという
+   サイトの一部であることと、他も見られることを一目で伝える。
+   ============================================================ */
+.site-context-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  max-width: 700px;
+  margin: 0 auto 1rem;
+  padding: 0.65rem 1rem;
+  background: var(--enjy-pale);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: background var(--transition);
+}
+.site-context-bar:hover { background: rgba(139,0,0,0.12); }
+.site-context-icon { font-size: 1.2rem; flex-shrink: 0; }
+.site-context-text { min-width: 0; flex: 1; line-height: 1.3; }
+.site-context-text strong { color: var(--enjy); font-size: 0.9rem; }
+.site-context-desc { display: block; color: var(--text-secondary); font-size: 0.75rem; margin-top: 0.1rem; }
+.site-context-arrow { flex-shrink: 0; color: var(--enjy); font-size: 0.78rem; font-weight: 700; white-space: nowrap; }
+@media (max-width: 480px) {
+  .site-context-desc { display: none; }
+  .site-context-bar { padding: 0.55rem 0.8rem; gap: 0.5rem; }
+}
+
+/* ============================================================
    イベント個別ページ (event.html) - モーダルと同じ見た目のカードを使用
    ============================================================ */
 .event-detail-page {
@@ -1433,6 +1461,8 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   line-height: 1.7;
   overflow-wrap: break-word;
 }
+.org-desc-cta { color: var(--text-muted); font-style: italic; }
+.org-desc-cta a { color: var(--enjy); font-style: normal; font-weight: 700; text-decoration: underline; }
 .org-links {
   display: flex;
   flex-wrap: wrap;

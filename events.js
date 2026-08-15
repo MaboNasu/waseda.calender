@@ -1235,23 +1235,6 @@ const EVENTS = [
     isPublished: true
   },
   {
-    id: "evt-067",
-    title: "弓道部(男子) 関西大学定期戦",
-    date: "2026-08-22",
-    location: "関西大学",
-    campus: "outside",
-    organizer: "早稲田大学弓道部",
-    category: "sports",
-    scope: "circle",
-    target: ["student", "obog", "public"],
-    feeType: "unknown",
-    feeText: "料金不明",
-    description: "早稲田大学弓道部(男子)と関西大学の伝統の定期戦。",
-    externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
-    isPublished: true
-  },
-  {
     id: "evt-068",
     title: "弓道部(男子) 同志社大学定期戦",
     date: "2026-08-23",

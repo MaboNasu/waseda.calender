@@ -152,6 +152,23 @@ function isOrgListed(org) {
   return getEventsForOrganization(org).length > 0 || getPastEventsForOrganization(org).length > 0;
 }
 
+/** 説明文(description)が未登録の団体向けの代替表示。「準備中」という素っ気ない固定文の代わりに、
+ *  イベント実績があるならジャンル・件数から文章を組み立て、無いならお問い合わせフォームへ誘導する
+ *  （空欄を掲載依頼の呼びかけとして活用する）。card一覧・団体個別ページの両方から呼ぶ共通関数。 */
+function orgDescriptionHTML(org, extraClass) {
+  const cls = extraClass ? ` class="${extraClass}"` : '';
+  if (org.description && org.description.trim()) {
+    return `<p${cls}>${orgEscapeHtml(org.description)}</p>`;
+  }
+  const eventCount = getEventsForOrganization(org).length + getPastEventsForOrganization(org).length;
+  if (eventCount > 0) {
+    const genre = org.genre || 'その他';
+    return `<p${cls}>早稲田大学の${orgEscapeHtml(genre)}系団体。${eventCount}件のイベントを掲載中です。</p>`;
+  }
+  const ctaCls = extraClass ? `${extraClass} org-desc-cta` : 'org-desc-cta';
+  return `<p class="${ctaCls}">団体概要はまだ登録されていません。運営メンバーの方は<a href="contact.html#contact-form">こちらから掲載依頼</a>できます。</p>`;
+}
+
 function orgListedBadgeHTML(org) {
   return isOrgListed(org) ? '<span class="org-listed-badge">掲載中</span>' : '';
 }
@@ -237,7 +254,7 @@ function renderOrganizationCards() {
         </a>
         <span class="org-genre">${orgEscapeHtml(org.genre || 'その他')}</span>
         ${orgListedBadgeHTML(org)}
-        <p>${orgEscapeHtml(org.description || '団体概要は準備中です。')}</p>
+        ${orgDescriptionHTML(org)}
         ${organizationLinksHTML(org)}
         ${related.length ? `<button class="org-related-btn" type="button" onclick="selectOrganization('${orgEscapeHtml(org.id)}')">関連イベント ${related.length}件を見る</button>` : ''}
       </article>`;
@@ -274,7 +291,7 @@ function renderOrganizationDetail(org, options) {
       <button type="button" class="btn btn-ghost btn-sm org-follow-btn" id="org-follow-btn"
         onclick="handleOrgFollowClick('${orgEscapeHtml(org.id)}', this)" disabled>フォローする</button>
     </div>
-    <p class="org-detail-desc">${orgEscapeHtml(org.description || '団体概要は準備中です。')}</p>
+    ${orgDescriptionHTML(org, 'org-detail-desc')}
     ${organizationLinksHTML(org)}
     <div class="org-related">
       <h3>関連イベント</h3>

@@ -32,7 +32,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=31">
+  <link rel="stylesheet" href="/style.css?v=33">
   <script type="application/ld+json" id="org-page-jsonld">{"@context":"https://schema.org","@type":"Organization","name":"イイムラR","url":"https://wasedacalendar.com/org/C-096.html","description":"イイムラR（早稲田大学公認団体）","memberOf":{"@type":"CollegeOrUniversity","name":"早稲田大学"}}</script>
 </head>
 <body>
@@ -70,6 +70,14 @@
 <main>
   <section class="section">
     <div class="container">
+      <a href="/index.html" class="site-context-bar">
+        <span class="site-context-icon">🗓</span>
+        <span class="site-context-text">
+          <strong>Waseda Calendar</strong>
+          <span class="site-context-desc">早稲田大学のイベントをまとめて見られるカレンダーサイト</span>
+        </span>
+        <span class="site-context-arrow">すべて見る →</span>
+      </a>
       <div class="org-detail-page">
         <div id="organization-detail" class="org-detail">
     <div class="org-detail-header">
@@ -81,7 +89,7 @@
       <button type="button" class="btn btn-ghost btn-sm org-follow-btn" id="org-follow-btn"
         onclick="handleOrgFollowClick('C-096', this)" disabled>フォローする</button>
     </div>
-    <p class="org-detail-desc">団体概要は準備中です。</p>
+    <p class="org-detail-desc org-desc-cta">団体概要はまだ登録されていません。運営メンバーの方は<a href="/contact.html#contact-form">こちらから掲載依頼</a>できます。</p>
     <div class="org-links"><a href="https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3338" target="_blank" rel="noopener noreferrer" class="org-link">サークルガイド ↗</a></div>
     
     <div class="org-related">
@@ -123,7 +131,7 @@
 
 <script src="/events.js?v=6"></script>
 <script src="/organizations.js?v=8"></script>
-<script src="/organizations-page.js?v=12"></script>
+<script src="/organizations-page.js?v=13"></script>
 <script src="/org-page.js?v=1"></script>
 <script type="module" src="/firebase-init.js?v=3"></script>
 <script src="/auth-ui.js?v=3"></script>

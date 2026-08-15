@@ -91,6 +91,20 @@ function isOrgListed(org, events) {
   return getEventsForOrganization(org, events).length > 0 || getPastEventsForOrganization(org, events).length > 0;
 }
 
+/** organizations-page.js の orgDescriptionHTML と同じロジック（静的生成用に複製）。
+ *  ロジックを変える場合は両方直すこと。 */
+function orgDescriptionHtml(org, events) {
+  if (org.description && org.description.trim()) {
+    return `<p class="org-detail-desc">${escapeHtml(org.description)}</p>`;
+  }
+  const eventCount = getEventsForOrganization(org, events).length + getPastEventsForOrganization(org, events).length;
+  if (eventCount > 0) {
+    const genre = org.genre || 'その他';
+    return `<p class="org-detail-desc">早稲田大学の${escapeHtml(genre)}系団体。${eventCount}件のイベントを掲載中です。</p>`;
+  }
+  return `<p class="org-detail-desc org-desc-cta">団体概要はまだ登録されていません。運営メンバーの方は<a href="/contact.html#contact-form">こちらから掲載依頼</a>できます。</p>`;
+}
+
 /** 検索エンジンに索引させるだけの中身があるかどうか。説明文・SNS/公式サイトリンク・関連イベントの
  *  いずれも無い団体（早稲田公式のサークルガイドへのリンクしか無い）はnoindexにする
  *  （薄いコンテンツページの大量生成を避けるため）。 */
@@ -193,7 +207,7 @@ function renderOrgPageHtml(org, events) {
       <button type="button" class="btn btn-ghost btn-sm org-follow-btn" id="org-follow-btn"
         onclick="handleOrgFollowClick('${escapeHtml(org.id)}', this)" disabled>フォローする</button>
     </div>
-    <p class="org-detail-desc">${escapeHtml(org.description || '団体概要は準備中です。')}</p>
+    ${orgDescriptionHtml(org, events)}
     ${organizationLinksHTML(org)}
     ${relatedEventsHTML(org, events)}
     ${pastEventsHTML(org, events)}`;
@@ -234,7 +248,7 @@ function renderOrgPageHtml(org, events) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=32">
+  <link rel="stylesheet" href="/style.css?v=33">
   <script type="application/ld+json" id="org-page-jsonld">${jsonLd}</script>
 </head>
 <body>
@@ -272,6 +286,14 @@ function renderOrgPageHtml(org, events) {
 <main>
   <section class="section">
     <div class="container">
+      <a href="/index.html" class="site-context-bar">
+        <span class="site-context-icon">🗓</span>
+        <span class="site-context-text">
+          <strong>Waseda Calendar</strong>
+          <span class="site-context-desc">早稲田大学のイベントをまとめて見られるカレンダーサイト</span>
+        </span>
+        <span class="site-context-arrow">すべて見る →</span>
+      </a>
       <div class="org-detail-page">
         <div id="organization-detail" class="org-detail">${detailContent}
         </div>
@@ -304,7 +326,7 @@ function renderOrgPageHtml(org, events) {
 
 <script src="/events.js?v=6"></script>
 <script src="/organizations.js?v=8"></script>
-<script src="/organizations-page.js?v=12"></script>
+<script src="/organizations-page.js?v=13"></script>
 <script src="/org-page.js?v=1"></script>
 <script type="module" src="/firebase-init.js?v=3"></script>
 <script src="/auth-ui.js?v=3"></script>
