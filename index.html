@@ -40,7 +40,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- スタイルシート -->
-  <link rel="stylesheet" href="style.css?v=34">
+  <link rel="stylesheet" href="style.css?v=36">
 </head>
 <body>
 
@@ -115,7 +115,14 @@
      絞り込みパネル
      ============================================================ -->
 <div class="container">
-  <div class="scope-toggle" role="group" aria-label="表示範囲" style="margin-top:2rem;">
+  <div class="recommend-entry">
+    <div class="recommend-entry-text">
+      <p class="recommend-entry-title">今日、何する？<span class="beta-badge">β</span></p>
+      <p class="recommend-entry-desc">いくつかの質問から、あなたに合いそうなイベントを3つ提案します。</p>
+    </div>
+    <button type="button" class="btn btn-enjy btn-sm" onclick="openRecommendModal()">おすすめを見つける</button>
+  </div>
+  <div class="scope-toggle" role="group" aria-label="表示範囲" style="margin-top:1.25rem;">
     <button type="button" class="scope-btn active" data-scope="">全部</button>
     <button type="button" class="scope-btn" data-scope="schedule">学事日程</button>
     <button type="button" class="scope-btn" data-scope="circle">サークルイベント</button>
@@ -337,6 +344,21 @@
   </div>
 </div>
 
+<!-- ============================================================
+     おすすめ機能(β)モーダル
+     ============================================================ -->
+<div class="modal-overlay" id="recommend-modal" role="dialog" aria-modal="true" aria-labelledby="recommend-modal-title">
+  <div class="modal recommend-modal-inner">
+    <div class="modal-header">
+      <h2 class="modal-title" id="recommend-modal-title">今日、何する？</h2>
+      <button class="modal-close" onclick="closeRecommendModal()" aria-label="閉じる">×</button>
+    </div>
+    <div class="modal-body" id="recommend-modal-body">
+      <!-- JSで描画 -->
+    </div>
+  </div>
+</div>
+
 
 <!-- 複数イベント選択時の一括カレンダー追加バー -->
 <div id="selection-bar" class="selection-bar"></div>
@@ -345,7 +367,8 @@
      スクリプト読み込み（events.js → script.js の順）
      ============================================================ -->
 <script src="events.js?v=6"></script>
-<script src="script.js?v=30"></script>
+<script src="script.js?v=31"></script>
+<script src="recommendation.js?v=1"></script>
 <script src="image-generator.js?v=5"></script>
 <script type="module" src="firebase-init.js?v=3"></script>
 <script src="auth-ui.js?v=3"></script>

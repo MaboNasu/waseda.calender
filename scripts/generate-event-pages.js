@@ -132,6 +132,32 @@ function feeClass(key) {
   return 'tag-unknown';
 }
 
+/** script.js の participationChipsHTML と同じロジック（静的生成用に複製）。ロジックを変える場合は両方直すこと。 */
+function participationChipsHTML(ev) {
+  const targets = Array.isArray(ev.target) ? ev.target : (ev.target ? [ev.target] : []);
+  const chips = [];
+  if (targets.includes('public')) {
+    chips.push('<span class="tag tag-audience">👤 一般参加OK</span>');
+  } else if (targets.length > 0 && targets.every((t) => t === 'student')) {
+    chips.push('<span class="tag tag-audience">👤 在学生限定</span>');
+  }
+  if (targets.includes('obog')) {
+    chips.push('<span class="tag tag-audience">🎓 OBOG参加可</span>');
+  }
+  if (targets.includes('applicant')) {
+    chips.push('<span class="tag tag-audience">📝 受験生向け</span>');
+  }
+  return chips.join('');
+}
+
+/** script.js の buildMapsSearchUrl と同じロジック（静的生成用に複製）。ロジックを変える場合は両方直すこと。 */
+function buildMapsSearchUrl(ev) {
+  if (!ev.location || ev.campus === 'online') return null;
+  const onCampus = ev.campus && ev.campus !== 'outside' && ev.campus !== 'online';
+  const query = onCampus ? `早稲田大学 ${ev.location}` : ev.location;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
 /** 主催団体の表示。orgIdが設定されている場合は団体ページへのリンクにする */
 function organizerHTML(ev) {
   const text = escapeHtml(ev.organizer || '—');
@@ -219,8 +245,13 @@ function renderEventPageHtml(ev, labelFns) {
   const jsonLd = jsonLdScriptSafe(buildEventJsonLd(ev, pageUrl, campusLabel));
 
   const extLinkHTML = ev.externalUrl
-    ? `<a href="${escapeHtml(ev.externalUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm" onclick="trackEventExternalLinkClick('${escapeHtml(String(ev.id))}')">公式サイトを見る ↗</a>`
+    ? `<a href="${escapeHtml(ev.externalUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-enjy" onclick="trackEventExternalLinkClick('${escapeHtml(String(ev.id))}')">公式・詳細情報を見る ↗</a>`
     : '';
+  const mapsUrl = buildMapsSearchUrl(ev);
+  const mapLinkHTML = mapsUrl
+    ? `<a href="${escapeHtml(mapsUrl)}" target="_blank" rel="noopener noreferrer" class="event-map-link" onclick="trackEventMapClick('${escapeHtml(String(ev.id))}')">🗺 Googleマップで見る ↗</a>`
+    : '';
+  const chipsHTML = participationChipsHTML(ev);
 
   const detailContent = `
     <div class="modal-header event-page-header">
@@ -230,46 +261,46 @@ function renderEventPageHtml(ev, labelFns) {
       <div class="modal-tags mb-2">
         ${endedTagHTML(ev)}
         <span class="tag ${categoryClass(ev.category)}">${escapeHtml(categoryLabel(ev.category))}</span>
-        <span class="tag ${feeClass(ev.feeType)}">${escapeHtml(ev.feeText || feeLabel(ev.feeType))}</span>
       </div>
-      <div class="modal-detail-grid">
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">日付</span>
-          <span class="modal-detail-value">${formatEventDateDisplay(ev)}</span>
+
+      <div class="event-hero-info">
+        <div class="event-hero-row">📅 ${formatEventDateDisplay(ev)}${ev.startTime ? `　${escapeHtml(formatTime(ev.startTime, ev.endTime))}` : '　終日'}</div>
+        <div class="event-hero-row">📍 ${escapeHtml(ev.location || '場所は未定・確認中です')}</div>
+      </div>
+
+      <div class="event-participation-box">
+        <p class="event-participation-title">参加について</p>
+        <div class="event-participation-chips">
+          ${chipsHTML}
+          <span class="tag ${feeClass(ev.feeType)}">💴 ${escapeHtml(ev.feeText || feeLabel(ev.feeType))}</span>
         </div>
+        ${mapLinkHTML}
+        ${extLinkHTML ? `<div class="event-participation-cta">${extLinkHTML}</div>` : ''}
+      </div>
+
+      ${ev.description ? `
+      <div>
+        <p class="modal-desc-label">イベント説明</p>
+        <p class="modal-desc-text">${escapeHtml(ev.description)}</p>
+      </div>` : ''}
+
+      <div class="modal-detail-grid event-secondary-info">
         <div class="modal-detail-item">
-          <span class="modal-detail-label">時間</span>
-          <span class="modal-detail-value">${ev.startTime ? escapeHtml(formatTime(ev.startTime, ev.endTime)) : '終日'}</span>
-        </div>
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">場所</span>
-          <span class="modal-detail-value">${escapeHtml(ev.location || '—')}</span>
+          <span class="modal-detail-label">主催団体</span>
+          <span class="modal-detail-value">${organizerHTML(ev)}</span>
         </div>
         <div class="modal-detail-item">
           <span class="modal-detail-label">キャンパス区分</span>
           <span class="modal-detail-value">${escapeHtml(campusLabel(ev.campus))}</span>
         </div>
         <div class="modal-detail-item">
-          <span class="modal-detail-label">主催団体</span>
-          <span class="modal-detail-value">${organizerHTML(ev)}</span>
-        </div>
-        <div class="modal-detail-item">
           <span class="modal-detail-label">対象者</span>
           <span class="modal-detail-value">${escapeHtml(targetLabel(ev.target))}</span>
         </div>
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">参加費</span>
-          <span class="modal-detail-value">${escapeHtml(ev.feeText || feeLabel(ev.feeType))}</span>
-        </div>
       </div>
-      ${ev.description ? `
-      <div>
-        <p class="modal-desc-label">イベント説明</p>
-        <p class="modal-desc-text">${escapeHtml(ev.description)}</p>
-      </div>` : ''}
+
       <div class="modal-footer">
         <span class="modal-updated">${ev.lastUpdated ? `最終更新: ${escapeHtml(ev.lastUpdated)}` : ''}</span>
-        ${extLinkHTML}
       </div>
     </div>`;
 
@@ -311,7 +342,7 @@ function renderEventPageHtml(ev, labelFns) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=34">
+  <link rel="stylesheet" href="/style.css?v=36">
   <script type="application/ld+json" id="event-page-jsonld">${jsonLd}</script>
 </head>
 <body>
@@ -387,9 +418,9 @@ function renderEventPageHtml(ev, labelFns) {
 </footer>
 
 <script src="/events.js?v=6"></script>
-<script src="/script.js?v=30"></script>
+<script src="/script.js?v=31"></script>
 <script src="/image-generator.js?v=5"></script>
-<script src="/event-page.js?v=9"></script>
+<script src="/event-page.js?v=10"></script>
 <script type="module" src="/firebase-init.js?v=3"></script>
 <script src="/auth-ui.js?v=3"></script>
 <script src="/pwa-install.js?v=2"></script>

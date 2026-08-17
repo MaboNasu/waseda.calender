@@ -28,6 +28,13 @@ function trackEventExternalLinkClick(eventId) {
   }
 }
 
+/** Googleマップリンククリック時にGA4へevent_map_clickイベントを送信する（遷移は妨げない） */
+function trackEventMapClick(eventId) {
+  if (typeof gtag === 'function') {
+    gtag('event', 'event_map_click', { event_id: eventId });
+  }
+}
+
 /** OGP用の説明文（改行を除去し、長すぎる場合は切り詰める） */
 function buildOgDescription(ev) {
   const base = ev.description ? ev.description.replace(/\s+/g, ' ').trim() : '';
@@ -140,8 +147,13 @@ function renderEventDetailPage(ev) {
   injectEventJsonLd(ev);
 
   const extLinkHTML = ev.externalUrl
-    ? `<a href="${escapeHtml(ev.externalUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm" onclick="trackEventExternalLinkClick('${escapeHtml(String(ev.id))}')">公式サイトを見る ↗</a>`
+    ? `<a href="${escapeHtml(ev.externalUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-enjy" onclick="trackEventExternalLinkClick('${escapeHtml(String(ev.id))}')">公式・詳細情報を見る ↗</a>`
     : '';
+  const mapsUrl = buildMapsSearchUrl(ev);
+  const mapLinkHTML = mapsUrl
+    ? `<a href="${escapeHtml(mapsUrl)}" target="_blank" rel="noopener noreferrer" class="event-map-link" onclick="trackEventMapClick('${escapeHtml(String(ev.id))}')">🗺 Googleマップで見る ↗</a>`
+    : '';
+  const chipsHTML = participationChipsHTML(ev);
 
   wrap.innerHTML = `
     <div class="modal-header event-page-header">
@@ -151,38 +163,23 @@ function renderEventDetailPage(ev) {
       <div class="modal-tags mb-2">
         ${endedTagHTML(ev)}
         <span class="tag ${categoryClass(ev.category)}">${categoryLabel(ev.category)}</span>
-        <span class="tag ${feeClass(ev.feeType)}">${escapeHtml(ev.feeText || feeLabel(ev.feeType))}</span>
       </div>
-      <div class="modal-detail-grid">
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">日付</span>
-          <span class="modal-detail-value">${formatEventDateDisplay(ev)}</span>
-        </div>
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">時間</span>
-          <span class="modal-detail-value">${ev.startTime ? escapeHtml(formatTime(ev.startTime, ev.endTime)) : '終日'}</span>
-        </div>
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">場所</span>
-          <span class="modal-detail-value">${escapeHtml(ev.location || '—')}</span>
-        </div>
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">キャンパス区分</span>
-          <span class="modal-detail-value">${campusLabel(ev.campus)}</span>
-        </div>
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">主催団体</span>
-          <span class="modal-detail-value">${escapeHtml(ev.organizer || '—')}</span>
-        </div>
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">対象者</span>
-          <span class="modal-detail-value">${targetLabel(ev.target)}</span>
-        </div>
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">参加費</span>
-          <span class="modal-detail-value">${escapeHtml(ev.feeText || feeLabel(ev.feeType))}</span>
-        </div>
+
+      <div class="event-hero-info">
+        <div class="event-hero-row">📅 ${formatEventDateDisplay(ev)}${ev.startTime ? `　${escapeHtml(formatTime(ev.startTime, ev.endTime))}` : '　終日'}</div>
+        <div class="event-hero-row">📍 ${escapeHtml(ev.location || '場所は未定・確認中です')}</div>
       </div>
+
+      <div class="event-participation-box">
+        <p class="event-participation-title">参加について</p>
+        <div class="event-participation-chips">
+          ${chipsHTML}
+          <span class="tag ${feeClass(ev.feeType)}">💴 ${escapeHtml(ev.feeText || feeLabel(ev.feeType))}</span>
+        </div>
+        ${mapLinkHTML}
+        ${extLinkHTML ? `<div class="event-participation-cta">${extLinkHTML}</div>` : ''}
+      </div>
+
       ${createReactionButtonsHTML(ev)}
       <div class="modal-share-actions">${createModalShareActionsHTML(ev)}</div>
       ${ev.description ? `
@@ -190,9 +187,24 @@ function renderEventDetailPage(ev) {
           <p class="modal-desc-label">イベント説明</p>
           <p class="modal-desc-text">${escapeHtml(ev.description)}</p>
         </div>` : ''}
+
+      <div class="modal-detail-grid event-secondary-info">
+        <div class="modal-detail-item">
+          <span class="modal-detail-label">主催団体</span>
+          <span class="modal-detail-value">${escapeHtml(ev.organizer || '—')}</span>
+        </div>
+        <div class="modal-detail-item">
+          <span class="modal-detail-label">キャンパス区分</span>
+          <span class="modal-detail-value">${campusLabel(ev.campus)}</span>
+        </div>
+        <div class="modal-detail-item">
+          <span class="modal-detail-label">対象者</span>
+          <span class="modal-detail-value">${targetLabel(ev.target)}</span>
+        </div>
+      </div>
+
       <div class="modal-footer">
         <span class="modal-updated">${ev.lastUpdated ? `最終更新: ${escapeHtml(ev.lastUpdated)}` : ''}</span>
-        ${extLinkHTML}
       </div>
     </div>`;
 

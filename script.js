@@ -191,6 +191,37 @@ function feeClass(key) {
   return 'tag-unknown';
 }
 
+/** イベント詳細ページの「参加について」で使う参加条件チップ。target/feeTypeという既存データだけから
+ *  確定できる範囲に限定する（予約要否・チケット要否・初参加歓迎などはデータが無いため作らない）。
+ *  最大3〜4個程度に収まるよう、対象者チップは重複しない組み合わせのみ出す。 */
+function participationChipsHTML(ev) {
+  const targets = Array.isArray(ev.target) ? ev.target : (ev.target ? [ev.target] : []);
+  const chips = [];
+  if (targets.includes('public')) {
+    chips.push('<span class="tag tag-audience">👤 一般参加OK</span>');
+  } else if (targets.length > 0 && targets.every(t => t === 'student')) {
+    chips.push('<span class="tag tag-audience">👤 在学生限定</span>');
+  }
+  if (targets.includes('obog')) {
+    chips.push('<span class="tag tag-audience">🎓 OBOG参加可</span>');
+  }
+  if (targets.includes('applicant')) {
+    chips.push('<span class="tag tag-audience">📝 受験生向け</span>');
+  }
+  return chips.join('');
+}
+
+/** 場所文字列からGoogleマップ検索へのリンクURLを組み立てる。緯度経度等の正確な位置データは
+ *  持っていないため文字列検索(Maps Search API)に頼る簡易実装。オンラインイベント・場所未入力の
+ *  場合はnullを返し、呼び出し側でリンクごと出さない。学内の建物名など単体では曖昧な表記は、
+ *  キャンパスが判明していれば「早稲田大学」を前置して検索精度を上げる（学外の会場名はそのまま）。 */
+function buildMapsSearchUrl(ev) {
+  if (!ev.location || ev.campus === 'online') return null;
+  const onCampus = ev.campus && ev.campus !== 'outside' && ev.campus !== 'online';
+  const query = onCampus ? `早稲田大学 ${ev.location}` : ev.location;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
 /** 公開イベントのみ取得（終了済み = 本日がendDateより後のイベントは通常表示から除外し、団体実績ページにのみ表示する） */
 function getPublishedEvents() {
   return (typeof EVENTS !== 'undefined' ? EVENTS : []).filter(ev => ev.isPublished);
