@@ -1418,7 +1418,7 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   box-shadow: var(--shadow-md);
 }
 .org-name-btn {
-  display: inline;
+  display: -webkit-box;
   border: none;
   background: transparent;
   color: var(--enjy);
@@ -1429,6 +1429,10 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   padding: 0;
   text-align: left;
   overflow-wrap: break-word;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .org-genre {
   display: inline-flex;
@@ -1460,6 +1464,13 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   font-size: 0.85rem;
   line-height: 1.7;
   overflow-wrap: break-word;
+}
+.org-card p {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .org-desc-cta { color: var(--text-muted); font-style: italic; }
 .org-desc-cta a { color: var(--enjy); font-style: normal; font-weight: 700; text-decoration: underline; }

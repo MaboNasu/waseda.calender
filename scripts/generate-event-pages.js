@@ -311,7 +311,7 @@ function renderEventPageHtml(ev, labelFns) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=33">
+  <link rel="stylesheet" href="/style.css?v=34">
   <script type="application/ld+json" id="event-page-jsonld">${jsonLd}</script>
 </head>
 <body>
