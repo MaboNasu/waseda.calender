@@ -769,11 +769,13 @@
       "url": "https://www.waseda.jp/top/event/list",
       "lastChecked": "2026-08-17T09:48:40.959Z",
       "contentHash": "17ddea9a3bc149a003d0c879c81fb816273e6ba536b69c764e3786e77a2821fd",
-      "notes": "公開講座・シンポジウム・展示等を横断確認できる一次情報。月ごとに ?date=2026-08 のようにURLが変わる点に注意",
+      "notes": "教育学部・文学部・国際文学館・會津博物館・法学部・総合研究機構等、学部横断でイベントが載る全学一覧ページ。個別学部サイトを並行追加する前に、まずこのページを深掘りする方針(2026-08-17)。月ごとに ?date=2026-08 のようにURLが変わる点に注意。2026-08-17に7-11月分を深掘りし、既知の候補はevents.js側で対応済み(evt-150〜152, evt-160台の横川敏雄講座, evt-175等)。唯一未確認だった【アジア史コース】講演会(9/4)は個別ページで「対象:学生、教職員、一般」と明記されていたためevt-209として追加。",
       "dateTokensHash": "0a4ddfa59303c0e660093fad469179a3b9be4941fff5957f2bfb37c43893d1b5",
-      "sourceType": "club",
+      "sourceType": "institutional",
       "expectedGenres": [
-        "lecture"
+        "lecture",
+        "culture",
+        "community"
       ]
     },
     {

@@ -3799,6 +3799,25 @@ const EVENTS = [
     externalUrl: "https://www.waseda.jp/culture/dramakan/news-en/9898",
     lastUpdated: "2026-08-17",
     isPublished: true
+  },
+  {
+    id: "evt-209",
+    title: "【アジア史コース】講演会「The Politics of Negative Emotions in Song China: the Case of Hatred and Resentment」",
+    date: "2026-09-04",
+    startTime: "15:00",
+    endTime: "16:40",
+    location: "戸山キャンパス33号館6階 第11会議室",
+    campus: "toyama",
+    organizer: "早稲田大学アジア史コース",
+    category: "lecture",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "アジア史コース主催の講演会。「【対象】学生、教職員、一般」と明記、事前申込不要・直接会場へ。",
+    externalUrl: "https://www.waseda.jp/flas/hss/news/2026/07/27/15969/",
+    lastUpdated: "2026-08-17",
+    isPublished: true
   }
 
 ];
