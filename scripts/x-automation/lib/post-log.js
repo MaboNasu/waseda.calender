@@ -87,6 +87,22 @@ function isSubstantiallySameAsRecent(postType, eventIds) {
   return overlapRatio >= 0.5;
 }
 
+/**
+ * 直近days日間(today含む)の、投稿タイプを問わない合計投稿数(成功・dry-run含む)。
+ * 朝枠全体の週間上限チェック用。
+ */
+function countPostsInLastDays(days, today) {
+  const log = readLog();
+  const cutoff = new Date(today + 'T00:00:00Z');
+  cutoff.setUTCDate(cutoff.getUTCDate() - (days - 1));
+  const end = new Date(today + 'T00:00:00Z');
+  return log.posts.filter((p) => {
+    if (p.status !== 'success' && p.status !== 'dry-run') return false;
+    const posted = new Date(p.targetDate + 'T00:00:00Z');
+    return posted >= cutoff && posted <= end;
+  }).length;
+}
+
 module.exports = {
   LOG_PATH,
   readLog,
@@ -96,4 +112,5 @@ module.exports = {
   alreadyPostedForTarget,
   withinMinGap,
   isSubstantiallySameAsRecent,
+  countPostsInLastDays,
 };

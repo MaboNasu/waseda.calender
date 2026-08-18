@@ -5,7 +5,7 @@
  * 実行方法:
  *   node scripts/x-automation/decide-and-post.js --slot=morning
  *   node scripts/x-automation/decide-and-post.js --slot=midday
- *   node scripts/x-automation/decide-and-post.js --slot=all      (Dry Run検証・手動確認用。全タイプ評価)
+ *   node scripts/x-automation/decide-and-post.js --slot=all      (Dry Run検証・手動確認用。両枠を評価)
  *
  * 環境変数:
  *   X_DRY_RUN=true            … 実際には投稿せず、判断結果をログ出力するだけ(既定はtrueとして扱う。
@@ -15,9 +15,12 @@
  *   WC_NOW_OVERRIDE=2026-08-24 … 「今日」を固定する(テスト・シミュレーション用)
  *
  * slotの考え方:
- *   morning (JST朝7:30想定) … weekly(月曜のみ)/today/theme/recommend をまとめて評価。
- *     どのタイプも「投稿する価値があるか」を各タイプの条件で判定し、無ければ何もしない。
- *   midday  (JST昼12:30想定) … later_today のみを評価(時間帯依存のため独立)。
+ *   morning (JST朝7:30想定) … weekly(月曜のみ)/today/theme/recommend を全て候補として評価するが、
+ *     投稿するのは優先順位(週次→当日→テーマ→おすすめ)に従って最も価値が高い1件だけ
+ *     (「条件を満たしたら全部投稿」ではなく「候補生成と投稿決定を分離し、1枠1投稿にする」設計。
+ *     ChatGPTとの検討会議(2026-08-18)で「同じ朝に最大4件同時投稿されうる」設計上の抜けを
+ *     指摘され、本番投入前に修正した)。
+ *   midday  (JST昼12:30想定) … later_today のみを評価(時間帯依存のため独立、朝枠の選定結果に影響されない)。
  */
 const {
   loadEvents,
@@ -25,7 +28,7 @@ const {
   addDaysStr,
   publishedCircleEvents,
 } = require('./lib/events-data');
-const { POST_TYPES, THEME_FREE_EVENTS_ENABLED } = require('./lib/config');
+const { POST_TYPES, THEME_FREE_EVENTS_ENABLED, WEEKLY_TOTAL_POST_CAP } = require('./lib/config');
 const {
   getTodayEvents,
   getWeekEvents,
@@ -50,6 +53,7 @@ const {
   withinMinGap,
   isSubstantiallySameAsRecent,
   appendPost,
+  countPostsInLastDays,
 } = require('./lib/post-log');
 const { postTweet } = require('./lib/x-client');
 
@@ -114,41 +118,39 @@ function gateCheck(postTypeKey, targetDate, eventIds) {
   return null;
 }
 
-async function runToday(events, today, dryRun) {
+/**
+ * 朝枠の各投稿タイプは「候補を作る」だけを行い、投稿はしない
+ * (投稿するかどうかはrunMorningSlotが優先順位に従って1件だけ決める)。
+ * 戻り値: 候補があれば { candidate: {...} }、無ければ { reason: '見送り理由' }。
+ */
+function buildTodayCandidate(events, today) {
   const todayEvents = getTodayEvents(events, today);
   if (!isTodayPostWorthy(todayEvents)) {
-    console.log(`[今日の早稲田] 見送り: 対象${todayEvents.length}件(最低3件必要)`);
-    return;
+    return { reason: `対象${todayEvents.length}件(最低3件必要)` };
   }
   const eventIds = todayEvents.map((e) => e.id);
   const reason = gateCheck('today', today, eventIds);
-  if (reason) { console.log(`[今日の早稲田] 見送り: ${reason}`); return; }
+  if (reason) return { reason };
 
   const url = buildHomeUrl(POST_TYPES.today.campaign, 'today-section');
   const { text } = composeTodayPost({ dateStr: today, events: todayEvents.slice(0, 6), url, omittedCount: Math.max(0, todayEvents.length - 6) });
-  await attemptPost({ postTypeKey: 'today', targetDate: today, eventIds, text, dryRun });
+  return { candidate: { postTypeKey: 'today', targetDate: today, eventIds, text } };
 }
 
-async function runWeekly(events, today, dryRun) {
+function buildWeeklyCandidate(events, today) {
   const isMonday = new Date(today + 'T00:00:00Z').getUTCDay() === 1;
-  if (!isMonday) {
-    console.log('[今週の早稲田] 見送り: 月曜日のみ投稿する運用のため');
-    return;
-  }
+  if (!isMonday) return { reason: '月曜日のみ投稿する運用のため' };
   const weekEnd = addDaysStr(today, 6);
   const weekEvents = getWeekEvents(events, today, addDaysStr);
-  if (weekEvents.length === 0) {
-    console.log('[今週の早稲田] 見送り: 対象イベント0件');
-    return;
-  }
+  if (weekEvents.length === 0) return { reason: '対象イベント0件' };
   const diversified = diversifyByCategory(weekEvents);
   const eventIds = diversified.selected.flatMap((s) => s.events.map((e) => e.id));
   const reason = gateCheck('weekly', today, eventIds);
-  if (reason) { console.log(`[今週の早稲田] 見送り: ${reason}`); return; }
+  if (reason) return { reason };
 
   const url = buildHomeUrl(POST_TYPES.weekly.campaign, 'upcoming-section');
   const { text } = composeWeeklyPost({ fromStr: today, toStr: weekEnd, diversified, url });
-  await attemptPost({ postTypeKey: 'weekly', targetDate: today, eventIds, text, dryRun });
+  return { candidate: { postTypeKey: 'weekly', targetDate: today, eventIds, text } };
 }
 
 async function runLaterToday(events, today, dryRun) {
@@ -170,7 +172,7 @@ async function runLaterToday(events, today, dryRun) {
   await attemptPost({ postTypeKey: 'laterToday', targetDate: today, eventIds, text, dryRun });
 }
 
-async function runTheme(events, today, dryRun) {
+function buildThemeCandidate(events, today) {
   const themeKeys = Object.keys(THEME_DEFINITIONS).filter((k) => THEME_FREE_EVENTS_ENABLED || k !== 'freeEvents');
   // 複数テーマの中からその日1つだけ、シード的に決定論で選ぶ(日替わりで偏らないようにローテーション)
   const dayIndex = new Date(today + 'T00:00:00Z').getUTCDate();
@@ -178,32 +180,72 @@ async function runTheme(events, today, dryRun) {
 
   const themeEvents = getThemeEvents(events, today, addDaysStr, themeKey);
   if (themeEvents.length < 3) {
-    console.log(`[テーマ型投稿(${themeKey})] 見送り: 対象${themeEvents.length}件(最低3件必要)`);
-    return;
+    return { reason: `テーマ(${themeKey})対象${themeEvents.length}件(最低3件必要)` };
   }
   const diversified = diversifyByCategory(themeEvents, { maxPerCategory: 3, maxCategories: 3 });
   const eventIds = diversified.selected.flatMap((s) => s.events.map((e) => e.id));
   const reason = gateCheck('theme', today, eventIds);
-  if (reason) { console.log(`[テーマ型投稿(${themeKey})] 見送り: ${reason}`); return; }
+  if (reason) return { reason };
 
   const url = buildHomeUrl(POST_TYPES.theme.campaign, 'calendar-section');
   const { text } = composeThemePost({ themeKey, dateStr: today, diversified, url });
-  await attemptPost({ postTypeKey: 'theme', targetDate: today, eventIds, text, dryRun });
+  return { candidate: { postTypeKey: 'theme', targetDate: today, eventIds, text } };
 }
 
-async function runRecommend(events, today, dryRun) {
+function buildRecommendCandidate(events, today) {
   const weekEvents = getWeekEvents(events, today, addDaysStr);
   if (!isRecommendWorthy(weekEvents)) {
-    console.log('[おすすめ機能誘導] 見送り: 今週の対象イベントのジャンルが偏っているため(在庫偏重時は投稿しない方針)');
-    return;
+    return { reason: '今週の対象イベントのジャンルが偏っているため(在庫偏重時は投稿しない方針)' };
   }
   const eventIds = []; // 個別イベントを列挙する投稿ではないため空(重複感チェックは投稿タイプ単位の頻度キャップで担保)
   const reason = gateCheck('recommend', today, eventIds);
-  if (reason) { console.log(`[おすすめ機能誘導] 見送り: ${reason}`); return; }
+  if (reason) return { reason };
 
   const url = buildHomeUrl(POST_TYPES.recommend.campaign, 'recommend-entry');
   const { text } = composeRecommendPost({ dateStr: today, url });
-  await attemptPost({ postTypeKey: 'recommend', targetDate: today, eventIds, text, dryRun });
+  return { candidate: { postTypeKey: 'recommend', targetDate: today, eventIds, text } };
+}
+
+/**
+ * 朝枠(7:30想定)の実行本体。weekly/today/theme/recommendを全て候補として評価した上で、
+ * 優先順位(週次→当日→テーマ→おすすめ)で最初に見つかった1件だけを投稿する。
+ * 条件を満たした他の候補は「見送り」としてログに残すだけで投稿はしない(1枠1投稿の方針)。
+ */
+async function runMorningSlot(events, today, dryRun) {
+  const recentTotal = countPostsInLastDays(7, today);
+  if (recentTotal >= WEEKLY_TOTAL_POST_CAP) {
+    console.log(`[朝枠] 見送り: 直近7日間の投稿数が${recentTotal}件で上限(${WEEKLY_TOTAL_POST_CAP}件)に達しているため`);
+    return;
+  }
+
+  const builders = [
+    { key: 'weekly', label: POST_TYPES.weekly.label, build: buildWeeklyCandidate },
+    { key: 'today', label: POST_TYPES.today.label, build: buildTodayCandidate },
+    { key: 'theme', label: POST_TYPES.theme.label, build: buildThemeCandidate },
+    { key: 'recommend', label: POST_TYPES.recommend.label, build: buildRecommendCandidate },
+  ];
+
+  const qualified = [];
+  builders.forEach(({ key, label, build }) => {
+    const { candidate, reason } = build(events, today);
+    if (candidate) {
+      qualified.push({ key, label, candidate });
+    } else {
+      console.log(`[朝枠候補:${label}] 見送り: ${reason}`);
+    }
+  });
+
+  if (qualified.length === 0) {
+    console.log('[朝枠] 本日は投稿対象の候補がありませんでした');
+    return;
+  }
+
+  const [chosen, ...discarded] = qualified;
+  if (discarded.length > 0) {
+    console.log(`[朝枠] 条件は満たしたが1枠1投稿の方針により見送り: ${discarded.map((d) => d.label).join('、')}`);
+  }
+  console.log(`[朝枠] 選択: ${chosen.label}`);
+  await attemptPost({ ...chosen.candidate, dryRun });
 }
 
 async function main() {
@@ -221,10 +263,7 @@ async function main() {
   console.log(`=== decide-and-post.js 実行 (slot=${slot}, today=${today}, dryRun=${dryRun}) ===`);
 
   if (slot === 'morning' || slot === 'all') {
-    await runWeekly(events, today, dryRun);
-    await runToday(events, today, dryRun);
-    await runTheme(events, today, dryRun);
-    await runRecommend(events, today, dryRun);
+    await runMorningSlot(events, today, dryRun);
   }
   if (slot === 'midday' || slot === 'all') {
     await runLaterToday(events, today, dryRun);

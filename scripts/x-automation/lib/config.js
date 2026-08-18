@@ -91,6 +91,14 @@ const WEEKLY_MAX_CATEGORIES_SHOWN = 4;
 /** おすすめ機能誘導: 投稿する週として十分ジャンルが分散していると判断する最低カテゴリ数 */
 const RECOMMEND_MIN_DISTINCT_CATEGORIES = 3;
 
+/**
+ * 直近7日間の全タイプ合計投稿数がこれ以上なら、朝枠の投稿を丸ごと見送る安全弁。
+ * 朝枠(最大1/日)+昼枠(最大1/日)の理論上限は週14件だが、実際にそこまで埋まる週は
+ * 想定していない。ChatGPTとの検討会議(2026-08-18)での指摘を受けて追加。
+ * 実データを見ながら調整する想定の値なので、変えたい場合はここだけ触ればよい。
+ */
+const WEEKLY_TOTAL_POST_CAP = 10;
+
 /** UTMの共通パラメータ */
 const UTM_SOURCE = 'x';
 const UTM_MEDIUM = 'organic';
@@ -106,6 +114,7 @@ module.exports = {
   WEEKLY_MAX_PER_CATEGORY,
   WEEKLY_MAX_CATEGORIES_SHOWN,
   RECOMMEND_MIN_DISTINCT_CATEGORIES,
+  WEEKLY_TOTAL_POST_CAP,
   UTM_SOURCE,
   UTM_MEDIUM,
 };
