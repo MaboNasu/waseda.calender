@@ -3,7 +3,7 @@
  *
  * 機能:
  * - 本日のイベント表示
- * - 近日開催のイベント一覧表示
+ * - 今週開催のイベント一覧表示
  * - カレンダー表示（PC:グリッド / スマホ:リスト）
  * - 絞り込み機能（大枠タブ：全部・学事日程・サークルイベント／詳細：カテゴリ・対象者・場所・参加費・キーワード）
  * - イベント詳細モーダル
@@ -505,7 +505,7 @@ function eventsGridWithShowMoreHTML(cardsHtml, sectionId) {
 }
 
 /**
- * カレンダーまでの導線を近くするため、本日/近日開催のグリッドはデフォルトで1行分だけ表示し、
+ * カレンダーまでの導線を近くするため、本日/今週開催のグリッドはデフォルトで1行分だけ表示し、
  * 2行目以降がある場合だけ「さらに表示」ボタンを出す。密度切替・ウィンドウ幅変更のたびに
  * 呼び直して1行の高さを再計算する。ユーザーが展開した後は、明示的に「閉じる」を押すまで
  * 展開状態を保つ（再描画や密度切替が起きるとリセットされる＝毎回デフォルトの折りたたみに戻る）。
@@ -580,12 +580,14 @@ function renderTodayEvents() {
 }
 
 /* ============================================================
-   近日開催のイベント
+   今週開催のイベント
    ============================================================ */
-/** 今日からちょうど1ヶ月後の日付文字列（近日開催に表示する範囲の上限に使う） */
-function getOneMonthAheadStr() {
+/** 今日から7日後（今日を含めて1週間分）の日付文字列（今週開催に表示する範囲の上限に使う）
+ *  月曜始まりの暦週ではなく「今日からの7日間」にしているのは、週の後半(木〜土)に見たときに
+ *  残り日数が減って寂しく見えるのを避けるため。 */
+function getWeekAheadStr() {
   const d = new Date();
-  d.setMonth(d.getMonth() + 1);
+  d.setDate(d.getDate() + 6);
   return formatDateStr(d);
 }
 
@@ -593,17 +595,17 @@ function renderUpcomingEvents() {
   const el = document.getElementById('upcoming-events');
   if (!el) return;
 
-  const today         = getTodayStr();
-  const oneMonthAhead = getOneMonthAheadStr();
+  const today      = getTodayStr();
+  const weekAhead  = getWeekAheadStr();
   const filtered = getFilteredEvents()
-    .filter(ev => (ev.date > today || isEventOnDate(ev, today)) && ev.date <= oneMonthAhead)
+    .filter(ev => (ev.date > today || isEventOnDate(ev, today)) && ev.date <= weekAhead)
     .sort((a, b) => a.date.localeCompare(b.date));
 
   const countEl = document.getElementById('upcoming-count');
   if (countEl) countEl.textContent = `${filtered.length}件`;
 
   el.innerHTML = filtered.length === 0
-    ? emptyStateHTML('近日開催のイベントは0件です。')
+    ? emptyStateHTML('今週開催のイベントは0件です。')
     : eventsGridWithShowMoreHTML(filtered.map(ev => createEventCardHTML(ev, true)).join(''), 'upcoming-events');
   refreshLiveReactionCounts(filtered.map(ev => ev.id));
 }
@@ -1343,7 +1345,7 @@ function injectEventsJsonLd() {
    ============================================================ */
 const DENSITY_STORAGE_KEY = 'wc-events-density';
 
-/** セクションごと（本日のイベント/近日開催）に独立して密度設定を保存・復元する */
+/** セクションごと（本日のイベント/今週開催）に独立して密度設定を保存・復元する */
 function getStoredDensity(sectionId) {
   try {
     const stored = localStorage.getItem(`${DENSITY_STORAGE_KEY}-${sectionId}`);

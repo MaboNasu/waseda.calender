@@ -261,7 +261,7 @@ function renderOrgPageHtml(org, events) {
     </a>
     <nav class="header-nav" aria-label="メインナビゲーション">
       <a class="nav-btn" href="/index.html#today-section">本日のイベント</a>
-      <a class="nav-btn" href="/index.html#upcoming-section">近日開催</a>
+      <a class="nav-btn" href="/index.html#upcoming-section">今週開催</a>
       <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
       <a class="nav-btn" href="/organizations.html">公認団体</a>
       <a class="nav-btn" href="/contact.html">掲載依頼</a>
@@ -276,7 +276,7 @@ function renderOrgPageHtml(org, events) {
 
 <nav class="mobile-nav" id="mobile-nav" aria-label="モバイルナビゲーション">
   <a class="nav-btn" href="/index.html#today-section">本日のイベント</a>
-  <a class="nav-btn" href="/index.html#upcoming-section">近日開催</a>
+  <a class="nav-btn" href="/index.html#upcoming-section">今週開催</a>
   <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
   <a class="nav-btn" href="/organizations.html">公認団体</a>
   <a class="nav-btn" href="/contact.html">掲載依頼・問い合わせ</a>
