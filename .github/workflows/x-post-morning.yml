@@ -1,0 +1,55 @@
+name: X投稿(朝・今週/今日/テーマ/おすすめ誘導)
+
+# 毎朝、Waseda Calendar公式X(@waseda_calendar)への自動投稿を判断・実行する。
+# 「投稿を作るシステム」ではなく「投稿する価値があるときだけ投稿するシステム」として、
+# scripts/x-automation/decide-and-post.js が対象イベント・頻度キャップ・重複感を機械的に判定する。
+# 判断に外部の有料LLM APIは使わない(このプロジェクトの既存方針。check-sources.ymlと同じ考え方)。
+#
+# 安全装置:
+#   - X_AUTOMATION_ENABLED=false (Secrets or Variables) にすると、判断自体を一切行わず即終了する。
+#   - X_DRY_RUN を明示的に "false" にしない限り、実際の投稿は行わずログ出力のみ。
+#   - 投稿ログ(post-log.json)による冪等性チェックで、再実行時の二重投稿を防ぐ。
+
+on:
+  schedule:
+    # 毎日 07:30 JST = 22:30 UTC(前日)
+    - cron: '30 22 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'true=投稿せずログのみ / false=実際に投稿する'
+        required: false
+        default: 'true'
+
+permissions:
+  contents: write
+
+jobs:
+  post-morning:
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Node.jsをセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 朝の投稿判断を実行
+        env:
+          X_AUTOMATION_ENABLED: ${{ vars.X_AUTOMATION_ENABLED }}
+          X_DRY_RUN: ${{ github.event.inputs.dry_run || vars.X_DRY_RUN || 'true' }}
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+        run: node scripts/x-automation/decide-and-post.js --slot=morning
+
+      - name: 投稿ログの更新をコミット
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/x-automation/post-log.json
+          git diff --cached --quiet || git commit -m "chore: X投稿ログを更新(朝) [skip ci]"
+          git push

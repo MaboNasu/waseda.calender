@@ -1,0 +1,49 @@
+name: X投稿(昼・今日このあと)
+
+# 「今日このあと」投稿だけを判断する昼の実行。開始時刻が近いイベントを紹介する投稿は
+# 朝の時点では「まだ早すぎる」ことが多いため、昼に別枠で判定する。
+# 安全装置(Kill Switch・Dry Run・冪等性)はx-post-morning.ymlと同じ。詳細はそちらのコメントを参照。
+
+on:
+  schedule:
+    # 毎日 12:30 JST = 03:30 UTC
+    - cron: '30 3 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'true=投稿せずログのみ / false=実際に投稿する'
+        required: false
+        default: 'true'
+
+permissions:
+  contents: write
+
+jobs:
+  post-midday:
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Node.jsをセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 昼の投稿判断を実行
+        env:
+          X_AUTOMATION_ENABLED: ${{ vars.X_AUTOMATION_ENABLED }}
+          X_DRY_RUN: ${{ github.event.inputs.dry_run || vars.X_DRY_RUN || 'true' }}
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+        run: node scripts/x-automation/decide-and-post.js --slot=midday
+
+      - name: 投稿ログの更新をコミット
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/x-automation/post-log.json
+          git diff --cached --quiet || git commit -m "chore: X投稿ログを更新(昼) [skip ci]"
+          git push

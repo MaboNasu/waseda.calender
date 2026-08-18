@@ -12,3 +12,6 @@ desktop.ini
 scripts/last-check-result.json
 scripts/last-check-summary.md
 scripts/last-check-changed.json
+
+# X自動投稿の認証情報（ローカル動作確認用。本番はGitHub Secretsを使うためコミット不要）
+.env
