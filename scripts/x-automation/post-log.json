@@ -1,3 +1,56 @@
 {
-  "posts": []
+  "posts": [
+    {
+      "postedAt": "2026-08-19T22:49:46.861Z",
+      "postType": "today",
+      "targetDate": "2026-08-20",
+      "eventIds": [
+        "evt-150",
+        "evt-151",
+        "evt-152",
+        "evt-203",
+        "evt-065",
+        "evt-081",
+        "evt-082"
+      ],
+      "campaign": "today_waseda",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
+    },
+    {
+      "postedAt": "2026-08-20T04:05:57.276Z",
+      "postType": "later_today",
+      "targetDate": "2026-08-20",
+      "eventIds": [
+        "evt-203"
+      ],
+      "campaign": "today_later",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
+    },
+    {
+      "postedAt": "2026-08-20T22:53:56.074Z",
+      "postType": "theme",
+      "targetDate": "2026-08-21",
+      "eventIds": [
+        "evt-151",
+        "evt-152",
+        "evt-150",
+        "evt-081",
+        "evt-082",
+        "evt-066",
+        "evt-203",
+        "evt-204"
+      ],
+      "campaign": "theme_event",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
+    }
+  ]
 }
