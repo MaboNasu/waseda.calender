@@ -56,7 +56,18 @@ Because both this nightly workflow and local edits touch `scripts/sources.json`,
 
 - `sitemap.xml`, `event/*.html`, `org/*.html` also regenerate automatically via `.github/workflows/generate-static-pages.yml` whenever `events.js` or `organizations.js` is pushed to `main` — but that only fires *after* a push, so regenerate locally too before you push if you want to see/verify the result first.
 - `service-worker.js` / `pwa-install.js` / `assets/manifest.json` implement PWA install support.
-- `image-generator.js` renders a shareable social-post image client-side (canvas) for a given event.
+- `image-generator.js` renders a shareable social-post image client-side (canvas) for a given event — this is the public-facing "🖼️ 投稿用画像を生成" button in the event modal, square (1080×1080, Instagram-shaped), used by any visitor, and unrelated to the OGP images below.
+
+### Per-event OGP images (`x-post-images/`)
+
+`x-post-images/{id}.png` holds a landscape (1200×630) card image per event, reusing `image-generator.js`'s design language. `generate-event-pages.js`'s `ogImageFor()` uses it as `og:image`/`twitter:image` when present, falling back to the generic `assets/og-image.png` when absent — so a missing image never breaks a build, it just means that one event shows the generic image until one is generated. This is deliberately *not* a build-time step (unlike `generate-event-pages.js` itself) because rasterizing Canvas output requires either a browser or a Node canvas library, and this project stays dependency-free — so generation is a manual/semi-automated pass you run after adding events, not something CI does.
+
+To (re)generate images (e.g. after adding new events to `events.js`):
+1. `node scripts/og-image-receiver.js` — starts a tiny local HTTP receiver (Node builtins only) that writes whatever PNG it's POSTed straight into `x-post-images/{id}.png`.
+2. Open `scripts/generate-og-images.html` through the `static-site` preview server (not `file://`) — it loads `events.js`, draws a 1200×630 canvas per *published* event, and POSTs each one to the receiver. Safe to re-run over all events any time (existing files just get overwritten); for only the newly-added ones, filter `EVENTS` in that file's `main()` before running.
+3. Stop the receiver, then re-run `node scripts/generate-event-pages.js` so the new files get picked up in `event/*.html`.
+
+Don't add `node-canvas`/Puppeteer/etc. to make this a one-command build step — that tradeoff (an actual npm dependency, the project's first) was considered and deferred; ask the site owner before revisiting it.
 
 ## Conventions worth knowing before editing
 

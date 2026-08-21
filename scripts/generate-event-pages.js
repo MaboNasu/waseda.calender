@@ -24,6 +24,21 @@ const vm = require('vm');
 const ROOT = path.join(__dirname, '..');
 const SITE_ORIGIN = 'https://wasedacalendar.com';
 const OUTPUT_DIR = path.join(ROOT, 'event');
+const OGP_IMAGE_DIR = path.join(ROOT, 'x-post-images');
+
+/**
+ * イベント固有のOGP画像(1200x630、scripts/generate-og-images.htmlで生成)が
+ * x-post-images/{id}.png にあればそのURLを、無ければサイト共通の汎用画像を返す。
+ * 生成し忘れたイベントがあっても壊れず汎用画像にフォールバックするだけなので、
+ * 全件そろっている必要はない(新規イベント追加時の生成手順はCLAUDE.md参照)。
+ */
+function ogImageFor(ev) {
+  const localPath = path.join(OGP_IMAGE_DIR, `${ev.id}.png`);
+  if (fs.existsSync(localPath)) {
+    return { url: `${SITE_ORIGIN}/x-post-images/${ev.id}.png`, width: 1200, height: 630 };
+  }
+  return { url: `${SITE_ORIGIN}/assets/og-image.png?v=1`, width: 1731, height: 909 };
+}
 
 /** events.js は <script> 読み込み前提のプレーンJSなので、vmで安全に実行して必要な値だけ取り出す。
  *  events.js側の宣言は全て const/let で、vmのサンドボックスオブジェクトのプロパティとしては
@@ -209,7 +224,7 @@ function buildEventJsonLd(ev, pageUrl, campusLabel) {
           name: ev.location || campusLabel(ev.campus),
           address: campusAddress ? { '@type': 'PostalAddress', addressCountry: 'JP', ...campusAddress } : { '@type': 'PostalAddress', addressCountry: 'JP' }
         },
-    image: ev.imageUrl || `${SITE_ORIGIN}/assets/og-image.png`,
+    image: ev.imageUrl || ogImageFor(ev).url,
     description: ev.description || ev.title,
     organizer: { '@type': 'Organization', name: ev.organizer || 'Waseda Calendar', url: ev.externalUrl || undefined },
     performer: isPerformance ? { '@type': 'PerformingGroup', name: ev.organizer || 'Waseda Calendar' } : undefined
@@ -243,6 +258,7 @@ function renderEventPageHtml(ev, labelFns) {
   const pageTitle = `${escapeHtml(ev.title)} – Waseda Calendar`;
   const description = escapeHtml(buildOgDescription(ev));
   const jsonLd = jsonLdScriptSafe(buildEventJsonLd(ev, pageUrl, campusLabel));
+  const ogImage = ogImageFor(ev);
 
   const extLinkHTML = ev.externalUrl
     ? `<a href="${escapeHtml(ev.externalUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-enjy" onclick="trackEventExternalLinkClick('${escapeHtml(String(ev.id))}')">公式・詳細情報を見る ↗</a>`
@@ -329,13 +345,14 @@ function renderEventPageHtml(ev, labelFns) {
   <meta property="og:description" content="${description}" id="event-page-og-description">
   <meta property="og:type" content="website">
   <meta property="og:url" content="${pageUrl}" id="event-page-og-url">
-  <meta property="og:image" content="${SITE_ORIGIN}/assets/og-image.png?v=1">
-  <meta property="og:image:width" content="1731">
-  <meta property="og:image:height" content="909">
+  <meta property="og:image" content="${ogImage.url}">
+  <meta property="og:image:width" content="${ogImage.width}">
+  <meta property="og:image:height" content="${ogImage.height}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${pageTitle}" id="event-page-twitter-title">
   <meta name="twitter:description" content="${description}" id="event-page-twitter-description">
-  <meta name="twitter:image" content="${SITE_ORIGIN}/assets/og-image.png?v=1">
+  <meta name="twitter:image" content="${ogImage.url}">
+  <meta name="twitter:image:alt" content="${pageTitle}">
   <title id="event-page-title">${pageTitle}</title>
   <link rel="icon" type="image/png" href="/assets/icon.png?v=2">
   <link rel="manifest" href="/assets/manifest.json?v=2">

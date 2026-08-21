@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>OGP image batch generator</title>
+<style>
+  body { font-family: sans-serif; padding: 20px; }
+  #status { white-space: pre-line; font-size: 14px; }
+</style>
+</head>
+<body>
+<h1>OGP画像 一括生成</h1>
+<div id="status">読み込み中...</div>
+<script src="/events.js"></script>
+<script>
+const RECEIVER_URL = 'http://localhost:8899/save';
+
+const POST_IMAGE_W = 1200;
+const POST_IMAGE_H = 630;
+const POST_IMAGE_COLORS = {
+  enjy: '#8B0000', enjyDark: '#6B0000', enjyLight: '#A52020', enjyPale: '#FBF0F0',
+  white: '#FFFFFF', textPrimary: '#1F2937', textSecondary: '#4B5563'
+};
+const POST_IMAGE_FONT = 'Noto Sans JP';
+const OGP_CATEGORY_LABELS = {
+  sports: 'スポーツ', culture: '文化', music: '音楽', theater: '演劇',
+  lecture: '講演', community: '地域', other: 'その他'
+};
+const KINSOKU_NO_LINE_START = new Set('、。，．・：；？！ヽヾゝゞ々’”）〕］｝〉》」』】ー%,.:;!?)'.split(''));
+
+function wrapTextForCanvas(ctx, text, maxWidth) {
+  const lines = [];
+  let current = '';
+  for (const ch of text) {
+    const test = current + ch;
+    if (current && ctx.measureText(test).width > maxWidth) {
+      lines.push(current);
+      current = ch;
+    } else {
+      current = test;
+    }
+  }
+  if (current) lines.push(current);
+  for (let i = 1; i < lines.length; i++) {
+    while (lines[i].length && KINSOKU_NO_LINE_START.has(lines[i][0])) {
+      lines[i - 1] += lines[i][0];
+      lines[i] = lines[i].slice(1);
+    }
+  }
+  return lines.filter(line => line.length > 0);
+}
+
+function fitEventTitle(ctx, title, maxWidth, maxFontSize, minFontSize, maxLines) {
+  for (let size = maxFontSize; size >= minFontSize; size -= 2) {
+    ctx.font = `700 ${size}px "${POST_IMAGE_FONT}", sans-serif`;
+    const lines = wrapTextForCanvas(ctx, title, maxWidth);
+    if (lines.length <= 1) return { fontSize: size, lines };
+  }
+  ctx.font = `700 ${minFontSize}px "${POST_IMAGE_FONT}", sans-serif`;
+  let lines = wrapTextForCanvas(ctx, title, maxWidth);
+  if (lines.length > maxLines) {
+    lines = lines.slice(0, maxLines);
+    let last = lines[maxLines - 1];
+    while (last.length > 1 && ctx.measureText(last + '…').width > maxWidth) {
+      last = last.slice(0, -1);
+    }
+    lines[maxLines - 1] = last + '…';
+  }
+  return { fontSize: minFontSize, lines };
+}
+
+function traceRoundRect(ctx, x, y, width, height, radius) {
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.arcTo(x + width, y, x + width, y + height, radius);
+  ctx.arcTo(x + width, y + height, x, y + height, radius);
+  ctx.arcTo(x, y + height, x, y, radius);
+  ctx.arcTo(x, y, x + width, y, radius);
+  ctx.closePath();
+}
+
+function formatEventDateDisplay(ev) {
+  const [, m, d] = ev.date.split('-');
+  const wd = ['日', '月', '火', '水', '木', '金', '土'][new Date(ev.date + 'T00:00:00').getDay()];
+  let text = `${Number(m)}月${Number(d)}日(${wd})`;
+  if (ev.endDate) {
+    const [, em, ed] = ev.endDate.split('-');
+    text += `〜${Number(em)}月${Number(ed)}日`;
+  }
+  if (ev.startTime) text += ` ${ev.startTime}〜`;
+  return text;
+}
+
+/** OGP用横長(1200x630)版。image-generator.jsのdrawPostImageCanvasを横長レイアウトに移植したもの */
+function drawOgpCanvas(ev) {
+  const w = POST_IMAGE_W, h = POST_IMAGE_H;
+  const c = POST_IMAGE_COLORS;
+  const canvas = document.createElement('canvas');
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d');
+
+  const bg = ctx.createLinearGradient(0, 0, w, h);
+  bg.addColorStop(0, c.enjyDark);
+  bg.addColorStop(0.5, c.enjy);
+  bg.addColorStop(1, c.enjyLight);
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, w, h);
+
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillStyle = c.white;
+  ctx.font = `700 34px "${POST_IMAGE_FONT}", sans-serif`;
+  ctx.fillText('Waseda Calendar', 56, 66);
+  ctx.font = `400 18px "${POST_IMAGE_FONT}", sans-serif`;
+  ctx.fillText('早稲田のイベントを、ひとつのカレンダーで。', 56, 92);
+
+  const cardX = 56, cardY = 128, cardWidth = w - 112, cardHeight = h - 128 - 56;
+  ctx.save();
+  ctx.shadowColor = 'rgba(0,0,0,0.25)';
+  ctx.shadowBlur = 30;
+  ctx.shadowOffsetY = 10;
+  ctx.fillStyle = c.white;
+  traceRoundRect(ctx, cardX, cardY, cardWidth, cardHeight, 24);
+  ctx.fill();
+  ctx.restore();
+
+  const innerX = cardX + 56;
+  const innerWidth = cardWidth - 112;
+  let cursorY = cardY + 66;
+
+  const categoryText = OGP_CATEGORY_LABELS[ev.category] || ev.category || '';
+  ctx.font = `700 26px "${POST_IMAGE_FONT}", sans-serif`;
+  const tagPaddingX = 22, tagHeight = 44;
+  const tagWidth = ctx.measureText(categoryText).width + tagPaddingX * 2;
+  ctx.fillStyle = c.enjyPale;
+  traceRoundRect(ctx, innerX, cursorY, tagWidth, tagHeight, tagHeight / 2);
+  ctx.fill();
+  ctx.fillStyle = c.enjy;
+  ctx.textBaseline = 'middle';
+  ctx.fillText(categoryText, innerX + tagPaddingX, cursorY + tagHeight / 2 + 2);
+
+  cursorY += tagHeight + 34;
+
+  ctx.textBaseline = 'alphabetic';
+  const titleFit = fitEventTitle(ctx, ev.title, innerWidth, 46, 30, 2);
+  ctx.font = `700 ${titleFit.fontSize}px "${POST_IMAGE_FONT}", sans-serif`;
+  ctx.fillStyle = c.textPrimary;
+  const lineHeight = titleFit.fontSize * 1.35;
+  titleFit.lines.forEach((line, i) => {
+    ctx.fillText(line, innerX, cursorY + titleFit.fontSize + i * lineHeight);
+  });
+  cursorY += titleFit.fontSize + (titleFit.lines.length - 1) * lineHeight + 36;
+
+  ctx.strokeStyle = '#E5E7EB';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(innerX, cursorY);
+  ctx.lineTo(innerX + innerWidth, cursorY);
+  ctx.stroke();
+  cursorY += 42;
+
+  ctx.font = `700 26px "${POST_IMAGE_FONT}", sans-serif`;
+  ctx.fillStyle = c.textSecondary;
+  ctx.fillText('📅 ' + formatEventDateDisplay(ev), innerX, cursorY);
+  cursorY += 40;
+
+  if (ev.location) {
+    ctx.font = `700 26px "${POST_IMAGE_FONT}", sans-serif`;
+    ctx.fillStyle = c.textSecondary;
+    ctx.fillText('📍 ' + ev.location, innerX, cursorY);
+    cursorY += 40;
+  }
+
+  ctx.font = `700 26px "${POST_IMAGE_FONT}", sans-serif`;
+  ctx.fillStyle = c.textSecondary;
+  ctx.fillText('🏫 ' + (ev.organizer || ''), innerX, cursorY);
+
+  ctx.textAlign = 'right';
+  ctx.fillStyle = c.white;
+  ctx.font = `700 24px "${POST_IMAGE_FONT}", sans-serif`;
+  ctx.fillText('@waseda_calendar', w - 56, h - 30);
+
+  return canvas;
+}
+
+function canvasToBlob(canvas) {
+  return new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+}
+
+async function postImage(eventId, blob) {
+  const res = await fetch(RECEIVER_URL, {
+    method: 'POST',
+    headers: { 'X-Event-Id': eventId, 'Content-Type': 'application/octet-stream' },
+    body: blob
+  });
+  if (!res.ok) throw new Error(`upload failed for ${eventId}: ${res.status}`);
+}
+
+async function main() {
+  const statusEl = document.getElementById('status');
+  await Promise.all([
+    document.fonts.load('400 24px "Noto Sans JP"'),
+    document.fonts.load('700 32px "Noto Sans JP"'),
+    document.fonts.load('700 46px "Noto Sans JP"')
+  ]);
+  await document.fonts.ready;
+
+  const events = (typeof EVENTS !== 'undefined' ? EVENTS : []).filter(ev => ev.isPublished !== false);
+  let done = 0, failed = 0;
+  window.__TOTAL__ = events.length;
+  window.__DONE__ = 0;
+  window.__FAILED__ = 0;
+
+  for (const ev of events) {
+    try {
+      const canvas = drawOgpCanvas(ev);
+      const blob = await canvasToBlob(canvas);
+      await postImage(ev.id, blob);
+      done++;
+    } catch (err) {
+      failed++;
+      console.error('failed:', ev.id, err);
+    }
+    window.__DONE__ = done;
+    window.__FAILED__ = failed;
+    statusEl.textContent = `進捗: ${done + failed} / ${events.length} (失敗 ${failed})`;
+  }
+  statusEl.textContent = `完了: ${done} / ${events.length} 件生成(失敗 ${failed}件)`;
+  window.__ALL_DONE__ = true;
+}
+main();
+</script>
+</body>
+</html>
