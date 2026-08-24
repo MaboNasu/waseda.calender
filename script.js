@@ -402,6 +402,7 @@ function readFilters() {
   activeFilters.campus   = document.getElementById('filter-campus')?.value   || '';
   activeFilters.feeType  = document.getElementById('filter-fee')?.value      || '';
   activeFilters.keyword  = document.getElementById('filter-keyword')?.value.trim() || '';
+  updateFilterActiveBadge();
 }
 
 /** フィルターをリセット */
@@ -413,7 +414,22 @@ function resetFilters() {
   });
   const kw = document.getElementById('filter-keyword');
   if (kw) kw.value = '';
+  updateFilterActiveBadge();
   renderAll();
+}
+
+/** 絞り込みパネルを折りたたんでいても条件が有効なことが分かるよう、タイトル横にバッジを出す
+ *  (scopeは別枠の学事日程/サークルイベントタブなのでここではカウントしない) */
+function updateFilterActiveBadge() {
+  const badge = document.getElementById('filter-active-badge');
+  if (!badge) return;
+  const count = ['category','target','campus','feeType','keyword'].filter((k) => activeFilters[k]).length;
+  if (count > 0) {
+    badge.textContent = count;
+    badge.hidden = false;
+  } else {
+    badge.hidden = true;
+  }
 }
 
 /** 大枠フィルタ（全部・学事日程・サークルイベント）のタブ切替 */
@@ -1457,6 +1473,17 @@ function setupFilters() {
   });
 }
 
+/** 絞り込みパネルの開閉（CSSは filter-toggle の aria-expanded 属性を見て768px以下でのみ
+ *  折りたたむため、ここではその属性を反転させるだけでよい） */
+function setupFilterToggle() {
+  const toggleBtn = document.getElementById('filter-toggle');
+  if (!toggleBtn) return;
+  toggleBtn.addEventListener('click', () => {
+    const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+    toggleBtn.setAttribute('aria-expanded', String(!expanded));
+  });
+}
+
 /* ============================================================
    モーダル: オーバーレイクリック / Escで閉じる
    ============================================================ */
@@ -1494,6 +1521,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupHamburger();
   setupScopeToggle();
   setupFilters();
+  setupFilterToggle();
   setupModal();
   setupDensityToggle();
   renderAll();

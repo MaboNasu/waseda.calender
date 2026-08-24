@@ -34,6 +34,13 @@ let organizationState = {
   page: 1
 };
 
+/** モバイル幅(768px以下、.org-layoutが1カラムになる閾値と同じ)では、サイドの詳細asideが
+ *  グリッドより上(order:-1)に配置され画面外になるため、カードタップ時のインライン更新では
+ *  結果が見えない。その幅ではカードタップ＝団体詳細ページへの通常遷移に切り替える。 */
+function isMobileOrgLayout() {
+  return window.matchMedia('(max-width: 768px)').matches;
+}
+
 function orgEscapeHtml(str) {
   if (str === null || str === undefined) return '';
   return String(str)
@@ -248,7 +255,7 @@ function renderOrganizationCards() {
     const related = getEventsForOrganization(org);
     const activeClass = org.id === organizationState.selectedId ? ' active' : '';
     return `
-      <article class="org-card${activeClass}" onclick="selectOrganization('${orgEscapeHtml(org.id)}')">
+      <article class="org-card${activeClass}" onclick="handleOrgCardClick(event, '${orgEscapeHtml(org.id)}')">
         <a class="org-name-btn" href="${buildOrgPageUrl(org)}" onclick="return handleOrgDetailClick(event, '${orgEscapeHtml(org.id)}')">
           ${orgEscapeHtml(org.name)}
         </a>
@@ -256,7 +263,7 @@ function renderOrganizationCards() {
         ${orgListedBadgeHTML(org)}
         ${orgDescriptionHTML(org)}
         ${organizationLinksHTML(org)}
-        ${related.length ? `<button class="org-related-btn" type="button" onclick="selectOrganization('${orgEscapeHtml(org.id)}')">関連イベント ${related.length}件を見る</button>` : ''}
+        ${related.length ? `<button class="org-related-btn" type="button" onclick="handleOrgCardClick(event, '${orgEscapeHtml(org.id)}')">関連イベント ${related.length}件を見る</button>` : ''}
       </article>`;
   }).join('');
 
@@ -306,15 +313,31 @@ function renderOrganizationDetail(org, options) {
   refreshOrgFollowButton(org.id);
 }
 
-/** 団体カードのリンククリック処理。一覧ページ(#organization-detail asideあり)では
- *  ページ遷移せずasideを更新、団体個別ページ等(aside無し)では通常通り遷移させる
+/** 団体カードのリンククリック処理。PC幅の一覧ページ(#organization-detail asideあり)では
+ *  ページ遷移せずasideを更新、団体個別ページ等(aside無し)や768px以下のモバイル幅では
+ *  通常通り遷移させる（asideがグリッドより上(order:-1)に回り込み画面外になり、
+ *  インライン更新では結果が見えなくなるため）。
  *  （script.js の handleDetailLinkClick と同じパターン）。 */
 function handleOrgDetailClick(e, orgId) {
   if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return true;
-  if (!document.getElementById('organization-detail')) return true;
+  if (!document.getElementById('organization-detail') || isMobileOrgLayout()) return true;
   e.preventDefault();
   selectOrganization(orgId);
   return false;
+}
+
+/** 団体カード全体・「関連イベントを見る」ボタンの共通クリック処理。
+ *  名前リンクや外部リンクなど、カード内の別インタラクティブ要素からバブリングしてきたクリックは
+ *  それぞれの本来の遷移を優先し、ここでは何もしない（ネストしたonclickの二重発火を防ぐ）。 */
+function handleOrgCardClick(e, orgId) {
+  const nested = e.target.closest('a, button');
+  if (nested && nested !== e.currentTarget) return;
+  if (isMobileOrgLayout()) {
+    const org = getOrganizations().find(o => o.id === orgId);
+    if (org) window.location.href = buildOrgPageUrl(org);
+    return;
+  }
+  selectOrganization(orgId);
 }
 
 /* ============================================================

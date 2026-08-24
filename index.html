@@ -40,7 +40,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- スタイルシート -->
-  <link rel="stylesheet" href="style.css?v=37">
+  <link rel="stylesheet" href="style.css?v=40">
 </head>
 <body>
 
@@ -115,81 +115,85 @@
      絞り込みパネル
      ============================================================ -->
 <div class="container">
-  <div class="recommend-entry">
-    <div class="recommend-entry-text">
-      <p class="recommend-entry-title">今日、何する？<span class="beta-badge">β</span></p>
-      <p class="recommend-entry-desc">いくつかの質問から、あなたに合いそうなイベントを3つ提案します。</p>
-    </div>
-    <button type="button" class="btn btn-enjy btn-sm" onclick="openRecommendModal()">おすすめを見つける</button>
-  </div>
+  <button type="button" class="recommend-entry" onclick="openRecommendModal()">
+    <span class="recommend-entry-icon" aria-hidden="true">🎯</span>
+    <span class="recommend-entry-text">
+      <span class="recommend-entry-title">今日、何する？<span class="beta-badge">β</span></span>
+      <span class="recommend-entry-desc">3つの質問で、あなたに合うイベントを提案します</span>
+    </span>
+    <span class="recommend-entry-arrow" aria-hidden="true">›</span>
+  </button>
   <div class="scope-toggle" role="group" aria-label="表示範囲" style="margin-top:1.25rem;">
     <button type="button" class="scope-btn active" data-scope="">全部</button>
     <button type="button" class="scope-btn" data-scope="schedule">学事日程</button>
     <button type="button" class="scope-btn" data-scope="circle">サークルイベント</button>
   </div>
   <div class="filter-section">
-    <div class="filter-title">
-      🔍 イベントを絞り込む
-    </div>
-    <div class="filter-grid">
-      <!-- カテゴリ -->
-      <div class="filter-group">
-        <label for="filter-category">カテゴリ</label>
-        <select id="filter-category" class="filter-select">
-          <option value="">すべて</option>
-          <option value="sports">スポーツ</option>
-          <option value="culture">文化</option>
-          <option value="music">音楽</option>
-          <option value="theater">演劇</option>
-          <option value="lecture">講演</option>
-          <option value="community">地域</option>
-          <option value="other">その他</option>
-        </select>
+    <button type="button" class="filter-title" id="filter-toggle" aria-expanded="false" aria-controls="filter-body">
+      <span>🔍 イベントを絞り込む<span class="filter-active-badge" id="filter-active-badge" hidden></span></span>
+      <span class="filter-toggle-icon" aria-hidden="true">▾</span>
+    </button>
+    <div class="filter-body" id="filter-body">
+      <div class="filter-grid">
+        <!-- カテゴリ -->
+        <div class="filter-group">
+          <label for="filter-category">カテゴリ</label>
+          <select id="filter-category" class="filter-select">
+            <option value="">すべて</option>
+            <option value="sports">スポーツ</option>
+            <option value="culture">文化</option>
+            <option value="music">音楽</option>
+            <option value="theater">演劇</option>
+            <option value="lecture">講演</option>
+            <option value="community">地域</option>
+            <option value="other">その他</option>
+          </select>
+        </div>
+        <!-- 対象者 -->
+        <div class="filter-group">
+          <label for="filter-target">対象者</label>
+          <select id="filter-target" class="filter-select">
+            <option value="">すべて</option>
+            <option value="student">在学生向け</option>
+            <option value="obog">OBOG向け</option>
+            <option value="public">一般参加可</option>
+            <option value="applicant">受験生向け</option>
+          </select>
+        </div>
+        <!-- 開催場所 -->
+        <div class="filter-group">
+          <label for="filter-campus">開催場所</label>
+          <select id="filter-campus" class="filter-select">
+            <option value="">すべて</option>
+            <option value="waseda">早稲田キャンパス</option>
+            <option value="toyama">戸山キャンパス</option>
+            <option value="nishiwaseda">西早稲田キャンパス</option>
+            <option value="tokorozawa">所沢キャンパス</option>
+            <option value="takadanobaba">高田馬場周辺</option>
+            <option value="outside">学外</option>
+            <option value="online">オンライン</option>
+          </select>
+        </div>
+        <!-- 参加費 -->
+        <div class="filter-group">
+          <label for="filter-fee">参加費</label>
+          <select id="filter-fee" class="filter-select">
+            <option value="">すべて</option>
+            <option value="free">無料</option>
+            <option value="paid">有料</option>
+          </select>
+        </div>
+        <!-- キーワード -->
+        <div class="filter-group" style="grid-column: 1 / -1;">
+          <label for="filter-keyword">キーワード検索</label>
+          <input type="text" id="filter-keyword" class="filter-input"
+            placeholder="イベント名・主催団体・説明文で検索（Enterキーでも検索）">
+        </div>
       </div>
-      <!-- 対象者 -->
-      <div class="filter-group">
-        <label for="filter-target">対象者</label>
-        <select id="filter-target" class="filter-select">
-          <option value="">すべて</option>
-          <option value="student">在学生向け</option>
-          <option value="obog">OBOG向け</option>
-          <option value="public">一般参加可</option>
-          <option value="applicant">受験生向け</option>
-        </select>
+      <div class="filter-actions">
+        <button id="filter-reset" class="btn btn-ghost btn-sm">リセット</button>
+        <button id="filter-apply" class="btn btn-enjy btn-sm">🔍 この条件で絞り込む</button>
       </div>
-      <!-- 開催場所 -->
-      <div class="filter-group">
-        <label for="filter-campus">開催場所</label>
-        <select id="filter-campus" class="filter-select">
-          <option value="">すべて</option>
-          <option value="waseda">早稲田キャンパス</option>
-          <option value="toyama">戸山キャンパス</option>
-          <option value="nishiwaseda">西早稲田キャンパス</option>
-          <option value="tokorozawa">所沢キャンパス</option>
-          <option value="takadanobaba">高田馬場周辺</option>
-          <option value="outside">学外</option>
-          <option value="online">オンライン</option>
-        </select>
-      </div>
-      <!-- 参加費 -->
-      <div class="filter-group">
-        <label for="filter-fee">参加費</label>
-        <select id="filter-fee" class="filter-select">
-          <option value="">すべて</option>
-          <option value="free">無料</option>
-          <option value="paid">有料</option>
-        </select>
-      </div>
-      <!-- キーワード -->
-      <div class="filter-group" style="grid-column: 1 / -1;">
-        <label for="filter-keyword">キーワード検索</label>
-        <input type="text" id="filter-keyword" class="filter-input"
-          placeholder="イベント名・主催団体・説明文で検索（Enterキーでも検索）">
-      </div>
-    </div>
-    <div class="filter-actions">
-      <button id="filter-reset" class="btn btn-ghost btn-sm">リセット</button>
-      <button id="filter-apply" class="btn btn-enjy btn-sm">🔍 この条件で絞り込む</button>
     </div>
   </div>
 
@@ -367,8 +371,8 @@
      スクリプト読み込み（events.js → script.js の順）
      ============================================================ -->
 <script src="events.js?v=6"></script>
-<script src="script.js?v=31"></script>
-<script src="recommendation.js?v=1"></script>
+<script src="script.js?v=32"></script>
+<script src="recommendation.js?v=2"></script>
 <script src="image-generator.js?v=5"></script>
 <script type="module" src="firebase-init.js?v=3"></script>
 <script src="auth-ui.js?v=3"></script>

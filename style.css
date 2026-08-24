@@ -364,7 +364,34 @@ ul, ol { list-style: none; }
   margin-bottom: 2rem;
   box-shadow: var(--shadow-sm);
 }
-.filter-title { font-weight: 700; font-size: 0.9rem; color: var(--gray-700); margin-bottom: 1rem; }
+.filter-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--gray-700);
+  font-family: var(--font-main);
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+.filter-active-badge {
+  display: inline-block;
+  margin-left: 0.5rem;
+  background: var(--enjy);
+  color: var(--white);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  vertical-align: middle;
+}
+.filter-toggle-icon { font-size: 0.8rem; color: var(--gray-500); transition: transform var(--transition); flex-shrink: 0; }
+.filter-title[aria-expanded="true"] .filter-toggle-icon { transform: rotate(180deg); }
 .filter-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -402,6 +429,14 @@ ul, ol { list-style: none; }
   box-shadow: 0 0 0 3px rgba(139,0,0,0.08);
 }
 .filter-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
+
+/* スマホでは絞り込みパネルを初期状態で折りたたむ(タイトルのaria-expanded属性で判定、
+   JS実行前から効くのでチラつきが出ない)。ヒーロー・おすすめカードの下にこのパネルが
+   常時フル表示だと、本日/今週のイベントに辿り着くまでのスクロール量が大きくなりすぎる
+   問題への対応。PC(768px超)は元々の常時展開のまま変更しない。 */
+@media (max-width: 768px) {
+  #filter-toggle[aria-expanded="false"] + #filter-body { display: none; }
+}
 
 /* ============================================================
    イベントカード
@@ -552,20 +587,32 @@ ul, ol { list-style: none; }
   background: var(--gray-50);
 }
 .btn-detail {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   background: var(--enjy);
   color: var(--white);
   text-decoration: none;
   border: none;
   border-radius: var(--radius-sm);
-  padding: 0.4rem 0.9rem;
+  padding: 0.6rem 1rem;
+  min-height: 44px;
+  box-sizing: border-box;
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
   transition: background var(--transition);
 }
 .btn-detail:hover { background: var(--enjy-dark); }
-.event-external-link { font-size: 0.75rem; color: var(--enjy); }
+/* リンク自体の文字は小さいままでも、タップ領域は指で押しやすい高さを確保する
+   (以前はpaddingが無く行の高さそのまま=20px程度しかなくモバイルで押しにくかった) */
+.event-external-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--enjy);
+  min-height: 44px;
+  box-sizing: border-box;
+}
 
 /* ---- 表示密度: 中・小 ----
    中(medium): 大きめと小さめのちょうど中間。場所は残し、主催・説明・リアクションは非表示。
@@ -732,7 +779,7 @@ ul, ol { list-style: none; }
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
-  min-height: 38px;
+  min-height: 44px;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--white);
@@ -1110,33 +1157,77 @@ ul, ol { list-style: none; }
 
 /* ============================================================
    おすすめ機能(β) - ホームの入口カード + 質問/結果モーダル。
-   既存の検索・カレンダーを置き換えるものではなく、あくまで控えめな追加の入口として
-   ボタンを小さめ(.btn-sm)にし、hero直下ではなく絞り込みパネルの上に据えている。
-   ============================================================ */
+   hero(.hero)と同じグラデーション+パターンを使い、検索・カレンダーと並ぶ主要な入口として
+   視覚的な存在感は保ちつつ、横長の低い帯にして高さを抑えている(2026-08、GPTとの議論を経て
+   「巨大ヒーロー化」から「コンパクトだが目立つ帯」に変更。本日/今週のイベントに辿り着くまでの
+   スクロール量を増やしすぎない狙い)。カード全体を<button>にして、タップ領域は広く取っている。 */
 .recommend-entry {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 0.9rem 1.1rem;
-  box-shadow: var(--shadow-sm);
+  gap: 0.85rem;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-main);
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--enjy-dark) 0%, var(--enjy) 50%, var(--enjy-light) 100%);
+  border-radius: var(--radius-lg);
+  padding: 0.85rem 1.1rem;
+  min-height: 44px;
+  box-sizing: border-box;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
 }
-.recommend-entry-title { font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 0.4rem; }
+.recommend-entry::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.recommend-entry:hover, .recommend-entry:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+.recommend-entry:focus-visible { outline: 3px solid var(--white); outline-offset: 2px; }
+.recommend-entry-icon {
+  position: relative;
+  z-index: 1;
+  font-size: 1.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.recommend-entry-text { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 0.05rem; flex: 1; min-width: 0; }
+.recommend-entry-title { font-weight: 700; font-size: 1rem; color: var(--white); display: flex; align-items: center; gap: 0.4rem; font-family: var(--font-heading); }
 .beta-badge {
   display: inline-block;
-  background: var(--enjy-pale);
-  color: var(--enjy);
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.35);
+  color: var(--white);
   font-size: 0.65rem;
   font-weight: 700;
   padding: 0.1rem 0.45rem;
   border-radius: 99px;
   letter-spacing: 0.03em;
 }
-.recommend-entry-desc { font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.15rem; }
+.recommend-entry-desc {
+  font-size: 0.76rem;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.recommend-entry-arrow {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: rgba(255,255,255,0.85);
+}
 
 .recommend-modal-inner { max-width: 480px; }
 .recommend-progress { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); letter-spacing: 0.06em; margin-bottom: 0.5rem; }
@@ -1209,9 +1300,14 @@ ul, ol { list-style: none; }
 .recommend-result-reason { font-size: 0.8rem; color: var(--text-muted); margin: 0.5rem 0; line-height: 1.5; }
 .recommend-result-cta { font-size: 0.82rem; font-weight: 700; color: var(--enjy); }
 
+/* おすすめモーダル表示中、背景の「今週開催」一覧を隠して結果に集中させる(JS側で開閉に連動して付け外し) */
+#upcoming-section.is-hidden-for-recommend { display: none; }
+
 @media (max-width: 560px) {
-  .recommend-entry { flex-direction: column; align-items: stretch; text-align: center; }
-  .recommend-entry .btn { width: 100%; justify-content: center; }
+  .recommend-entry { padding: 0.75rem 0.9rem; gap: 0.65rem; }
+  .recommend-entry-icon { font-size: 1.3rem; }
+  .recommend-entry-title { font-size: 0.92rem; }
+  .recommend-entry-desc { font-size: 0.72rem; }
 }
 
 /* ============================================================
@@ -1470,10 +1566,14 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 .org-controls > .filter-group { flex: 1 1 200px; min-width: 0; }
 .org-columns-toggle { display: inline-flex; flex-wrap: wrap; gap: 0.4rem; }
 .org-columns-btn {
+  display: inline-flex;
+  align-items: center;
   background: var(--white);
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 0.3rem 0.75rem;
+  min-height: 44px;
+  box-sizing: border-box;
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-secondary);
@@ -1570,7 +1670,9 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   font-size: 1rem;
   font-weight: 700;
   line-height: 1.5;
-  padding: 0;
+  padding: 0.35rem 0;
+  min-height: 44px;
+  box-sizing: border-box;
   text-align: left;
   overflow-wrap: break-word;
   -webkit-line-clamp: 2;
@@ -1632,6 +1734,8 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 0.35rem 0.65rem;
+  min-height: 44px;
+  box-sizing: border-box;
   background: var(--white);
   color: var(--enjy);
   font-size: 0.75rem;

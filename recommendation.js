@@ -214,6 +214,10 @@ function openRecommendModal() {
   trackEvent('recommendation_start', {});
   document.getElementById('recommend-modal').classList.add('active');
   document.body.style.overflow = 'hidden';
+  // モーダルの半透明の背景越しに「今週開催」の一覧が透けて見えると、おすすめの3件と
+  // 紛らわしく散漫な印象になるため、質問〜結果表示中はいったん非表示にする。
+  const upcomingSection = document.getElementById('upcoming-section');
+  if (upcomingSection) upcomingSection.classList.add('is-hidden-for-recommend');
   renderRecommendStep();
   setTimeout(() => {
     const closeBtn = document.querySelector('#recommend-modal .modal-close');
@@ -224,6 +228,8 @@ function openRecommendModal() {
 function closeRecommendModal() {
   document.getElementById('recommend-modal').classList.remove('active');
   document.body.style.overflow = '';
+  const upcomingSection = document.getElementById('upcoming-section');
+  if (upcomingSection) upcomingSection.classList.remove('is-hidden-for-recommend');
   if (recommendState.triggerElement && typeof recommendState.triggerElement.focus === 'function') {
     recommendState.triggerElement.focus();
   }
