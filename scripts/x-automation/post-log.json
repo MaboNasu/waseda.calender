@@ -129,6 +129,19 @@
       "status": "dry-run",
       "postId": null,
       "errorType": null
+    },
+    {
+      "postedAt": "2026-08-25T04:07:24.506Z",
+      "postType": "later_today",
+      "targetDate": "2026-08-25",
+      "eventIds": [
+        "evt-204"
+      ],
+      "campaign": "today_later",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
     }
   ]
 }
