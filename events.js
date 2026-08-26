@@ -4517,6 +4517,61 @@ const EVENTS = [
     externalUrl: "https://www.waseda.jp/culture/news",
     lastUpdated: "2026-08-24",
     isPublished: true
+  },
+  // ---- 情報源チェック(2026-08-26) ----
+  {
+    id: "evt-249",
+    title: "平安朝文学研究会 2026年度第1回研究発表会・シンポジウム「古筆『狭衣物語』残簡について」",
+    date: "2026-09-26",
+    startTime: "10:00",
+    endTime: "16:15",
+    location: "早稲田大学早稲田キャンパス14号館1階101教室",
+    campus: "waseda",
+    organizer: "平安朝文学研究会",
+    category: "lecture",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "研究発表会(10:00〜12:10)とシンポジウム「古筆『狭衣物語』残簡について」(13:00〜16:15)の2部構成。会員外の参加も歓迎、事前申込を推奨(当日受付も可)。",
+    externalUrl: "https://www.waseda.jp/flas/cms/assets/uploads/2026/08/heianchobungakukenkyukai_2026_1.pdf",
+    lastUpdated: "2026-08-26",
+    isPublished: true
+  },
+  {
+    id: "evt-250",
+    title: "関東学生バドミントン秋季リーグ戦",
+    date: "2026-09-12",
+    endDate: "2026-09-21",
+    location: "日本体育大学健志台キャンパス",
+    campus: "outside",
+    organizer: "早稲田大学バドミントン部",
+    category: "sports",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "早稲田大学バドミントン部(男女)が出場する関東学生バドミントン秋季リーグ戦。",
+    externalUrl: "https://waseda-bad.com/blog/%E5%B9%B4%E9%96%93%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB/",
+    lastUpdated: "2026-08-26",
+    isPublished: true
+  },
+  {
+    id: "evt-251",
+    title: "第75回早稲田大学対抗慶應義塾大学定期戦(バドミントン部)",
+    date: "2026-11-22",
+    location: "早稲田大学",
+    campus: "waseda",
+    organizer: "早稲田大学バドミントン部",
+    category: "sports",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "早稲田大学バドミントン部と慶應義塾大学による伝統の早慶戦(定期戦)。",
+    externalUrl: "https://waseda-bad.com/blog/%E5%B9%B4%E9%96%93%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB/",
+    lastUpdated: "2026-08-26",
+    isPublished: true
   }
 
 ];
