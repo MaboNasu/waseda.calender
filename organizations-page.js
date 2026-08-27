@@ -55,10 +55,10 @@ function getOrganizations() {
   return typeof ORGANIZATIONS !== 'undefined' ? ORGANIZATIONS : [];
 }
 
-/** 今日の日付文字列 YYYY-MM-DD（script.jsのgetTodayStrと同じ仕様） */
+/** 今日の日付文字列 YYYY-MM-DD（script.jsのgetTodayStrと同じ仕様。Asia/Tokyo固定、詳細はそちらのコメント参照） */
 function orgPageTodayStr() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const jst = new Date(Date.now() + 9 * 60 * 60 * 1000);
+  return `${jst.getUTCFullYear()}-${String(jst.getUTCMonth() + 1).padStart(2, '0')}-${String(jst.getUTCDate()).padStart(2, '0')}`;
 }
 
 /** イベントの終了日（endDate未指定ならdateと同日） */
@@ -69,7 +69,9 @@ function orgPageEventEnd(ev) {
 /** 団体に紐づくイベントかどうか（orgIdでの紐づけ、団体側のrelatedEventIdsでの紐づけ、
  *  主催団体名（organizer）の完全一致のいずれかに対応）。
  *  events.js側はorgIdがほとんど未設定で、代わりに主催団体名を自由記述のorganizerに
- *  入れている実態があるため、organizer完全一致も紐づけ対象に含めている。 */
+ *  入れている実態があるため、organizer完全一致も紐づけ対象に含めている。
+ *  下のgetOrgEventIndex()はこの3経路をEVENTS全走査なしで引けるようにした索引版で、
+ *  ここでの判定と等価になるよう維持すること。 */
 function isEventRelatedToOrg(ev, org) {
   if (ev.orgId && String(ev.orgId) === String(org.id)) return true;
   const ids = Array.isArray(org.relatedEventIds) ? org.relatedEventIds.map(String) : [];
@@ -87,19 +89,64 @@ function orgPageBuildEventPageUrl(ev) {
   return `https://wasedacalendar.com/event/${encodeURIComponent(ev.id)}.html`;
 }
 
+/** 団体×イベントの紐づけをEVENTS全走査なしで引けるよう、orgId/イベントID/organizer名からの
+ *  索引を1回だけ作ってキャッシュする（EVENTS/ORGANIZATIONSはページ表示中に変化しないため、
+ *  作り直す必要がない）。団体一覧の「掲載中」ソートや団体カード描画は団体1件につき何度も
+ *  isOrgListed等を呼ぶため、ここを索引化しないと団体数×EVENTS件数の全走査が繰り返される。 */
+let orgEventIndexCache = null;
+
+function buildOrgEventIndex() {
+  const events = (typeof EVENTS !== 'undefined' ? EVENTS : []).filter(ev => ev.isPublished);
+  const eventsById = new Map(events.map(ev => [String(ev.id), ev]));
+  const eventsByOrgId = new Map();
+  const eventsByOrganizerName = new Map();
+  events.forEach(ev => {
+    if (ev.orgId) {
+      const key = String(ev.orgId);
+      if (!eventsByOrgId.has(key)) eventsByOrgId.set(key, []);
+      eventsByOrgId.get(key).push(ev);
+    }
+    if (ev.organizer) {
+      const key = String(ev.organizer).trim();
+      if (!eventsByOrganizerName.has(key)) eventsByOrganizerName.set(key, []);
+      eventsByOrganizerName.get(key).push(ev);
+    }
+  });
+  return { eventsById, eventsByOrgId, eventsByOrganizerName };
+}
+
+function getOrgEventIndex() {
+  if (!orgEventIndexCache) orgEventIndexCache = buildOrgEventIndex();
+  return orgEventIndexCache;
+}
+
+/** 団体に紐づくイベント一覧（開催予定・実績を問わず、重複なし）。isEventRelatedToOrgと
+ *  同じ3経路を索引から引く。 */
+function relatedEventsForOrg(org) {
+  const { eventsById, eventsByOrgId, eventsByOrganizerName } = getOrgEventIndex();
+  const merged = new Map();
+  (eventsByOrgId.get(String(org.id)) || []).forEach(ev => merged.set(String(ev.id), ev));
+  (Array.isArray(org.relatedEventIds) ? org.relatedEventIds : []).forEach(id => {
+    const ev = eventsById.get(String(id));
+    if (ev) merged.set(String(ev.id), ev);
+  });
+  if (org.name) {
+    (eventsByOrganizerName.get(String(org.name).trim()) || []).forEach(ev => merged.set(String(ev.id), ev));
+  }
+  return Array.from(merged.values());
+}
+
 /** 団体の開催予定イベント（終了していない、公開済みのもの） */
 function getEventsForOrganization(org) {
-  const events = typeof EVENTS !== 'undefined' ? EVENTS : [];
   const today = orgPageTodayStr();
-  return events.filter(ev => ev.isPublished && isEventRelatedToOrg(ev, org) && orgPageEventEnd(ev) >= today);
+  return relatedEventsForOrg(org).filter(ev => orgPageEventEnd(ev) >= today);
 }
 
 /** 団体の開催実績（終了済み・公開済みのイベント、開催日の新しい順） */
 function getPastEventsForOrganization(org) {
-  const events = typeof EVENTS !== 'undefined' ? EVENTS : [];
   const today = orgPageTodayStr();
-  return events
-    .filter(ev => ev.isPublished && isEventRelatedToOrg(ev, org) && orgPageEventEnd(ev) < today)
+  return relatedEventsForOrg(org)
+    .filter(ev => orgPageEventEnd(ev) < today)
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 

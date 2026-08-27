@@ -98,9 +98,16 @@ function isMultiDay(ev) {
 
 /** 開催終了済みかどうか。script.js の isEventEnded/endedTagHTML の複製。ビルド時点の「今日」で判定するため、
  *  終了直後のイベントは次回の自動再生成（events.js更新時のGitHub Actions）まで反映が遅れる場合がある。 */
+/** 今日の日付文字列 YYYY-MM-DD。Asia/Tokyo(UTC+9、DSTなし)固定で判定する。
+ *  GitHub Actions(UTC)で実行しても、ブラウザ側(script.jsのgetTodayStr)の
+ *  「今日」と最大9時間ズレないようにするため。 */
+function todayStrJST() {
+  const jst = new Date(Date.now() + 9 * 60 * 60 * 1000);
+  return `${jst.getUTCFullYear()}-${String(jst.getUTCMonth() + 1).padStart(2, '0')}-${String(jst.getUTCDate()).padStart(2, '0')}`;
+}
+
 function isEventEnded(ev) {
-  const today = new Date().toISOString().slice(0, 10);
-  return getEventEnd(ev) < today;
+  return getEventEnd(ev) < todayStrJST();
 }
 
 function endedTagHTML(ev) {

@@ -62,9 +62,13 @@ let activeFilters = {
    ユーティリティ
    ============================================================ */
 
-/** 今日の日付文字列 YYYY-MM-DD */
+/** 今日の日付文字列 YYYY-MM-DD。Asia/Tokyo(UTC+9、DSTなし)固定で判定する。
+ *  閲覧者の端末やビルド実行環境（GitHub ActionsはUTC）のタイムゾーンに関わらず、
+ *  常に日本時間での「今日」と一致させるため（generate-event-pages.js等の
+ *  ビルド時「今日」判定と同じ計算式に揃えること）。 */
 function getTodayStr() {
-  return formatDateStr(new Date());
+  const jst = new Date(Date.now() + 9 * 60 * 60 * 1000);
+  return `${jst.getUTCFullYear()}-${String(jst.getUTCMonth() + 1).padStart(2, '0')}-${String(jst.getUTCDate()).padStart(2, '0')}`;
 }
 
 /** Dateオブジェクト → YYYY-MM-DD */
