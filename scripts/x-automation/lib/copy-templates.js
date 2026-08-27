@@ -93,6 +93,34 @@ function fitToBudget(lines, headerLines, footerLines) {
   return { lines: body, truncated };
 }
 
+/** 常につけるベースタグ(検索されやすい定番タグ)。 */
+const BASE_HASHTAGS = '#早稲田大学 #早稲田';
+
+/** カテゴリ別タグ。対象イベントのカテゴリに応じて最大2つまでベースタグに追加する。 */
+const CATEGORY_HASHTAGS = {
+  sports: '#早稲田スポーツ',
+  culture: '#早稲田文化',
+  music: '#早稲田音楽',
+  theater: '#早稲田演劇',
+  lecture: '#早稲田講演',
+  community: '#早稲田サークル',
+};
+
+/** 対象イベント群のカテゴリから、重複しないカテゴリタグを最大2つ選んでベースタグに足す。 */
+function buildHashtags(categories = []) {
+  const extra = [];
+  const seen = new Set();
+  for (const cat of categories) {
+    const tag = CATEGORY_HASHTAGS[cat];
+    if (tag && !seen.has(tag)) {
+      seen.add(tag);
+      extra.push(tag);
+      if (extra.length >= 2) break;
+    }
+  }
+  return [BASE_HASHTAGS, ...extra].join(' ');
+}
+
 /* ============================================================
    A. 今日の早稲田
    ============================================================ */
@@ -109,12 +137,13 @@ function composeTodayPost({ dateStr, events, url, omittedCount }) {
   const header = pickVariant(TODAY_HEADERS(dateStr), seed);
   const intro = pickVariant(TODAY_INTROS, seed + ':intro');
   const footer = pickVariant(TODAY_FOOTERS, seed + ':footer');
+  const hashtags = buildHashtags(events.map((ev) => ev.category));
   const lines = events.map((ev) => formatEventLine(ev));
-  const { lines: fitted, truncated } = fitToBudget(lines, [header, intro], [footer]);
+  const { lines: fitted, truncated } = fitToBudget(lines, [header, intro], [footer, hashtags]);
   const extraNote = truncated || omittedCount > 0
     ? [`他にも${(omittedCount || 0) + (lines.length - fitted.length)}件`]
     : [];
-  const text = [header, '', intro, ...fitted, ...extraNote, '', footer, url].join('\n');
+  const text = [header, '', intro, ...fitted, ...extraNote, '', footer, url, hashtags].join('\n');
   return { text };
 }
 
@@ -143,6 +172,7 @@ function composeWeeklyPost({ fromStr, toStr, diversified, url }) {
   const header = pickVariant(WEEKLY_HEADERS(fromStr, toStr), seed);
   const intro = pickVariant(WEEKLY_INTROS, seed + ':intro');
   const footer = pickVariant(WEEKLY_FOOTERS, seed + ':footer');
+  const hashtags = buildHashtags(diversified.selected.map((s) => s.category));
 
   const bodyLines = [];
   diversified.selected.forEach(({ category, events }) => {
@@ -153,11 +183,17 @@ function composeWeeklyPost({ fromStr, toStr, diversified, url }) {
     });
   });
 
-  const { lines: fitted, truncated } = fitToBudget(bodyLines, [header, intro], [footer]);
+  const { lines: rawFitted, truncated } = fitToBudget(bodyLines, [header, intro], [footer, hashtags]);
+  // 末尾がカテゴリ見出し行(先頭が全角スペースでない)だけ残ってイベントが1件も無い場合、
+  // 見出しだけ浮いて見えるので取り除く。
+  const fitted = rawFitted.slice();
+  while (fitted.length > 0 && !fitted[fitted.length - 1].startsWith('　')) {
+    fitted.pop();
+  }
   const remainingNote = (!truncated && diversified.totalEligible > fitted.filter((l) => l.startsWith('　')).length)
     ? [`他にも今週${diversified.totalEligible}件開催予定`]
     : [];
-  const text = [header, '', intro, ...fitted, ...remainingNote, '', footer, url].join('\n');
+  const text = [header, '', intro, ...fitted, ...remainingNote, '', footer, url, hashtags].join('\n');
   return { text };
 }
 
@@ -171,10 +207,11 @@ function composeLaterTodayPost({ ev, url }) {
   const seed = `later:${ev.date}:${ev.id}`;
   const header = pickVariant(LATER_HEADERS, seed);
   const footer = pickVariant(LATER_FOOTERS, seed + ':footer');
+  const hashtags = buildHashtags([ev.category]);
   const meta = CATEGORY_META[ev.category] || CATEGORY_META.other;
   const locationLine = ev.location ? [`📍${ev.location}`] : [];
   const bodyLine = `${ev.startTime}から${meta.emoji}${truncateTitle(ev.title, 40)}があります。`;
-  const text = [header, '', bodyLine, ...locationLine, '', footer, url].join('\n');
+  const text = [header, '', bodyLine, ...locationLine, '', footer, url, hashtags].join('\n');
   return { text };
 }
 
@@ -192,14 +229,15 @@ function composeThemePost({ themeKey, dateStr, diversified, url }) {
   const seed = `theme:${themeKey}:${dateStr}`;
   const header = pickVariant(THEME_HEADERS[themeKey] || THEME_HEADERS.publicWelcome, seed);
   const footer = pickVariant(THEME_FOOTERS, seed + ':footer');
+  const hashtags = buildHashtags(diversified.selected.map((s) => s.category));
 
   const bodyLines = [];
   diversified.selected.forEach(({ events }) => {
     events.forEach((ev) => bodyLines.push(formatEventLine(ev, { maxChars: 20 })));
   });
 
-  const { lines: fitted } = fitToBudget(bodyLines, [header], [footer]);
-  const text = [header, '', ...fitted, '', footer, url].join('\n');
+  const { lines: fitted } = fitToBudget(bodyLines, [header], [footer, hashtags]);
+  const text = [header, '', ...fitted, '', footer, url, hashtags].join('\n');
   return { text };
 }
 
@@ -217,7 +255,7 @@ function composeRecommendPost({ dateStr, url }) {
   const seed = `recommend:${dateStr}`;
   const body = pickVariant(RECOMMEND_VARIANTS, seed);
   const footer = pickVariant(RECOMMEND_FOOTERS, seed + ':footer');
-  const text = [body, '', footer, url].join('\n');
+  const text = [body, '', footer, url, BASE_HASHTAGS].join('\n');
   return { text };
 }
 
