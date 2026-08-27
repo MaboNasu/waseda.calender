@@ -247,7 +247,7 @@ function renderOrganizationCards() {
   if (organizationState.page > totalPages) organizationState.page = totalPages;
   const pageItems = items.slice((organizationState.page - 1) * ORG_PAGE_SIZE, organizationState.page * ORG_PAGE_SIZE);
 
-  if (!organizationState.selectedId || !items.some(org => org.id === organizationState.selectedId)) {
+  if (!organizationState.selectedId || !pageItems.some(org => org.id === organizationState.selectedId)) {
     organizationState.selectedId = pageItems[0].id;
   }
 
@@ -255,7 +255,7 @@ function renderOrganizationCards() {
     const related = getEventsForOrganization(org);
     const activeClass = org.id === organizationState.selectedId ? ' active' : '';
     return `
-      <article class="org-card${activeClass}" onclick="handleOrgCardClick(event, '${orgEscapeHtml(org.id)}')">
+      <article class="org-card${activeClass}" data-org-id="${orgEscapeHtml(org.id)}" onclick="handleOrgCardClick(event, '${orgEscapeHtml(org.id)}')">
         <a class="org-name-btn" href="${buildOrgPageUrl(org)}" onclick="return handleOrgDetailClick(event, '${orgEscapeHtml(org.id)}')">
           ${orgEscapeHtml(org.name)}
         </a>
@@ -412,9 +412,18 @@ function renderOrgPastEventsHTML(org) {
     </div>`;
 }
 
+/** 団体を選択済みにする。一覧の再フィルタ・再ソート・再描画は不要なので、
+ *  activeクラスの付け替えと詳細ペインの更新だけを行う(選択のたびにEVENTS全走査×20カード分を
+ *  繰り返すのを避けるため)。 */
 function selectOrganization(id) {
   organizationState.selectedId = id;
-  renderOrganizationCards();
+  const wrap = document.getElementById('organizations-list');
+  if (wrap) {
+    wrap.querySelectorAll('.org-card.active').forEach(el => el.classList.remove('active'));
+    const card = wrap.querySelector(`.org-card[data-org-id="${CSS.escape(id)}"]`);
+    if (card) card.classList.add('active');
+  }
+  renderOrganizationDetail(getOrganizations().find(org => org.id === id));
 }
 
 function setupOrganizationFilters() {

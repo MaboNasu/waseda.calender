@@ -1338,7 +1338,7 @@ function buildEventJsonLd(ev, pageUrl) {
 /** 公開済み・本日以降のイベントをJSON-LDとして<head>に埋め込む（検索エンジン向け） */
 function injectEventsJsonLd() {
   const upcoming = getPublishedEvents()
-    .filter(ev => ev.date >= getTodayStr())
+    .filter(ev => getEventEnd(ev) >= getTodayStr())
     .sort((a, b) => a.date.localeCompare(b.date))
     .slice(0, 20);
 
@@ -1350,7 +1350,7 @@ function injectEventsJsonLd() {
     document.head.appendChild(script);
   }
   // map(buildEventJsonLd) だと map が渡す第2引数(index)がpageUrlに紛れ込むため、明示的に1引数で呼ぶ
-  script.textContent = JSON.stringify(upcoming.map(ev => buildEventJsonLd(ev)));
+  script.textContent = JSON.stringify(upcoming.map(ev => buildEventJsonLd(ev, buildEventPageUrl(ev))));
 }
 
 /* ============================================================
