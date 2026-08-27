@@ -1503,6 +1503,42 @@ const EVENTS = [
     lastUpdated: "2026-07-30",
     isPublished: true
   },
+  {
+    id: "evt-252",
+    title: "庭球部(女子) 2026年関東学生テニスリーグ",
+    date: "2026-09-02",
+    endDate: "2026-09-14",
+    location: "有明テニスの森(屋外ハード)",
+    campus: "outside",
+    organizer: "早稲田大学庭球部",
+    category: "sports",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "早稲田大学庭球部(女子)が出場する2026年関東学生テニスリーグ。対戦相手は公式サイトに明記なし。",
+    externalUrl: "https://www.wasedatennis.net/",
+    lastUpdated: "2026-08-27",
+    isPublished: true
+  },
+  {
+    id: "evt-253",
+    title: "庭球部(男子) 2026年関東学生テニスリーグ",
+    date: "2026-09-03",
+    endDate: "2026-09-15",
+    location: "有明テニスの森(屋外ハード)",
+    campus: "outside",
+    organizer: "早稲田大学庭球部",
+    category: "sports",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "早稲田大学庭球部(男子)が出場する2026年関東学生テニスリーグ。対戦相手は公式サイトに明記なし。",
+    externalUrl: "https://www.wasedatennis.net/",
+    lastUpdated: "2026-08-27",
+    isPublished: true
+  },
 
   // ---- 剣道部 ----
   {
@@ -3798,6 +3834,25 @@ const EVENTS = [
     description: "アジア史コース主催の講演会。「【対象】学生、教職員、一般」と明記、事前申込不要・直接会場へ。",
     externalUrl: "https://www.waseda.jp/flas/hss/news/2026/07/27/15969/",
     lastUpdated: "2026-08-17",
+    isPublished: true
+  },
+  {
+    id: "evt-254",
+    title: "国際法律フォーラム「エネルギー転換期におけるエネルギー政策の展開と法的課題―EU、ドイツと日本―」",
+    date: "2026-09-08",
+    startTime: "13:30",
+    endTime: "17:00",
+    location: "早稲田キャンパス8号館308教室",
+    campus: "waseda",
+    organizer: "早稲田大学法学学術院(国際法律フォーラム)",
+    category: "lecture",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "法学学術院・国際法律フォーラムによるセミナー。使用言語はドイツ語・日本語(通訳あり)。事前登録制(Googleフォーム)。対象者の明記は公式サイト上になし。",
+    externalUrl: "https://www.waseda.jp/folaw/icl/news/2026/08/05/12799/",
+    lastUpdated: "2026-08-27",
     isPublished: true
   },
 
