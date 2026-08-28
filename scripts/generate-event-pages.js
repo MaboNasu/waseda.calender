@@ -447,7 +447,7 @@ function renderEventPageHtml(ev, labelFns) {
 <script src="/event-page.js?v=10"></script>
 <script type="module" src="/firebase-init.js?v=3"></script>
 <script src="/auth-ui.js?v=3"></script>
-<script src="/pwa-install.js?v=2"></script>
+<script src="/pwa-install.js?v=3"></script>
 </body>
 </html>
 `;

@@ -40,23 +40,29 @@ function appendPost(record) {
   return log;
 }
 
-/** 指定した投稿タイプの直近の成功投稿(dry-run含む)を新しい順に返す */
+/** 指定した投稿タイプの直近の成功投稿(dry-run・成否不明('unknown')含む)を新しい順に返す。
+ *  'unknown'も含めるのは、間隔・重複感チェックの両方で「本当は投稿されていたかもしれない」を
+ *  安全側(投稿された前提)に倒すため。 */
 function recentPostsOfType(postType, limit = 10) {
   const log = readLog();
   return log.posts
-    .filter((p) => p.postType === postType && (p.status === 'success' || p.status === 'dry-run'))
+    .filter((p) => p.postType === postType && (p.status === 'success' || p.status === 'dry-run' || p.status === 'unknown'))
     .sort((a, b) => new Date(b.postedAt) - new Date(a.postedAt))
     .slice(0, limit);
 }
 
 /**
- * 冪等性チェック: 同じ投稿タイプ・同じ対象日で既に投稿済みなら true。
- * GitHub Actionsの再実行や、同日に workflow が複数回走った場合の二重投稿を防ぐ。
+ * 冪等性チェック: 同じ投稿タイプ・同じ対象日で既に投稿済み、または成否不明('unknown'、
+ * ネットワークエラーでXに実際は届いていたか分からないケース)なら true。
+ * GitHub Actionsの再実行や、同日に workflow が複数回走った場合の二重投稿を防ぐのに加えて、
+ * 「本当は成功していたかもしれない」ケースでの自動再試行による本物の二重投稿も防ぐ
+ * ('unknown'は自動では解消せず、人が実際のXを確認してpost-log.jsonを手動で直す想定)。
  */
 function alreadyPostedForTarget(postType, targetDate) {
   const log = readLog();
   return log.posts.some(
-    (p) => p.postType === postType && p.targetDate === targetDate && (p.status === 'success' || p.status === 'dry-run')
+    (p) => p.postType === postType && p.targetDate === targetDate &&
+      (p.status === 'success' || p.status === 'dry-run' || p.status === 'unknown')
   );
 }
 
@@ -88,8 +94,8 @@ function isSubstantiallySameAsRecent(postType, eventIds) {
 }
 
 /**
- * 直近days日間(today含む)の、投稿タイプを問わない合計投稿数(成功・dry-run含む)。
- * 朝枠全体の週間上限チェック用。
+ * 直近days日間(today含む)の、投稿タイプを問わない合計投稿数(成功・dry-run・成否不明('unknown')含む)。
+ * 朝枠全体の週間上限チェック用。'unknown'も投稿された前提でカウントする(安全側)。
  */
 function countPostsInLastDays(days, today) {
   const log = readLog();
@@ -97,7 +103,7 @@ function countPostsInLastDays(days, today) {
   cutoff.setUTCDate(cutoff.getUTCDate() - (days - 1));
   const end = new Date(today + 'T00:00:00Z');
   return log.posts.filter((p) => {
-    if (p.status !== 'success' && p.status !== 'dry-run') return false;
+    if (p.status !== 'success' && p.status !== 'dry-run' && p.status !== 'unknown') return false;
     const posted = new Date(p.targetDate + 'T00:00:00Z');
     return posted >= cutoff && posted <= end;
   }).length;
