@@ -1,13 +1,18 @@
 # WasedaCalendar AI Office
 
-Discord上に複数のAI役職(CEO/CTO/CFO/マーケティング/法務・リスク/反対意見役)を配置し、
-議題に対して各役職が意見表明→反論→修正のラウンドを経て、CEO役AIが最終決定するBot。
+Discord上に複数のAI役職(CEO/CTO/Product/Growth/UX-UI/Red Team、+専門役のCFO/法務)を配置し、
+議題に対して各役職が意見表明→Red Teamによる検証→(必要な場合のみ)修正のラウンドを経て、
+CEO役AIが最終決定するBot。運用ルールは `src/constitution/constitution.md`(Company Constitution)
+に定義されており、Owner承認が必要な変更・予算上限・セキュリティルールもすべてそこに従う。
 
-「誰が何を主張し」「誰にどう反論され」「反論を受けてどう修正したか」「なぜその決定に至ったか」
-という意思決定過程をDiscordスレッド上にそのまま可視化する。
+「誰が何を主張し」「Red Teamが何を指摘し」「指摘を受けてどう修正したか」「なぜその決定に至ったか」
+という意思決定過程をDiscordスレッド上にそのまま可視化し、機械可読(JSON)・人間可読(Markdown)の
+Decision Logとして保存する。
 
 役職ごとに OpenAI / Google Gemini / Groq という異なるプロバイダーを割り当てており、
-単一モデルにペルソナを演じさせるだけの構成にはしていない(詳細は `src/roles/roles.config.js`)。
+単一モデルにペルソナを演じさせるだけの構成にはしていない。役職の責務(`src/roles/roleDefinitions.js`)
+とモデル割当(`src/roles/modelRouting.js`)は別ファイルに分離されており、モデルだけを
+変更したい場合は `modelRouting.js` の該当行を書き換えるだけでよい。
 
 設計の全体像は `/root/.claude/plans/streamed-greeting-pascal.md`(このプロジェクトの承認済み設計案)を参照。
 
@@ -26,7 +31,13 @@ DISCORD_BOT_TOKEN=
 OPENAI_API_KEY=
 GROQ_API_KEY=
 GEMINI_API_KEY=
+OWNER_DISCORD_USER_ID=
 ```
+
+`OWNER_DISCORD_USER_ID` は**必須**。Owner承認・却下・保留、続行/再試行/中止の操作は
+このユーザーIDからの操作のみ有効になる(Constitution 13条)。自分のDiscordユーザーIDは
+Discordの「設定 > 詳細設定 > 開発者モード」をONにした上で、自分のアイコンを右クリックし
+「ユーザーIDをコピー」で調べられる。
 
 Discord Developer Portal で、Botに以下の権限を付与しておくこと:
 - `applications.commands`(スラッシュコマンド)
@@ -34,14 +45,17 @@ Discord Developer Portal で、Botに以下の権限を付与しておくこと:
 
 ## APIキーなしでの動作確認(ドライラン)
 
-Discordトークンや各社APIキーが揃う前でも、会議フロー自体(意見表明→反論→修正→CEO決定)の
-ロジックが壊れていないかはこれで確認できる。実際のAPI呼び出しやDiscord接続は一切行わない。
+Discordトークンや各社APIキーが揃う前でも、会議フロー全体(Triage→意見表明→Red Team→
+条件付き修正→承認要否判定→CEO決定)のロジックが壊れていないかはこれで確認できる。
+実際のAPI呼び出しやDiscord接続は一切行わない。
 
 ```bash
 npm run dry-run -- "議題をここに書く(省略可)"
 ```
 
-`src/providers/mock.js` がダミー応答を返すだけで、料金も発生しない。
+`src/providers/mock.js` がダミー応答を返すだけで、料金も発生しない。実行すると
+`logs/meetings/` と `logs/decisions/` にモックデータのファイルが生成されるので、
+確認後は削除してよい。
 
 ## 起動
 
@@ -58,24 +72,55 @@ npm run register-commands
 
 ## 使い方(Discord上)
 
-- `/meeting start topic:<議題> rounds:<任意、既定1>` — 会議スレッドを新規作成して開始
-- `/meeting decision` — そのスレッドの最終決定を再表示
+- `/meeting start topic:<議題>` — 会議スレッドを新規作成して開始
+- `/meeting status` — 進行中の会議の状況(フェーズ・Owner承認待ちの有無)を表示
+- `/meeting decision` — そのスレッドの最終決定(Decision Log要約)を再表示
 - `/meeting cost` — この会議・当月累計のAPI利用コストを表示
 - `/meeting cancel` — 進行中の会議を中断
 
-概算コストが `COST_CONFIRM_THRESHOLD_USD`(既定 $0.5)を超える場合、開始前に確認ボタンが出る。
-月間予算 `MONTHLY_BUDGET_USD`(既定 $5)を超過している場合や、1日の開始回数上限
-`DAILY_MEETING_LIMIT`(既定5回)に達している場合は新規会議の開始を拒否する。
+同一・類似の議題について直近の決定が既にある場合は、重複会議を避けるため
+既存の決定を提示して再実行の確認を挟む。概算コストが `COST_CONFIRM_THRESHOLD_USD`
+(既定 $0.5)を超える場合も、開始前に確認ボタンが出る。
 
-## ログの場所
+Owner承認が必要と判定された決定には承認/却下/保留ボタンが付き、
+`OWNER_DISCORD_USER_ID` 以外のクリックは無効になる。プロバイダー障害で
+重要な会議がブロックされた場合は、続行/再試行/中止ボタンが出る。
 
-- `logs/meetings/<meetingId>.json` — 会議ごとの完全な構造化トランスクリプト(発言・反論・修正・決定)
+## 予算・上限(Constitution 8条)
+
+- `MONTHLY_BUDGET_USD`(既定 $5) — 月間の総利用上限
+- `OPENAI_MONTHLY_BUDGET_USD`(既定 $3) — OpenAIのみの別枠上限(唯一の主要有料コンポーネントのため)
+- `MAX_COST_PER_MEETING_USD`(既定 $1) — 1会議あたりの上限。超過すると会議を強制中断する
+- `DAILY_MEETING_LIMIT`(既定5回) — 1日あたりに開始できる会議の最大回数
+
+いずれかを超過すると新規会議の開始を拒否する。無料プロバイダー(Gemini/Groq)の
+障害時に、有料のOpenAIへ黙ってフォールバックする処理は意図的に実装していない。
+
+## ログ・Decision Logの場所
+
+- `logs/meetings/<meetingId>.json` — 会議ごとの完全な構造化トランスクリプト(発言・Red Teamの指摘・修正・決定)
+- `logs/decisions/<日付>_<議題スラッグ>.md` — 人間可読のDecision Log(Constitution 11条の必須14項目)
 - `logs/usage/<YYYY-MM>.jsonl` — API呼び出し1件ごとのトークン数・推定コスト(月次)
-- いずれもリポジトリにはコミットしない(`.gitignore` で除外済み)。Bot稼働ホスト上のディスクに蓄積される。
+
+いずれもリポジトリにはコミットしない(`.gitignore` で除外済み)。Bot稼働ホスト上のディスクに蓄積される。
 
 料金単価は `src/cost/pricing.json` で手動管理している。プロバイダー側の値下げ/値上げがあれば
 この1ファイルを更新するだけでよい。Groqの `openai/gpt-oss-120b` は無料枠内であれば実質0円だが、
 単価は暫定値なので実際の請求と乖離がないか定期的に確認すること。
+
+## セキュリティ(Constitution 13条)
+
+プロンプト送信前(`src/providers/index.js`)・ログ保存前(`src/storage/transcriptStore.js`)・
+Discord投稿前(`src/discord/threadRenderer.js`)の3箇所で、APIキー/Tokenらしき文字列を
+`src/security/secretGuard.js` が機械的に検知し、該当する場合は動作をブロック(プロンプト送信・
+API呼び出し)または該当箇所を `[REDACTED:種別]` に置換(ログ・Discord投稿)する。
+
+## Constitutionの変更について
+
+`src/constitution/constitution.md` は先頭にバージョンヘッダー(`version: X.Y.Z`)を持つ。
+Constitution本体・承認ルール・Owner認証・予算上限・秘密情報保護・モデル割当の基本方針・
+本番Botの権限スコープ・AI Office自身の自動実行権限、これらへの変更はConstitution 5-4条により
+常にOwner承認が必須(AIが自分自身の統治ルールを自動で緩和することはできない)。
 
 ## 常時稼働させる方法
 
@@ -91,12 +136,15 @@ discord.jsはGateway常時接続が必要なため、サーバーレスではな
 
 ```
 src/
-  index.js                Botエントリポイント(Gateway接続・コマンドハンドリング)
+  index.js                Botエントリポイント(Gateway接続・コマンドハンドリング・Owner承認ボタン)
+  constitution/            constitution.md(憲法本体)+ バージョン読み取り
   discord/                 スラッシュコマンド定義・登録・Webhook経由の役職別投稿
-  providers/               OpenAI/Gemini/Groqの共通インターフェース実装
-  roles/                   役職定義(担当プロバイダー/モデル/persona prompt)
-  orchestrator/            会議フロー(意見表明→反論→修正→CEO決定)とプロンプト組み立て
+  providers/               OpenAI/Gemini/Groqの共通インターフェース実装(+モック)
+  roles/                   役職の責務(roleDefinitions.js)とモデル割当(modelRouting.js)を分離
+  approval/                Owner承認カテゴリの機械スキャン・Owner認証・承認/続行ボタン
+  security/                秘密情報(APIキー等)の検知・redact
+  orchestrator/             Round0(triage)・会議フロー本体(meeting.js)・プロンプト組み立て(rounds.js)
   cost/                    料金単価表・使用量トラッカー・予算ガード
-  storage/                 会議トランスクリプトの保存/読み出し
-logs/                      実行時に生成される会議ログ・使用量ログ(gitignore対象)
+  storage/                 会議トランスクリプト(JSON)とDecision Log(Markdown)の保存/読み出し
+logs/                      実行時に生成される会議ログ・Decision Log・使用量ログ(gitignore対象)
 ```

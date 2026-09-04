@@ -1,5 +1,6 @@
 import { EmbedBuilder } from 'discord.js';
 import { ROLES } from '../roles/roles.config.js';
+import { redact } from '../security/secretGuard.js';
 
 const WEBHOOK_NAME = 'AI Office';
 const webhookCache = new Map();
@@ -92,10 +93,12 @@ export function buildEmbed(message) {
  * @param {object} message MeetingOrchestrator が生成したメッセージオブジェクト
  */
 export async function postRoleMessage(channel, message) {
+  // Constitution 13条・セキュリティガード適用箇所3: Discord投稿前にredactする。
+  const safeMessage = JSON.parse(redact(JSON.stringify(message)));
   const webhook = await getOrCreateWebhook(channel);
   await webhook.send({
-    username: message.roleName,
-    embeds: [buildEmbed(message)],
+    username: safeMessage.roleName,
+    embeds: [buildEmbed(safeMessage)],
     threadId: channel.isThread() ? channel.id : undefined,
   });
 }
