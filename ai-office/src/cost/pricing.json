@@ -4,7 +4,11 @@
   "gpt-4.1": { "inputPer1k": 0.002, "outputPer1k": 0.008 },
   "gpt-4o": { "inputPer1k": 0.0025, "outputPer1k": 0.01 },
   "gpt-4o-mini": { "inputPer1k": 0.00015, "outputPer1k": 0.0006 },
-  "gemini-2.5-flash": { "inputPer1k": 0.0003, "outputPer1k": 0.0025 },
+  "gemini-3.6-flash": {
+    "_note": "2026-09時点でgemini-2.5-flashが新規利用不可となったため切替。単価はgemini-2.5-flash当時の暫定値を暫定的に流用しており未確認。Google公式の価格表で確認して更新すること。",
+    "inputPer1k": 0.0003,
+    "outputPer1k": 0.0025
+  },
   "openai/gpt-oss-120b": {
     "_note": "Groqの無料枠内では実質0円。超過後の従量課金レートは要確認のため暫定値を保守的に設定(Groq公式の価格表で必ず確認して更新すること)。",
     "inputPer1k": 0.00015,
