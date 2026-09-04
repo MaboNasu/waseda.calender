@@ -1,7 +1,8 @@
 <!--
-version: 1.0.0
+version: 1.1.0
 last_updated: 2026-09-04
-source: AI Office 初期整備(constitution.md / README.md より抽出)。Owner確認前の暫定版。
+authoritative_source: this file (references constitution.md / README.md for cited facts)
+review_status: draft_needs_owner_review
 -->
 
 # Service
@@ -20,20 +21,30 @@ UNKNOWN)と根拠(source)を付す。AIが新たに一般論を書き足さな�
 **[FACT, source: constitution.md 1条]** 学生が「今この瞬間、周辺で何が開催されて
 いるか」を簡単に把握できない、という発見性の課題。
 
-## 主要ユーザー
+## 利用者区分(3つを明確に分離する)
 
-**[FACT, source: events.js のtargetフィールド仕様]** ターゲット区分として
+利用者に関する情報は性質が異なる3種類を混同しないこと。詳細・実測データの追跡は
+`users.md`が本体で、ここは概要のみ。
+
+### Intended Audience(想定利用者)
+
+**[ASSUMPTION, source: constitution.md 1条の例示文言]** 早稲田大学の学生を主な
+想定読者としてサービス設計されている(サイトの文言・トーンから読み取れる想定であり、
+実測による裏付けではない)。
+
+### Event Eligibility(イベント参加対象区分)
+
+**[FACT, source: events.js のtargetフィールド仕様]** これは「そのイベントに誰が
+参加できるか」を表す入力データ区分であり、**サイト利用者の属性ではない**。
 `student`(学生) / `obog`(卒業生等) / `public`(一般) / `applicant`(受験生等)の
-4種が定義されている(複数選択可)。
+4種(複数選択可)。実測(2026-09-04時点、`event-supply.json`参照):
+student 245件 / public 206件 / obog 203件 / applicant 2件(重複計上あり)。
 
-**[UNKNOWN / NEEDS_OWNER_CONFIRMATION]** 実際の利用者内訳(学生が何%か等)は
-計測されていない(`metrics.json`参照)。
+### Observed Users(実際の利用者)
 
-## 利用シーン
-
-**[ASSUMPTION, source: constitution.md 1条の例示文言]** 「今日/週末に何があるか
-調べる」という利用シーンが想定されているが、実際のユーザー行動ログでの裏付けは
-NOT_MEASURED。会議でこの前提を使う場合は推測である旨を明示すること。
+**[NOT_MEASURED]** 実際にサイトを利用しているユーザーの属性内訳は計測されていない。
+GA4は導入済みだが、ユーザー属性レポートはAI Officeに連携されていない
+(`metrics.json`参照)。
 
 ## ユーザーに取ってほしい最終行動
 
@@ -54,19 +65,26 @@ NOT_MEASURED。会議でこの前提を使う場合は推測である旨を明�
 - 短期PVより継続利用につながる改善
 - 実データのない思い込みで施策を決めない
 
-## やらないこと(現時点)
+## 現在提供していない機能
 
-**[FACT, source: README.md「広告枠・スポンサー枠について」]** 広告表示なし
-(Google AdSense未導入)。`index.html`には将来の広告枠用コメントのみ残されている。
+**[FACT, source: README.md「広告枠・スポンサー枠について」「将来的に追加したい機能」]**
+以下は現時点で未実装(実装候補一覧は下記「中長期ビジョン」参照):
+広告表示(Google AdSense未導入)、チケット販売機能、有料会員機能、管理画面。
 
-**[FACT, source: README.md「将来的に追加したい機能」]** チケット販売機能・
-有料会員機能・管理画面は、いずれも現時点で未実装(下記「中長期ビジョン」の候補一覧参照)。
+**重要**: これは「恒久的にやらない」というNon-goal宣言ではなく、単に
+「現時点で存在しない」という実装状況を述べているに過ぎない。
+
+## Non-goals(恒久的にやらないと決定されたこと)
+
+**[UNKNOWN / NEEDS_OWNER_CONFIRMATION]** Ownerが明示的に「これは恒久的にやらない」
+と決定した項目は、現時点で確認できていない。上記「現在提供していない機能」は
+将来実装される可能性がある候補(下記ビジョン表参照)であり、Non-goalとは異なる。
 
 ## 中長期ビジョン
 
 **[FACT, source: README.md「将来的に追加したい機能(WasePassへの道筋)」]**
 サイト名を「WasePass」へ発展させる構想の候補一覧が存在する(実施時期は未定、
-**status: planned(候補)であり実施確定ではない**):
+**status: backlog_candidate であり実施確定ではない**):
 
 | 機能 | 難易度 |
 |---|---|

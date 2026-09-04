@@ -1,0 +1,74 @@
+{
+  "_comment": "events.jsから直接計算した実測スナップショット。推測値は含まない。算出不能な区分(スポーツ/非スポーツ等、現在のデータ構造にない分類)はUNKNOWNとしている。",
+  "version": "1.0.0",
+  "last_updated": "2026-09-04",
+  "authoritative_source": "events.js (直接カウント)",
+  "review_status": "draft_needs_owner_review",
+  "measured_at": "2026-09-04",
+  "method": "events.js の EVENTS 配列を直接読み込み集計(推測・補完なし)。今後event-count等はスクリプトによる自動更新の候補(未実装、下記auto_update_candidateフィールド参照)。",
+  "total_events": {
+    "value": 248,
+    "auto_update_candidate": true
+  },
+  "published_events": {
+    "value": 248,
+    "note": "isPublished !== false で判定。unpublished(下書き)は0件。"
+  },
+  "by_scope": {
+    "schedule": 42,
+    "circle": 206,
+    "auto_update_candidate": true
+  },
+  "by_category": {
+    "definition": "events.js の category フィールド(選択肢: sports/culture/music/theater/lecture/community/other)をそのまま集計。スポーツ/非スポーツのような上位カテゴリ分類はデータ構造に存在しないためUNKNOWN。",
+    "sports": 147,
+    "culture": 17,
+    "lecture": 26,
+    "theater": 11,
+    "music": 5,
+    "community": 1,
+    "other": 41,
+    "sports_vs_non_sports_ratio": "UNKNOWN(現在のデータ構造では上位カテゴリとして算出不可。categoryの生内訳から手計算は可能: sports 147 / non-sports 101)"
+  },
+  "by_target_eligibility": {
+    "definition": "events.js の target フィールド(複数選択可、参加対象区分。events.js/organizations.jsのeligibility概念であり利用者属性ではない、詳細はservice.md参照)",
+    "student": 245,
+    "public": 206,
+    "obog": 203,
+    "applicant": 2,
+    "note": "複数選択可のため合計が総イベント数を超える(重複計上)。"
+  },
+  "by_fee_type": {
+    "definition": "events.js の feeType フィールド。ヘッダーコメントの選択肢定義はfree/paidの2値のみだが、実データには'unknown'という値も存在する(2026-09-04確認)。",
+    "free": 64,
+    "paid": 10,
+    "unknown": 174,
+    "note": "'unknown'は欠損値ではなく、events.js内に明示的に入力されている値。"
+  },
+  "upcoming_events": {
+    "next_7_days": {
+      "value": 16,
+      "definition": "2026-09-04から2026-09-11までの範囲(endDateがある場合は期間重複判定)"
+    },
+    "next_30_days": {
+      "value": 52,
+      "definition": "2026-09-04から2026-10-04までの範囲"
+    }
+  },
+  "data_quality_observations": {
+    "with_org_id": {
+      "value": 1,
+      "note": "orgIdでorganizations.jsと紐づいているイベントは248件中1件のみ。「掲載中」バッジの自動判定(product.md参照)の実効性は、この紐づけ率に依存する。"
+    },
+    "with_end_date": { "value": 72 },
+    "with_schema_image_url": {
+      "value": 0,
+      "note": "schema.org構造化データ用のimageUrlを個別設定しているイベントは0件(全件が汎用OGP画像に依存)。x-post-images/の充足率とは別の指標。"
+    }
+  },
+  "organization_count": {
+    "value": 504,
+    "source": "organizations.js 冒頭コメント(482公認サークル+22体育各部)",
+    "auto_update_candidate": true
+  }
+}

@@ -1,19 +1,27 @@
 <!--
-version: 1.0.0
+version: 1.1.0
 last_updated: 2026-09-04
-source: AI Office 初期整備。CLAUDE.mdより抽出・要約(重複管理を避けるため詳細はCLAUDE.md本体を参照)。
+authoritative_source: ../CLAUDE.md (this file is a summary/pointer; if content conflicts, CLAUDE.md wins)
+last_synced: 2026-09-04
+review_status: draft_needs_owner_review
 -->
 
 # Technology
 
-**このファイルは要約。最新かつ詳細な技術情報は必ず `../CLAUDE.md`(サイト本体)を
-参照すること。** 内容が食い違う場合はCLAUDE.mdを優先する(このファイルは古くなりうる)。
+**このファイルは要約。AI OfficeからCLAUDE.mdへアクセスできない状況でも最低限判断
+できるよう、この1ファイルだけで完結する情報量を持たせている。** ただし内容が
+食い違う場合はCLAUDE.md本体を優先する(`last_synced`より後にCLAUDE.mdが更新されて
+いれば、このファイルは古い可能性がある)。
 
-すべて **[FACT, source: CLAUDE.md]**、理由が判明しているものは付記する。
+すべて **[FACT, source: CLAUDE.md、および実コード確認(2026-09-04)]**、理由が
+判明しているものは付記する。
 
 ## フロントエンド
 
-フレームワーク・バンドラーなし。素のHTML/CSS/JavaScript、ビルドステップなし。
+フレームワーク・バンドラーなし。素のHTML/CSS/JavaScript。**正確な表現**: Node.js
+スクリプト自体は多数使用している(静的ページ生成・サイトマップ生成・ソース監視等、
+下記参照)が、**サイト本体(フロントエンドの配信物)は外部npmパッケージへの依存を
+持たない**方針、という意味。「Node依存を持たない」という表現は誤解を招くため使わない。
 **理由**: 非エンジニアのOwnerでも把握・編集しやすいシンプルな構成を維持するため。
 
 ## データ
@@ -21,28 +29,36 @@ source: AI Office 初期整備。CLAUDE.mdより抽出・要約(重複管理を�
 `events.js`(`const EVENTS = [...]`)と`organizations.js`(`const ORGANIZATIONS = [...]`、
 504団体)の2つのJS配列がsource of truth。データベースではなくファイル直書き。
 
+## ビルド・デプロイの区別(重要)
+
+- **GitHub Pages配信そのもの**: フレームワークのビルドステップは無い。リポジトリの
+  内容がそのまま配信される。
+- **一方で**、`events.js`/`organizations.js`を変更した際には、`event/*.html` /
+  `org/*.html` / `sitemap.xml`を再生成する**静的HTML生成工程が別途存在する**
+  (下記「静的生成」参照)。これは「デプロイ時のビルド」ではなく「データ変更時に
+  実行する生成スクリプト」であり、pushをトリガーにGitHub Actionsが自動実行するが、
+  ローカルで事前確認したい場合は手動実行が必要。
+  この2つ(配信のビルドレスと、データ変更時の生成工程)を混同しないこと。
+
 ## 静的生成
 
 `generate-event-pages.js` / `generate-org-pages.js` / `generate-sitemap.js`が
-`event/*.html` / `org/*.html` / `sitemap.xml`を生成する。events.js/organizations.js
-編集のたびに再実行が必要(出力ディレクトリを毎回全消去して再構築する仕様)。
+`event/*.html` / `org/*.html` / `sitemap.xml`を生成する。出力ディレクトリを毎回
+全消去して再構築する仕様のため、events.js/organizations.js編集のたびに再実行が必要。
 
-## 二重レンダリング(重要な技術的注意点)
+## URL構造(実コード確認済み、2026-09-04)
 
-同じ内容を「クライアント側(script.js等、ブラウザで実行時に描画)」と
-「Node側(生成スクリプト、ビルド時に静的HTML生成)」の2箇所で独立に実装している。
-**理由**: JSを実行しないクローラー/リンクプレビューボットにも正しい内容を見せるため。
-片方だけ修正すると表示不整合が起きる既知のリスクがある。
+イベント・団体の個別ページには2つの経路がある。混同しないこと。
 
-## アセットバージョニング
-
-全HTMLファイルの`<script src>`/`<link>`に`?v=N`形式のキャッシュバスティングが
-付与されており、共有アセットを変更する際は全ファイルで一括置換+バージョン番号の
-更新が必要。単一の定義箇所は存在しない。
+| 区分 | URL形式 | 実体 |
+|---|---|---|
+| `canonical_public_url` / `seo_canonical` | `https://wasedacalendar.com/event/{id}.html`<br>`https://wasedacalendar.com/org/{id}.html` | **[FACT, source: `<link rel="canonical">`タグ(generate-event-pages.js/generate-org-pages.js)、`script.js`のbuildEventPageUrl()、sitemap.xml実データ]** SNSシェア・パーマリンク・sitemap.xml・JSON-LD等、外部に見せるURLは常にこちら |
+| `generated_static_route` | 同上 | `generate-event-pages.js`/`generate-org-pages.js`が生成する静的プリレンダリング済みファイル。crawler/リンクプレビューボット向け |
+| `client_side_route` / `legacy_route` | `event.html?id=X`<br>`org.html?id=X` | **[FACT, source: org-page.js コメント「旧形式(org.html?id=A-001)は後方互換のため引き続きクエリパラメータを優先的に見る」]** 後方互換のためのみ存在する旧形式。新規リンクの発行には使われていない(sitemap.xml内に`?id=`形式は0件) |
 
 ## Git/GitHub・ホスティング
 
-GitHub Pagesでホスティング。ビルドステップなし(リポジトリの内容がそのまま配信される)。
+GitHub Pagesでホスティング。
 
 ## GitHub Actions(自動化)
 
@@ -62,10 +78,12 @@ events.js側の静的`reactions`フィールドは新規イベントの初期シ
 
 - Google Apps Script Web App(問い合わせフォーム送信・団体の再認証編集フロー)
 - X(Twitter) API(自動投稿、詳細は`growth.md`)
+- Google Analytics 4(計装のみ、詳細は`metrics.json`)
 
 ## 技術的制約
 
-- Node依存を持たない方針(このAI Officeサブプロジェクトがリポジトリ初のnpm依存)
+- サイト本体は外部npmパッケージへの依存を意図的に持たない(このAI Officeサブ
+  プロジェクトがリポジトリ初のnpm依存)
 - OGP画像生成にnode-canvas/Puppeteer等の重い依存を意図的に避けている
   (ブラウザ経由の手動/半自動生成に留めている)
 - 外部の有料LLM APIを、サイト本体のソースチェック自動化には使わない方針

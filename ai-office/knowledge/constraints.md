@@ -1,7 +1,8 @@
 <!--
-version: 1.0.0
+version: 1.1.0
 last_updated: 2026-09-04
-source: AI Office 初期整備。CLAUDE.md / README.md / constitution.mdより抽出。Owner確認前の暫定版。
+authoritative_source: this file (references CLAUDE.md / README.md / constitution.md for cited facts)
+review_status: draft_needs_owner_review
 -->
 
 # Constraints
