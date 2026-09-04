@@ -10,13 +10,13 @@
 export const MODEL_ROUTING = {
   ceo: { provider: 'openai', model: 'gpt-4.1', temperature: 0.4 },
   cto: { provider: 'groq', model: 'openai/gpt-oss-120b', temperature: 0.6 },
-  product: { provider: 'gemini', model: 'gemini-2.5-flash', temperature: 0.5 },
+  product: { provider: 'gemini', model: 'gemini-3.6-flash', temperature: 0.5 },
   growth: { provider: 'openai', model: 'gpt-4o-mini', temperature: 0.8 },
-  ux_ui: { provider: 'gemini', model: 'gemini-2.5-flash', temperature: 0.6 },
+  ux_ui: { provider: 'gemini', model: 'gemini-3.6-flash', temperature: 0.6 },
   // Red Teamは毎回1回だけ固定で呼び出すため、安価なモデルに固定する。
   red_team: { provider: 'groq', model: 'openai/gpt-oss-120b', temperature: 0.7 },
-  cfo: { provider: 'gemini', model: 'gemini-2.5-flash', temperature: 0.5 },
-  legal: { provider: 'gemini', model: 'gemini-2.5-flash', temperature: 0.2 },
+  cfo: { provider: 'gemini', model: 'gemini-3.6-flash', temperature: 0.5 },
+  legal: { provider: 'gemini', model: 'gemini-3.6-flash', temperature: 0.2 },
 };
 
 export function getModelRouting(roleId) {
