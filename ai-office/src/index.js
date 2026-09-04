@@ -47,7 +47,7 @@ async function registerGlobalCommands() {
   console.log(`[startup] Registered ${commandDefinitions.length} global command(s).`);
 }
 
-client.once('ready', async () => {
+client.once('clientReady', async () => {
   console.log(`[startup] Logged in as ${client.user.tag}`);
   try {
     await registerGlobalCommands();
