@@ -1,0 +1,96 @@
+{
+  "_comment": "エンゲージメント指標。value/statusを推測で埋めない。GA4/Firestoreの計装有無とAI Officeへの値連携有無は別問題として扱う(instrumentedフィールド参照)。",
+  "version": "1.0.0",
+  "last_updated": "2026-09-04",
+  "metrics": {
+    "monthly_pv": {
+      "value": null,
+      "status": "not_measured",
+      "instrumented": true,
+      "instrumentation_note": "GA4(measurement ID: G-F4NHVEBKTK)が全ページに導入済みだが、値はAI Officeに自動連携されていない。OwnerがGAダッシュボードで確認する必要がある。",
+      "source": null,
+      "last_verified": null
+    },
+    "monthly_unique_users": {
+      "value": null,
+      "status": "not_measured",
+      "instrumented": true,
+      "instrumentation_note": "GA4計装済み、値は未連携(monthly_pvと同様)。",
+      "source": null,
+      "last_verified": null
+    },
+    "new_vs_returning_ratio": {
+      "value": null,
+      "status": "not_measured",
+      "instrumented": true,
+      "instrumentation_note": "GA4で理論上取得可能だが未確認。",
+      "source": null,
+      "last_verified": null
+    },
+    "event_detail_views": {
+      "value": null,
+      "status": "not_measured",
+      "instrumented": false,
+      "source": null,
+      "last_verified": null
+    },
+    "external_link_clicks": {
+      "value": null,
+      "status": "not_measured",
+      "instrumented": false,
+      "source": null,
+      "last_verified": null
+    },
+    "reactions_likes": {
+      "value": null,
+      "status": "not_measured",
+      "instrumented": true,
+      "instrumentation_note": "Firestoreにライブ記録があるが、集計値をAI Officeは参照していない。",
+      "source": null,
+      "last_verified": null
+    },
+    "org_follow_count": {
+      "value": null,
+      "status": "not_measured",
+      "instrumented": true,
+      "instrumentation_note": "Firestoreにライブ記録があるが、集計値をAI Officeは参照していない。",
+      "source": null,
+      "last_verified": null
+    },
+    "search_filter_usage": {
+      "value": null,
+      "status": "not_measured",
+      "instrumented": false,
+      "source": null,
+      "last_verified": null
+    },
+    "social_referrals": {
+      "value": null,
+      "status": "not_measured",
+      "instrumented": false,
+      "source": null,
+      "last_verified": null
+    },
+    "event_count": {
+      "value": 248,
+      "status": "measured",
+      "instrumented": false,
+      "source": "events.js 直接カウント(手動スナップショット)",
+      "last_verified": "2026-09-04"
+    },
+    "event_count_by_scope": {
+      "value": { "schedule": 42, "circle": 206 },
+      "status": "measured",
+      "instrumented": false,
+      "source": "events.js 直接カウント(手動スナップショット)",
+      "last_verified": "2026-09-04"
+    },
+    "organization_count": {
+      "value": 504,
+      "status": "measured",
+      "instrumented": false,
+      "source": "organizations.js 冒頭コメント",
+      "last_verified": "2026-09-04"
+    }
+  }
+}
