@@ -1,0 +1,21 @@
+{
+  "name": "waseda-calendar-ai-office",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Discord上で複数のAI役職(CEO/CTO/CFO/マーケティング/法務/反対意見役)が議論し、CEO役AIが最終決定するAI経営会議Bot。OpenAI/Gemini/Groqの3プロバイダーをモデル特性ごとに使い分ける。",
+  "type": "module",
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "register-commands": "node src/discord/registerCommands.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "openai": "^4.68.4",
+    "groq-sdk": "^0.7.0",
+    "@google/generative-ai": "^0.21.0",
+    "dotenv": "^16.4.5"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "_comment": "モデルごとの単価表(USD / 1,000トークン)。価格改定時は手動で更新すること。不明なモデルはtracker.jsが0円扱いにせず警告を出す。",
+  "_updated": "2025-01",
+  "gpt-4.1": { "inputPer1k": 0.002, "outputPer1k": 0.008 },
+  "gpt-4o": { "inputPer1k": 0.0025, "outputPer1k": 0.01 },
+  "gpt-4o-mini": { "inputPer1k": 0.00015, "outputPer1k": 0.0006 },
+  "gemini-2.5-flash": { "inputPer1k": 0.0003, "outputPer1k": 0.0025 },
+  "openai/gpt-oss-120b": {
+    "_note": "Groqの無料枠内では実質0円。超過後の従量課金レートは要確認のため暫定値を保守的に設定(Groq公式の価格表で必ず確認して更新すること)。",
+    "inputPer1k": 0.00015,
+    "outputPer1k": 0.00075
+  }
+}

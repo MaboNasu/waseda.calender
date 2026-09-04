@@ -15,3 +15,8 @@ scripts/last-check-changed.json
 
 # X自動投稿の認証情報（ローカル動作確認用。本番はGitHub Secretsを使うためコミット不要）
 .env
+
+# WasedaCalendar AI Office (Discord Bot) — 秘密鍵と依存パッケージ・ログはコミット対象外
+ai-office/.env
+ai-office/node_modules/
+ai-office/logs/
