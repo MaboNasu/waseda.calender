@@ -9,7 +9,8 @@
   },
   "scripts": {
     "start": "node src/index.js",
-    "register-commands": "node src/discord/registerCommands.js"
+    "register-commands": "node src/discord/registerCommands.js",
+    "dry-run": "node scripts/dry-run.js"
   },
   "dependencies": {
     "discord.js": "^14.16.3",

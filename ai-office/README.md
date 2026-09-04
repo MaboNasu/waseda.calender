@@ -32,6 +32,17 @@ Discord Developer Portal で、Botに以下の権限を付与しておくこと:
 - `applications.commands`(スラッシュコマンド)
 - `bot` スコープ + `Manage Webhooks` / `Create Public Threads` / `Send Messages` / `Send Messages in Threads`
 
+## APIキーなしでの動作確認(ドライラン)
+
+Discordトークンや各社APIキーが揃う前でも、会議フロー自体(意見表明→反論→修正→CEO決定)の
+ロジックが壊れていないかはこれで確認できる。実際のAPI呼び出しやDiscord接続は一切行わない。
+
+```bash
+npm run dry-run -- "議題をここに書く(省略可)"
+```
+
+`src/providers/mock.js` がダミー応答を返すだけで、料金も発生しない。
+
 ## 起動
 
 ```bash
