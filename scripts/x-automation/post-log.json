@@ -175,6 +175,36 @@
       "status": "dry-run",
       "postId": null,
       "errorType": null
+    },
+    {
+      "postedAt": "2026-08-27T03:25:50.099Z",
+      "postType": "theme",
+      "targetDate": "2026-08-27",
+      "eventIds": [
+        "evt-151",
+        "evt-152",
+        "evt-150",
+        "evt-136",
+        "evt-073",
+        "evt-184",
+        "evt-205"
+      ],
+      "campaign": "theme_event",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
+    },
+    {
+      "postedAt": "2026-08-28T06:12:57.692Z",
+      "postType": "recommend",
+      "targetDate": "2026-08-28",
+      "eventIds": [],
+      "campaign": "recommendation",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
     }
   ]
 }
