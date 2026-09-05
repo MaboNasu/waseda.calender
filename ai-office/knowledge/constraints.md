@@ -1,8 +1,8 @@
 <!--
-version: 1.2.0
+version: 1.3.0
 last_updated: 2026-09-05
 authoritative_source: this file (references CLAUDE.md / README.md / constitution.md for cited facts)
-review_status: draft_needs_owner_review
+review_status: owner_reviewed_v1
 -->
 
 # Constraints
@@ -34,8 +34,9 @@ Claude Code経由で行う。
 
 ## 運用負荷
 
-**[UNKNOWN / NEEDS_OWNER_CONFIRMATION]** Ownerが実際にどの作業にどれだけの時間を
-かけているか(イベント追加頻度、問い合わせ対応頻度等)は未確認。
+**[OWNER_REPORTED, verified_date: 2026-09-05]** 「暇な時間は結構割いている。
+1日1時間くらいの日もあれば2〜3時間の日もある」とのこと。作業内容の内訳
+(イベント追加/問い合わせ対応/SNS投稿等の時間配分)までは未確認。
 
 ## 既存アーキテクチャ・変更を慎重にすべき領域
 

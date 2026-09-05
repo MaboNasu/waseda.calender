@@ -3,7 +3,7 @@ version: 1.2.0
 last_updated: 2026-09-05
 authoritative_source: ../CLAUDE.md (this file is a summary/pointer; if content conflicts, CLAUDE.md wins)
 last_synced: 2026-09-04
-review_status: draft_needs_owner_review
+review_status: owner_reviewed_v1
 -->
 
 # Technology

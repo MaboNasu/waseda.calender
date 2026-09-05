@@ -1,9 +1,9 @@
 {
   "_comment": "events.jsから直接計算した実測スナップショット。推測値は含まない。total_event_recordsは過去イベントも含む配列全体の件数であり、『今後利用可能なイベント数』ではない(混同禁止、注記参照)。算出不能な区分はUNKNOWNとし、UNKNOWNのまま数値だけ併記する矛盾は残さない。",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "last_updated": "2026-09-05",
-  "authoritative_source": "events.js (直接カウント)",
-  "review_status": "draft_needs_owner_review",
+  "authoritative_source": "events.js (直接カウント) / x-post-images/ (ファイル実測)",
+  "review_status": "owner_reviewed_v1",
   "measured_at": "2026-09-04",
   "method": "events.js の EVENTS 配列を直接読み込み集計(推測・補完なし)。今後event-count等はスクリプトによる自動更新の候補(未実装、下記auto_update_candidateフィールド参照)。",
   "total_event_records": {
@@ -87,12 +87,17 @@
   "data_quality_observations": {
     "with_org_id": {
       "value": 1,
-      "note": "orgIdでorganizations.jsと紐づいているイベントは248件(全期間)中1件のみ。「掲載中」バッジの自動判定(product.md参照)の実効性は、この紐づけ率に依存する。"
+      "note": "orgIdでorganizations.jsと直接紐づいているイベントは248件(全期間)中1件のみ。ただし『掲載中』バッジの判定ロジック(organizations-page.jsのisEventRelatedToOrg())はorgId一致・relatedEventIds一致・organizer名の完全一致の3経路のいずれかで成立し、orgIdのみに依存していない(2026-09-05コード確認)。詳細はproduct.md参照。"
     },
     "with_end_date": { "value": 72 },
+    "with_ogp_image_file": {
+      "value": 245,
+      "total_published": 248,
+      "note": "SNS用イベント別OGP画像(x-post-images/{id}.png)が実在するイベントは公開中248件中245件(98.8%、2026-09-05実測)。残り3件は汎用OGP画像にフォールバックする。schema.org構造化データ用imageUrl(下記with_schema_image_url)とは別のファイル・別の仕組みであり、混同しないこと。"
+    },
     "with_schema_image_url": {
       "value": 0,
-      "note": "schema.org構造化データ用のimageUrlを個別設定しているイベントは0件(全件が汎用OGP画像に依存)。x-post-images/の充足率とは別の指標。"
+      "note": "schema.org構造化データ用のimageUrlフィールドを個別設定しているイベントは0件。これはSNSシェア時のOGP画像(x-post-images/、with_ogp_image_file参照)とは別問題であり、『全件が汎用OGP画像に依存』という意味ではない。"
     }
   },
   "organization_count": {

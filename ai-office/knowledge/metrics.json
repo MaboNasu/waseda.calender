@@ -1,9 +1,9 @@
 {
   "_comment": "エンゲージメント指標。イベント/団体の供給側カウントはevent-supply.jsonへ移動した(このファイルは利用側の指標に限定)。value/statusを推測で埋めない。measurement(計装有無)・availability(値の取得可否)・value_status(値の新しさ)を分離する。",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "last_updated": "2026-09-05",
   "authoritative_source": "this file",
-  "review_status": "draft_needs_owner_review",
+  "review_status": "owner_reviewed_v1",
   "_status_model": {
     "measurement": "instrumented(計装されている) / not_instrumented(計装されていない) / unknown(不明)",
     "availability": "available(AI Officeが自動参照可) / manual_only(Ownerが手動確認すれば見れる) / not_connected(計装先はあるが誰も見ていない/連携されていない) / unavailable(取得手段がない)",
@@ -142,6 +142,21 @@
       "source": null,
       "last_verified": null,
       "note": "絞り込み操作専用のGA4カスタムイベントはコード上確認できなかった(2026-09-04)。GA4の拡張計測(スクロール等)で間接的に取れる可能性はあるが未確認のためunknown。"
+    },
+    "usage_timing_pattern": {
+      "definition": "主な利用時間帯・曜日",
+      "unit": "distribution",
+      "period": "monthly",
+      "aggregation": "share by hour/day_of_week",
+      "measurement": "instrumented",
+      "custom_event_instrumented": false,
+      "derivable_from_existing_analytics": true,
+      "availability": "manual_only",
+      "value_status": "unknown",
+      "value": null,
+      "source": "GA4標準の日時(時間帯/曜日)ディメンション。全イベントに標準で付与されるタイムスタンプから、GA4のExplore機能等で標準的に参照可能(カスタム設定不要)。ただしこのサイトのGA4プロパティで実際にレポートを開いて確認した記録はない。",
+      "last_verified": null,
+      "note": "旧metrics.jsonにはエントリが無く、users.mdでNOT_MEASURED(=計測の仕組みがない)としていたが、GA4の標準機能である以上、他の標準レポート指標(monthly_pv/device_category_ratio等)と同じ扱いにするのが一貫性がある。2026-09-05に追加。「プラットフォーム標準機能として存在するはず」という一般知識に基づく判断であり、このサイトのGA4画面を実際に開いて確認したものではない点に留意。"
     },
     "device_category_ratio": {
       "definition": "モバイル/デスクトップ/タブレットの利用比率",

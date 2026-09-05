@@ -1,8 +1,8 @@
 <!--
-version: 1.2.0
+version: 1.3.0
 last_updated: 2026-09-05
 authoritative_source: this file (Owner-maintained; expected to change faster than other knowledge files)
-review_status: draft_needs_owner_review
+review_status: owner_reviewed_v1
 -->
 
 # Current State (AI社員向けCurrent Brief)
@@ -12,11 +12,16 @@ review_status: draft_needs_owner_review
 
 ## 現在の最重要課題
 
-**[UNKNOWN / NEEDS_OWNER_CONFIRMATION]** 未確認。Ownerに確認が必要。
+**[OWNER_REPORTED, verified_date: 2026-09-05]** アクセス数の少なさ、認知の低さ。
+(`users.md`の「リピート利用」に関するOwner発言「リピートされる前のアクセスが
+少ない」とも整合する認識)
 
 ## 現在の優先順位
 
-**[UNKNOWN / NEEDS_OWNER_CONFIRMATION]** 未確認。
+**[OWNER_REPORTED, verified_date: 2026-09-05]**
+1. 認知してもらうこと
+2. アクセスしてもらうこと
+3. 掲載側(サークル・団体)にも利用してもらうこと
 
 ## イベント供給状況(実測スナップショット)
 
@@ -53,23 +58,29 @@ AI Office(このDiscord Bot)自体の構築・ガバナンス整備・Knowledge 
 
 **[UNKNOWN]** `logs/experiments/`に登録されているものは現時点でなし。
 
+## Ownerの意向(自動化への期待)
+
+**[OWNER_REPORTED, verified_date: 2026-09-05]** GA4のダッシュボード等を
+Owner自身は定期的に確認しておらず、「これら(指標の定期確認)をAIにしてほしい」
+との明確な要望があった。Knowledge Retrieval/自動化を実装する段階で、
+GA4データの定期取得・要約をAI Office側で巻き取ることを検討候補とする
+(現時点では未実装、V1のスコープ外)。
+
 ---
 
 ## OWNER QUESTIONS(Ownerへの確認事項)
 
-このファイルおよび他のKnowledgeファイルでUNKNOWN/NEEDS_OWNER_CONFIRMATIONと
-なっている項目のうち、特に優先して確認したいもの:
+2026-09-05にOwnerから回答を得たため、以下は解決済み(回答内容は
+`current-state.md`本文・`constraints.md`「運用負荷」・`growth.md`・`service.md`
+「Non-goals」「中長期ビジョン」・`users.md`にそれぞれ反映済み)。
 
-1. 現在、サイト運営上・改善上で最も重要だと考えている課題は何ですか?
-2. 直近1〜3ヶ月で優先したいことを3つ挙げるとしたら何ですか?
-3. サイト運営(イベント追加・問い合わせ対応・SNS投稿など)に、週あたりどの程度の
-   時間をかけていますか?
-4. Instagramでの発信は現在行っていますか? 行っている場合、手動/自動のどちらですか?
-5. Google Search Console は導入していますか? 導入している場合、検索順位・流入の
-   傾向で気づいていることはありますか?
-6. Google Analytics(GA4)のダッシュボードは定期的に確認していますか? 確認して
-   いる場合、現在のPV・ユーザー数のおおよその規模感を教えてください。
-7. `service.md`の「中長期ビジョン」に挙げた候補(WasePassへの道筋)のうち、
-   実際に着手を検討しているものはありますか?
-8. 「これは今後もやらない」と決めていること(Non-goal)はありますか?
-   (`service.md`のNon-goals欄が現在UNKNOWNのため)
+- ~~現在の最重要課題~~ → 反映済み(本文参照)
+- ~~直近の優先順位~~ → 反映済み(本文参照)
+- ~~運用にかけている時間~~ → `constraints.md`参照
+- ~~Instagram運用実態~~ → `growth.md`参照
+- ~~Search Console利用状況~~ → `growth.md`参照
+- ~~GA4確認頻度~~ → `growth.md`・上記「Ownerの意向」参照
+- ~~WasePassビジョンへの着手予定~~ → `service.md`参照
+- ~~Non-goal宣言の有無~~ → `service.md`参照
+
+新たな未確認事項が生じた場合は、このセクションに追記すること。

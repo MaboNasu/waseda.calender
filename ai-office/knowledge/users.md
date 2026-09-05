@@ -1,8 +1,8 @@
 <!--
-version: 1.1.0
+version: 1.3.0
 last_updated: 2026-09-05
 authoritative_source: this file
-review_status: draft_needs_owner_review
+review_status: owner_reviewed_v1
 -->
 
 # Users
@@ -15,7 +15,7 @@ review_status: draft_needs_owner_review
 - **POLICY**: Owner/Constitution等によって正式に定められた方針(観測事実ではない)
 - **ASSUMPTION**: 検証されていない前提
 - **NOT_MEASURED**: そもそも計測の仕組みがない
-- **MEASURED_BUT_NOT_AVAILABLE_TO_AI_OFFICE**: GA4等で計測されているが、値がAI Officeに
+- **VALUE_NOT_AVAILABLE_TO_AI_OFFICE**: GA4等で計測されているが、値がAI Officeに
   連携されていない(Ownerが手動で見れば分かる。`metrics.json`が正本)
 
 ## Intended Audience(想定利用者)
@@ -34,13 +34,10 @@ review_status: draft_needs_owner_review
 - 実際の利用者の属性内訳(学生/OBOG/一般等)、学年、所属サークル
   — GA4の標準機能・カスタムディメンションいずれにも該当する設定が確認できず、
   そもそも計測する仕組みがない
-- 主な利用時間帯・曜日
-  — GA4は理論上取得可能だが、`metrics.json`に該当エントリが未整備のため、
-  現時点ではNOT_MEASURED扱いとする(将来`metrics.json`に追加する候補)
 
-### 計測されているがAI Officeに値が連携されていない(MEASURED_BUT_NOT_AVAILABLE_TO_AI_OFFICE)
+### 計測されているがAI Officeに値が連携されていない(VALUE_NOT_AVAILABLE_TO_AI_OFFICE)
 
-`metrics.json`参照。いずれもGA4で計測基盤はあるが、値はOwnerが手動でGA4を確認する
+`metrics.json`が正本。いずれもGA4で計測基盤はあるが、値はOwnerが手動でGA4を確認する
 必要がある(`availability: manual_only`):
 
 - 月間ユニークユーザー数(`metrics.json: monthly_users`。定義自体もUNKNOWN、下記参照)
@@ -48,13 +45,27 @@ review_status: draft_needs_owner_review
 - 主な流入経路(`metrics.json: social_referrals`はSNS経由の抜粋。流入経路全般は
   GA4の集客レポートで取得可能)
 - モバイル/デスクトップの利用比率(`metrics.json: device_category_ratio`)
+- **主な利用時間帯・曜日**(`metrics.json: usage_timing_pattern`)— GA4の標準的な
+  日時ディメンションから理論上取得可能なため、2026-09-05にNOT_MEASUREDから
+  こちらへ移動(以前の版はNOT_MEASURED[=計測の仕組みがない]としていたが、
+  「理論上取得可能」という記述と矛盾していたため訂正)
+
+### Ownerの体感(データ計測ではなく主観的な認識、2026-09-05回答)
+
+- **[OWNER_REPORTED, verified_date: 2026-09-05]** 実際の利用者属性は
+  「まだわからない、インスタのフォロワー欄でしか把握できない」とのこと。
+  体系的な計測手段は持っていない。
+- **[OWNER_REPORTED, verified_date: 2026-09-05]** リピート利用の発生有無は
+  「分からない」が、「リピートされる前のアクセスが少ない」という認識
+  (`current-state.md`の「現在の最重要課題」= アクセス数の少なさ、とも整合)。
+- **[OWNER_REPORTED, verified_date: 2026-09-05]** イベントを探しても見つからず
+  離脱するケースは「あまりないと思う」との体感(データによる裏付けではない)。
 
 ## Confirmed User Feedback(確認済みのユーザーフィードバック)
 
-**[UNKNOWN]** Ownerから直接共有されたユーザーフィードバックは、現時点で
-記録されていない。今後Ownerから得た発言は、日付・引用元を明記した上でここに
-`OWNER_REPORTED`として追記する(例:
-`[OWNER_REPORTED, verified_date: YYYY-MM-DD] 「...」`)。
+**[OWNER_REPORTED, verified_date: 2026-09-05]** 掲載依頼を行った団体からの
+接触はこれまでに1件のみで、その団体からの内容面のフィードバックは特にない、
+とのこと。
 
 ## Assumptions(現在使っている推測・前提)
 
@@ -63,17 +74,11 @@ review_status: draft_needs_owner_review
 - **[ASSUMPTION]** モバイル利用が主要な利用形態である。**[POLICY, source:
   constitution.md 2条]** モバイル優先はOwnerの正式な方針として明記されているが、
   実際のデバイス別アクセス比率(`metrics.json: device_category_ratio`)は
-  `MEASURED_BUT_NOT_AVAILABLE_TO_AI_OFFICE`であり、方針と実測は別物として扱う。
+  `VALUE_NOT_AVAILABLE_TO_AI_OFFICE`であり、方針と実測は別物として扱う。
 
 会議でこれらの前提を使う場合は、ASSUMPTIONかPOLICYかを明示すること。
 
 ## Open Questions(未解決の問い)
 
-1. 実際の利用者属性(学生比率、学年、所属サークル等)は?
-2. リピート利用は発生しているか? 発生している場合、何がきっかけか?
-3. イベントを探しても見つからず離脱するケースはどの程度あるか?
-4. 団体側(掲載依頼をする側)からのフィードバックで多いものは?
-5. GA4のモバイル/デスクトップ比率・新規/再訪比率を、定期的に確認していますか?
-
-(これらは`current-state.md`の「OWNER QUESTIONS」とも一部重複するため、
-回答が得られ次第両方を更新すること。)
+2026-09-05にOwnerから回答を得たため、上記5問は解決済み(回答は本ファイル内に
+反映済み)。新たな未解決事項が生じた場合はここに追記すること。

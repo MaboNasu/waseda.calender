@@ -1,8 +1,8 @@
 <!--
-version: 1.2.0
+version: 1.3.0
 last_updated: 2026-09-05
 authoritative_source: this file (references constitution.md / README.md for cited facts)
-review_status: draft_needs_owner_review
+review_status: owner_reviewed_v1
 -->
 
 # Service
@@ -81,9 +81,10 @@ GA4は導入済みだが、ユーザー属性レポートはAI Officeに連携�
 
 ## Non-goals(恒久的にやらないと決定されたこと)
 
-**[UNKNOWN / NEEDS_OWNER_CONFIRMATION]** Ownerが明示的に「これは恒久的にやらない」
-と決定した項目は、現時点で確認できていない。上記「現在提供していない機能」は
-将来実装される可能性がある候補(下記ビジョン表参照)であり、Non-goalとは異なる。
+**[OWNER_REPORTED, verified_date: 2026-09-05]** 現時点で「これは恒久的にやらない」
+と明示的に決定している項目は「ない」とのOwner回答。上記「現在提供していない機能」は
+将来実装される可能性がある候補(下記ビジョン表参照)であり、引き続きNon-goalとは
+区別する。今後Non-goalが明示的に決定された場合はここに追記すること。
 
 ## 中長期ビジョン
 
@@ -102,6 +103,12 @@ GA4は導入済みだが、ユーザー属性レポートはAI Officeに連携�
 | チケット販売(Stripe) | 高 |
 | WasePass会員機能(認証+サブスク) | 高 |
 | Google AdSense | 低(審査・ポリシー対応は別途必要) |
+
+**[OWNER_REPORTED, verified_date: 2026-09-05, confidence: 低(Owner自身も
+「ないんじゃないかな」という不確かな表現で回答)]** 現時点でこれらの候補に
+実際に着手を検討しているものは「ないんじゃないかな」とのこと。断定的な
+「着手していない」ではなく、Owner自身の確信度も高くない点に留意し、会議で
+引用する際は「未着手と思われる(確度は高くない)」と明記すること。
 
 会議でこれらに触れる際は「候補として存在する」以上の実施確度を持たせないこと。
 
