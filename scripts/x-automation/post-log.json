@@ -335,6 +335,19 @@
       "status": "dry-run",
       "postId": null,
       "errorType": null
+    },
+    {
+      "postedAt": "2026-09-05T07:46:59.086Z",
+      "postType": "later_today",
+      "targetDate": "2026-09-05",
+      "eventIds": [
+        "evt-116"
+      ],
+      "campaign": "today_later",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
     }
   ]
 }
