@@ -2,12 +2,62 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { redact } from '../security/secretGuard.js';
-import { PHASES } from '../orchestrator/meeting.js';
+import { PHASES } from '../orchestrator/phases.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DECISIONS_DIR = path.join(__dirname, '..', '..', 'logs', 'decisions');
+const INDEX_PATH = path.join(DECISIONS_DIR, '_index.json');
 
 fs.mkdirSync(DECISIONS_DIR, { recursive: true });
+
+/** 日本語テキストの文字bigram集合(専用の形態素解析器を導入しない、依存を増やさない軽量な類似度判定用)。 */
+function bigrams(str) {
+  const s = str.replace(/\s+/g, '');
+  const grams = new Set();
+  for (let i = 0; i < s.length - 1; i += 1) grams.add(s.slice(i, i + 2));
+  return grams;
+}
+
+/** Dice係数によるテキスト類似度(0〜1)。スペースのない日本語でもトークナイザ無しで機能する。 */
+function diceSimilarity(a, b) {
+  const setA = bigrams(a);
+  const setB = bigrams(b);
+  if (setA.size === 0 || setB.size === 0) return 0;
+  let overlap = 0;
+  for (const gram of setA) if (setB.has(gram)) overlap += 1;
+  return (2 * overlap) / (setA.size + setB.size);
+}
+
+function loadIndex() {
+  if (!fs.existsSync(INDEX_PATH)) return [];
+  try {
+    return JSON.parse(fs.readFileSync(INDEX_PATH, 'utf-8'));
+  } catch {
+    return [];
+  }
+}
+
+function appendToIndex(entry) {
+  const index = loadIndex();
+  index.push(entry);
+  fs.writeFileSync(INDEX_PATH, redact(JSON.stringify(index, null, 2)));
+}
+
+/**
+ * 議題テキストに類似する過去の決定を検索する(triage/retrieval用)。
+ * 完全一致に近いものを弾く重複会議防止(transcriptStore.findRecentDecisionByTopic)とは別物で、
+ * こちらは「関連しそうな過去の決定」を広めに拾ってAIに参考情報として渡すためのもの。
+ * @param {string} topic
+ * @param {{limit?: number, threshold?: number}} options
+ */
+export function searchDecisions(topic, { limit = 3, threshold = 0.15 } = {}) {
+  const index = loadIndex();
+  return index
+    .map((entry) => ({ ...entry, similarity: diceSimilarity(topic, entry.topic) }))
+    .filter((entry) => entry.similarity >= threshold)
+    .sort((a, b) => b.similarity - a.similarity)
+    .slice(0, limit);
+}
 
 const DECISION_LABELS = {
   adopted: '採用',
@@ -128,5 +178,14 @@ export function saveDecisionLog(transcript) {
   const slug = slugify(transcript.topic, transcript.meetingId);
   const filePath = path.join(DECISIONS_DIR, `${dateStr}_${slug}.md`);
   fs.writeFileSync(filePath, renderMarkdown(transcript));
+
+  appendToIndex({
+    meetingId: transcript.meetingId,
+    topic: transcript.topic,
+    decision: transcript.decision?.parsed?.decision ?? null,
+    date: dateStr,
+    filePath,
+  });
+
   return filePath;
 }

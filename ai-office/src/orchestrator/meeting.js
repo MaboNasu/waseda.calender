@@ -12,6 +12,8 @@ import { CONSTITUTION_VERSION } from '../constitution/constitution.js';
 import { saveMeeting, linkThreadToMeeting } from '../storage/transcriptStore.js';
 import { looksLikeSecret } from '../security/secretGuard.js';
 import { runTriage } from './triage.js';
+import { PHASES } from './phases.js';
+import { getRoleBriefing } from '../knowledge/retrieval.js';
 import {
   buildOpeningPrompt,
   buildRedTeamPrompt,
@@ -21,14 +23,7 @@ import {
   parseJsonLoose,
 } from './rounds.js';
 
-export const PHASES = {
-  TRIAGE: 'triage',
-  OPENING: 'opening',
-  RED_TEAM: 'redTeam',
-  REVISION: 'revision',
-  APPROVAL_CHECK: 'approvalCheck',
-  DECISION: 'decision',
-};
+export { PHASES };
 
 export class MeetingOrchestrator {
   /**
@@ -81,7 +76,8 @@ export class MeetingOrchestrator {
    *   成功した場合は通常のメッセージオブジェクトを返す(例外を投げないので Promise.all がまとめて落ちない)。
    */
   async callRole(role, phase, promptBuilder, ...args) {
-    const prompt = promptBuilder(...args);
+    const briefing = getRoleBriefing(role.id, this.topic);
+    const prompt = briefing ? `${briefing}\n\n---\n\n${promptBuilder(...args)}` : promptBuilder(...args);
     const maxTokens = role.maxTokens[phase] ?? 400;
     try {
       const { text, usage } = await generate(role.provider, {

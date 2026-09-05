@@ -143,8 +143,26 @@ src/
   roles/                   役職の責務(roleDefinitions.js)とモデル割当(modelRouting.js)を分離
   approval/                Owner承認カテゴリの機械スキャン・Owner認証・承認/続行ボタン
   security/                秘密情報(APIキー等)の検知・redact
-  orchestrator/             Round0(triage)・会議フロー本体(meeting.js)・プロンプト組み立て(rounds.js)
+  orchestrator/             Round0(triage)・会議フロー本体(meeting.js)・プロンプト組み立て(rounds.js)・フェーズ定数(phases.js)
+  knowledge/                retrieval.js: 役職×議題キーワードでknowledge/配下のファイルを選び、各役職の
+                             プロンプトに前置するbriefingを組み立てる(ベクトルDB/RAGは使わない)
   cost/                    料金単価表・使用量トラッカー・予算ガード
-  storage/                 会議トランスクリプト(JSON)とDecision Log(Markdown)の保存/読み出し
-logs/                      実行時に生成される会議ログ・Decision Log・使用量ログ(gitignore対象)
+  storage/                 会議トランスクリプト(JSON)とDecision Log(Markdown、検索用インデックス付き)の保存/読み出し
+knowledge/                 Waseda Calendarに関するKnowledge Base本体(service/product/technology/
+                            constraints/growth/current-state/users.md、metrics/event-supply.json)
+logs/                      実行時に生成される会議ログ・Decision Log・Experiment Log・使用量ログ(gitignore対象)
 ```
+
+## Knowledge Retrieval
+
+会議のRound0(triage)以降、各役職のプロンプトには`src/knowledge/retrieval.js`が
+組み立てたbriefingが自動的に前置される。追加のLLM呼び出しは発生しない
+(コードによるキーワードマッチ+文字bigram類似度検索のみ)。
+
+- 全役職共通で`knowledge/current-state.md`を常に読む
+- 役職ごとに固定の「常に読むファイル」がある(例: CTOは`technology.md`+`constraints.md`)
+- 議題テキストが役職ごとのキーワード辞書に一致した場合のみ、追加ファイルを読む
+- `logs/decisions/_index.json`(Decision Log保存時に自動追記)を議題テキストと
+  比較し、類似する過去の決定があれば「関連する過去の決定」として渡す
+- 各ファイルの`last_updated`が`KNOWLEDGE_STALE_DAYS`(既定90日、`.env`で調整可)を
+  超えていれば、鮮度警告を自動的に付記する
