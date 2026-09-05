@@ -1,6 +1,6 @@
 <!--
-version: 1.1.0
-last_updated: 2026-09-04
+version: 1.1.1
+last_updated: 2026-09-05
 authoritative_source: this file (derived from repository source; re-verify against code if stale)
 review_status: draft_needs_owner_review
 -->
@@ -28,7 +28,7 @@ review_status: draft_needs_owner_review
 | イベント詳細ページ | クライアント側(`event.html`+`event-page.js`)と静的生成(`event/evt-*.html`)の二重構成、canonicalは常に`event/{id}.html`(URL構造の詳細はtechnology.md参照) | 両方を都度更新する必要あり | `events.js`, `event-page.js`, `generate-event-pages.js` |
 | **関連イベント導線** | イベント詳細ページに関連イベントを表示、クリックをGA4カスタムイベントで計測 | - | `event-page.js`(event_related_click) |
 | 団体一覧・団体詳細 | 504団体(公認サークル482+体育各部22)を一覧・検索・詳細表示 | `nameKana`は機械変換で不正確な場合あり、`genre`はキーワード推定 | `organizations.js` |
-| 「掲載中」バッジ | 手動フラグではなく、紐づくイベントの有無から自動判定 | 実測: `orgId`を持つイベントは248件中1件のみ(2026-09-04時点、`event-supply.json`参照)、判定の実効性は限定的な可能性 | `organizations-page.js` |
+| 「掲載中」バッジ | 手動フラグではなく、紐づくイベントの有無から自動判定 | 実測: 全期間248件(過去含む)中、`orgId`を持つイベントは1件のみ(2026-09-04時点、`event-supply.json`の`data_quality_observations`参照)、判定の実効性は限定的な可能性 | `organizations-page.js` |
 | マイページ(お気に入り/フォロー) | Firebase Auth(Googleサインイン)+ Firestoreでライブ管理 | 認証は別Firebaseプロジェクト(wasedacalendar-login) | `firebase-init.js`, `mypage.js` |
 | リアクション/いいね機能 | Firestoreでライブ集計、`events.js`の静的`reactions`は初期シード値のフォールバックのみ | 集計値はAI Officeから直接参照できない(`metrics.json`参照) | `firebase-init.js` |
 | お問い合わせ・掲載依頼フォーム | 自前フォーム(Google Apps Script Web App宛て送信)。既存団体のトークン再認証編集フローも含む | - | `contact.html`, `contact.js`, `gas/contactForm.gs` |

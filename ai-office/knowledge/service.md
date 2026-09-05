@@ -1,25 +1,30 @@
 <!--
-version: 1.1.0
-last_updated: 2026-09-04
+version: 1.2.0
+last_updated: 2026-09-05
 authoritative_source: this file (references constitution.md / README.md for cited facts)
 review_status: draft_needs_owner_review
 -->
 
 # Service
 
-各項目に、その情報の性質(FACT / OWNER_REPORTED / ASSUMPTION / HYPOTHESIS / STALE /
-UNKNOWN)と根拠(source)を付す。AIが新たに一般論を書き足さないこと。
+各項目に、その情報の性質(FACT / POLICY / OWNER_REPORTED / ASSUMPTION / HYPOTHESIS /
+STALE / UNKNOWN)と根拠(source)を付す。AIが新たに一般論を書き足さないこと。
+
+**POLICY**とは、観測事実ではなく、Owner/Constitution/Decision Log等によって
+正式に定められたサービス方針・運営方針・意思決定原則を指す。FACTと混同しないこと。
 
 ## サービスの目的
 
-**[FACT, source: constitution.md 1条]** 早稲田大学周辺のイベント情報を集約し、
+**[POLICY, source: constitution.md 1条]** 早稲田大学周辺のイベント情報を集約し、
 学生等が「今日何がある?」「週末何しよう?」を簡単に発見できるサービス。
 単にPVを増やすことではなく、イベントの発見から実際の参加・来場につなげることを重視する。
 
 ## 解決したい問題
 
-**[FACT, source: constitution.md 1条]** 学生が「今この瞬間、周辺で何が開催されて
-いるか」を簡単に把握できない、という発見性の課題。
+**[POLICY, source: constitution.md 1条]** 学生が「今この瞬間、周辺で何が開催されて
+いるか」を簡単に把握できない、という課題認識を前提として事業を設計している
+(実際の離脱率・検索失敗率等で検証された事実ではなく、Constitutionが定める
+前提・方針として扱う)。
 
 ## 利用者区分(3つを明確に分離する)
 
@@ -48,16 +53,16 @@ GA4は導入済みだが、ユーザー属性レポートはAI Officeに連携�
 
 ## ユーザーに取ってほしい最終行動
 
-**[FACT, source: constitution.md 1条]** イベントへの実際の参加・来場。
+**[POLICY, source: constitution.md 1条]** イベントへの実際の参加・来場。
 
 ## ハブ型サービスとしての位置付け
 
-**[FACT, source: constitution.md 2条]** 個別イベントの単独サイトではなく、
+**[POLICY, source: constitution.md 2条]** 個別イベントの単独サイトではなく、
 早稲田関連イベントを横断的に集約する「ハブ」として位置付ける。
 
 ## サービスとして重視すること
 
-**[FACT, source: constitution.md 2条]**
+**[POLICY, source: constitution.md 2条]**
 - 情報量と探しやすさの両方
 - スマートフォン利用優先
 - 既存UXを壊す大規模変更は慎重に行う

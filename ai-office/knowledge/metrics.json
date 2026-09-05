@@ -1,7 +1,7 @@
 {
   "_comment": "エンゲージメント指標。イベント/団体の供給側カウントはevent-supply.jsonへ移動した(このファイルは利用側の指標に限定)。value/statusを推測で埋めない。measurement(計装有無)・availability(値の取得可否)・value_status(値の新しさ)を分離する。",
-  "version": "2.0.0",
-  "last_updated": "2026-09-04",
+  "version": "2.1.0",
+  "last_updated": "2026-09-05",
   "authoritative_source": "this file",
   "review_status": "draft_needs_owner_review",
   "_status_model": {
@@ -142,6 +142,21 @@
       "source": null,
       "last_verified": null,
       "note": "絞り込み操作専用のGA4カスタムイベントはコード上確認できなかった(2026-09-04)。GA4の拡張計測(スクロール等)で間接的に取れる可能性はあるが未確認のためunknown。"
+    },
+    "device_category_ratio": {
+      "definition": "モバイル/デスクトップ/タブレットの利用比率",
+      "unit": "ratio",
+      "period": "monthly",
+      "aggregation": "share",
+      "measurement": "instrumented",
+      "custom_event_instrumented": false,
+      "derivable_from_existing_analytics": true,
+      "availability": "manual_only",
+      "value_status": "unknown",
+      "value": null,
+      "source": "GA4標準のテクノロジー(デバイスカテゴリ)レポート",
+      "last_verified": null,
+      "note": "users.md「Observed Users」から参照される指標。旧版では未整理だったため今回追加。"
     },
     "social_referrals": {
       "definition": "SNS経由の流入数",

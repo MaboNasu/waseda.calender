@@ -1,6 +1,6 @@
 <!--
-version: 1.1.0
-last_updated: 2026-09-04
+version: 1.2.0
+last_updated: 2026-09-05
 authoritative_source: this file (Owner-maintained; expected to change faster than other knowledge files)
 review_status: draft_needs_owner_review
 -->
@@ -22,7 +22,9 @@ review_status: draft_needs_owner_review
 
 **[FACT, source: `knowledge/event-supply.json`(2026-09-04生成)]** 詳細な内訳
 (カテゴリ別・対象別・料金区分別・7日/30日以内の件数等)は`event-supply.json`を参照。
-概要: 総イベント数248件(学事日程42件/サークルイベント206件)、掲載団体504団体。
+概要: 全期間の総レコード数248件(学事日程42件/サークルイベント206件、過去含む)、
+今後30日以内に開催予定は52件、掲載団体504団体。「現在の供給量」として扱うのは
+248件ではなく今後30日/7日の件数(`event-supply.json`の`upcoming_events`参照)。
 
 これらは手動生成のスナップショットであり、自動更新されない(将来の自動更新候補、
 `event-supply.json`のメタデータ参照)。

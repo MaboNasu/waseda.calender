@@ -1,26 +1,58 @@
 {
-  "_comment": "events.jsから直接計算した実測スナップショット。推測値は含まない。算出不能な区分(スポーツ/非スポーツ等、現在のデータ構造にない分類)はUNKNOWNとしている。",
-  "version": "1.0.0",
-  "last_updated": "2026-09-04",
+  "_comment": "events.jsから直接計算した実測スナップショット。推測値は含まない。total_event_recordsは過去イベントも含む配列全体の件数であり、『今後利用可能なイベント数』ではない(混同禁止、注記参照)。算出不能な区分はUNKNOWNとし、UNKNOWNのまま数値だけ併記する矛盾は残さない。",
+  "version": "1.2.0",
+  "last_updated": "2026-09-05",
   "authoritative_source": "events.js (直接カウント)",
   "review_status": "draft_needs_owner_review",
   "measured_at": "2026-09-04",
   "method": "events.js の EVENTS 配列を直接読み込み集計(推測・補完なし)。今後event-count等はスクリプトによる自動更新の候補(未実装、下記auto_update_candidateフィールド参照)。",
-  "total_events": {
+  "total_event_records": {
     "value": 248,
+    "definition": "EVENTS配列に存在する全レコード数(過去に開催済み・終了したイベントも含む)。『現在選べる/今後利用可能なイベント数』ではない。その意味では下の upcoming_events を使うこと。",
     "auto_update_candidate": true
   },
   "published_events": {
     "value": 248,
-    "note": "isPublished !== false で判定。unpublished(下書き)は0件。"
+    "note": "isPublished !== false で判定。unpublished(下書き)は0件。これも全期間を含む数(current supplyではない)。"
+  },
+  "upcoming_events": {
+    "_note": "Product/Growthの判断で『現在の供給量』として扱う場合は、total_event_recordsではなくこちらを使うこと。",
+    "next_7_days": {
+      "value": 16,
+      "definition": "2026-09-04から2026-09-11までの範囲(endDateがある場合は期間重複判定)"
+    },
+    "next_30_days": {
+      "value": 52,
+      "definition": "2026-09-04から2026-10-04までの範囲",
+      "by_category": {
+        "sports": 28,
+        "lecture": 7,
+        "theater": 6,
+        "other": 4,
+        "music": 4,
+        "culture": 3
+      },
+      "by_target_eligibility": {
+        "student": 52,
+        "public": 50,
+        "obog": 48,
+        "note": "複数選択可のため合計が52を超える(重複計上)。applicantは0件。"
+      },
+      "by_fee_type": {
+        "free": 11,
+        "paid": 5,
+        "unknown": 36
+      }
+    }
   },
   "by_scope": {
+    "definition": "total_event_records(全期間)に対する内訳。",
     "schedule": 42,
     "circle": 206,
     "auto_update_candidate": true
   },
   "by_category": {
-    "definition": "events.js の category フィールド(選択肢: sports/culture/music/theater/lecture/community/other)をそのまま集計。スポーツ/非スポーツのような上位カテゴリ分類はデータ構造に存在しないためUNKNOWN。",
+    "definition": "total_event_records(全期間)に対する、events.js の category フィールド(選択肢: sports/culture/music/theater/lecture/community/other)の内訳。",
     "sports": 147,
     "culture": 17,
     "lecture": 26,
@@ -28,37 +60,34 @@
     "music": 5,
     "community": 1,
     "other": 41,
-    "sports_vs_non_sports_ratio": "UNKNOWN(現在のデータ構造では上位カテゴリとして算出不可。categoryの生内訳から手計算は可能: sports 147 / non-sports 101)"
+    "derived": {
+      "sports_vs_non_sports": {
+        "status": "derived",
+        "definition": "サービスとして正式な『スポーツ/非スポーツ』という上位分類は存在しない。ここではcategory==='sports'をsports、それ以外の6分類の合計をnon_sportsとして機械的に合算した派生値。",
+        "sports": 147,
+        "non_sports": 101
+      }
+    }
   },
   "by_target_eligibility": {
-    "definition": "events.js の target フィールド(複数選択可、参加対象区分。events.js/organizations.jsのeligibility概念であり利用者属性ではない、詳細はservice.md参照)",
+    "definition": "total_event_records(全期間)に対する、events.js の target フィールド(複数選択可、参加対象区分。events.js/organizations.jsのeligibility概念であり利用者属性ではない、詳細はservice.md/users.md参照)",
     "student": 245,
     "public": 206,
     "obog": 203,
     "applicant": 2,
-    "note": "複数選択可のため合計が総イベント数を超える(重複計上)。"
+    "note": "複数選択可のため合計が総件数を超える(重複計上)。"
   },
   "by_fee_type": {
-    "definition": "events.js の feeType フィールド。ヘッダーコメントの選択肢定義はfree/paidの2値のみだが、実データには'unknown'という値も存在する(2026-09-04確認)。",
+    "definition": "total_event_records(全期間)に対する、events.js の feeType フィールドの内訳。ヘッダーコメントの選択肢定義はfree/paidの2値のみだが、実データには'unknown'という値も存在する(2026-09-04確認)。",
     "free": 64,
     "paid": 10,
     "unknown": 174,
     "note": "'unknown'は欠損値ではなく、events.js内に明示的に入力されている値。"
   },
-  "upcoming_events": {
-    "next_7_days": {
-      "value": 16,
-      "definition": "2026-09-04から2026-09-11までの範囲(endDateがある場合は期間重複判定)"
-    },
-    "next_30_days": {
-      "value": 52,
-      "definition": "2026-09-04から2026-10-04までの範囲"
-    }
-  },
   "data_quality_observations": {
     "with_org_id": {
       "value": 1,
-      "note": "orgIdでorganizations.jsと紐づいているイベントは248件中1件のみ。「掲載中」バッジの自動判定(product.md参照)の実効性は、この紐づけ率に依存する。"
+      "note": "orgIdでorganizations.jsと紐づいているイベントは248件(全期間)中1件のみ。「掲載中」バッジの自動判定(product.md参照)の実効性は、この紐づけ率に依存する。"
     },
     "with_end_date": { "value": 72 },
     "with_schema_image_url": {

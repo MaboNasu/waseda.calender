@@ -1,6 +1,6 @@
 <!--
-version: 1.1.0
-last_updated: 2026-09-04
+version: 1.2.0
+last_updated: 2026-09-05
 authoritative_source: ../CLAUDE.md (this file is a summary/pointer; if content conflicts, CLAUDE.md wins)
 last_synced: 2026-09-04
 review_status: draft_needs_owner_review
@@ -13,7 +13,8 @@ review_status: draft_needs_owner_review
 食い違う場合はCLAUDE.md本体を優先する(`last_synced`より後にCLAUDE.mdが更新されて
 いれば、このファイルは古い可能性がある)。
 
-すべて **[FACT, source: CLAUDE.md、および実コード確認(2026-09-04)]**、理由が
+特記なき項目はすべて **[FACT, source: CLAUDE.md、および実コード確認(2026-09-04)]**。
+意図的な設計判断(観測事実ではなく方針)には個別に**[POLICY]**を付す。理由が
 判明しているものは付記する。
 
 ## フロントエンド
@@ -80,13 +81,13 @@ events.js側の静的`reactions`フィールドは新規イベントの初期シ
 - X(Twitter) API(自動投稿、詳細は`growth.md`)
 - Google Analytics 4(計装のみ、詳細は`metrics.json`)
 
-## 技術的制約
+## 技術的制約(すべてPOLICY: 意図的な決定であり、偶然そうなっているのではない)
 
-- サイト本体は外部npmパッケージへの依存を意図的に持たない(このAI Officeサブ
-  プロジェクトがリポジトリ初のnpm依存)
-- OGP画像生成にnode-canvas/Puppeteer等の重い依存を意図的に避けている
+- **[POLICY]** サイト本体は外部npmパッケージへの依存を意図的に持たない
+  (このAI Officeサブプロジェクトがリポジトリ初のnpm依存)
+- **[POLICY]** OGP画像生成にnode-canvas/Puppeteer等の重い依存を意図的に避けている
   (ブラウザ経由の手動/半自動生成に留めている)
-- 外部の有料LLM APIを、サイト本体のソースチェック自動化には使わない方針
+- **[POLICY]** 外部の有料LLM APIを、サイト本体のソースチェック自動化には使わない
   (コスト理由で明示的に却下済み。AI Office自体は別プロジェクトとして別途運用)
 
 ## 既知の技術負債
