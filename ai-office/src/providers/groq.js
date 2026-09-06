@@ -24,6 +24,12 @@ export async function generate({ systemPrompt, userPrompt, model, temperature = 
     temperature,
     max_tokens: maxTokens,
     response_format: { type: 'json_object' },
+    // openai/gpt-oss-120bは内部推論(reasoning)を行うモデルのため、reasoning_effortを
+    // 最小にし、reasoning_format: "hidden"で推論内容を応答に含めないようにする。
+    // max_tokensの予算を可視のJSON出力側にできるだけ残すための対策
+    // (CTO等で「JSONは有効だが中身が空」になる症状の根本対策の試み)。
+    reasoning_effort: 'low',
+    reasoning_format: 'hidden',
     messages: [
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userPrompt },

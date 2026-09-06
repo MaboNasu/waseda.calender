@@ -21,7 +21,15 @@ export async function generate({ systemPrompt, userPrompt, model, temperature = 
 
   const result = await genModel.generateContent({
     contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
-    generationConfig: { temperature, maxOutputTokens: maxTokens, responseMimeType: 'application/json' },
+    // thinkingBudget: 0 で内部思考(見えないreasoningトークン)を無効化する。
+    // maxOutputTokensの予算を丸ごと可視のJSON出力に使わせるための対策
+    // (UX/UI等で「JSONは有効だが中身が空」になる症状の根本対策の試み)。
+    generationConfig: {
+      temperature,
+      maxOutputTokens: maxTokens,
+      responseMimeType: 'application/json',
+      thinkingConfig: { thinkingBudget: 0 },
+    },
   });
 
   const usage = result.response.usageMetadata ?? {};
