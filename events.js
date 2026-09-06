@@ -4587,7 +4587,8 @@ const EVENTS = [
     target: ["student", "obog", "public"],
     feeType: "free",
     feeText: "無料",
-    description: "早稲田スポGOMIクラブが戸山公園箱根山地区アスレチック広場で開催する、ごみ拾いを競うスポーツ「スポGOMI」の大会。参加無料。",
+    description: "ごみ拾いとスポーツを融合させた日本発祥の競技「スポGOMI」の大会。早稲田スポGOMIクラブが戸山公園箱根山地区アスレチック広場で開催。1チーム1〜5名のチーム制で、子どもから大人まで参加可能。東京メトロ早稲田駅から徒歩10分。",
+    externalUrl: "https://docs.google.com/forms/d/e/1FAIpQLScqi4iEWvVANC_1-DSVXuRBUag6fr7jIKwjVSy45IGUPzfhjw/viewform",
     lastUpdated: "2026-09-06",
     isPublished: true
   }
