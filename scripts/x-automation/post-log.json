@@ -205,6 +205,149 @@
       "status": "dry-run",
       "postId": null,
       "errorType": null
+    },
+    {
+      "postedAt": "2026-08-29T03:47:13.264Z",
+      "postType": "today",
+      "targetDate": "2026-08-29",
+      "eventIds": [
+        "evt-187",
+        "evt-150",
+        "evt-151",
+        "evt-152",
+        "evt-184",
+        "evt-243",
+        "evt-205",
+        "evt-073",
+        "evt-136"
+      ],
+      "campaign": "today_waseda",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
+    },
+    {
+      "postedAt": "2026-08-30T00:30:46.664Z",
+      "postType": "today",
+      "targetDate": "2026-08-30",
+      "eventIds": [
+        "evt-150",
+        "evt-151",
+        "evt-152",
+        "evt-185",
+        "evt-186",
+        "evt-188",
+        "evt-244",
+        "evt-228",
+        "evt-205",
+        "evt-070",
+        "evt-074",
+        "evt-130",
+        "evt-136"
+      ],
+      "campaign": "today_waseda",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
+    },
+    {
+      "postedAt": "2026-08-31T00:43:45.131Z",
+      "postType": "weekly",
+      "targetDate": "2026-08-31",
+      "eventIds": [
+        "evt-151",
+        "evt-152",
+        "evt-136",
+        "evt-190",
+        "evt-205",
+        "evt-224",
+        "evt-236",
+        "evt-209"
+      ],
+      "campaign": "weekly_waseda",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
+    },
+    {
+      "postedAt": "2026-09-01T01:20:53.444Z",
+      "postType": "theme",
+      "targetDate": "2026-09-01",
+      "eventIds": [
+        "evt-151",
+        "evt-152",
+        "evt-150",
+        "evt-236",
+        "evt-209",
+        "evt-149",
+        "evt-224",
+        "evt-235"
+      ],
+      "campaign": "theme_event",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
+    },
+    {
+      "postedAt": "2026-09-03T00:28:01.406Z",
+      "postType": "recommend",
+      "targetDate": "2026-09-03",
+      "eventIds": [],
+      "campaign": "recommendation",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
+    },
+    {
+      "postedAt": "2026-09-04T08:07:22.498Z",
+      "postType": "later_today",
+      "targetDate": "2026-09-04",
+      "eventIds": [
+        "evt-224"
+      ],
+      "campaign": "today_later",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
+    },
+    {
+      "postedAt": "2026-09-05T00:14:56.532Z",
+      "postType": "today",
+      "targetDate": "2026-09-05",
+      "eventIds": [
+        "evt-150",
+        "evt-151",
+        "evt-152",
+        "evt-219",
+        "evt-116",
+        "evt-224",
+        "evt-235",
+        "evt-075"
+      ],
+      "campaign": "today_waseda",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
+    },
+    {
+      "postedAt": "2026-09-05T07:46:59.086Z",
+      "postType": "later_today",
+      "targetDate": "2026-09-05",
+      "eventIds": [
+        "evt-116"
+      ],
+      "campaign": "today_later",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
     }
   ]
 }
