@@ -77,26 +77,50 @@ export class MeetingOrchestrator {
    */
   async callRole(role, phase, promptBuilder, ...args) {
     const briefing = getRoleBriefing(role.id, this.topic);
-    const prompt = briefing ? `${briefing}\n\n---\n\n${promptBuilder(...args)}` : promptBuilder(...args);
+    const basePrompt = briefing ? `${briefing}\n\n---\n\n${promptBuilder(...args)}` : promptBuilder(...args);
     const maxTokens = role.maxTokens[phase] ?? 400;
+    const retryNote = '\n\n(前回の応答はJSON形式として不正/不完全でした。前置き・説明・コードフェンスを一切付けず、指定されたJSONオブジェクト1つだけを、省略せず最後まで完結させて出力し直してください。)';
     try {
-      const { text, usage } = await generate(role.provider, {
-        systemPrompt: role.persona,
-        userPrompt: prompt,
-        model: role.model,
-        temperature: role.temperature,
-        maxTokens,
-      });
-      const costUsd = this.costTracker.recordUsage({
-        meetingId: this.meetingId,
-        role: role.id,
-        provider: role.provider,
-        model: role.model,
-        phase,
-        inputTokens: usage.inputTokens,
-        outputTokens: usage.outputTokens,
-      });
-      this.transcript.totalCostUsd += costUsd;
+      let text;
+      let usage;
+      let parsed;
+      for (let attempt = 0; attempt < 2; attempt += 1) {
+        const prompt = attempt === 0 ? basePrompt : `${basePrompt}${retryNote}`;
+        ({ text, usage } = await generate(role.provider, {
+          systemPrompt: role.persona,
+          userPrompt: prompt,
+          model: role.model,
+          temperature: role.temperature,
+          maxTokens,
+        }));
+        parsed = parseJsonLoose(text);
+        const costUsd = this.costTracker.recordUsage({
+          meetingId: this.meetingId,
+          role: role.id,
+          provider: role.provider,
+          model: role.model,
+          phase,
+          inputTokens: usage.inputTokens,
+          outputTokens: usage.outputTokens,
+        });
+        this.transcript.totalCostUsd += costUsd;
+        if (!parsed.parseError) {
+          return {
+            roleId: role.id,
+            roleName: role.name,
+            color: role.color,
+            provider: role.provider,
+            model: role.model,
+            phase,
+            raw: text,
+            parsed,
+            costUsd,
+            failed: false,
+            timestamp: new Date().toISOString(),
+          };
+        }
+      }
+      // 2回試してもJSONとして解析できなかった場合は、そのまま(parseError付きで)返す。
       return {
         roleId: role.id,
         roleName: role.name,
@@ -105,8 +129,8 @@ export class MeetingOrchestrator {
         model: role.model,
         phase,
         raw: text,
-        parsed: parseJsonLoose(text),
-        costUsd,
+        parsed,
+        costUsd: 0,
         failed: false,
         timestamp: new Date().toISOString(),
       };
