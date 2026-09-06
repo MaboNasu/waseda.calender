@@ -13,10 +13,10 @@
     "dry-run": "node scripts/dry-run.js"
   },
   "dependencies": {
+    "@google/genai": "^2.21.0",
     "discord.js": "^14.16.3",
-    "openai": "^4.68.4",
+    "dotenv": "^16.4.5",
     "groq-sdk": "^0.7.0",
-    "@google/generative-ai": "^0.21.0",
-    "dotenv": "^16.4.5"
+    "openai": "^4.68.4"
   }
 }
