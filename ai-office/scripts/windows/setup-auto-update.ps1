@@ -24,7 +24,10 @@ npm install
 
 # 既に古い形(restart.batやnpm start)で起動している場合に備え、
 # 同名のpm2プロセスがあれば一度削除してから起動し直す。
-pm2 delete ai-office 2>$null
+# (初回実行時は「削除対象が存在しない」というpm2側のエラーが出るが無視してよい。
+#  $ErrorActionPreference='Stop'の環境だと素のリダイレクトだけでは止まってしまうため、
+#  try/catchで明示的に無視する。)
+try { pm2 delete ai-office *>&1 | Out-Null } catch {}
 pm2 start ecosystem.config.cjs
 pm2 save
 

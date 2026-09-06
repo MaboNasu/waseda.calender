@@ -48,12 +48,14 @@ try {
   npm install *>&1 | Out-Null
 
   # 構文チェック: 壊れたコードのままBotを再起動しないための安全策。
+  # (node --checkがエラーを標準エラー出力に書くと、$ErrorActionPreference='Stop'の環境では
+  #  それ自体が例外として扱われてしまうため、2>&1で出力をマージして例外化を防ぐ。)
   $checkFailed = $false
   Get-ChildItem -Path (Join-Path $aiOfficeDir 'src') -Recurse -Filter '*.js' | ForEach-Object {
-    node --check $_.FullName
+    $checkOutput = & node --check $_.FullName 2>&1
     if ($LASTEXITCODE -ne 0) {
       $checkFailed = $true
-      Write-Log "構文エラー: $($_.FullName)"
+      Write-Log "構文エラー: $($_.FullName) - $checkOutput"
     }
   }
 
