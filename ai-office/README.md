@@ -127,10 +127,42 @@ Constitution本体・承認ルール・Owner認証・予算上限・秘密情報
 discord.jsはGateway常時接続が必要なため、サーバーレスではなく常駐プロセスとして動かす。
 
 - 推奨: Oracle Cloud Infrastructure の Always Free枠などの無料の常時稼働VM上で
-  `pm2 start src/index.js --name ai-office` のようにプロセスマネージャ配下に置く
+  `pm2 start ecosystem.config.cjs` のようにプロセスマネージャ配下に置く
   (クラッシュ時に自動再起動させるため)。
 - 既存のVPSがあれば `systemd` サービス化してもよい。
-- ローカルPCでの実行は動作確認用途にとどめる(PCがオフラインの間はBotも停止する)。
+- ローカルPCでの実行は、PCがオフラインの間はBotも停止するという制約が残る
+  (下記の「Windows PCでの自動更新」を使えば、起動している間の運用は自動化できる)。
+
+## Windows PCでの自動更新(git pushするだけでBotへ反映される)
+
+`scripts/windows/` に、Windows PC上でBotを動かす場合の自動更新の仕組みを用意している。
+これを使うと、コードの変更をpushした後の「git pull → npm install → 再起動」を
+人が手で行う必要がなくなる。
+
+**初回セットアップ(1回だけ、PowerShellで実行)**:
+```powershell
+cd ai-office\scripts\windows
+powershell -ExecutionPolicy Bypass -File .\setup-auto-update.ps1
+```
+
+これで以下が行われる。
+1. `pm2`(プロセスマネージャ)をインストールし、pm2管理下でBotを起動(`ecosystem.config.cjs`)
+2. **5分ごとに**GitHubの変更を確認し、変更があれば
+   `git pull` → `npm install` → 構文チェック(`node --check`) → `pm2 restart` を自動実行する
+   タスク(`AIOffice-AutoUpdate`)をタスクスケジューラに登録
+3. PCログオン時に自動でBotを起動するタスク(`AIOffice-StartOnLogon`)を登録
+
+構文チェックに失敗した場合(壊れたコードがpushされた場合)は、再起動を中止し、
+現在動いているBotをそのまま動かし続ける安全策が入っている。
+
+- 更新ログ: `logs/auto-update.log`(変更を検知して更新した時だけ記録される)
+- Botの標準出力/エラーログ: `logs/pm2-out.log` / `logs/pm2-error.log`
+- 状態確認: `pm2 status`
+- 反映を追いかけるブランチは `scripts/windows/auto-update.ps1` 先頭の `$branch` で指定している
+  (現在は `claude/waseda-calendar-ai-office-z60dya`。mainにマージされた後は書き換えること)。
+
+旧来の `restart.bat`(手動で`npm start`するだけ)は緊急時の手動起動用に残しているが、
+通常運用では上記のpm2ベースの自動更新に一本化する想定。
 
 ## ディレクトリ構成
 
