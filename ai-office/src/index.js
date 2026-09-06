@@ -7,6 +7,7 @@ import { ROLES } from './roles/roles.config.js';
 import { CostTracker, estimateMeetingCostUsd, DEFAULT_COST_CONFIRM_THRESHOLD_USD } from './cost/tracker.js';
 import { getMeetingIdForThread, loadMeeting, findRecentDecisionByTopic, saveMeeting } from './storage/transcriptStore.js';
 import { saveDecisionLog } from './storage/decisionLogRenderer.js';
+import { createDecisionIssue } from './integrations/githubIssue.js';
 import { isOwner, buildApprovalRow, buildContinueRetryAbortRow, parseButtonCustomId, OWNER_ONLY_MESSAGE } from './approval/ownerGate.js';
 
 const REQUIRED_ENV_VARS = ['DISCORD_BOT_TOKEN', 'OPENAI_API_KEY', 'GROQ_API_KEY', 'GEMINI_API_KEY'];
@@ -80,9 +81,20 @@ async function finalizeMeeting(orchestrator, thread, transcript) {
     });
   } else {
     activeMeetings.delete(thread.id);
+    await notifyDecisionIssue(thread, transcript, decisionLogPath);
   }
 
   await thread.send(`💰 この会議の推定コスト: $${transcript.totalCostUsd.toFixed(4)}`);
+}
+
+/** 「採用」決定かつOwner承認不要/承認済みの場合のみ、GitHub Issueを起票してスレッドに結果を伝える。 */
+async function notifyDecisionIssue(thread, transcript, decisionLogPath) {
+  const result = await createDecisionIssue(transcript, decisionLogPath);
+  if (result.created) {
+    await thread.send(`📋 この決定をGitHub Issueとして起票しました: ${result.url}`);
+  } else if (result.reason && result.reason !== 'not_adopted' && result.reason !== 'not_configured') {
+    await thread.send(`⚠️ GitHub Issueの自動起票に失敗しました(理由: ${result.reason})。手動での対応をお願いします。`);
+  }
 }
 
 async function handleMeetingStart(interaction) {
@@ -262,10 +274,13 @@ async function handleButtonInteraction(interaction) {
     orchestrator.transcript.ownerApproval.by = interaction.user.id;
     orchestrator.transcript.ownerApproval.at = new Date().toISOString();
     saveMeeting(orchestrator.meetingId, orchestrator.transcript);
-    saveDecisionLog(orchestrator.transcript);
+    const decisionLogPath = saveDecisionLog(orchestrator.transcript);
     const labelMap = { meeting_approve: '✅ 承認しました', meeting_reject: '❌ 却下しました', meeting_hold: '⏸️ 保留にしました' };
     await interaction.update({ content: labelMap[action], components: [] });
     activeMeetings.delete(orchestrator.threadId);
+    if (action === 'meeting_approve') {
+      await notifyDecisionIssue(thread, orchestrator.transcript, decisionLogPath);
+    }
     return;
   }
 

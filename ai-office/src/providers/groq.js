@@ -23,6 +23,7 @@ export async function generate({ systemPrompt, userPrompt, model, temperature = 
     model,
     temperature,
     max_tokens: maxTokens,
+    response_format: { type: 'json_object' },
     messages: [
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userPrompt },
