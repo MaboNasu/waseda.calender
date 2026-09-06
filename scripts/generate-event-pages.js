@@ -453,8 +453,34 @@ function renderEventPageHtml(ev, labelFns) {
 `;
 }
 
+/** events.js内でidが重複していないか確認する。重複があると片方のページ生成が
+ *  もう片方を静かに上書きしてしまう(fs.writeFileSyncが同じファイル名に書き込むため)。
+ *  複数人・複数セッションが同時にevents.jsへ新規イベントを追記する運用のため、
+ *  同じタイミングで採番されたIDが衝突することがある(実際に発生した事例あり)。
+ *  ビルドを失敗させて早期に気づけるようにする。 */
+function validateUniqueIds(events) {
+  const seenTitleById = new Map();
+  const duplicateIds = new Set();
+  events.forEach((ev) => {
+    if (seenTitleById.has(ev.id)) {
+      duplicateIds.add(ev.id);
+    } else {
+      seenTitleById.set(ev.id, ev.title);
+    }
+  });
+  if (duplicateIds.size > 0) {
+    console.error('エラー: events.js内でidが重複しているイベントがあります。片方のページが上書きされて消えるため、ビルドを中止します。');
+    events
+      .filter((ev) => duplicateIds.has(ev.id))
+      .forEach((ev) => console.error(`  - id: "${ev.id}" title: "${ev.title}"`));
+    console.error('重複したidのどちらかを、events.js内の最大id番号+1に採番し直してから再実行してください。');
+    process.exit(1);
+  }
+}
+
 function main() {
   const { events, CATEGORY_LABELS, CAMPUS_LABELS, FEE_LABELS, TARGET_LABELS } = loadEventsModule();
+  validateUniqueIds(events);
   const labelFns = {
     categoryLabel: makeLabelFn(CATEGORY_LABELS),
     campusLabel: makeLabelFn(CAMPUS_LABELS),
