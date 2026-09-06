@@ -4572,6 +4572,24 @@ const EVENTS = [
     externalUrl: "https://waseda-bad.com/blog/%E5%B9%B4%E9%96%93%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB/",
     lastUpdated: "2026-08-26",
     isPublished: true
+  },
+  {
+    id: "evt-252",
+    title: "スポGOMI大会 in 早稲田",
+    date: "2026-09-19",
+    startTime: "09:00",
+    endTime: "12:00",
+    location: "戸山公園箱根山地区アスレチック広場",
+    campus: "outside",
+    organizer: "早稲田スポGOMIクラブ",
+    category: "sports",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "free",
+    feeText: "無料",
+    description: "早稲田スポGOMIクラブが戸山公園箱根山地区アスレチック広場で開催する、ごみ拾いを競うスポーツ「スポGOMI」の大会。参加無料。",
+    lastUpdated: "2026-09-06",
+    isPublished: true
   }
 
 ];
