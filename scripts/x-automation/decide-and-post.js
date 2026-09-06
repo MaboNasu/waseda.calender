@@ -85,6 +85,13 @@ async function attemptPost({ postTypeKey, targetDate, eventIds, text, dryRun }) 
   console.log('---');
 
   const result = await postTweet(text, { dryRun });
+  // ネットワークエラー(fetch自体が例外)は、Xに実際は届いていて応答だけ失われた可能性を
+  // 否定できない。'failed'として記録すると次回実行時にalreadyPostedForTargetがfalseを返し
+  // 自動的に再投稿してしまい、実際には成功していた場合に本物の二重投稿になる。そのため
+  // 通常の'failed'とは区別して'unknown'として記録し、次回は(alreadyPostedForTarget経由で)
+  // 自動再試行せず人が確認するまで見送る。
+  const isAmbiguousNetworkError = !result.ok && result.error && result.error.type === 'network';
+  const status = result.ok ? (dryRun ? 'dry-run' : 'success') : (isAmbiguousNetworkError ? 'unknown' : 'failed');
   const record = {
     postedAt: new Date().toISOString(),
     postType: meta.id,
@@ -92,13 +99,15 @@ async function attemptPost({ postTypeKey, targetDate, eventIds, text, dryRun }) 
     eventIds,
     campaign: meta.campaign,
     claudeUsed: false,
-    status: result.ok ? (dryRun ? 'dry-run' : 'success') : 'failed',
+    status,
     postId: result.postId || null,
     errorType: result.ok ? null : (result.error ? result.error.type : null),
   };
   appendPost(record);
 
-  if (!result.ok) {
+  if (isAmbiguousNetworkError) {
+    console.error(`[${meta.label}] ネットワークエラーのため成否不明です。実際にXへ投稿されたか確認してください: ${result.error.message}`);
+  } else if (!result.ok) {
     console.error(`[${meta.label}] 投稿に失敗しました: ${result.error ? result.error.message : '不明なエラー'}`);
   } else if (dryRun) {
     console.log(`[${meta.label}] Dry Run: 実際の投稿は行っていません。`);

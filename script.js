@@ -34,7 +34,24 @@ const HOLIDAYS = {
   '2026-09-23': '秋分の日',
   '2026-10-12': 'スポーツの日',
   '2026-11-03': '文化の日',
-  '2026-11-23': '勤労感謝の日'
+  '2026-11-23': '勤労感謝の日',
+  '2027-01-01': '元日',
+  '2027-01-11': '成人の日',
+  '2027-02-11': '建国記念の日',
+  '2027-02-23': '天皇誕生日',
+  '2027-03-21': '春分の日',
+  '2027-03-22': '振替休日',
+  '2027-04-29': '昭和の日',
+  '2027-05-03': '憲法記念日',
+  '2027-05-04': 'みどりの日',
+  '2027-05-05': 'こどもの日',
+  '2027-07-19': '海の日',
+  '2027-08-11': '山の日',
+  '2027-09-20': '敬老の日',
+  '2027-09-23': '秋分の日',
+  '2027-10-11': 'スポーツの日',
+  '2027-11-03': '文化の日',
+  '2027-11-23': '勤労感謝の日'
 };
 
 function getHolidayName(dateStr) {
@@ -62,9 +79,13 @@ let activeFilters = {
    ユーティリティ
    ============================================================ */
 
-/** 今日の日付文字列 YYYY-MM-DD */
+/** 今日の日付文字列 YYYY-MM-DD。Asia/Tokyo(UTC+9、DSTなし)固定で判定する。
+ *  閲覧者の端末やビルド実行環境（GitHub ActionsはUTC）のタイムゾーンに関わらず、
+ *  常に日本時間での「今日」と一致させるため（generate-event-pages.js等の
+ *  ビルド時「今日」判定と同じ計算式に揃えること）。 */
 function getTodayStr() {
-  return formatDateStr(new Date());
+  const jst = new Date(Date.now() + 9 * 60 * 60 * 1000);
+  return `${jst.getUTCFullYear()}-${String(jst.getUTCMonth() + 1).padStart(2, '0')}-${String(jst.getUTCDate()).padStart(2, '0')}`;
 }
 
 /** Dateオブジェクト → YYYY-MM-DD */
@@ -328,14 +349,18 @@ async function handleReactionClick(type, eventId, btnEl) {
     return;
   }
 
-  if (btnEl) btnEl.disabled = true;
+  // クリックしたボタンだけでなく同じイベントの3ボタン全てをロックする。1つだけロックすると、
+  // 「気になる」の処理中に「行きたい」も押せてしまい、両方のgetFavorite()が更新前の状態を
+  // 読んでから並行してsetFavorite()するという競合が起きて件数表示が一時的にズレるため。
+  const panel = btnEl ? btnEl.closest('.reaction-buttons') : null;
+  const panelButtons = panel ? [...panel.querySelectorAll('.reaction-btn')] : (btnEl ? [btnEl] : []);
+  panelButtons.forEach(b => { b.disabled = true; });
   try {
     const existing = await window.WC.auth.getFavorite(eventId);
     const prevType = existing ? existing.reactionType : null;
     const isFavorited = prevType === type;
     await window.WC.auth.setFavorite(eventId, type, isFavorited);
     if (btnEl) {
-      const panel = btnEl.closest('.reaction-buttons');
       if (panel) panel.querySelectorAll('.reaction-btn').forEach(b => b.classList.remove('active'));
       btnEl.classList.toggle('active', !isFavorited);
     }
@@ -347,7 +372,7 @@ async function handleReactionClick(type, eventId, btnEl) {
   } catch (err) {
     alert('お気に入りの更新に失敗しました。時間をおいて再度お試しください。');
   } finally {
-    if (btnEl) btnEl.disabled = false;
+    panelButtons.forEach(b => { b.disabled = false; });
   }
 }
 
@@ -579,12 +604,15 @@ function toggleShowMore(sectionId) {
 /* ============================================================
    本日のイベント
    ============================================================ */
-function renderTodayEvents() {
+/** @param {Array} [allFiltered] renderAll()から絞り込み済みイベントを受け取れば、
+ *  getFilteredEvents()の再計算を省ける（省略時は自前で計算するので単独呼び出しも可能）。
+ *  戻り値はこの区画に表示したイベントのid配列（呼び出し元がリアクション数取得をまとめるため）。 */
+function renderTodayEvents(allFiltered) {
   const el = document.getElementById('today-events');
-  if (!el) return;
+  if (!el) return [];
 
   const today    = getTodayStr();
-  const filtered = getFilteredEvents().filter(ev => isEventOnDate(ev, today));
+  const filtered = (allFiltered || getFilteredEvents()).filter(ev => isEventOnDate(ev, today));
 
   const countEl = document.getElementById('today-count');
   if (countEl) countEl.textContent = `${filtered.length}件`;
@@ -592,7 +620,7 @@ function renderTodayEvents() {
   el.innerHTML = filtered.length === 0
     ? emptyStateHTML('本日のイベントは0件です。')
     : eventsGridWithShowMoreHTML(filtered.map(ev => createEventCardHTML(ev, false)).join(''), 'today-events');
-  refreshLiveReactionCounts(filtered.map(ev => ev.id));
+  return filtered.map(ev => ev.id);
 }
 
 /* ============================================================
@@ -607,13 +635,14 @@ function getWeekAheadStr() {
   return formatDateStr(d);
 }
 
-function renderUpcomingEvents() {
+/** @param {Array} [allFiltered] renderTodayEventsと同じく、renderAll()から受け取れば再計算を省ける。 */
+function renderUpcomingEvents(allFiltered) {
   const el = document.getElementById('upcoming-events');
-  if (!el) return;
+  if (!el) return [];
 
   const today      = getTodayStr();
   const weekAhead  = getWeekAheadStr();
-  const filtered = getFilteredEvents()
+  const filtered = (allFiltered || getFilteredEvents())
     .filter(ev => (ev.date > today || isEventOnDate(ev, today)) && ev.date <= weekAhead)
     .sort((a, b) => a.date.localeCompare(b.date));
 
@@ -623,17 +652,18 @@ function renderUpcomingEvents() {
   el.innerHTML = filtered.length === 0
     ? emptyStateHTML('今週開催のイベントは0件です。')
     : eventsGridWithShowMoreHTML(filtered.map(ev => createEventCardHTML(ev, true)).join(''), 'upcoming-events');
-  refreshLiveReactionCounts(filtered.map(ev => ev.id));
+  return filtered.map(ev => ev.id);
 }
 
 /* ============================================================
    カレンダー（PC: グリッド表示）
    ============================================================ */
-function renderCalendarGrid() {
+/** @param {Array} [allFiltered] renderAll()から受け取れば再計算を省ける。 */
+function renderCalendarGrid(allFiltered) {
   const wrap = document.getElementById('calendar-grid');
   if (!wrap) return;
 
-  const filtered = getFilteredEvents();
+  const filtered = allFiltered || getFilteredEvents();
   const today    = getTodayStr();
   const firstDay = new Date(calendarYear, calendarMonth, 1);
   const lastDay  = new Date(calendarYear, calendarMonth + 1, 0);
@@ -756,11 +786,12 @@ function renderCalendarGrid() {
 /* ============================================================
    カレンダー（スマホ: リスト表示）
    ============================================================ */
-function renderCalendarList() {
+/** @param {Array} [allFiltered] renderAll()から受け取れば再計算を省ける。 */
+function renderCalendarList(allFiltered) {
   const wrap = document.getElementById('calendar-list');
   if (!wrap) return;
 
-  const filtered = getFilteredEvents();
+  const filtered = allFiltered || getFilteredEvents();
   const today    = getTodayStr();
   const evByDate = {};
 
@@ -843,10 +874,24 @@ function nextMonth() {
   if (calendarMonth > 11) { calendarMonth = 0; calendarYear++; }
   renderCalendar();
 }
-function renderCalendar() {
+/** 画面幅768px以下ではCSS側がグリッド版を隠してリスト版だけ表示する(.calendar-grid-view/
+ *  .calendar-list-view)。表示されない方まで毎回描画するのは無駄なので、実際に見える方だけ
+ *  描画する。 */
+function isMobileCalendarLayout() {
+  return window.matchMedia('(max-width: 768px)').matches;
+}
+
+let lastCalendarLayoutWasMobile = null;
+
+/** @param {Array} [allFiltered] renderAll()から受け取れば再計算を省ける。 */
+function renderCalendar(allFiltered) {
   updateCalendarTitle();
-  renderCalendarGrid();
-  renderCalendarList();
+  lastCalendarLayoutWasMobile = isMobileCalendarLayout();
+  if (lastCalendarLayoutWasMobile) {
+    renderCalendarList(allFiltered);
+  } else {
+    renderCalendarGrid(allFiltered);
+  }
 }
 
 /* ============================================================
@@ -1054,6 +1099,22 @@ function icsDateTime(dateStr, timeStr) {
   return `${y}${pad2(m)}${pad2(d)}T${pad2(hh)}${pad2(mm)}00`;
 }
 
+/** 日付+時刻に分単位を加算し、日をまたぐ場合はdateStrも繰り上げる。 */
+function addMinutesToDateTime(dateStr, timeStr, minutes) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const [hh, mm] = timeStr.split(':').map(Number);
+  const dt = new Date(y, m - 1, d, hh, mm + minutes);
+  return { date: formatDateStr(dt), time: `${pad2(dt.getHours())}:${pad2(dt.getMinutes())}` };
+}
+
+/** イベントの終了(日付+時刻)。endTimeが既知ならそのまま、不明なら開始の2時間後を仮の終了時刻とする
+ *  （終了時刻=開始時刻にすると「0分の予定」になり、ページ上の「13:00〜（終了時間不明）」という
+ *  表示と矛盾するため）。 */
+function assumedEndDateTime(ev, endDate) {
+  if (ev.endTime) return { date: endDate, time: ev.endTime };
+  return addMinutesToDateTime(endDate, ev.startTime, 120);
+}
+
 function icsTimestampUTC() {
   const d = new Date();
   return `${d.getUTCFullYear()}${pad2(d.getUTCMonth() + 1)}${pad2(d.getUTCDate())}T${pad2(d.getUTCHours())}${pad2(d.getUTCMinutes())}${pad2(d.getUTCSeconds())}Z`;
@@ -1069,7 +1130,8 @@ function buildIcsVeventLines(ev) {
   let dtStartLine, dtEndLine;
   if (ev.startTime) {
     dtStartLine = `DTSTART;TZID=Asia/Tokyo:${icsDateTime(ev.date, ev.startTime)}`;
-    dtEndLine   = `DTEND;TZID=Asia/Tokyo:${icsDateTime(endDate, ev.endTime || ev.startTime)}`;
+    const end = assumedEndDateTime(ev, endDate);
+    dtEndLine   = `DTEND;TZID=Asia/Tokyo:${icsDateTime(end.date, end.time)}`;
   } else {
     dtStartLine = `DTSTART;VALUE=DATE:${icsDateTime(ev.date)}`;
     dtEndLine   = `DTEND;VALUE=DATE:${icsDateTime(addOneDay(endDate))}`;
@@ -1132,9 +1194,13 @@ function downloadIcsForSelectedEvents() {
 /** Googleカレンダーの「予定作成」テンプレートURLを組み立てる（1クリック追加用） */
 function buildGoogleCalendarUrl(ev) {
   const endDate = getEventEnd(ev);
-  const datesParam = ev.startTime
-    ? `${icsDateTime(ev.date, ev.startTime)}/${icsDateTime(endDate, ev.endTime || ev.startTime)}`
-    : `${icsDateTime(ev.date)}/${icsDateTime(addOneDay(endDate))}`;
+  let datesParam;
+  if (ev.startTime) {
+    const end = assumedEndDateTime(ev, endDate);
+    datesParam = `${icsDateTime(ev.date, ev.startTime)}/${icsDateTime(end.date, end.time)}`;
+  } else {
+    datesParam = `${icsDateTime(ev.date)}/${icsDateTime(addOneDay(endDate))}`;
+  }
 
   const params = new URLSearchParams({
     action: 'TEMPLATE',
@@ -1338,7 +1404,7 @@ function buildEventJsonLd(ev, pageUrl) {
 /** 公開済み・本日以降のイベントをJSON-LDとして<head>に埋め込む（検索エンジン向け） */
 function injectEventsJsonLd() {
   const upcoming = getPublishedEvents()
-    .filter(ev => ev.date >= getTodayStr())
+    .filter(ev => getEventEnd(ev) >= getTodayStr())
     .sort((a, b) => a.date.localeCompare(b.date))
     .slice(0, 20);
 
@@ -1350,7 +1416,7 @@ function injectEventsJsonLd() {
     document.head.appendChild(script);
   }
   // map(buildEventJsonLd) だと map が渡す第2引数(index)がpageUrlに紛れ込むため、明示的に1引数で呼ぶ
-  script.textContent = JSON.stringify(upcoming.map(ev => buildEventJsonLd(ev)));
+  script.textContent = JSON.stringify(upcoming.map(ev => buildEventJsonLd(ev, buildEventPageUrl(ev))));
 }
 
 /* ============================================================
@@ -1424,9 +1490,14 @@ function applyAllStoredDensities() {
 }
 
 function renderAll() {
-  renderTodayEvents();
-  renderUpcomingEvents();
-  renderCalendar();
+  // getFilteredEvents()を1回だけ計算し、各区画に使い回す(以前は今日/今週/カレンダーグリッド/
+  // カレンダーリストの4箇所がそれぞれ独自に計算していた)。あわせて、今日の一覧と今週の一覧は
+  // イベントが重複しやすいため、Firestoreのリアクション数取得も重複idを除いて1回にまとめる。
+  const filteredEvents = getFilteredEvents();
+  const todayIds = renderTodayEvents(filteredEvents);
+  const upcomingIds = renderUpcomingEvents(filteredEvents);
+  renderCalendar(filteredEvents);
+  refreshLiveReactionCounts([...new Set([...todayIds, ...upcomingIds])]);
   injectEventsJsonLd();
   applyAllStoredDensities();
   renderSelectionBar();
@@ -1533,6 +1604,8 @@ document.addEventListener('DOMContentLoaded', () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
       document.querySelectorAll('#today-events, #upcoming-events').forEach(collapseGridToOneRow);
+      // グリッド版⇔リスト版の表示切替の閾値をまたいだ時だけ、まだ描画していない方を描画する
+      if (isMobileCalendarLayout() !== lastCalendarLayoutWasMobile) renderCalendar();
     }, 200);
   });
 });

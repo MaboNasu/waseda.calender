@@ -20,9 +20,9 @@ function buildEventUrl(ev, campaign) {
   return withUtm(`${SITE_ORIGIN}/event/${encodeURIComponent(ev.id)}.html`, campaign);
 }
 
-/** トップページ(必要ならアンカー付き)のURL(UTM付き) */
+/** トップページ(必要ならアンカー付き)のURL(UTM付き)。index.htmlのcanonicalタグと同じくルート("/")を使う。 */
 function buildHomeUrl(campaign, anchor) {
-  const base = anchor ? `${SITE_ORIGIN}/index.html#${anchor}` : `${SITE_ORIGIN}/index.html`;
+  const base = anchor ? `${SITE_ORIGIN}/#${anchor}` : `${SITE_ORIGIN}/`;
   return withUtm(base, campaign);
 }
 

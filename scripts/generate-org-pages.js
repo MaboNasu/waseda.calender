@@ -56,9 +56,12 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
+/** 今日の日付文字列 YYYY-MM-DD。Asia/Tokyo(UTC+9、DSTなし)固定で判定する。
+ *  GitHub Actions(UTC)で実行しても、ブラウザ側(organizations-page.jsのorgPageTodayStr)の
+ *  「今日」と最大9時間ズレないようにするため。 */
 function todayStr() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const jst = new Date(Date.now() + 9 * 60 * 60 * 1000);
+  return `${jst.getUTCFullYear()}-${String(jst.getUTCMonth() + 1).padStart(2, '0')}-${String(jst.getUTCDate()).padStart(2, '0')}`;
 }
 
 function eventEnd(ev) {
@@ -67,7 +70,9 @@ function eventEnd(ev) {
 
 /** 団体に紐づくイベントかどうか。organizations-page.js の isEventRelatedToOrg と同じ判定
  *  （orgId一致・relatedEventIds一致に加え、organizerの完全一致も見る。events.js側はorgIdが
- *  ほとんど未設定で、代わりに主催団体名を自由記述のorganizerに入れている実態があるため）。 */
+ *  ほとんど未設定で、代わりに主催団体名を自由記述のorganizerに入れている実態があるため）。
+ *  下のgetEventIndex()はこの3経路をevents全走査なしで引けるようにした索引版で、
+ *  ここでの判定と等価になるよう維持すること。 */
 function isEventRelatedToOrg(ev, org) {
   if (ev.orgId && String(ev.orgId) === String(org.id)) return true;
   const ids = Array.isArray(org.relatedEventIds) ? org.relatedEventIds.map(String) : [];
@@ -75,15 +80,65 @@ function isEventRelatedToOrg(ev, org) {
   return !!(ev.organizer && org.name && String(ev.organizer).trim() === String(org.name).trim());
 }
 
+/** 団体×イベントの紐づけをevents全走査なしで引けるよう、orgId/イベントID/organizer名からの
+ *  索引を1回だけ作ってキャッシュする（全482団体分を生成する間、eventsは同じ配列のまま変わらない
+ *  ため作り直す必要がない）。索引化しないと団体数×events件数の全走査が団体ごとに繰り返される。 */
+let eventIndexCache = null;
+let eventIndexCacheEvents = null;
+
+function buildEventIndex(events) {
+  const published = events.filter((ev) => ev.isPublished);
+  const eventsById = new Map(published.map((ev) => [String(ev.id), ev]));
+  const eventsByOrgId = new Map();
+  const eventsByOrganizerName = new Map();
+  published.forEach((ev) => {
+    if (ev.orgId) {
+      const key = String(ev.orgId);
+      if (!eventsByOrgId.has(key)) eventsByOrgId.set(key, []);
+      eventsByOrgId.get(key).push(ev);
+    }
+    if (ev.organizer) {
+      const key = String(ev.organizer).trim();
+      if (!eventsByOrganizerName.has(key)) eventsByOrganizerName.set(key, []);
+      eventsByOrganizerName.get(key).push(ev);
+    }
+  });
+  return { eventsById, eventsByOrgId, eventsByOrganizerName };
+}
+
+function getEventIndex(events) {
+  if (eventIndexCacheEvents !== events) {
+    eventIndexCache = buildEventIndex(events);
+    eventIndexCacheEvents = events;
+  }
+  return eventIndexCache;
+}
+
+/** 団体に紐づくイベント一覧（開催予定・実績を問わず、重複なし）。isEventRelatedToOrgと
+ *  同じ3経路を索引から引く。 */
+function relatedEventsForOrg(org, events) {
+  const { eventsById, eventsByOrgId, eventsByOrganizerName } = getEventIndex(events);
+  const merged = new Map();
+  (eventsByOrgId.get(String(org.id)) || []).forEach((ev) => merged.set(String(ev.id), ev));
+  (Array.isArray(org.relatedEventIds) ? org.relatedEventIds : []).forEach((id) => {
+    const ev = eventsById.get(String(id));
+    if (ev) merged.set(String(ev.id), ev);
+  });
+  if (org.name) {
+    (eventsByOrganizerName.get(String(org.name).trim()) || []).forEach((ev) => merged.set(String(ev.id), ev));
+  }
+  return Array.from(merged.values());
+}
+
 function getEventsForOrganization(org, events) {
   const today = todayStr();
-  return events.filter((ev) => ev.isPublished && isEventRelatedToOrg(ev, org) && eventEnd(ev) >= today);
+  return relatedEventsForOrg(org, events).filter((ev) => eventEnd(ev) >= today);
 }
 
 function getPastEventsForOrganization(org, events) {
   const today = todayStr();
-  return events
-    .filter((ev) => ev.isPublished && isEventRelatedToOrg(ev, org) && eventEnd(ev) < today)
+  return relatedEventsForOrg(org, events)
+    .filter((ev) => eventEnd(ev) < today)
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 
@@ -330,7 +385,7 @@ function renderOrgPageHtml(org, events) {
 <script src="/org-page.js?v=1"></script>
 <script type="module" src="/firebase-init.js?v=3"></script>
 <script src="/auth-ui.js?v=3"></script>
-<script src="/pwa-install.js?v=2"></script>
+<script src="/pwa-install.js?v=3"></script>
 </body>
 </html>
 `;
