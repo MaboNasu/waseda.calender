@@ -1948,6 +1948,24 @@ const EVENTS = [
     isPublished: true
   },
   {
+    id: "evt-258",
+    title: "皇后杯JFA第48回全日本女子サッカー選手権大会関東予選2回戦 vs日テレ・東京ヴェルディメニーナ",
+    date: "2026-09-12",
+    startTime: "10:00",
+    location: "フードリエサッカーフィールド青木",
+    campus: "outside",
+    organizer: "早稲田大学ア式蹴球部",
+    category: "sports",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "皇后杯JFA第48回全日本女子サッカー選手権大会関東予選2回戦。早稲田大学(女子) 対 日テレ・東京ヴェルディメニーナ。",
+    externalUrl: "https://www.waseda-afc.jp/",
+    lastUpdated: "2026-09-07",
+    isPublished: true
+  },
+  {
     id: "evt-105",
     title: "関東大学サッカーリーグ1部 第13節 vs国士舘大学",
     date: "2026-09-26",
