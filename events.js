@@ -2920,6 +2920,25 @@ const EVENTS = [
     isPublished: true
   },
   {
+    id: "evt-257",
+    title: "Authors Alive! ～海外文学最前線～ サウード・アル゠サヌウーシー講演・朗読会",
+    date: "2026-10-06",
+    startTime: "18:30",
+    endTime: "20:00",
+    location: "国際文学館(村上春樹ライブラリー) 地下1階",
+    campus: "waseda",
+    organizer: "早稲田大学国際文学館(村上春樹ライブラリー)",
+    category: "lecture",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "free",
+    feeText: "無料(事前申込制・抽選)",
+    description: "海外文学作家を招く「Authors Alive!」シリーズの講演・朗読会。日本語・アラビア語(日本語通訳あり)。事前申込制で応募多数の場合は抽選(応募締切2026-09-16 23:59)。",
+    externalUrl: "https://www.waseda.jp/culture/wihl/other/13650",
+    lastUpdated: "2026-09-07",
+    isPublished: true
+  },
+  {
     id: "evt-159",
     title: "【横川敏雄記念公開講座】グローバル情報社会と知的財産法(7/18)",
     date: "2026-07-18",
@@ -3853,6 +3872,25 @@ const EVENTS = [
     description: "法学学術院・国際法律フォーラムによるセミナー。使用言語はドイツ語・日本語(通訳あり)。事前登録制(Googleフォーム)。対象者の明記は公式サイト上になし。",
     externalUrl: "https://www.waseda.jp/folaw/icl/news/2026/08/05/12799/",
     lastUpdated: "2026-08-27",
+    isPublished: true
+  },
+  {
+    id: "evt-256",
+    title: "国際比較法研究所 公開講座「同一労働同一賃金の意義と機能―日仏比較」",
+    date: "2026-09-25",
+    startTime: "14:00",
+    endTime: "17:00",
+    location: "早稲田キャンパス8号館313教室",
+    campus: "waseda",
+    organizer: "早稲田大学法学部国際比較法研究所",
+    category: "lecture",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "free",
+    feeText: "無料(事前登録不要)",
+    description: "国際比較法研究所による公開講座。フランス語・日本語(通訳あり)。事前登録不要、直接会場へ。",
+    externalUrl: "https://www.waseda.jp/folaw/icl/news/2026/08/25/12878/",
+    lastUpdated: "2026-09-07",
     isPublished: true
   },
 
