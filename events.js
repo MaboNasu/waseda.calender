@@ -4702,6 +4702,46 @@ const EVENTS = [
     externalUrl: "https://docs.google.com/forms/d/e/1FAIpQLScqi4iEWvVANC_1-DSVXuRBUag6fr7jIKwjVSy45IGUPzfhjw/viewform",
     lastUpdated: "2026-09-06",
     isPublished: true
+  },
+
+  // ---- WAVOC(平山郁夫記念ボランティアセンター) ----
+  {
+    id: "evt-259",
+    title: "「子ども食堂ボランティア」参加者募集",
+    date: "2026-10-16",
+    startTime: "15:15",
+    endTime: "20:30",
+    location: "ココキタ(JR王子駅からバス10分・徒歩3分)",
+    campus: "outside",
+    organizer: "早稲田大学WAVOC(平山郁夫記念ボランティアセンター)",
+    category: "community",
+    scope: "circle",
+    target: ["student"],
+    feeType: "paid",
+    feeText: "実費(王子駅〜会場間バス代 約500円)",
+    description: "子ども食堂キタクマでのボランティア活動。早稲田大学生対象、定員5名(応募多数の場合は抽選)。応募締切2026-10-05 17:00。15:15にJR王子駅付近集合、16:00〜活動、20:30解散。",
+    externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/09/01/24412/",
+    lastUpdated: "2026-09-07",
+    isPublished: true
+  },
+  {
+    id: "evt-260",
+    title: "留学生向け:早稲田大学キャンパスツアー(英語開催)参加者募集",
+    date: "2026-09-30",
+    startTime: "11:00",
+    endTime: "12:30",
+    location: "早稲田キャンパス正門付近(1号館案内所付近)",
+    campus: "waseda",
+    organizer: "早稲田大学WAVOC(平山郁夫記念ボランティアセンター)",
+    category: "community",
+    scope: "circle",
+    target: ["student"],
+    feeType: "free",
+    feeText: "無料",
+    description: "英語開催のキャンパスツアー。早稲田大学の学生であればどなたでも参加可能(留学生向け企画だが在学生全般が対象)。定員45名(先着順)。10:45集合。応募締切2026-09-23 09:00。",
+    externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/08/21/24339/",
+    lastUpdated: "2026-09-07",
+    isPublished: true
   }
 
 ];
