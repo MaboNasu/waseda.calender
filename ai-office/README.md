@@ -150,7 +150,9 @@ powershell -ExecutionPolicy Bypass -File .\setup-auto-update.ps1
 2. **5分ごとに**GitHubの変更を確認し、変更があれば
    `git pull` → `npm install` → 構文チェック(`node --check`) → `pm2 restart` を自動実行する
    タスク(`AIOffice-AutoUpdate`)をタスクスケジューラに登録
-3. PCログオン時に自動でBotを起動するタスク(`AIOffice-StartOnLogon`)を登録
+3. PCログオン時に自動でBotを起動する設定(スタートアップフォルダに`ai-office-resume.bat`を配置し、
+   `pm2 resurrect`を実行する)。`schtasks`の`/sc onlogon`は環境によって権限不足で
+   失敗することがあるため、より単純なこの方式を採用している。
 
 構文チェックに失敗した場合(壊れたコードがpushされた場合)は、再起動を中止し、
 現在動いているBotをそのまま動かし続ける安全策が入っている。
@@ -163,6 +165,26 @@ powershell -ExecutionPolicy Bypass -File .\setup-auto-update.ps1
 
 旧来の `restart.bat`(手動で`npm start`するだけ)は緊急時の手動起動用に残しているが、
 通常運用では上記のpm2ベースの自動更新に一本化する想定。
+
+## Linux VM(Oracle Cloud等)での自動更新
+
+`scripts/linux/` に、Windows版と同じ仕組みのLinux(Ubuntu想定)移植版を用意している。
+24時間稼働のクラウドVMに移行する場合はこちらを使う。
+
+**初回セットアップ(VMにSSH接続した状態で1回だけ)**:
+```bash
+cd ai-office/scripts/linux
+bash setup-auto-update.sh
+```
+
+これで以下が行われる。
+1. Node.js(未インストールの場合)・pm2をインストールし、pm2管理下でBotを起動
+2. `pm2 startup`(systemd)でVM再起動後もBotが自動復帰するよう設定
+3. **5分ごとに**GitHubの変更を確認し、変更があれば
+   `git pull` → `npm install` → 構文チェック → `pm2 restart` を自動実行するcronジョブを登録
+
+Windows版と同じく、構文チェックに失敗した場合は再起動を中止する安全策が入っている。
+反映を追いかけるブランチは `scripts/linux/auto-update.sh` 先頭の `BRANCH` で指定している。
 
 ## ディレクトリ構成
 
