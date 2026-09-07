@@ -391,8 +391,33 @@ function renderOrgPageHtml(org, events) {
 `;
 }
 
+/** idが重複する要素があれば列挙してビルドを中止する(汎用)。fs.writeFileSyncで同じ
+ *  ファイル名に書き込むと片方が静かに上書きされて消えるため、事前に検知する。
+ *  複数人・複数セッションが同時にデータを追記する運用のため、同じタイミングで
+ *  採番されたIDが衝突することがある(実際に発生した事例あり)。 */
+function validateUniqueIds(items, label) {
+  const seen = new Set();
+  const duplicateIds = new Set();
+  items.forEach((item) => {
+    if (seen.has(item.id)) {
+      duplicateIds.add(item.id);
+    } else {
+      seen.add(item.id);
+    }
+  });
+  if (duplicateIds.size > 0) {
+    console.error(`エラー: ${label}内でidが重複している項目があります。片方のページが上書きされて消えるため、ビルドを中止します。`);
+    items
+      .filter((item) => duplicateIds.has(item.id))
+      .forEach((item) => console.error(`  - id: "${item.id}" title/name: "${item.title || item.name}"`));
+    process.exit(1);
+  }
+}
+
 function main() {
   const { organizations, events } = loadDataModules();
+  validateUniqueIds(organizations, 'organizations.js');
+  validateUniqueIds(events, 'events.js');
 
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
