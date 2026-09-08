@@ -1539,6 +1539,23 @@ const EVENTS = [
     lastUpdated: "2026-08-27",
     isPublished: true
   },
+  {
+    id: "evt-261",
+    title: "庭球部(女子) 第116回早慶戦",
+    date: "2026-09-30",
+    location: "早稲田大学庭球部東伏見三神記念テニスコート",
+    campus: "outside",
+    organizer: "早稲田大学庭球部",
+    category: "sports",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "早稲田大学庭球部(女子)と慶應義塾大学による伝統の早慶戦。開始時刻は公式サイトに明記なし(詳細は試合要項PDF参照)。",
+    externalUrl: "https://www.wasedatennis.net/",
+    lastUpdated: "2026-09-08",
+    isPublished: true
+  },
 
   // ---- 剣道部 ----
   {
@@ -2760,6 +2777,25 @@ const EVENTS = [
     description: "早稲田大学アカデミックソリューション主催、演劇博物館共催。演劇博物館・児玉竜一館長による歌舞伎解説講義。",
     externalUrl: "https://enpaku.w.waseda.jp/",
     lastUpdated: "2026-07-30",
+    isPublished: true
+  },
+  {
+    id: "evt-262",
+    title: "連続講座 第1回「演劇博物館創立まで」",
+    date: "2026-09-28",
+    startTime: "14:00",
+    endTime: "15:30",
+    location: "早稲田キャンパス7号館2階205教室",
+    campus: "waseda",
+    organizer: "早稲田大学坪内博士記念演劇博物館",
+    category: "lecture",
+    scope: "circle",
+    target: ["public"],
+    feeType: "free",
+    feeText: "無料(要事前予約・先着順、定員90名)",
+    description: "演劇博物館創立100周年記念企画の連続講座第1回。児玉竜一館長による「演劇博物館創立まで」。",
+    externalUrl: "https://enpaku.w.waseda.jp/ex/21675/",
+    lastUpdated: "2026-09-08",
     isPublished: true
   },
   {
