@@ -1378,7 +1378,7 @@ function buildEventJsonLd(ev, pageUrl) {
     organizer: {
       '@type': 'Organization',
       name: ev.organizer || 'Waseda Calendar',
-      url: ev.externalUrl || undefined
+      url: ev.externalUrl || url
     },
     performer: isPerformance
       ? { '@type': 'PerformingGroup', name: ev.organizer || 'Waseda Calendar' }
