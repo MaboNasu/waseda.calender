@@ -233,7 +233,7 @@ function buildEventJsonLd(ev, pageUrl, campusLabel) {
         },
     image: ev.imageUrl || ogImageFor(ev).url,
     description: ev.description || ev.title,
-    organizer: { '@type': 'Organization', name: ev.organizer || 'Waseda Calendar', url: ev.externalUrl || undefined },
+    organizer: { '@type': 'Organization', name: ev.organizer || 'Waseda Calendar', url: ev.externalUrl || url },
     performer: isPerformance ? { '@type': 'PerformingGroup', name: ev.organizer || 'Waseda Calendar' } : undefined
   };
 
