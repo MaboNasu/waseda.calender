@@ -32,7 +32,6 @@ function buildOrgJsonLd(org, pageUrl) {
     name: org.name,
     url: pageUrl,
     description: org.description || `${org.name}（早稲田大学公認団体）`,
-    memberOf: { '@type': 'CollegeOrUniversity', name: '早稲田大学' },
     sameAs: sameAs.length ? sameAs : undefined
   };
 }
