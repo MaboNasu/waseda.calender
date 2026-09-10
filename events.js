@@ -4799,6 +4799,25 @@ const EVENTS = [
     externalUrl: "https://www.waseda.jp/flas/rilas/news/2026/09/04/17469/",
     lastUpdated: "2026-09-10",
     isPublished: true
+  },
+  {
+    id: "evt-264",
+    title: "「子ども食堂ボランティア」参加者募集",
+    date: "2026-10-16",
+    startTime: "15:15",
+    endTime: "20:30",
+    location: "ココキタ(東京都北区、JR王子駅からバス10分)",
+    campus: "outside",
+    organizer: "早稲田大学平山郁夫記念ボランティアセンター(WAVOC)",
+    category: "community",
+    scope: "circle",
+    target: ["student"],
+    feeType: "paid",
+    feeText: "王子駅〜現地間のバス代(500円程度)",
+    description: "子ども食堂「キタクマ」での調理・配膳・片付けや子どもとの交流ボランティア。定員5名(超過時抽選)。応募締切2026-10-05 17:00(応募状況により早期締切の場合あり)。",
+    externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/09/01/24412/",
+    lastUpdated: "2026-09-10",
+    isPublished: true
   }
 
 ];
