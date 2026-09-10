@@ -4778,6 +4778,27 @@ const EVENTS = [
     externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/08/21/24339/",
     lastUpdated: "2026-09-07",
     isPublished: true
+  },
+
+  // ---- 情報源チェック(2026-09-10) ----
+  {
+    id: "evt-263",
+    title: "泰山タイルからひもとく、戸山キャンパスの意匠―大学アーカイブズの実践",
+    date: "2026-10-03",
+    startTime: "13:00",
+    endTime: "17:00",
+    location: "戸山キャンパス36号館382教室",
+    campus: "toyama",
+    organizer: "早稲田大学総合研究機構総合人文科学研究センター/WCANS",
+    category: "lecture",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "free",
+    feeText: "無料(事前登録不要)",
+    description: "泰山製陶所製の装飾タイルを手がかりに、戸山キャンパスの建築的価値を考察するワークショップ。講演・対談・キャンパス見学あり。参加自由・事前登録不要。",
+    externalUrl: "https://www.waseda.jp/flas/rilas/news/2026/09/04/17469/",
+    lastUpdated: "2026-09-10",
+    isPublished: true
   }
 
 ];
