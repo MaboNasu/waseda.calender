@@ -187,6 +187,33 @@ async function main() {
     summaryLines.push('');
   }
 
+  // Review Queue: 要確認のソースを、誰が読むべきか(preferredReader)ごとにまとめる。
+  // 人間が毎回「どのAIに渡すか」を考えずに、該当セクションをそのまま渡せるようにするための出力。
+  const needsReview = changed.concat(firstChecks);
+  if (needsReview.length) {
+    const priorityOrder = { A: 0, B: 1, C: 2 };
+    const byReader = { cloud: [], local: [], gpt: [] };
+    needsReview.forEach((r) => {
+      const reader = r.preferredReader || 'cloud';
+      (byReader[reader] || byReader.cloud).push(r);
+    });
+    const readerLabels = { cloud: 'Cloud Claude', local: 'Local Claude', gpt: 'ChatGPT' };
+
+    summaryLines.push('## Review Queue（担当AI別）');
+    summaryLines.push('');
+    ['cloud', 'local', 'gpt'].forEach((reader) => {
+      const items = byReader[reader];
+      if (!items.length) return;
+      items.sort((a, b) => (priorityOrder[a.priority] ?? 9) - (priorityOrder[b.priority] ?? 9));
+      summaryLines.push(`### ${readerLabels[reader]}`);
+      items.forEach((r) => {
+        const p = r.priority ? `[${r.priority}] ` : '';
+        summaryLines.push(`- ${p}[${r.name}](${r.url}) (id: \`${r.id}\`, ${r.changeStatus})`);
+      });
+      summaryLines.push('');
+    });
+  }
+
   const summary = summaryLines.join('\n');
   console.log(summary);
 
