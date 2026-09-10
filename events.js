@@ -5053,6 +5053,47 @@ const EVENTS = [
     externalUrl: "https://www.highso-waseda.com/",
     lastUpdated: "2026-09-10",
     isPublished: true
+  },
+
+  // ---- 早稲田大学よさこいチーム東京花火(C-121) ----
+
+  {
+    id: "evt-276",
+    title: "にいがた総おどり",
+    date: "2026-09-20",
+    endDate: "2026-09-21",
+    location: "にいがた総おどり(新潟県)",
+    campus: "outside",
+    organizer: "早稲田大学よさこいチーム東京花火",
+    category: "culture",
+    scope: "circle",
+    orgId: "C-121",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "早稲田大学よさこいチーム東京花火が「にいがた総おどり」に出演。",
+    externalUrl: "https://www.tokyohanabi-official.com/出演予定",
+    lastUpdated: "2026-09-10",
+    isPublished: true
+  },
+  {
+    id: "evt-277",
+    title: "富山のよさこい祭り",
+    date: "2026-09-26",
+    endDate: "2026-09-27",
+    location: "富山のよさこい祭り(富山県)",
+    campus: "outside",
+    organizer: "早稲田大学よさこいチーム東京花火",
+    category: "culture",
+    scope: "circle",
+    orgId: "C-121",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "早稲田大学よさこいチーム東京花火が「富山のよさこい祭り」に出演。",
+    externalUrl: "https://www.tokyohanabi-official.com/出演予定",
+    lastUpdated: "2026-09-10",
+    isPublished: true
   }
 
 ];

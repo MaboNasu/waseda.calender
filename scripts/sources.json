@@ -1121,8 +1121,8 @@
         "学生の会"
       ],
       "orgId": "A-002",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1139,8 +1139,8 @@
         "学生の会"
       ],
       "orgId": "A-005",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1157,8 +1157,8 @@
         "学生の会"
       ],
       "orgId": "A-027",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1175,8 +1175,8 @@
         "学生の会"
       ],
       "orgId": "A-033",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1193,8 +1193,8 @@
         "学生の会"
       ],
       "orgId": "A-041",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1204,7 +1204,7 @@
       "url": "https://whk-official.com/",
       "lastChecked": "2026-09-10T02:53:40.594Z",
       "contentHash": null,
-      "notes": "organizations.js A-046。GPT(ChatGPT)による全件Web検索調査(2026-09-10)で現行公式サイトとして確認。このセッションからはegressポリシーによりアクセス不可、確認・監視はlocal/gpt側で行う。",
+      "notes": "organizations.js A-046。GPT(ChatGPT)による全件Web検索調査(2026-09-10)で現行公式サイトとして確認。このセッションからはegressポリシーによりアクセス不可、確認・監視はlocal/gpt側で行う。 2026-09-10 Full環境セッションで再検証: egressポリシーは解除されネットワーク到達は可能(HTTP応答あり)だが、サイト自体がBasic認証(www-authenticate: Basic realm=\"Member Site\")で保護されており本文は取得不可。ネットワーク制限ではなく認証の壁のため、引き続きlocal/gpt側での確認を既定とする。",
       "dateTokensHash": null,
       "sourceType": "club",
       "expectedGenres": [
@@ -1229,8 +1229,8 @@
         "学生の会"
       ],
       "orgId": "A-049",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1247,8 +1247,8 @@
         "学生の会"
       ],
       "orgId": "A-052",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1265,8 +1265,8 @@
         "学生の会"
       ],
       "orgId": "A-057",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1283,8 +1283,8 @@
         "学生の会"
       ],
       "orgId": "A-060",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1301,8 +1301,8 @@
         "学生の会"
       ],
       "orgId": "A-063",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1319,8 +1319,8 @@
         "学生の会"
       ],
       "orgId": "A-069",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1337,8 +1337,8 @@
         "学生の会"
       ],
       "orgId": "A-071",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1355,8 +1355,8 @@
         "学生の会"
       ],
       "orgId": "A-072",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1373,8 +1373,8 @@
         "学生の会"
       ],
       "orgId": "A-079",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1391,8 +1391,8 @@
         "学生の会"
       ],
       "orgId": "A-080",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1409,8 +1409,8 @@
         "学生の会"
       ],
       "orgId": "A-081",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1427,8 +1427,8 @@
         "学生の会"
       ],
       "orgId": "A-082",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1445,8 +1445,8 @@
         "学生の会"
       ],
       "orgId": "A-083",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1463,8 +1463,8 @@
         "学生の会"
       ],
       "orgId": "A-085",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1481,8 +1481,8 @@
         "学生の会"
       ],
       "orgId": "A-098",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1499,8 +1499,8 @@
         "学生の会"
       ],
       "orgId": "A-101",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1517,8 +1517,8 @@
         "学生の会"
       ],
       "orgId": "A-103",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "C"
     },
     {
@@ -1535,8 +1535,8 @@
         "学生の会"
       ],
       "orgId": "A-105",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1553,8 +1553,8 @@
         "学生の会"
       ],
       "orgId": "A-111",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1571,8 +1571,8 @@
         "学生の会"
       ],
       "orgId": "A-117",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1589,8 +1589,8 @@
         "学生の会"
       ],
       "orgId": "A-118",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1607,8 +1607,8 @@
         "学生の会"
       ],
       "orgId": "A-121",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1625,8 +1625,8 @@
         "学生の会"
       ],
       "orgId": "A-122",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1643,8 +1643,8 @@
         "学生の会"
       ],
       "orgId": "A-124",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1661,8 +1661,8 @@
         "学生の会"
       ],
       "orgId": "A-134",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1679,8 +1679,8 @@
         "学生の会"
       ],
       "orgId": "A-155",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1697,8 +1697,8 @@
         "学生の会"
       ],
       "orgId": "A-159",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1715,8 +1715,8 @@
         "学生の会"
       ],
       "orgId": "A-160",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1733,8 +1733,8 @@
         "学生の会"
       ],
       "orgId": "A-170",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1751,8 +1751,8 @@
         "学生の会"
       ],
       "orgId": "A-176",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1769,8 +1769,8 @@
         "学生の会"
       ],
       "orgId": "A-179",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1787,8 +1787,8 @@
         "同好会"
       ],
       "orgId": "C-001",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1805,8 +1805,8 @@
         "同好会"
       ],
       "orgId": "C-003",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1823,8 +1823,8 @@
         "同好会"
       ],
       "orgId": "C-012",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1841,8 +1841,8 @@
         "同好会"
       ],
       "orgId": "C-047",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1859,8 +1859,8 @@
         "同好会"
       ],
       "orgId": "C-049",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1877,8 +1877,8 @@
         "同好会"
       ],
       "orgId": "C-060",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1895,8 +1895,8 @@
         "同好会"
       ],
       "orgId": "C-077",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1913,8 +1913,8 @@
         "同好会"
       ],
       "orgId": "C-079",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -1931,8 +1931,8 @@
         "同好会"
       ],
       "orgId": "C-080",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1949,8 +1949,8 @@
         "同好会"
       ],
       "orgId": "C-082",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1967,8 +1967,8 @@
         "同好会"
       ],
       "orgId": "C-095",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -1985,8 +1985,8 @@
         "同好会"
       ],
       "orgId": "C-103",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -2003,8 +2003,8 @@
         "同好会"
       ],
       "orgId": "C-118",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -2021,8 +2021,8 @@
         "同好会"
       ],
       "orgId": "C-121",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -2039,8 +2039,8 @@
         "同好会"
       ],
       "orgId": "C-122",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -2057,8 +2057,8 @@
         "同好会"
       ],
       "orgId": "C-199",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "C"
     },
     {
@@ -2075,8 +2075,8 @@
         "同好会"
       ],
       "orgId": "C-209",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -2093,8 +2093,8 @@
         "同好会"
       ],
       "orgId": "C-218",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -2111,8 +2111,8 @@
         "同好会"
       ],
       "orgId": "C-230",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -2129,8 +2129,8 @@
         "同好会"
       ],
       "orgId": "C-263",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -2147,8 +2147,8 @@
         "同好会"
       ],
       "orgId": "C-265",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -2165,8 +2165,8 @@
         "同好会"
       ],
       "orgId": "C-274",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -2183,8 +2183,8 @@
         "同好会"
       ],
       "orgId": "C-275",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -2201,8 +2201,8 @@
         "同好会"
       ],
       "orgId": "C-276",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -2219,8 +2219,8 @@
         "同好会"
       ],
       "orgId": "C-295",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -2237,8 +2237,8 @@
         "同好会"
       ],
       "orgId": "C-300",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -2255,8 +2255,8 @@
         "同好会"
       ],
       "orgId": "C-302",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -2273,8 +2273,8 @@
         "同好会"
       ],
       "orgId": "C-319",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -2291,8 +2291,8 @@
         "学術院承認サークル"
       ],
       "orgId": "EN-002",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -2309,8 +2309,8 @@
         "学術院承認サークル"
       ],
       "orgId": "EN-009",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -2327,8 +2327,8 @@
         "学術院承認サークル"
       ],
       "orgId": "EN-017",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -2345,8 +2345,8 @@
         "学術院承認サークル"
       ],
       "orgId": "EN-023",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -2363,8 +2363,8 @@
         "学術院承認サークル"
       ],
       "orgId": "EN-034",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -2374,7 +2374,7 @@
       "url": "https://waseda-fp.tumblr.com/",
       "lastChecked": "2026-09-10T02:53:50.488Z",
       "contentHash": null,
-      "notes": "organizations.js EN-035。GPT(ChatGPT)による全件Web検索調査(2026-09-10)で現行公式サイトとして確認。このセッションからはegressポリシーによりアクセス不可、確認・監視はlocal/gpt側で行う。",
+      "notes": "organizations.js EN-035。GPT(ChatGPT)による全件Web検索調査(2026-09-10)で現行公式サイトとして確認。このセッションからはegressポリシーによりアクセス不可、確認・監視はlocal/gpt側で行う。 2026-09-10 Full環境セッションで再検証: egressポリシーは解除されておりTumblr自体には到達できるが、5回中4回「429 Rate limit exceeded」(Tumblr側のbot対策とみられる)で本文取得に失敗、安定した自動監視には不向き。引き続きlocal/gpt側での確認を既定とする。",
       "dateTokensHash": null,
       "sourceType": "club",
       "expectedGenres": [
@@ -2399,8 +2399,8 @@
         "学術院承認サークル"
       ],
       "orgId": "EN-037",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -2417,8 +2417,8 @@
         "学術院承認サークル"
       ],
       "orgId": "EN-038",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "A"
     },
     {
@@ -2435,8 +2435,8 @@
         "学術院承認サークル"
       ],
       "orgId": "EN-040",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     },
     {
@@ -2453,8 +2453,8 @@
         "学術院承認サークル"
       ],
       "orgId": "ET-009",
-      "cloudAccessible": false,
-      "preferredReader": "local",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
       "priority": "B"
     }
   ]
