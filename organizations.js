@@ -59,7 +59,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/wasedasports/",
     twitterUrl: "https://twitter.com/waseda_sports",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3043",
-    websiteUrl: "",
+    websiteUrl: "https://wasedasports-sousupo.com/",
     relatedEventIds: []
   },
   {
@@ -101,7 +101,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/honjowaseda100kmwalk/",
     twitterUrl: "https://twitter.com/kouyoukai66",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3046",
-    websiteUrl: "",
+    websiteUrl: "http://kouyoukai.kill.jp/shigenobu/",
     relatedEventIds: []
   },
   {
@@ -311,7 +311,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/wasedamarketing/",
     twitterUrl: "https://twitter.com/wasedamarketing",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3068",
-    websiteUrl: "",
+    websiteUrl: "https://wasedamarketing.net/",
     relatedEventIds: []
   },
   {
@@ -353,7 +353,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/wasedahoshikai",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3074",
-    websiteUrl: "",
+    websiteUrl: "https://hoshikai-waseda.com/",
     relatedEventIds: []
   },
   {
@@ -451,7 +451,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/sen_i_lab",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3082",
-    websiteUrl: "",
+    websiteUrl: "https://sen-i.org/",
     relatedEventIds: []
   },
   {
@@ -535,7 +535,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/wpsgramofficial/",
     twitterUrl: "https://twitter.com/wphoto101",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3090",
-    websiteUrl: "",
+    websiteUrl: "https://www.wps-exhibition.com/activities",
     relatedEventIds: []
   },
   {
@@ -577,7 +577,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/soudai_manken/",
     twitterUrl: "https://twitter.com/soudaimanken",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3093",
-    websiteUrl: "",
+    websiteUrl: "https://soudaimanken.wordpress.com/",
     relatedEventIds: []
   },
   {
@@ -647,7 +647,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/inahogama/",
     twitterUrl: "https://twitter.com/inahogama",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3098",
-    websiteUrl: "",
+    websiteUrl: "https://inahogama.hccj.co.jp/",
     relatedEventIds: []
   },
   {
@@ -675,7 +675,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/wsotokyo/",
     twitterUrl: "https://twitter.com/wsotokyo",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3101",
-    websiteUrl: "",
+    websiteUrl: "https://wso-tokyo.jp/",
     relatedEventIds: []
   },
   {
@@ -717,7 +717,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/wasedamandolin",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3104",
-    websiteUrl: "",
+    websiteUrl: "https://wasedamandolin.net/",
     relatedEventIds: []
   },
   {
@@ -787,7 +787,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/ens_rizdor/",
     twitterUrl: "https://twitter.com/Ens_Rizdor",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3110",
-    websiteUrl: "",
+    websiteUrl: "https://rizdor.github.io/official/",
     relatedEventIds: []
   },
   {
@@ -815,7 +815,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/wasephil",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3112",
-    websiteUrl: "",
+    websiteUrl: "https://wasephil.com/",
     relatedEventIds: []
   },
   {
@@ -829,7 +829,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/chopin_waseda",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3113",
-    websiteUrl: "",
+    websiteUrl: "https://waseda-chopin.github.io/website/",
     relatedEventIds: []
   },
   {
@@ -927,7 +927,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/wps1980_official/",
     twitterUrl: "https://twitter.com/w_piano",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3120",
-    websiteUrl: "",
+    websiteUrl: "http://w-piano.com",
     relatedEventIds: []
   },
   {
@@ -941,7 +941,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/waseda.chorus/",
     twitterUrl: "https://twitter.com/wasedachorus",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3121",
-    websiteUrl: "",
+    websiteUrl: "https://wasedachorus.com/",
     relatedEventIds: []
   },
   {
@@ -955,7 +955,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/waseda_glee_club/",
     twitterUrl: "https://twitter.com/waseda_glee",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3122",
-    websiteUrl: "",
+    websiteUrl: "https://www.wasedaglee.com/",
     relatedEventIds: []
   },
   {
@@ -969,7 +969,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/chorfluegel/",
     twitterUrl: "https://twitter.com/chorfluegel",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3123",
-    websiteUrl: "",
+    websiteUrl: "https://chorfluegel.org/",
     relatedEventIds: []
   },
   {
@@ -983,7 +983,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/soukon_eins_24/",
     twitterUrl: "https://twitter.com/eins_24_",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3124",
-    websiteUrl: "",
+    websiteUrl: "https://soukon.com/",
     relatedEventIds: []
   },
   {
@@ -997,7 +997,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/scs_acappella/",
     twitterUrl: "https://twitter.com/SCS_Acappella",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3126",
-    websiteUrl: "",
+    websiteUrl: "https://acappellascs.jp",
     relatedEventIds: []
   },
   {
@@ -1165,7 +1165,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/sodaigekiken",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3139",
-    websiteUrl: "",
+    websiteUrl: "https://sodaigekiken.com/",
     relatedEventIds: []
   },
   {
@@ -1207,7 +1207,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/shinaken",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3142",
-    websiteUrl: "",
+    websiteUrl: "https://tomon-scenario-club.github.io/tomon-scenario-club/",
     relatedEventIds: []
   },
   {
@@ -1235,7 +1235,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/waseda_enkura",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3144",
-    websiteUrl: "",
+    websiteUrl: "https://enkurasite2020.wixsite.com/enkura",
     relatedEventIds: []
   },
   {
@@ -1263,7 +1263,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/teatro_50",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3146",
-    websiteUrl: "",
+    websiteUrl: "https://www.teatro50.com/",
     relatedEventIds: []
   },
   {
@@ -1347,7 +1347,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/KarutaWaseda",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3152",
-    websiteUrl: "",
+    websiteUrl: "https://wasedakaruta.com/",
     relatedEventIds: []
   },
   {
@@ -1417,7 +1417,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/my_mu_tou/",
     twitterUrl: "https://twitter.com/maimutou",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3158",
-    websiteUrl: "",
+    websiteUrl: "https://maimutou.info",
     relatedEventIds: []
   },
   {
@@ -1431,7 +1431,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/wasedamitsudomoe/",
     twitterUrl: "https://twitter.com/mitudomoetugaru",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3159",
-    websiteUrl: "",
+    websiteUrl: "https://mitsudomoe.wixsite.com/mitsudome",
     relatedEventIds: []
   },
   {
@@ -1459,7 +1459,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/AgouWASEDA",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3162",
-    websiteUrl: "",
+    websiteUrl: "https://wasedarbbc.wixsite.com/my-site",
     relatedEventIds: []
   },
   {
@@ -1473,7 +1473,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/wasedagwrc",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3163",
-    websiteUrl: "",
+    websiteUrl: "https://wasedagwrugby.com/",
     relatedEventIds: []
   },
   {
@@ -1501,7 +1501,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/wubls/",
     twitterUrl: "https://twitter.com/WUBLS",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3165",
-    websiteUrl: "",
+    websiteUrl: "https://wubls.netlify.app/",
     relatedEventIds: []
   },
   {
@@ -1627,7 +1627,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3175",
-    websiteUrl: "",
+    websiteUrl: "https://www.gakubunkai.net/",
     relatedEventIds: []
   },
   {
@@ -1893,7 +1893,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/wasedaballroom/",
     twitterUrl: "https://twitter.com/wbdc_waseda",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3196",
-    websiteUrl: "",
+    websiteUrl: "https://ameblo.jp/waseda-ballroomdance/",
     relatedEventIds: []
   },
   {
@@ -1949,7 +1949,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/waseda_rikudo/",
     twitterUrl: "https://twitter.com/rikudo_waseda",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3200",
-    websiteUrl: "",
+    websiteUrl: "https://www.waseda.run/",
     relatedEventIds: []
   },
   {
@@ -1963,7 +1963,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/wasedaultimate/",
     twitterUrl: "https://twitter.com/waseda_ultimate",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3201",
-    websiteUrl: "",
+    websiteUrl: "https://www.wasedaultimate.com/",
     relatedEventIds: []
   },
   {
@@ -2047,7 +2047,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/waseda_jiken/",
     twitterUrl: "https://twitter.com/wasedaJIKEN",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3211",
-    websiteUrl: "",
+    websiteUrl: "https://jikenwaseda.jimdofree.com/",
     relatedEventIds: []
   },
   {
@@ -2089,7 +2089,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/wasemisu",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3217",
-    websiteUrl: "",
+    websiteUrl: "https://wmc-mw.sakura.ne.jp/",
     relatedEventIds: []
   },
   {
@@ -2131,7 +2131,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/er_rodo/",
     twitterUrl: "https://twitter.com/ER_rodo",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3268",
-    websiteUrl: "",
+    websiteUrl: "https://www.envrodorigues.com",
     relatedEventIds: []
   },
   {
@@ -2509,7 +2509,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/massken1967/",
     twitterUrl: "https://twitter.com/w_massken",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3641",
-    websiteUrl: "",
+    websiteUrl: "https://waseda-massken.com/",
     relatedEventIds: []
   },
   {
@@ -2523,7 +2523,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/spk_picaso",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3245",
-    websiteUrl: "",
+    websiteUrl: "http://spk.picaso.jp/",
     relatedEventIds: []
   },
   {
@@ -2579,7 +2579,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/saiindan_zazen/",
     twitterUrl: "https://twitter.com/waseda_saiindan",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3728",
-    websiteUrl: "",
+    websiteUrl: "https://mokuyouzazen.jimdofree.com/",
     relatedEventIds: []
   },
   {
@@ -2929,7 +2929,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/winc_w",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3289",
-    websiteUrl: "",
+    websiteUrl: "https://www.winc.ne.jp/",
     relatedEventIds: []
   },
   {
@@ -2943,7 +2943,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/robostep_waseda",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3291",
-    websiteUrl: "",
+    websiteUrl: "https://robostep.sakura.ne.jp/blog/",
     relatedEventIds: []
   },
   {
@@ -3055,7 +3055,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/waseda_mmg/",
     twitterUrl: "https://twitter.com/waseda_mmg",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3302",
-    websiteUrl: "",
+    websiteUrl: "http://www.waseda-mmg.net/",
     relatedEventIds: []
   },
   {
@@ -3223,7 +3223,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/soudaiomnibus",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3319",
-    websiteUrl: "",
+    websiteUrl: "https://soudaiomunibus.wixsite.com/omnibus",
     relatedEventIds: []
   },
   {
@@ -3237,7 +3237,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/kurumeru_11",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3321",
-    websiteUrl: "",
+    websiteUrl: "https://kurumeru05.wixsite.com/kurumerutheater",
     relatedEventIds: []
   },
   {
@@ -3251,7 +3251,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/theatrekontsert/",
     twitterUrl: "https://twitter.com/theatrekontsert",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3322",
-    websiteUrl: "",
+    websiteUrl: "https://www.kontsert.jp",
     relatedEventIds: []
   },
   {
@@ -3265,7 +3265,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/gekidan_shin",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3324",
-    websiteUrl: "",
+    websiteUrl: "https://gekidanshin2020.wixsite.com/shin",
     relatedEventIds: []
   },
   {
@@ -3391,7 +3391,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/seiren.musical/",
     twitterUrl: "https://twitter.com/seirenmusical",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3337",
-    websiteUrl: "",
+    websiteUrl: "https://www.seiren-musical-project.com/",
     relatedEventIds: []
   },
   {
@@ -3489,7 +3489,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/w_anisei",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3345",
-    websiteUrl: "",
+    websiteUrl: "https://wask.anisei.net/",
     relatedEventIds: []
   },
   {
@@ -3657,7 +3657,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/OdoriSamurai",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3360",
-    websiteUrl: "",
+    websiteUrl: "https://odorisamurai-official.studio.site/",
     relatedEventIds: []
   },
   {
@@ -3671,7 +3671,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/tokyo_hanabi/",
     twitterUrl: "https://twitter.com/tokyohanabi4351",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3363",
-    websiteUrl: "",
+    websiteUrl: "https://www.tokyohanabi-official.com/",
     relatedEventIds: []
   },
   {
@@ -3685,7 +3685,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/waseda_shockers/",
     twitterUrl: "https://twitter.com/shockers_waseda",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3364",
-    websiteUrl: "",
+    websiteUrl: "https://www.shockers.jp/",
     relatedEventIds: []
   },
   {
@@ -4273,7 +4273,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/waseda.ski.society/",
     twitterUrl: "https://twitter.com/wss_info",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3441",
-    websiteUrl: "",
+    websiteUrl: "https://wssski.wordpress.com",
     relatedEventIds: []
   },
   {
@@ -4385,7 +4385,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/oasis.waseda/",
     twitterUrl: "https://twitter.com/waseda_oasis",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3451",
-    websiteUrl: "",
+    websiteUrl: "https://wsdoasis.wixsite.com/oasisjazz",
     relatedEventIds: []
   },
   {
@@ -4483,7 +4483,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/ciel_ballet/",
     twitterUrl: "https://twitter.com/Ciel_ballet",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3460",
-    websiteUrl: "",
+    websiteUrl: "https://ciel2007.wixsite.com/wasedaballet",
     relatedEventIds: []
   },
   {
@@ -4609,7 +4609,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/wasedawindsurfing53/",
     twitterUrl: "https://twitter.com/wasedawind53",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3472",
-    websiteUrl: "",
+    websiteUrl: "https://wasedawindsurfing.com/",
     relatedEventIds: []
   },
   {
@@ -4889,7 +4889,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3643",
-    websiteUrl: "",
+    websiteUrl: "https://www.highso-waseda.com/",
     relatedEventIds: []
   },
   {
@@ -4917,7 +4917,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/nogakujuku/",
     twitterUrl: "https://twitter.com/nogakujuku",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3645",
-    websiteUrl: "",
+    websiteUrl: "https://nogakujuku.github.io/official/",
     relatedEventIds: []
   },
   {
@@ -5029,7 +5029,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/wchorus_f/",
     twitterUrl: "https://twitter.com/WChorus_F",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3734",
-    websiteUrl: "",
+    websiteUrl: "https://wasedafemalechorus.wixsite.com/wasejo",
     relatedEventIds: []
   },
   {
@@ -5043,7 +5043,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/wucfs_official/",
     twitterUrl: "https://twitter.com/w_u_c_f_s",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3739",
-    websiteUrl: "",
+    websiteUrl: "https://waseda-futsal.com/",
     relatedEventIds: []
   },
   {
@@ -5057,7 +5057,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/rotary_waseda/",
     twitterUrl: "https://twitter.com/rotary_waseda",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3740",
-    websiteUrl: "",
+    websiteUrl: "https://www.rotary-waseda.com/",
     relatedEventIds: []
   },
   {
@@ -5281,7 +5281,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/waseda_c_s/",
     twitterUrl: "https://twitter.com/waseda_c_s",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3772",
-    websiteUrl: "",
+    websiteUrl: "https://www.waseda-career-society-wcs.com/",
     relatedEventIds: []
   },
   {
@@ -5351,7 +5351,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/tedxwasedau/",
     twitterUrl: "https://twitter.com/tedxwasedau",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3771",
-    websiteUrl: "",
+    websiteUrl: "https://www.tedxwasedau.com/",
     relatedEventIds: []
   },
   {
@@ -5379,7 +5379,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/waseda_Virtual",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3781",
-    websiteUrl: "",
+    websiteUrl: "https://waseda.vken.org/",
     relatedEventIds: []
   },
   {
@@ -5617,7 +5617,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "",
     guideUrl: "",
-    websiteUrl: "",
+    websiteUrl: "https://www.littleyangonpr.com/",
     relatedEventIds: []
   },
   {
@@ -5967,7 +5967,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/waseda_bacchus/",
     twitterUrl: "https://twitter.com/WasedaBacchus",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3515",
-    websiteUrl: "",
+    websiteUrl: "https://wasedabacchus.com/",
     relatedEventIds: []
   },
   {
@@ -6023,7 +6023,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/riko__volley/",
     twitterUrl: "https://twitter.com/rikovolley",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3522",
-    websiteUrl: "",
+    websiteUrl: "https://rikovolley.com/",
     relatedEventIds: []
   },
   {
@@ -6121,7 +6121,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/waseda_rikou_bbc_official/",
     twitterUrl: "https://twitter.com/WasedaRikouBBC",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3530",
-    websiteUrl: "",
+    websiteUrl: "https://rikotaibig6.com/team/waseda/",
     relatedEventIds: []
   },
   {
@@ -6191,7 +6191,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/wasesui_official/",
     twitterUrl: "https://twitter.com/wasesui_sui",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3536",
-    websiteUrl: "",
+    websiteUrl: "https://www.wasesui.net/",
     relatedEventIds: []
   },
   {
@@ -6303,7 +6303,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/wce_official",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3547",
-    websiteUrl: "",
+    websiteUrl: "https://wce.jp/",
     relatedEventIds: []
   },
   {
@@ -6331,7 +6331,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3632",
-    websiteUrl: "",
+    websiteUrl: "https://laissez-faire-tc.com/",
     relatedEventIds: []
   },
   {
@@ -6345,7 +6345,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/waseda_rikoten/",
     twitterUrl: "https://twitter.com/rikoten_circle",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3716",
-    websiteUrl: "",
+    websiteUrl: "https://circle.rikoten.com",
     relatedEventIds: []
   },
   {
@@ -6373,7 +6373,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/igemwaseda/",
     twitterUrl: "https://twitter.com/Wasedaigem",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3736",
-    websiteUrl: "",
+    websiteUrl: "https://igem-waseda.netlify.app/",
     relatedEventIds: []
   },
   {
@@ -6485,7 +6485,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/soukon_novella_23/",
     twitterUrl: "https://twitter.com/novella_23_",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3556",
-    websiteUrl: "",
+    websiteUrl: "https://soukon.com/tokorozawa/",
     relatedEventIds: []
   },
   {
