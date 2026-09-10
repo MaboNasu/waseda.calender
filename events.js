@@ -4818,6 +4818,241 @@ const EVENTS = [
     externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/09/01/24412/",
     lastUpdated: "2026-09-10",
     isPublished: true
+  },
+
+  // ========================================
+  // 75団体サイト情報収集(2026-09-10)で確認したイベント
+  // ========================================
+
+  // ---- 交響楽団(A-060) ----
+
+  {
+    id: "evt-265",
+    title: "早稲田大学交響楽団×林英哲・英哲風雲の会 特別演奏会",
+    date: "2026-09-17",
+    startTime: "19:00",
+    location: "所沢市民文化センター ミューズ アークホール",
+    campus: "outside",
+    organizer: "交響楽団",
+    category: "music",
+    scope: "circle",
+    orgId: "A-060",
+    target: ["student", "obog", "public"],
+    feeType: "paid",
+    feeText: "S席3,000円(学生2,500円)/A席2,500円(学生2,000円)/B席2,000円(学生1,500円)",
+    description: "早稲田大学交響楽団と和太鼓奏者・林英哲率いる英哲風雲の会による特別演奏会。開場18:00。",
+    externalUrl: "https://wso-tokyo.jp/concertinfo/",
+    lastUpdated: "2026-09-10",
+    isPublished: true
+  },
+  {
+    id: "evt-266",
+    title: "早稲田大学交響楽団 秋季演奏会",
+    date: "2026-09-23",
+    startTime: "14:00",
+    location: "東京芸術劇場 コンサートホール",
+    campus: "outside",
+    organizer: "交響楽団",
+    category: "music",
+    scope: "circle",
+    orgId: "A-060",
+    target: ["student", "obog", "public"],
+    feeType: "paid",
+    feeText: "S席2,000円(学生1,500円)/A席1,500円(学生1,000円)/B席1,000円(学生500円)",
+    description: "早稲田大学交響楽団による秋季演奏会。開場13:00。",
+    externalUrl: "https://wso-tokyo.jp/concertinfo/",
+    lastUpdated: "2026-09-10",
+    isPublished: true
+  },
+
+  // ---- マンドリン楽部(A-063) ----
+
+  {
+    id: "evt-267",
+    title: "第217回定期演奏会",
+    date: "2026-12-18",
+    location: "なかのZERO",
+    campus: "outside",
+    organizer: "マンドリン楽部",
+    category: "music",
+    scope: "circle",
+    orgId: "A-063",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "早稲田大学マンドリン楽部の第217回定期演奏会。夜公演。",
+    externalUrl: "http://wasedamandolin.net/concert/",
+    lastUpdated: "2026-09-10",
+    isPublished: true
+  },
+
+  // ---- アンサンブル・リドール(A-069) ----
+
+  {
+    id: "evt-268",
+    title: "リサイタル2026",
+    date: "2026-12-20",
+    location: "府中の森芸術劇場 ふるさとホール",
+    campus: "outside",
+    organizer: "アンサンブル・リドール",
+    category: "music",
+    scope: "circle",
+    orgId: "A-069",
+    target: ["student", "obog", "public"],
+    feeType: "free",
+    feeText: "入場無料",
+    description: "アンサンブル・リドールによるリサイタル。予約不要。",
+    externalUrl: "https://rizdor.github.io/official/",
+    lastUpdated: "2026-09-10",
+    isPublished: true
+  },
+
+  // ---- グリークラブ(A-081) ----
+
+  {
+    id: "evt-269",
+    title: "Sing! Shinjuku!",
+    date: "2026-10-25",
+    startTime: "14:00",
+    location: "新宿文化センター 大ホール",
+    campus: "outside",
+    organizer: "グリークラブ",
+    category: "music",
+    scope: "circle",
+    orgId: "A-081",
+    target: ["student", "obog", "public"],
+    feeType: "paid",
+    feeText: "全席自由1,500円",
+    description: "早稲田大学グリークラブが大久保混声合唱団・おねえCHANズと共演するジョイントコンサート。開場13:30。",
+    externalUrl: "https://www.wasedaglee.com/",
+    lastUpdated: "2026-09-10",
+    isPublished: true
+  },
+
+  // ---- 混声合唱団(A-083) ----
+
+  {
+    id: "evt-270",
+    title: "早稲田大学混声合唱団 第71回定期演奏会",
+    date: "2026-12-13",
+    startTime: "17:00",
+    location: "府中の森芸術劇場 どりーむホール",
+    campus: "outside",
+    organizer: "混声合唱団",
+    category: "music",
+    scope: "circle",
+    orgId: "A-083",
+    target: ["student", "obog", "public"],
+    feeType: "paid",
+    feeText: "前売1,800円/当日2,000円/高校生500円",
+    description: "早稲田大学混声合唱団の第71回定期演奏会。",
+    externalUrl: "https://soukon.com/concerts/",
+    lastUpdated: "2026-09-10",
+    isPublished: true
+  },
+
+  // ---- 早稲田大学GWラグビークラブ(A-122) ----
+
+  {
+    id: "evt-271",
+    title: "クラブ選手権",
+    date: "2026-09-20",
+    startTime: "14:30",
+    location: "駒沢補助競技場",
+    campus: "outside",
+    organizer: "早稲田大学GWラグビークラブ",
+    category: "sports",
+    scope: "circle",
+    orgId: "A-122",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "早稲田大学GWラグビークラブ(GW)によるクラブ選手権の試合。GWは早稲田大学ラグビー蹴球部(体育各部)とは別の、OB・現役混成のクラブチーム。",
+    externalUrl: "https://wasedagwrugby.com/schedule/8242",
+    lastUpdated: "2026-09-10",
+    isPublished: true
+  },
+  {
+    id: "evt-272",
+    title: "クラブ選手権",
+    date: "2026-09-27",
+    startTime: "12:45",
+    location: "荒川緑地",
+    campus: "outside",
+    organizer: "早稲田大学GWラグビークラブ",
+    category: "sports",
+    scope: "circle",
+    orgId: "A-122",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "早稲田大学GWラグビークラブ(GW)によるクラブ選手権の試合。GWは早稲田大学ラグビー蹴球部(体育各部)とは別の、OB・現役混成のクラブチーム。",
+    externalUrl: "https://wasedagwrugby.com/schedule/8242",
+    lastUpdated: "2026-09-10",
+    isPublished: true
+  },
+
+  // ---- (劇団)森(C-082) ----
+
+  {
+    id: "evt-273",
+    title: "劇団森2026年度新人公演『いだだだだ・ダダダ・だだ』",
+    date: "2026-09-18",
+    endDate: "2026-09-20",
+    location: "",
+    campus: "outside",
+    organizer: "（劇団）森",
+    category: "theater",
+    scope: "circle",
+    orgId: "C-082",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "（劇団）森による2026年度新人公演。9/18(金)18:00、9/19(土)13:00・18:00、9/20(日)13:00開演。",
+    externalUrl: "https://ticket.corich.jp/apply/482721/",
+    lastUpdated: "2026-09-10",
+    isPublished: true
+  },
+  {
+    id: "evt-274",
+    title: "2026年度10月企画公演『姦しい女たち』",
+    date: "2026-10-09",
+    endDate: "2026-10-11",
+    location: "",
+    campus: "outside",
+    organizer: "（劇団）森",
+    category: "theater",
+    scope: "circle",
+    orgId: "C-082",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "（劇団）森による2026年度10月企画公演。10/9(金)18:00、10/10(土)13:00・18:00、10/11(日)11:00・15:00開演。",
+    externalUrl: "http://ticket.corich.jp/apply/481797/",
+    lastUpdated: "2026-09-10",
+    isPublished: true
+  },
+
+  // ---- ハイソサエティ・オーケストラ(C-263) ----
+
+  {
+    id: "evt-275",
+    title: "HSO×BSSO×OUJO Big Band Jazz concert",
+    date: "2026-09-19",
+    startTime: "17:50",
+    location: "小野記念講堂",
+    campus: "waseda",
+    organizer: "ハイソサエティ・オーケストラ",
+    category: "music",
+    scope: "circle",
+    orgId: "C-263",
+    target: ["student", "obog", "public"],
+    feeType: "free",
+    feeText: "入場無料",
+    description: "早稲田大学ハイソサエティ・オーケストラ(HSO)が他大学ビッグバンドサークルと共演するジャズコンサート。予約不要。",
+    externalUrl: "https://www.highso-waseda.com/",
+    lastUpdated: "2026-09-10",
+    isPublished: true
   }
 
 ];
