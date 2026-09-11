@@ -66,6 +66,16 @@ const REACTION_TYPES = {
 
 let calendarYear, calendarMonth;
 
+/** 複数日イベントのうち、この日数以上を「長期開催イベント」として扱う閾値。
+ *  長期開催イベント(展示等)は月間カレンダーの週バーには出さず、別枠の
+ *  「長期開催イベント」ウィジェットに表示する（renderLongRunningEventsWidget参照）。
+ *  この値を変えるだけで閾値を一箇所で調整できる。 */
+const LONG_RUNNING_EVENT_THRESHOLD_DAYS = 14;
+
+/** 週の複数日バーに同時表示するレーン数の上限。単日イベント側の「最大3件+他N件」と
+ *  統一し、超過分は日単位の「他N件」に畳み込む（renderCalendarGrid参照）。 */
+const MAX_VISIBLE_WEEK_BAR_LANES = 3;
+
 let activeFilters = {
   scope:    '',
   category: '',
@@ -135,6 +145,23 @@ function isEventOnDate(ev, dateStr) {
 /** 複数日（endDateがdateと異なる）イベントかどうか */
 function isMultiDay(ev) {
   return getEventEnd(ev) !== ev.date;
+}
+
+/** イベントの開催日数（date〜endDateの日数。単日なら1）。UTC基準のミリ秒差分で
+ *  計算するため、実行環境のタイムゾーンによらず日数がずれない。 */
+function eventDurationDays(ev) {
+  const [sy, sm, sd] = ev.date.split('-').map(Number);
+  const [ey, em, ed] = getEventEnd(ev).split('-').map(Number);
+  const start = Date.UTC(sy, sm - 1, sd);
+  const end   = Date.UTC(ey, em - 1, ed);
+  return Math.round((end - start) / 86400000) + 1;
+}
+
+/** 開催日数がLONG_RUNNING_EVENT_THRESHOLD_DAYS以上の「長期開催イベント」かどうか。
+ *  月間カレンダーの週バーからは除外し、renderLongRunningEventsWidgetで別途表示する
+ *  （showDayEventsの日別一覧には isEventOnDate 経由で引き続き含まれる）。 */
+function isLongRunningEvent(ev) {
+  return isMultiDay(ev) && eventDurationDays(ev) >= LONG_RUNNING_EVENT_THRESHOLD_DAYS;
 }
 
 /** 開催終了済みかどうか（終了日が今日より前）。UI上の「終了しました」表示にのみ使う。
@@ -656,6 +683,67 @@ function renderUpcomingEvents(allFiltered) {
 }
 
 /* ============================================================
+   長期開催イベント(展示等)のウィジェット
+   ============================================================ */
+/** 表示中の月にかかる長期開催イベント(LONG_RUNNING_EVENT_THRESHOLD_DAYS日以上)を
+ *  コンパクトに一覧表示する。「今日」ではなく calendarYear/calendarMonth（表示中の月）
+ *  基準で絞り込むため、前月・翌月に移動すると表示内容もその月基準に切り替わる。
+ *  週バーからは除外されるが、showDayEvents（日別一覧）には isEventOnDate 経由で
+ *  引き続き含まれる（renderCalendarGrid/renderCalendarList参照）。 */
+function renderLongRunningEventsWidget(longRunningEvents) {
+  const wrap = document.getElementById('long-running-events');
+  if (!wrap) return;
+
+  const monthStart = formatDateStr(new Date(calendarYear, calendarMonth, 1));
+  const monthEnd   = formatDateStr(new Date(calendarYear, calendarMonth + 1, 0));
+
+  const inMonth = longRunningEvents
+    .filter(ev => ev.date <= monthEnd && getEventEnd(ev) >= monthStart)
+    .sort((a, b) => getEventEnd(a).localeCompare(getEventEnd(b)) || a.date.localeCompare(b.date));
+
+  if (inMonth.length === 0) {
+    wrap.innerHTML = '';
+    wrap.hidden = true;
+    return;
+  }
+  wrap.hidden = false;
+
+  const VISIBLE_COUNT = 4;
+  const items = inMonth.map((ev, i) => {
+    const endLabel = formatShortDate(getEventEnd(ev));
+    // 表示中の月より前から始まっている場合は「〜終了日」、月内に開始する場合は「開始日〜終了日」
+    const rangeLabel = ev.date < monthStart ? `〜${endLabel}` : `${formatShortDate(ev.date)}〜${endLabel}`;
+    const extraClass = i >= VISIBLE_COUNT ? ' long-running-item-extra' : '';
+    return `<li class="long-running-item${extraClass}" onclick="openModal('${escapeHtml(String(ev.id))}')">
+      <span class="long-running-item-title">${escapeHtml(ev.title)}</span>
+      <span class="long-running-item-range">${escapeHtml(rangeLabel)}</span>
+    </li>`;
+  }).join('');
+
+  const moreBtn = inMonth.length > VISIBLE_COUNT
+    ? `<button type="button" class="long-running-more-btn" onclick="toggleLongRunningWidget()">すべて見る（他${inMonth.length - VISIBLE_COUNT}件）</button>`
+    : '';
+
+  wrap.innerHTML = `
+    <div class="long-running-widget">
+      <h3 class="long-running-widget-title">長期開催イベント</h3>
+      <ul class="long-running-list">${items}</ul>
+      ${moreBtn}
+    </div>`;
+}
+
+/** 「すべて見る」クリック時：隠れていた項目を表示してボタン自体は消す。
+ *  月移動・絞り込み変更で再描画されると折りたたみ状態に戻る（本日/今週の
+ *  「さらに表示」と同じ挙動。collapseGridToOneRowのコメント参照）。 */
+function toggleLongRunningWidget() {
+  const widget = document.querySelector('#long-running-events .long-running-widget');
+  if (!widget) return;
+  widget.classList.add('expanded');
+  const btn = widget.querySelector('.long-running-more-btn');
+  if (btn) btn.hidden = true;
+}
+
+/* ============================================================
    カレンダー（PC: グリッド表示）
    ============================================================ */
 /** @param {Array} [allFiltered] renderAll()から受け取れば再計算を省ける。 */
@@ -686,14 +774,19 @@ function renderCalendarGrid(allFiltered) {
     cells.push({ dateStr: formatDateStr(dateObj), dayNum: d, otherMonth: true, jsDow: dateObj.getDay() });
   }
 
-  // 2. 単日イベントと複数日イベントを分ける（複数日イベントは週単位のバーとして別途描画）
-  const multiDayEvents = filtered.filter(isMultiDay);
+  // 2. 単日イベント・複数日イベント(短期)・長期開催イベントの3種に分ける。
+  //    長期開催イベントは週バーの対象から外し、renderLongRunningEventsWidgetで別枠表示する
+  //    （日別一覧では isEventOnDate 経由で引き続き見られる。showDayEvents参照）。
+  const shortMultiDayEvents = filtered.filter(ev => isMultiDay(ev) && !isLongRunningEvent(ev));
+  const longRunningEvents   = filtered.filter(isLongRunningEvent);
   const singleDayByDate = {};
   filtered.filter(ev => !isMultiDay(ev)).forEach(ev => {
     if (isHiddenOnSunday(ev, ev.date)) return;
     if (!singleDayByDate[ev.date]) singleDayByDate[ev.date] = [];
     singleDayByDate[ev.date].push(ev);
   });
+
+  renderLongRunningEventsWidget(longRunningEvents);
 
   const BAR_HEIGHT = 18; // px（1レーンあたりの高さ。style.cssの.event-barと合わせること）
   let html = '';
@@ -704,9 +797,9 @@ function renderCalendarGrid(allFiltered) {
     const weekStart = week[0].dateStr;
     const weekEnd   = week[6].dateStr;
 
-    // この週にかかる複数日イベントのバー区間を計算
+    // この週にかかる複数日イベント(短期)のバー区間を計算
     const bars = [];
-    multiDayEvents.forEach(ev => {
+    shortMultiDayEvents.forEach(ev => {
       const evEnd = getEventEnd(ev);
       if (ev.date > weekEnd || evEnd < weekStart) return;
       const segStart = ev.date > weekStart ? ev.date : weekStart;
@@ -735,11 +828,24 @@ function renderCalendarGrid(allFiltered) {
       laneEndCols[lane] = bar.startCol + bar.span - 1;
       bar.lane = lane;
     });
-    const maxLanes = laneEndCols.length;
-    const dayEventsOffset = maxLanes > 0 ? `${maxLanes * BAR_HEIGHT + 6}px` : '';
+
+    // レーン数はMAX_VISIBLE_WEEK_BAR_LANESで打ち切り、週の高さを安定させる。
+    // 超過分(hiddenBars)は個別の週ポップアップを作らず、日単位の「他N件」に畳み込む（後述）。
+    const visibleBars = bars.filter(bar => bar.lane < MAX_VISIBLE_WEEK_BAR_LANES);
+    const hiddenBars   = bars.filter(bar => bar.lane >= MAX_VISIBLE_WEEK_BAR_LANES);
+    const shownLanes   = Math.min(laneEndCols.length, MAX_VISIBLE_WEEK_BAR_LANES);
+    const dayEventsOffset = shownLanes > 0 ? `${shownLanes * BAR_HEIGHT + 6}px` : '';
+
+    // 列インデックス(0〜6)ごとに、レーン超過で非表示になった複数日イベントの件数を集計
+    const hiddenMultiDayCountByCol = {};
+    hiddenBars.forEach(bar => {
+      for (let c = bar.startCol; c < bar.startCol + bar.span; c++) {
+        hiddenMultiDayCountByCol[c] = (hiddenMultiDayCountByCol[c] || 0) + 1;
+      }
+    });
 
     // 日セルのHTML
-    const dayCellsHtml = week.map(cell => {
+    const dayCellsHtml = week.map((cell, colIdx) => {
       if (cell.otherMonth) {
         return `<div class="calendar-day other-month"><span class="day-num">${cell.dayNum}</span></div>`;
       }
@@ -754,18 +860,23 @@ function renderCalendarGrid(allFiltered) {
       const chips   = dayEvs.slice(0, maxShow).map(ev =>
         `<div class="day-event-chip ${categoryClass(ev.category)}" onclick="openModal('${escapeHtml(String(ev.id))}')" title="${escapeHtml(ev.title)}">${escapeHtml(ev.title)}</div>`
       ).join('');
-      const moreBtn = dayEvs.length > maxShow
-        ? `<div class="day-more" onclick="showDayEvents('${cell.dateStr}')">他${dayEvs.length - maxShow}件</div>`
+      // その日に存在するが画面上には表示されない件数（単日の超過分＋複数日バーのレーン超過分）を
+      // 1つの「他N件」にまとめる。同じ日に「+N」が複数出ないようにするための統合カウント。
+      const hiddenSingle = Math.max(0, dayEvs.length - maxShow);
+      const hiddenMultiDay = hiddenMultiDayCountByCol[colIdx] || 0;
+      const totalHidden = hiddenSingle + hiddenMultiDay;
+      const moreBtn = totalHidden > 0
+        ? `<div class="day-more" onclick="showDayEvents('${cell.dateStr}')">他${totalHidden}件</div>`
         : '';
       const dayEventsStyle = dayEventsOffset ? ` style="margin-top:${dayEventsOffset}"` : '';
-      const dayNumClass = dayEvs.length > 0 ? 'day-num day-num-clickable' : 'day-num';
-      const dayNumClick = dayEvs.length > 0 ? ` onclick="showDayEvents('${cell.dateStr}')"` : '';
+      const dayNumClass = (dayEvs.length > 0 || hiddenMultiDay > 0) ? 'day-num day-num-clickable' : 'day-num';
+      const dayNumClick = (dayEvs.length > 0 || hiddenMultiDay > 0) ? ` onclick="showDayEvents('${cell.dateStr}')"` : '';
 
       return `<div class="${classes}"${holidayTitle}>${holidayMark}<span class="${dayNumClass}"${dayNumClick}>${cell.dayNum}</span><div class="day-events"${dayEventsStyle}>${chips}${moreBtn}</div></div>`;
     }).join('');
 
-    // 複数日イベントのバーHTML（週の7列に対する絶対配置オーバーレイ）
-    const barsHtml = bars.map(bar => {
+    // 複数日イベントのバーHTML（週の7列に対する絶対配置オーバーレイ。表示上限内のレーンのみ）
+    const barsHtml = visibleBars.map(bar => {
       const leftPct  = (bar.startCol / 7) * 100;
       const widthPct = (bar.span / 7) * 100;
       const topPx    = bar.lane * BAR_HEIGHT;
@@ -775,7 +886,7 @@ function renderCalendarGrid(allFiltered) {
       ].filter(Boolean).join(' ');
       return `<div class="event-bar ${categoryClass(bar.ev.category)} ${edgeClasses}" style="left:${leftPct}%;width:${widthPct}%;top:${topPx}px;" onclick="openModal('${escapeHtml(String(bar.ev.id))}')" title="${escapeHtml(bar.ev.title)}">${escapeHtml(bar.ev.title)}</div>`;
     }).join('');
-    const weekBarsHtml = bars.length > 0 ? `<div class="week-bars">${barsHtml}</div>` : '';
+    const weekBarsHtml = visibleBars.length > 0 ? `<div class="week-bars">${barsHtml}</div>` : '';
 
     html += `<div class="calendar-week">${dayCellsHtml}${weekBarsHtml}</div>`;
   }
@@ -801,12 +912,17 @@ function renderCalendarList(allFiltered) {
   const now = new Date();
   const isCurrentMonth = calendarYear === now.getFullYear() && calendarMonth === now.getMonth();
 
-  // 複数日イベントも、その月にかかる日すべてに表示する（isEventOnDateで判定）
+  // 長期開催イベント(展示等)は、PC版のカレンダーグリッドと同様にリストからも除外し、
+  // 別枠のrenderLongRunningEventsWidgetにまとめる（毎日同じ展示が延々表示され続けるのを防ぐ）。
+  // showDayEvents（日クリック時の一覧）には isEventOnDate 経由で引き続き含まれる。
+  renderLongRunningEventsWidget(filtered.filter(isLongRunningEvent));
+
+  // 複数日イベント(短期)も、その月にかかる日すべてに表示する（isEventOnDateで判定）
   const totalDays = new Date(calendarYear, calendarMonth + 1, 0).getDate();
   for (let d = 1; d <= totalDays; d++) {
     const dateStr = formatDateStr(new Date(calendarYear, calendarMonth, d));
     if (isCurrentMonth && dateStr < today) continue;
-    const dayEvs = filtered.filter(ev => isEventOnDate(ev, dateStr));
+    const dayEvs = filtered.filter(ev => isEventOnDate(ev, dateStr) && !isLongRunningEvent(ev));
     if (dayEvs.length > 0) evByDate[dateStr] = dayEvs;
   }
 
@@ -898,7 +1014,7 @@ function renderCalendar(allFiltered) {
    特定日のイベント一覧（「他N件」クリック時）
    ============================================================ */
 function showDayEvents(dateStr) {
-  const filtered  = getFilteredEvents().filter(ev => ev.date === dateStr && !isHiddenOnSunday(ev, dateStr));
+  const filtered  = getFilteredEvents().filter(ev => isEventOnDate(ev, dateStr));
   const dateDisp  = formatDateDisplay(dateStr);
   if (filtered.length === 0) return;
 
@@ -1544,8 +1660,8 @@ function setupFilters() {
   });
 }
 
-/** 絞り込みパネルの開閉（CSSは filter-toggle の aria-expanded 属性を見て768px以下でのみ
- *  折りたたむため、ここではその属性を反転させるだけでよい） */
+/** 絞り込みパネルの開閉（CSSは filter-toggle の aria-expanded 属性を見て折りたたむため
+ *  （PC/モバイル共通、style.css参照）、ここではその属性を反転させるだけでよい） */
 function setupFilterToggle() {
   const toggleBtn = document.getElementById('filter-toggle');
   if (!toggleBtn) return;

@@ -390,6 +390,11 @@ ul, ol { list-style: none; }
   border-radius: 999px;
   vertical-align: middle;
 }
+/* [hidden]属性はデフォルトでdisplay:noneになるが、上のdisplay:inline-blockが
+   同じ詳細度(クラス1個分)で後勝ちして上書きしてしまい、hidden指定時も
+   幅16px×高さ3px程度の空バッジが常に見え続けてしまうバグがあったため、
+   IDセレクタで明示的に上書きする(PCフィルター折りたたみ化に伴い発見・修正)。 */
+#filter-active-badge[hidden] { display: none; }
 .filter-toggle-icon { font-size: 0.8rem; color: var(--gray-500); transition: transform var(--transition); flex-shrink: 0; }
 .filter-title[aria-expanded="true"] .filter-toggle-icon { transform: rotate(180deg); }
 .filter-grid {
@@ -430,13 +435,15 @@ ul, ol { list-style: none; }
 }
 .filter-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
 
-/* スマホでは絞り込みパネルを初期状態で折りたたむ(タイトルのaria-expanded属性で判定、
-   JS実行前から効くのでチラつきが出ない)。ヒーロー・おすすめカードの下にこのパネルが
-   常時フル表示だと、本日/今週のイベントに辿り着くまでのスクロール量が大きくなりすぎる
-   問題への対応。PC(768px超)は元々の常時展開のまま変更しない。 */
-@media (max-width: 768px) {
-  #filter-toggle[aria-expanded="false"] + #filter-body { display: none; }
-}
+/* 絞り込みパネルは初期状態で折りたたむ(タイトルのaria-expanded属性で判定、JS実行前から
+   効くのでチラつきが出ない)。ヒーロー・おすすめカードの下にこのパネルが常時フル表示だと、
+   本日/今週のイベント・カレンダーに辿り着くまでのスクロール量が大きくなりすぎる問題への
+   対応。以前はPC(768px超)のみ常時展開のままにしていたが、本日/今週セクションが既に同じ
+   理由で折りたたみ表示になっている（collapseGridToOneRow参照）こととの一貫性、および
+   絞り込み条件はfilter-active-badgeで折りたたみ中でも分かることから、2026-09時点でPCも
+   モバイルと同じ初期折りたたみに統一した。開閉ロジック(setupFilterToggle)自体は元々
+   画面幅を見ていないため、ここではCSSのメディアクエリを外すだけでよい。 */
+#filter-toggle[aria-expanded="false"] + #filter-body { display: none; }
 
 /* ============================================================
    イベントカード
@@ -850,6 +857,57 @@ ul, ol { list-style: none; }
   transition: background var(--transition);
 }
 .calendar-nav-btn:hover { background: rgba(255,255,255,0.35); }
+
+/* 長期開催イベント(展示等)ウィジェット。表示中の月にかかるものだけをコンパクトに
+   一覧表示する（「今日」ではなく表示中の月に連動。script.js の
+   renderLongRunningEventsWidget を参照）。 */
+#long-running-events[hidden] { display: none; }
+.long-running-widget {
+  padding: 0.7rem 1.5rem;
+  background: var(--enjy-pale);
+  border-bottom: 1px solid var(--border);
+}
+.long-running-widget-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--gray-600);
+  letter-spacing: 0.04em;
+  margin: 0 0 0.35rem;
+}
+.long-running-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.3rem; }
+.long-running-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+.long-running-item::before { content: "・"; color: var(--enjy); flex: 0 0 auto; }
+.long-running-item-title {
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+.long-running-item:hover .long-running-item-title { color: var(--enjy); }
+.long-running-item-range { flex: 0 0 auto; font-size: 0.72rem; color: var(--gray-500); }
+.long-running-item-extra { display: none; }
+.long-running-widget.expanded .long-running-item-extra { display: flex; }
+.long-running-more-btn {
+  display: block;
+  margin-top: 0.4rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--enjy);
+  cursor: pointer;
+}
+.long-running-more-btn:hover { text-decoration: underline; }
+
 .calendar-grid-view { display: block; }
 .calendar-list-view { display: none; }
 .calendar-weekdays {
@@ -1890,6 +1948,7 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   .calendar-list-view { display: block; }
   .calendar-nav { padding: 1rem; }
   .calendar-nav-title { font-size: 1rem; }
+  .long-running-widget { padding: 0.6rem 1rem; }
   .cal-list-day-header { padding: 0.75rem 1rem; }
   .cal-list-events { padding: 0.5rem 1rem 0.75rem; }
   .modal-detail-grid { grid-template-columns: 1fr; }
