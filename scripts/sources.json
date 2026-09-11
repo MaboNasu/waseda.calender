@@ -1,5 +1,5 @@
 {
-  "_readme": "早稲田大学関連のイベント情報源URL一覧。scripts/check-sources.js がこのファイルの各URLを取得し、前回チェック時とのcontentHashを比較して変更を検知する。lastCheckedとcontentHashはスクリプトが自動更新する（手動で編集しない）。notesは調査時のメモで、手動更新でOK。新しい情報源に気づいたら sources 配列に追記する。\n\nsourceType: \"club\"(1団体1サイト。既存の大半)か\"institutional\"(大学・学部・センター等が運営する、複数イベントが載る一覧ページ)を区別する。institutionalなソースは1回のチェックで複数の新規イベント候補が見つかる前提で分析すること。expectedGenres: そのソースが供給しやすいcategoryの配列（参考情報。将来「このソースは何件イベントを供給できているか」を評価する際に使う）。\n\npriority: そのソースがイベント情報源としてどれだけ価値が高いかの目安(A/B/C)。institutionalは既定でA、clubは既定でB、既存notesで情報の薄さ・取得困難が既に分かっているものはC。\ncloudAccessible: クラウド上のClaude Codeセッション(組織のネットワークegressポリシーの制約下)からこのURLに実際にアクセスできるか(true/false)。2026-09-10時点の実測に基づく。組織のポリシーは変わりうるため、定期的な再確認が望ましい。\npreferredReader: 変更検知後、誰(cloud=クラウドのClaude Code / local=ローカルのClaude Code+Chrome連携 / gpt=ChatGPT等)がこのソースの中身を読んで判断すべきかの既定値。cloudAccessibleがfalse、またはjsRenderedがtrueのソースはlocalを既定とする(クラウド側はJS描画ページを正しく取得できないため)。\n\norgId: organizations.js内の団体IDとの対応（新規追加ソースのみ持つ、任意）。",
+  "_readme": "早稲田大学関連のイベント情報源URL一覧。scripts/check-sources.js がこのファイルの各URLを取得し、前回チェック時とのcontentHashを比較して変更を検知する。lastCheckedとcontentHashはスクリプトが自動更新する（手動で編集しない）。notesは調査時のメモで、手動更新でOK。新しい情報源に気づいたら sources 配列に追記する。\n\nsourceType: \"club\"(1団体1サイト。既存の大半)か\"institutional\"(大学・学部・センター等が運営する、複数イベントが載る一覧ページ)を区別する。institutionalなソースは1回のチェックで複数の新規イベント候補が見つかる前提で分析すること。expectedGenres: そのソースが供給しやすいcategoryの配列（参考情報。将来「このソースは何件イベントを供給できているか」を評価する際に使う）。\n\npriority: そのソースがイベント情報源としてどれだけ価値が高いかの目安(A/B/C)。institutionalは既定でA、clubは既定でB、既存notesで情報の薄さ・取得困難が既に分かっているものはC。\ncloudAccessible: クラウド上のClaude Codeセッション(組織のネットワークegressポリシーの制約下)からこのURLに実際にアクセスできるか(true/false)。2026-09-10時点の実測に基づく。組織のポリシーは変わりうるため、定期的な再確認が望ましい。\npreferredReader: 変更検知後、誰(cloud=クラウドのClaude Code / local=ローカルのClaude Code+Chrome連携 / gpt=ChatGPT等)がこのソースの中身を読んで判断すべきかの既定値。cloudAccessibleがfalse、またはjsRenderedがtrueのソースはlocalを既定とする(クラウド側はJS描画ページを正しく取得できないため)。\n\norgId: organizations.js内の団体IDとの対応（新規追加ソースのみ持つ、任意）。\n\nurlTemplate / monthOffsets: 月別ページ({YYYY-MM}のようなプレースホルダを含むURLパターン)を、複数月分まとめて1エントリで自動追跡したい場合に使う(通常のurlのみのソースでは使わない、任意)。urlTemplateにプレースホルダ付きURLパターンを、monthOffsetsに追跡したい月オフセットの配列(例: [0,1,2,3]で当月+3ヶ月先)を指定すると、check-sources.js実行時点の年月から毎回動的にURLを計算して取得するため、日付をハードコードしたエントリを毎月手動で足す必要がない。この場合contentHash/dateTokensHashはoffset文字列をキーとするオブジェクト({\"0\": \"...\", \"1\": \"...\"})になり、urlフィールドはoffset 0(先頭要素)の代表URLとして毎回再計算される参考値。変更検知時はlast-check-changed.jsonの当該エントリにoffsetsフィールド(変更があったoffsetごとのym/url/changeStatus)が追加される。",
   "version": 3,
   "sources": [
     {
@@ -2461,11 +2461,13 @@
       "id": "waseda-culture-event-calendar",
       "name": "早稲田文化 イベントカレンダー(月別)",
       "category": "culture",
-      "url": "https://www.waseda.jp/culture/event/",
+      "urlTemplate": "https://www.waseda.jp/culture/event/?date={YYYY-MM}",
+      "monthOffsets": [0, 1, 2, 3],
+      "url": "https://www.waseda.jp/culture/event/?date=2026-09",
       "lastChecked": null,
-      "contentHash": null,
-      "notes": "2026-09-11実査: waseda-culture-news(/culture/news)やwaseda-events-list(/top/event/list)とは別の、月別カレンダー形式のページ。実査時点で8件以上のイベントが日時・会場付きで構造化されて掲載されていることを確認。?date=YYYY-MM で前月/次月に移動できるが、現状は基準URL(当月分)のみ追跡する。数ヶ月先までの早期発見が必要なら、date=を固定した追加エントリを都度手動で足すか、check-sources.js側に月オフセット自動生成ロジックを追加するか、方針をオーナーと相談してから決める(2026-09-11時点では未実施)。",
-      "dateTokensHash": null,
+      "contentHash": {},
+      "notes": "2026-09-11実査: waseda-culture-news(/culture/news)やwaseda-events-list(/top/event/list)とは別の、月別カレンダー形式のページ。実査時点で8件以上のイベントが日時・会場付きで構造化されて掲載されていることを確認。?date=YYYY-MM で任意の年月に直接アクセスでき、パラメータ無しの基準URLはdate=当月と完全に同一内容であることを確認済み。2026-09-11: check-sources.jsにmonthOffsets機構を実装し、当月+3ヶ月先(offset 0/1/2/3、実査で全offset間でcontentHashが異なる=実際に別データであることを確認済み)を1エントリのまま自動追跡するよう変更。urlTemplateの{YYYY-MM}は実行時点の年月+offsetで毎回動的に計算するため、日付をハードコードした個別エントリを毎月足す必要はない。offsetごとのcontentHash/dateTokensHashはオブジェクト形式({\"0\": \"...\", \"1\": \"...\", ...})で保持。変更検知時はlast-check-changed.jsonのoffsetsフィールドに、どのoffset(年月)がchanged-dates/changed-otherだったかが個別URL付きで出力されるので、レビュー時はそのURLを直接開けばよい。urlフィールドはoffset 0(当月)の代表URLとして毎回再計算される参考値であり、フェッチ対象の正はurlTemplate+monthOffsets側。",
+      "dateTokensHash": {},
       "sourceType": "institutional",
       "expectedGenres": [
         "culture",
