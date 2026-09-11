@@ -2477,6 +2477,25 @@
       "priority": "A"
     },
     {
+      "id": "waseda-subsidy-procedures-anchor",
+      "name": "課外活動補助金について(手続きページ・発見用アンカー)",
+      "category": "community",
+      "url": "https://www.waseda.jp/inst/student/circle/procedures/subsidiary",
+      "lastChecked": null,
+      "contentHash": null,
+      "notes": "直接イベント情報が載るページではなく、年度ごとの「公認サークルおよび課外活動補助金について」お知らせページへのリンクを継続的に検出するための発見用アンカー(2026-09-11追加。2026-09-10のラウンド1では『実際のイベント一覧が見つからない』として一度却下した候補だが、目的を『イベント一覧』ではなく『新しい年度ページへのリンクの発見』に切り替えて再評価し採用)。2026-09-11実査時点で /inst/student/news/N 形式のリンクが4件確認できた: 2026年度秋学期(news/12223)・2026年度(news/12049)・2025年度秋学期(news/10905)・2025年度(news/10286)。各リンクのアンカーテキスト自体に年度が含まれるため、新しい年度のお知らせが追加/更新されればcontentHashが変化し既存の変更検知でそのまま検出できる(通常の日付トークン正規表現には一致しないため大抵changed-datesではなくchanged-other判定になる想定。レビュー時に留意)。コード変更は不要と判断し、このURLをsources.jsonに追加するだけで済ませた。変更検知時は本URLを開いて新しい/inst/student/news/Nリンクを探し、そのリンク先ページを確認すること。リンク先の年度別ページ自体は「公認サークル一覧」「課外活動補助金査定結果」等の事務的PDFへのリンク集であり、通常はイベント情報そのものではない。ただし2026年度ページには「2026年度 課外活動補助金 対象イベント・決定コース一覧」という名称のPDF(https://waseda.box.com/shared/static/ood6x9v34zpb8tmtvp1kf0wo8prilrmm.pdf )が含まれており、補助金対象になった具体的イベント名が載っている可能性がある。check-sources.jsはHTML本文のみを取得しPDFは扱わないため、このPDFの中身の確認・活用は今回のタスク範囲外とし、次回以降の人間+AIレビューに委ねる。",
+      "dateTokensHash": null,
+      "sourceType": "discovery",
+      "expectedGenres": [
+        "community",
+        "culture",
+        "other"
+      ],
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "B"
+    },
+    {
       "id": "waseda-culture-arts-week",
       "name": "早稲田文化芸術週間",
       "category": "culture",
