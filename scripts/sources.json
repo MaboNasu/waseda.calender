@@ -2456,6 +2456,139 @@
       "cloudAccessible": true,
       "preferredReader": "cloud",
       "priority": "B"
+    },
+    {
+      "id": "waseda-culture-event-calendar",
+      "name": "早稲田文化 イベントカレンダー(月別)",
+      "category": "culture",
+      "url": "https://www.waseda.jp/culture/event/",
+      "lastChecked": null,
+      "contentHash": null,
+      "notes": "2026-09-11実査: waseda-culture-news(/culture/news)やwaseda-events-list(/top/event/list)とは別の、月別カレンダー形式のページ。実査時点で8件以上のイベントが日時・会場付きで構造化されて掲載されていることを確認。?date=YYYY-MM で前月/次月に移動できるが、現状は基準URL(当月分)のみ追跡する。数ヶ月先までの早期発見が必要なら、date=を固定した追加エントリを都度手動で足すか、check-sources.js側に月オフセット自動生成ロジックを追加するか、方針をオーナーと相談してから決める(2026-09-11時点では未実施)。",
+      "dateTokensHash": null,
+      "sourceType": "institutional",
+      "expectedGenres": [
+        "culture",
+        "lecture",
+        "music"
+      ],
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "A"
+    },
+    {
+      "id": "waseda-culture-arts-week",
+      "name": "早稲田文化芸術週間",
+      "category": "culture",
+      "url": "https://www.waseda.jp/culture/events/week/",
+      "lastChecked": null,
+      "contentHash": null,
+      "notes": "例年10月開催の学内横断イベント週間。waseda-culture-newsのnotesで存在は把握されていたが未追跡だったため独立ソース化(2026-09-11)。実査時点で2026年度は10/9-10/21開催、約30企画(プレゼント企画4件・地域連携2件・ライブコンサート5件・ミュージアム展示5件等)がカテゴリ別に掲載されていることを確認。個別企画の詳細は随時更新とのことなので、開催期間が近づくほど変更検知の価値が上がる季節性ソース。",
+      "dateTokensHash": null,
+      "sourceType": "seasonal",
+      "expectedGenres": [
+        "culture",
+        "music",
+        "lecture"
+      ],
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "A"
+    },
+    {
+      "id": "wasedasai-official",
+      "name": "早稲田祭 公式サイト",
+      "category": "community",
+      "url": "https://wasedasai.net/",
+      "lastChecked": null,
+      "contentHash": null,
+      "notes": "2026-09-11実査時点では2025年度(11/1-2開催)の情報のまま。450企画超を検索できる企画検索ページ(/search)を持つ大規模discoveryソース。2026年度版に切り替わるタイミング自体が重要な変更シグナルになるため、現状の「まだ2025年のまま」の状態も含めて追跡する意義がある。2026年度の参加団体募集サイトは別途 https://wasedasai.github.io/2026-sansan/ で稼働中(2026-09-11時点は募集要項が中心で企画詳細なし、参考リンクとして記録のみ)。",
+      "dateTokensHash": null,
+      "sourceType": "seasonal",
+      "expectedGenres": [
+        "culture",
+        "music",
+        "theater",
+        "community"
+      ],
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "A"
+    },
+    {
+      "id": "rikoten-official-2026",
+      "name": "理工展 公式サイト(2026年度プレサイト)",
+      "category": "community",
+      "url": "https://site2026pre.rikoten.com/",
+      "lastChecked": null,
+      "contentHash": null,
+      "notes": "既存のcircle-rikoten(https://circle.rikoten.com)は理工展を運営する「理工展連絡会」という団体自体のサイト。こちらは理工展というイベント自体の公式サイトで別物(2026-09-11、オーナー指摘により区別して追加)。2026-09-11実査時点で開催日程(2026/11/7-8)は確定済みだが出展団体一覧等はプレサイト段階でまだ未掲載。",
+      "dateTokensHash": null,
+      "sourceType": "seasonal",
+      "expectedGenres": [
+        "culture",
+        "lecture",
+        "other"
+      ],
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "A"
+    },
+    {
+      "id": "tokosai-official",
+      "name": "所沢キャンパス祭 公式サイト",
+      "category": "community",
+      "url": "https://tokosai.net/",
+      "lastChecked": null,
+      "contentHash": null,
+      "notes": "所沢キャンパス祭実行委員会公式。robots.txt自体が存在しない(404)ドメインで、明示的な巡回制限なし。2026-09-11実査時点では開催日程・企画一覧とも未掲載(芸能人企画/教室内企画/ステージ企画/屋台のカテゴリ名のみ、詳細はkikaku.html等の別ページ参照)。開催が近づくにつれ情報が充実する季節性ソース。",
+      "dateTokensHash": null,
+      "sourceType": "seasonal",
+      "expectedGenres": [
+        "culture",
+        "community",
+        "other"
+      ],
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "A"
+    },
+    {
+      "id": "campfire-waseda-search",
+      "name": "CAMPFIRE「早稲田」検索結果(新着順)",
+      "category": "community",
+      "url": "https://camp-fire.jp/projects/search?sort=fresh&word=%E6%97%A9%E7%A8%B2%E7%94%B0",
+      "lastChecked": null,
+      "contentHash": null,
+      "notes": "2026-09-11実査: robots.txtは一般UAに対してprojects/search配下を禁止しておらず(禁止対象はmypage/backers等の会員機能のみ)、AIクローラー向けの別グループでもClaudeBot等はprofile/previewのみ制限、利用規約(第27条禁止行為)にも自動収集を明示的に禁じる条項は無し。通常のHTTP GETで実際に早稲田関連プロジェクト名が生HTML内に含まれることを確認済み(例: 合同新歓公演頂2026、RIDE2026等)。ただし本文に支援金額・支援者数が埋め込まれており、これらは寄付があるたびに変動するため、素のcontentHashだと変更通知が非常に多くなる(高ノイズ)見込み。タイトル+URLだけを抽出する専用の正規化ロジックへの改修が望ましいが、2026-09-11時点ではcheck-sources.js本体は未変更(オーナー確認後に着手)。また「sort=fresh」は新着順のため、募集終了済み・話題性のピークを過ぎた案件(実査時点の例: 万色祭2026)は検索結果に出てこないことがある点に注意(的中率の限界)。",
+      "dateTokensHash": null,
+      "sourceType": "discovery",
+      "expectedGenres": [
+        "culture",
+        "music",
+        "theater",
+        "community"
+      ],
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "B"
+    },
+    {
+      "id": "connpass-smartse",
+      "name": "connpass SmartSE(スマートシステム＆サービス技術)グループ Atomフィード",
+      "category": "lecture",
+      "url": "https://smartse.connpass.com/ja.atom",
+      "lastChecked": null,
+      "contentHash": null,
+      "notes": "2026-09-11実査: connpass全体のrobots.txtは一般UAに対しHTMLページを原則Disallow(/)しているが、/*/ja.atom(Atomフィード)は明示的にAllow対象。このURLは実際にHTTP 200で構造化されたイベント情報(日時・会場含む)を返すことを確認済み(早稲田大学西早稲田キャンパスでの共催イベント例あり)。早稲田大学との共催実績がある研究会グループとしてSmartSEを選定。lectureカテゴリの強化に有用と判断し追加。他のWaseda関連connpassグループが見つかった場合も同じ/ja.atomパターンで追加できる。",
+      "dateTokensHash": null,
+      "sourceType": "institutional",
+      "expectedGenres": [
+        "lecture"
+      ],
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "B"
     }
   ]
 }
