@@ -2690,24 +2690,6 @@ const EVENTS = [
     isPublished: true
   },
   {
-    id: "evt-145",
-    title: "色と形の交差点―ニューヨークへ渡ったアーティストたち",
-    date: "2026-10-09",
-    endDate: "2027-01-31",
-    location: "會津八一記念博物館(早稲田キャンパス2号館)",
-    campus: "waseda",
-    organizer: "早稲田大学會津八一記念博物館",
-    category: "culture",
-    scope: "circle",
-    target: ["student", "obog", "public"],
-    feeType: "free",
-    feeText: "無料",
-    description: "會津八一記念博物館の展覧会。開館時間10:00〜16:30(入館は16:00まで)。",
-    externalUrl: "https://www.waseda.jp/culture/aizu-museum/exhibitions/",
-    lastUpdated: "2026-07-30",
-    isPublished: true
-  },
-  {
     id: "evt-146",
     title: "會津八一記念博物館コレクション展 PART2",
     date: "2026-10-09",
