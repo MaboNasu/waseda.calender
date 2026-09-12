@@ -417,6 +417,34 @@
       "status": "dry-run",
       "postId": null,
       "errorType": null
+    },
+    {
+      "postedAt": "2026-09-12T00:26:32.335Z",
+      "postType": "today",
+      "targetDate": "2026-09-12",
+      "eventIds": [
+        "evt-278",
+        "evt-258",
+        "evt-150",
+        "evt-151",
+        "evt-152",
+        "evt-171",
+        "evt-174",
+        "evt-091",
+        "evt-206",
+        "evt-246",
+        "evt-076",
+        "evt-252",
+        "evt-253",
+        "evt-142",
+        "evt-248",
+        "evt-250"
+      ],
+      "campaign": "today_waseda",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
     }
   ]
 }
