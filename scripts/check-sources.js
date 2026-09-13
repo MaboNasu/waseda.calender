@@ -64,6 +64,12 @@ function sha256(str) {
   return crypto.createHash('sha256').update(str, 'utf8').digest('hex');
 }
 
+/** 基準日を months ヶ月ずらした "YYYY-MM" を返す(日付部分は使わないので月末補正は不要) */
+function addMonthsYYYYMM(date, months) {
+  const d = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + months, 1));
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+}
+
 async function fetchWithTimeout(url) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
@@ -98,7 +104,87 @@ async function fetchWithTimeout(url) {
   }
 }
 
+/** 1URLを取得し、前回ハッシュとの比較結果だけを返す(sourceそのものは扱わない下請け関数) */
+async function checkSourceUrl(url, prevContentHash, prevDateTokensHash) {
+  const result = await fetchWithTimeout(url);
+  if (!result.ok) {
+    return { ok: false, error: result.error || `HTTP ${result.status}` };
+  }
+  const text = extractText(result.text);
+  const contentHash = sha256(text);
+  const dateTokens = extractDateTokens(text);
+  const dateTokensHash = sha256(dateTokens.join('|'));
+
+  let changeStatus = 'unchanged';
+  if (prevContentHash == null) {
+    changeStatus = 'first-check';
+  } else if (prevDateTokensHash !== dateTokensHash) {
+    changeStatus = 'changed-dates';
+  } else if (prevContentHash !== contentHash) {
+    changeStatus = 'changed-other';
+  }
+  return { ok: true, contentHash, dateTokensHash, changeStatus };
+}
+
+// 複数offsetの状態をひとつのchangeStatusに集約する際の優先度(小さいほど優先的に表に出す)
+const CHANGE_SEVERITY = { 'changed-dates': 0, 'changed-other': 1, 'first-check': 2, error: 3, unchanged: 4 };
+
+/**
+ * urlTemplate(例: "https://.../?date={YYYY-MM}") + monthOffsets(例: [0,1,2,3])を持つ
+ * ソースを、sources.json上は1エントリのまま複数月分まとめて追跡する。
+ * offsetごとのcontentHash/dateTokensHashはオブジェクト({"0": "...", "1": "...", ...})で保持し、
+ * 年月の計算は実行時に毎回行うため、日付をハードコードしたエントリを毎月足す必要はない。
+ */
+async function checkMultiOffsetSource(source) {
+  const now = new Date();
+  const prevContentHash = (source.contentHash && typeof source.contentHash === 'object') ? source.contentHash : {};
+  const prevDateTokensHash = (source.dateTokensHash && typeof source.dateTokensHash === 'object') ? source.dateTokensHash : {};
+
+  const newContentHash = {};
+  const newDateTokensHash = {};
+  const offsetDetails = [];
+  const errors = [];
+
+  for (const offset of source.monthOffsets) {
+    const ym = addMonthsYYYYMM(now, offset);
+    const url = source.urlTemplate.replace('{YYYY-MM}', ym);
+    const key = String(offset);
+    const r = await checkSourceUrl(url, prevContentHash[key] ?? null, prevDateTokensHash[key] ?? null);
+    if (!r.ok) {
+      // 取得失敗時は前回値を保持し、そのoffsetだけerror扱いにする(他offsetの状態を失わない)
+      newContentHash[key] = prevContentHash[key] ?? null;
+      newDateTokensHash[key] = prevDateTokensHash[key] ?? null;
+      errors.push(`${ym}: ${r.error}`);
+      offsetDetails.push({ offset, ym, url, changeStatus: 'error' });
+      continue;
+    }
+    newContentHash[key] = r.contentHash;
+    newDateTokensHash[key] = r.dateTokensHash;
+    offsetDetails.push({ offset, ym, url, changeStatus: r.changeStatus });
+  }
+
+  const overall = offsetDetails.reduce(
+    (worst, d) => (CHANGE_SEVERITY[d.changeStatus] < CHANGE_SEVERITY[worst] ? d.changeStatus : worst),
+    'unchanged'
+  );
+
+  return {
+    ...source,
+    lastChecked: now.toISOString(),
+    lastError: errors.length ? errors.join(' / ') : null,
+    contentHash: newContentHash,
+    dateTokensHash: newDateTokensHash,
+    url: source.urlTemplate.replace('{YYYY-MM}', addMonthsYYYYMM(now, source.monthOffsets[0])),
+    changeStatus: overall,
+    offsetDetails
+  };
+}
+
 async function checkSource(source) {
+  if (Array.isArray(source.monthOffsets) && source.monthOffsets.length && source.urlTemplate) {
+    return checkMultiOffsetSource(source);
+  }
+
   const result = await fetchWithTimeout(source.url);
   const now = new Date().toISOString();
 
@@ -148,7 +234,7 @@ async function main() {
     results.push(result);
   }
 
-  data.sources = results.map(({ changeStatus, lastError, ...rest }) => rest);
+  data.sources = results.map(({ changeStatus, lastError, offsetDetails, ...rest }) => rest);
   fs.writeFileSync(SOURCES_PATH, JSON.stringify(data, null, 2) + '\n', 'utf8');
 
   const changed = results.filter((r) => r.changeStatus === 'changed-dates' || r.changeStatus === 'changed-other');
@@ -241,8 +327,19 @@ async function main() {
   fs.writeFileSync(
     path.join(__dirname, 'last-check-changed.json'),
     JSON.stringify(
-      changed.concat(firstChecks).map(({ id, name, category, url, notes, jsRendered, changeStatus }) =>
-        ({ id, name, category, url, notes: notes || '', jsRendered: !!jsRendered, changeStatus })),
+      changed.concat(firstChecks).map((r) => {
+        const entry = {
+          id: r.id, name: r.name, category: r.category, url: r.url,
+          notes: r.notes || '', jsRendered: !!r.jsRendered, changeStatus: r.changeStatus
+        };
+        // urlTemplate+monthOffsetsを持つソースは、どの年月(offset)が変更対象だったかも添える
+        if (r.offsetDetails) {
+          entry.offsets = r.offsetDetails
+            .filter((d) => d.changeStatus !== 'unchanged')
+            .map((d) => ({ ym: d.ym, url: d.url, changeStatus: d.changeStatus }));
+        }
+        return entry;
+      }),
       null, 2
     ),
     'utf8'
@@ -251,7 +348,11 @@ async function main() {
   process.exitCode = 0;
 }
 
-main().catch((err) => {
-  console.error('check-sources.js failed:', err);
-  process.exitCode = 1;
-});
+if (require.main === module) {
+  main().catch((err) => {
+    console.error('check-sources.js failed:', err);
+    process.exitCode = 1;
+  });
+}
+
+module.exports = { checkSource, checkMultiOffsetSource, checkSourceUrl, addMonthsYYYYMM, extractText, extractDateTokens, sha256 };
