@@ -3728,8 +3728,8 @@ const EVENTS = [
     feeType: "free",
     feeText: "無料(事前登録制、9/15(火)17:00締切、定員に達し次第終了)",
     description: "早稲田大学田中愛治総長をはじめとした日本の主要大学トップ(慶應義塾大学 伊藤公平学長、東京大学 藤井輝夫学長、京都大学 湊長博学長)とADB神田眞人総裁による特別対談。英語開催(日本語通訳あり)。会場は東京大学本郷キャンパス。",
-    externalUrl: "https://www.pp.u-tokyo.ac.jp/student-bulletin/2026-08-28-56617/",
-    lastUpdated: "2026-09-13",
+    externalUrl: "https://forms.cloud.microsoft/r/SUeMFBWK0g",
+    lastUpdated: "2026-09-14",
     isPublished: true
   },
   {
