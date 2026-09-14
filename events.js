@@ -3728,7 +3728,7 @@ const EVENTS = [
     feeType: "free",
     feeText: "無料(事前登録制)",
     description: "早稲田大学田中愛治総長をはじめとした日本の主要大学トップ(慶應義塾大学 伊藤公平塾長、東京大学 藤井輝夫総長、京都大学 湊長博総長)とADB神田眞人総裁による特別対談。英語開催(日本語通訳あり)。会場は東京大学本郷キャンパス。",
-    externalUrl: "https://forms.cloud.microsoft/r/SUeMFBWK0g",
+    externalUrl: "https://www.adb.org/sites/default/files/923751/adb-special-dialogue-event-jro.pdf",
     lastUpdated: "2026-09-14",
     isPublished: true
   },
