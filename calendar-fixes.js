@@ -33,7 +33,7 @@
 
     const dayNumber = Number(day.querySelector('.day-num')?.textContent || 0);
     if (context && dayNumber && hidden > 0) {
-      more.setAttribute('aria-label', `${context.year}年${context.month}月${dayNumber日の残り${hidden}件のイベントを表示`);
+      more.setAttribute('aria-label', `${context.year}年${context.month}月${dayNumber}日の残り${hidden}件のイベントを表示`);
     }
   }
 
