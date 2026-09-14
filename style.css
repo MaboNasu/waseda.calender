@@ -251,7 +251,18 @@ ul, ol { list-style: none; }
   cursor: pointer;
   text-align: left;
 }
-.section-toggle-icon { font-size: 0.8rem; color: var(--gray-500); transition: transform var(--transition); flex-shrink: 0; }
+.section-toggle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: var(--gray-500);
+  transition: transform var(--transition), background-color var(--transition), color var(--transition);
+  flex-shrink: 0;
+}
+.section-title-toggle:hover .section-toggle-icon { background: var(--enjy-pale); color: var(--enjy); }
 .section-title-toggle[aria-expanded="true"] .section-toggle-icon { transform: rotate(180deg); }
 .density-toggle { display: inline-flex; gap: 0.4rem; }
 .density-btn {
@@ -413,7 +424,18 @@ ul, ol { list-style: none; }
    幅16px×高さ3px程度の空バッジが常に見え続けてしまうバグがあったため、
    IDセレクタで明示的に上書きする(PCフィルター折りたたみ化に伴い発見・修正)。 */
 #filter-active-badge[hidden] { display: none; }
-.filter-toggle-icon { font-size: 0.8rem; color: var(--gray-500); transition: transform var(--transition); flex-shrink: 0; }
+.filter-toggle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: var(--gray-500);
+  transition: transform var(--transition), background-color var(--transition), color var(--transition);
+  flex-shrink: 0;
+}
+.filter-title:hover .filter-toggle-icon { background: var(--enjy-pale); color: var(--enjy); }
 .filter-title[aria-expanded="true"] .filter-toggle-icon { transform: rotate(180deg); }
 .filter-grid {
   display: grid;

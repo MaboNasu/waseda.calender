@@ -82,6 +82,26 @@ function fitEventTitle(ctx, title, maxWidth, maxFontSize, minFontSize, maxLines)
   return { fontSize: minFontSize, lines };
 }
 
+/** アイコン+短文の1情報行を描画する。maxWidthに収まらない場合はwrapTextForCanvasで
+ *  最大maxLines行まで折り返し、それでも収まらない残りは末尾を…で省略する
+ *  （fitEventTitleと違い、こちらはフォントサイズは固定のまま行数だけ増やす。会場名・主催団体名は
+ *  イベントごとに長さが読めないため、日付/会場/主催団体の全行にこの折り返しを適用しておく）。
+ *  戻り値は次の情報行のY座標まで進めるべき量（呼び出し側でcursorYに加算する）。 */
+function drawWrappedInfoLine(ctx, text, x, y, maxWidth, maxLines) {
+  const lineHeight = 40;
+  const lines = wrapTextForCanvas(ctx, text, maxWidth);
+  const shown = lines.slice(0, maxLines);
+  if (lines.length > maxLines) {
+    let last = shown[maxLines - 1];
+    while (last.length > 1 && ctx.measureText(last + '…').width > maxWidth) {
+      last = last.slice(0, -1);
+    }
+    shown[maxLines - 1] = last + '…';
+  }
+  shown.forEach((line, i) => ctx.fillText(line, x, y + i * lineHeight));
+  return shown.length * lineHeight + 10;
+}
+
 /** 角丸長方形のパスを作る */
 function tracePostImageRoundRect(ctx, x, y, width, height, radius) {
   ctx.beginPath();
@@ -180,21 +200,19 @@ function drawPostImageCanvas(ev, bgImage) {
   const dateText = (typeof formatEventDateDisplay === 'function') ? formatEventDateDisplay(ev) : ev.date;
   ctx.font = `700 32px "${POST_IMAGE_FONT}", sans-serif`;
   ctx.fillStyle = c.textSecondary;
-  ctx.fillText('📅 ' + dateText, innerX, cursorY);
-  cursorY += 50;
+  cursorY += drawWrappedInfoLine(ctx, '📅 ' + dateText, innerX, cursorY, innerWidth, 2);
 
   // 会場（未確認等で空の場合は行ごと省略）
   if (ev.location) {
     ctx.font = `700 32px "${POST_IMAGE_FONT}", sans-serif`;
     ctx.fillStyle = c.textSecondary;
-    ctx.fillText('📍 ' + ev.location, innerX, cursorY);
-    cursorY += 50;
+    cursorY += drawWrappedInfoLine(ctx, '📍 ' + ev.location, innerX, cursorY, innerWidth, 2);
   }
 
   // 主催団体
   ctx.font = `700 32px "${POST_IMAGE_FONT}", sans-serif`;
   ctx.fillStyle = c.textSecondary;
-  ctx.fillText('🏫 ' + (ev.organizer || ''), innerX, cursorY);
+  drawWrappedInfoLine(ctx, '🏫 ' + (ev.organizer || ''), innerX, cursorY, innerWidth, 2);
 
   // 下部：SNSハンドル・URL（背景画像がある場合は焼き込み済みのため描かない）
   if (!bgImage) {
