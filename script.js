@@ -424,6 +424,62 @@ function escapeHtml(str) {
 }
 
 /* ============================================================
+   同日イベントの表示順（登録順・発見順に依存しない公平化）
+   ============================================================ */
+/** 文字列から32bit符号なし整数の決定的ハッシュ値を得る(FNV-1a)。Math.random()は使わない。
+ *  同じ入力文字列からは、実行環境・利用者を問わず常に同じ値が返る。 */
+function fnv1aHash(str) {
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < str.length; i++) {
+    hash ^= str.charCodeAt(i);
+    hash = Math.imul(hash, 0x01000193);
+  }
+  return hash >>> 0;
+}
+
+/** 32bit整数を拡散させる最終ミックス(Murmur3のfmix32相当)。
+ *  fnv1aHashは末尾1文字だけが違う入力（例: "...2026-09-14" と "...2026-09-15"）に対して
+ *  ほぼ一定の差分しか生まない性質があり、そのままだと日付が変わっても同じ並びが何日も
+ *  固定されてしまう（実際に検証スクリプトで確認済み）。この後処理を挟むことで、
+ *  1文字違うだけの入力同士でも出力が大きく散らばるようにする。 */
+function avalanche32(x) {
+  x ^= x >>> 16;
+  x = Math.imul(x, 0x85ebca6b);
+  x ^= x >>> 13;
+  x = Math.imul(x, 0xc2b2ae35);
+  x ^= x >>> 16;
+  return x >>> 0;
+}
+
+/** イベントIDと「今日」の日付(JST)から決定的な並び替えキーを得る。
+ *  イベント自身のdateではなく当日の日付をシードにすることで、未来のイベントの順位が
+ *  開催前から固定されてしまうのを防ぐ（日付が変わるとシードも変わり、翌日には並びが変わる）。 */
+function fairnessKey(ev, seedDateStr) {
+  return avalanche32(fnv1aHash(`${ev.id}|${seedDateStr}`));
+}
+
+/** 掲載申請・掲載依頼・情報提供経由で追加されたイベント(sourceType:"submission")が、
+ *  サイトに新規公開された当日(JST、publishedAtと一致する日)にだけ一時的に優先グループに入るための判定。
+ *  どちらかのフィールドが無い・一致しない既存イベントは常にfalseになり通常表示にフォールバックする
+ *  （events.js冒頭のsourceType/publishedAtの説明を参照）。 */
+function isPriorityToday(ev, todayStr) {
+  return ev.sourceType === 'submission' && !!ev.publishedAt && ev.publishedAt === todayStr;
+}
+
+/** 同じ日に複数のイベントがある場合の並び順比較関数。日付でグルーピングした後の
+ *  最終的なタイブレークとして使う（呼び出し側で `a.date.localeCompare(b.date) || sameDayOrderCompare(...)`
+ *  のように、日付や他の並び基準の後段に置くこと）。
+ *  1) 当日(JST)新規公開された掲載申請イベントを一時的に最優先グループにし、
+ *  2) それ以外は event.id + 当日の日付 から決定的に計算したfairnessKeyの順で並べる
+ *     （登録・発見した順序には一切依存しない。翌日にはfairnessKeyの値自体が変わるため並びも変わる）。 */
+function sameDayOrderCompare(a, b, todayStr) {
+  const aPriority = isPriorityToday(a, todayStr) ? 0 : 1;
+  const bPriority = isPriorityToday(b, todayStr) ? 0 : 1;
+  if (aPriority !== bPriority) return aPriority - bPriority;
+  return fairnessKey(a, todayStr) - fairnessKey(b, todayStr);
+}
+
+/* ============================================================
    フィルタリング
    ============================================================ */
 
@@ -639,7 +695,8 @@ function renderTodayEvents(allFiltered) {
   if (!el) return [];
 
   const today    = getTodayStr();
-  const filtered = (allFiltered || getFilteredEvents()).filter(ev => isEventOnDate(ev, today));
+  const filtered = (allFiltered || getFilteredEvents()).filter(ev => isEventOnDate(ev, today))
+    .sort((a, b) => sameDayOrderCompare(a, b, today));
 
   const countEl = document.getElementById('today-count');
   if (countEl) countEl.textContent = `${filtered.length}件`;
@@ -671,7 +728,7 @@ function renderUpcomingEvents(allFiltered) {
   const weekAhead  = getWeekAheadStr();
   const filtered = (allFiltered || getFilteredEvents())
     .filter(ev => (ev.date > today || isEventOnDate(ev, today)) && ev.date <= weekAhead)
-    .sort((a, b) => a.date.localeCompare(b.date));
+    .sort((a, b) => a.date.localeCompare(b.date) || sameDayOrderCompare(a, b, today));
 
   const countEl = document.getElementById('upcoming-count');
   if (countEl) countEl.textContent = `${filtered.length}件`;
@@ -784,6 +841,11 @@ function renderCalendarGrid(allFiltered) {
     if (isHiddenOnSunday(ev, ev.date)) return;
     if (!singleDayByDate[ev.date]) singleDayByDate[ev.date] = [];
     singleDayByDate[ev.date].push(ev);
+  });
+  // 同日内の並びは登録順に依存させず、sameDayOrderCompareで公平化する
+  // （どれがチップ表示され、どれが「他N件」に畳まれるかにも影響する）。
+  Object.keys(singleDayByDate).forEach(dateStr => {
+    singleDayByDate[dateStr].sort((a, b) => sameDayOrderCompare(a, b, today));
   });
 
   renderLongRunningEventsWidget(longRunningEvents);
@@ -939,7 +1001,8 @@ function renderCalendarList(allFiltered) {
   for (let d = 1; d <= totalDays; d++) {
     const dateStr = formatDateStr(new Date(calendarYear, calendarMonth, d));
     if (isCurrentMonth && dateStr < today) continue;
-    const dayEvs = filtered.filter(ev => isEventOnDate(ev, dateStr) && !isLongRunningEvent(ev));
+    const dayEvs = filtered.filter(ev => isEventOnDate(ev, dateStr) && !isLongRunningEvent(ev))
+      .sort((a, b) => sameDayOrderCompare(a, b, today));
     if (dayEvs.length > 0) evByDate[dateStr] = dayEvs;
   }
 
@@ -1031,7 +1094,9 @@ function renderCalendar(allFiltered) {
    特定日のイベント一覧（「他N件」クリック時）
    ============================================================ */
 function showDayEvents(dateStr) {
-  const filtered  = getFilteredEvents().filter(ev => isEventOnDate(ev, dateStr));
+  const today     = getTodayStr();
+  const filtered  = getFilteredEvents().filter(ev => isEventOnDate(ev, dateStr))
+    .sort((a, b) => sameDayOrderCompare(a, b, today));
   const dateDisp  = formatDateDisplay(dateStr);
   if (filtered.length === 0) return;
 

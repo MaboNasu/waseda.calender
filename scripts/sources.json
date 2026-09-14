@@ -2625,6 +2625,149 @@
       "cloudAccessible": true,
       "preferredReader": "cloud",
       "priority": "B"
+    },
+    {
+      "id": "ludo-waseda-ameblo",
+      "name": "お笑い工房LUDO",
+      "category": "circle",
+      "url": "https://ameblo.jp/ludo-waseda/",
+      "lastChecked": "2026-09-14T05:01:27.542Z",
+      "contentHash": "38599d375754181d18c430a50729923e5809afab7b944d700868c53f98a95838",
+      "notes": "organizations.js C-114。2026-09-14にこのセッション(cloud)で直接確認。ブログ本文に『早稲田大学公認のお笑いサークル』と明記、直近投稿2026-07-22(大隈記念講堂ライブ2026告知)。候補にあった別URL(waseda-kyogen.work)は早稲田大学狂言研究会という別団体の公式サイトのため不採用。",
+      "dateTokensHash": "9a41a7a0f197bf748bdb7fed7a17012f62cea55dda804e245f30230f8ddb5047",
+      "sourceType": "club",
+      "expectedGenres": [
+        "学生の会"
+      ],
+      "orgId": "C-114",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "B"
+    },
+    {
+      "id": "wasedarailfan-wordpress",
+      "name": "鉄道研究会(WRC)",
+      "category": "circle",
+      "url": "https://wasedarailfan.wordpress.com/",
+      "lastChecked": "2026-09-14T05:01:27.797Z",
+      "contentHash": "6fdf0982ea29071e0fb15936afbd95024df8be033b9642e86aac02327b64d828",
+      "notes": "organizations.js A-047。2026-09-14にこのセッション(cloud)で直接確認。直近投稿2026-09-08(夏旅合宿の活動報告)で更新頻度が高い部類。",
+      "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceType": "club",
+      "expectedGenres": [
+        "学生の会"
+      ],
+      "orgId": "A-047",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "A"
+    },
+    {
+      "id": "bankaraizm-wixsite",
+      "name": "バンカライズム-万色主義-",
+      "category": "circle",
+      "url": "https://wasedabankara17.wixsite.com/bankaraizm",
+      "lastChecked": "2026-09-14T05:01:28.023Z",
+      "contentHash": "760c55d42d843ee60ad63034a8fd92c3f9aa4d2f06b97774eb4bc632b5db0305",
+      "notes": "organizations.js C-271。2026-09-14にこのセッション(cloud)で直接確認。出演情報・代替わりブログ(2025年3月/11月付の投稿)を掲載、年次の代替わりペースで更新。",
+      "dateTokensHash": "c3759b4e5e1097bc1577f47e33ab027e032af9c9927e7af65d79269ca2ba2c36",
+      "sourceType": "club",
+      "expectedGenres": [
+        "学生の会"
+      ],
+      "orgId": "C-271",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "B"
+    },
+    {
+      "id": "mynx-ameblo",
+      "name": "早稲田大学チアダンスチームMYNX",
+      "category": "circle",
+      "url": "https://ameblo.jp/wasedamynx/",
+      "lastChecked": "2026-09-14T05:01:28.068Z",
+      "contentHash": "8cb1017d51e96ab62344d1bcc42f865d6112a569c2336b96b0a622440d2da90b",
+      "notes": "organizations.js C-222。2026-09-14にこのセッション(cloud)で直接確認。ブログ本文に『MYNXの公式ブログです』と明記、直近投稿2026-08-20。公式サイト本体(wasedamynx.jimdofree.com)はイベント専用ページが無く、こちらのブログの方が変化検知に適するため採用。候補にあったLinktreeはサイト・ブログと重複するため不採用。",
+      "dateTokensHash": "eb0e6656cea9f380967aef908760905c9d5dbc8ab64381112fb000bc1750732e",
+      "sourceType": "club",
+      "expectedGenres": [
+        "学生の会"
+      ],
+      "orgId": "C-222",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "B"
+    },
+    {
+      "id": "getappers-wixsite",
+      "name": "早稲田大学 下駄っぱーず",
+      "category": "circle",
+      "url": "https://getappers.wixsite.com/homepage",
+      "lastChecked": "2026-09-14T05:01:28.262Z",
+      "contentHash": "bc5e5bc41d40ef7d953dc84d84b4bcfa20b0b0f1f4b3d1d64dac83ce0b57172e",
+      "notes": "organizations.js C-217。2026-09-14にこのセッション(cloud)で直接確認。『早稲田大学公認サークル』と明記、年度ごとの演舞紹介ページあり。",
+      "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceType": "club",
+      "expectedGenres": [
+        "学生の会"
+      ],
+      "orgId": "C-217",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "C"
+    },
+    {
+      "id": "waseda-ad",
+      "name": "広告研究会",
+      "category": "circle",
+      "url": "https://www.waseda-ad.com/",
+      "lastChecked": "2026-09-14T05:01:29.231Z",
+      "contentHash": "660fa2d3d725ae8cec05e8393c7223daa22b59a34017f26ae443f29d006639af",
+      "notes": "organizations.js A-043。2026-09-14にこのセッション(cloud)で直接確認。『早稲田大学公認サークル』と明記された専用サイト。新歓期限定と思われる別候補URLは継続性が低いため不採用。",
+      "dateTokensHash": "ca6e6482446a77ca21247cddf3a8ec81a10126a00985164cb30280665e54c644",
+      "sourceType": "club",
+      "expectedGenres": [
+        "学生の会"
+      ],
+      "orgId": "A-043",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "B"
+    },
+    {
+      "id": "wasedacelt-wixsite",
+      "name": "早稲田大学ケルト音楽同好会",
+      "category": "circle",
+      "url": "https://wasedacelt.wixsite.com/mysite",
+      "lastChecked": "2026-09-14T05:01:29.573Z",
+      "contentHash": "384976ba6c135ccc97c80aefbd29d6ff2d323be3463aa2413a9c3150254fca07",
+      "notes": "organizations.js A-189。2026-09-14にこのセッション(cloud)で直接確認。『年間行事』ページに演奏会情報。確認時点の表示上の最終更新は2025-03-31で更新頻度はやや低め。",
+      "dateTokensHash": "c7f6a43b1909bbbe99e81acf4dc05c49a963c17606643eeda4c43840c128988a",
+      "sourceType": "club",
+      "expectedGenres": [
+        "学生の会"
+      ],
+      "orgId": "A-189",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "C"
+    },
+    {
+      "id": "session-dancewaseda",
+      "name": "SesSion",
+      "category": "circle",
+      "url": "https://session-dancewaseda.amebaownd.com/",
+      "lastChecked": "2026-09-14T05:01:30.519Z",
+      "contentHash": "8808acda2a783f4e7f98d61366ec94ffe1f11ba6e6c0060114c4e7559bef9223",
+      "notes": "organizations.jsには該当エントリなし。早稲田大学公式サイトのサークル検索(waseda.jp/inst/weekly/circleguide, id=3456)でダンスサークルとして公認登録を確認。サイト自身で確認できた最新コンテンツは2022年の新歓関連投稿までで、それ以降の更新有無は未確認のため優先度Cとし、監視で継続的に無反応の場合は追跡継続要否を再検討すること。",
+      "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceType": "club",
+      "expectedGenres": [
+        "学生の会"
+      ],
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "C"
     }
   ]
 }
