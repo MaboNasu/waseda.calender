@@ -51,6 +51,36 @@
     });
   }
 
+  function polishSelectionControl() {
+    const btn = document.getElementById('selection-mode-toggle');
+    if (!btn) return;
+    const settings = document.querySelector('#today-section .display-settings') || document.querySelector('.display-settings');
+    if (settings && btn.parentElement !== settings) settings.appendChild(btn);
+    btn.classList.add('selection-tool-btn');
+
+    const sync = () => {
+      const active = document.body.classList.contains('selection-mode');
+      btn.textContent = active ? '選択モードを終了' : '📅 複数イベントをまとめて追加';
+      btn.setAttribute('aria-label', active ? '複数イベントの選択モードを終了' : '複数のイベントをまとめてカレンダーに追加');
+      if (settings && active) settings.open = false;
+
+      let hint = document.getElementById('selection-mode-hint');
+      if (active && !hint) {
+        hint = document.createElement('div');
+        hint.id = 'selection-mode-hint';
+        hint.className = 'selection-mode-hint';
+        hint.innerHTML = '<strong>まとめて追加モード</strong><span>追加したいイベントにチェックを入れてください。選択後、画面下のバーからまとめてカレンダーへ追加できます。</span>';
+        const todayBody = document.getElementById('today-body');
+        if (todayBody) todayBody.before(hint);
+      } else if (!active && hint) {
+        hint.remove();
+      }
+    };
+
+    sync();
+    btn.addEventListener('click', () => requestAnimationFrame(sync));
+  }
+
   function fixOrganizationEventHub(root = document) {
     root.querySelectorAll('.org-detail').forEach(detail => {
       const sections = [...detail.querySelectorAll('.org-related:not(.org-archive)')];
@@ -161,6 +191,83 @@
     };
   }
 
+  function polishModalActions(ev) {
+    const modal = document.getElementById('event-modal');
+    if (!modal || !ev) return;
+    const body = modal.querySelector('.modal-body');
+    const detail = document.getElementById('modal-detail-content');
+    const reactions = document.getElementById('modal-reactions');
+    const desc = document.getElementById('modal-desc-section');
+    const share = document.getElementById('modal-share-actions');
+    const footer = document.getElementById('modal-footer-section');
+    const regLink = document.getElementById('modal-reg-link');
+    const extLink = document.getElementById('modal-ext-link');
+    if (!body) return;
+
+    let primary = modal.querySelector('.modal-primary-actions');
+    if (!primary) {
+      primary = document.createElement('div');
+      primary.className = 'modal-primary-actions';
+    }
+    if (regLink) {
+      regLink.textContent = '参加申し込み ↗';
+      regLink.classList.remove('btn-sm');
+      primary.appendChild(regLink);
+    }
+    if (extLink) {
+      extLink.textContent = '公式情報を見る ↗';
+      extLink.classList.remove('btn-sm');
+      primary.appendChild(extLink);
+    }
+    const hasPrimary = [regLink, extLink].some(el => el && el.style.display !== 'none');
+    primary.hidden = !hasPrimary;
+    if (detail && detail.parentNode === body) detail.after(primary);
+    else body.prepend(primary);
+
+    if (desc && reactions && desc.parentNode === reactions.parentNode) {
+      reactions.parentNode.insertBefore(desc, reactions);
+    }
+
+    if (share && typeof buildGoogleCalendarUrl === 'function') {
+      const id = escapeHtml(String(ev.id));
+      const mainShare = (typeof navigator !== 'undefined' && navigator.share && typeof shareEventViaWebShare === 'function')
+        ? `<button type="button" class="btn btn-ghost btn-sm" onclick="shareEventViaWebShare('${id}')">📤 共有</button>`
+        : `<button type="button" class="btn btn-ghost btn-sm" onclick="copyEventUrl('${id}', this)">🔗 リンクをコピー</button>`;
+      const copyExtra = (typeof navigator !== 'undefined' && navigator.share)
+        ? `<button type="button" class="btn btn-ghost btn-sm" onclick="copyEventUrl('${id}', this)">🔗 URLをコピー</button>`
+        : '';
+      share.innerHTML = `
+        <div class="modal-quick-actions">
+          <a class="btn btn-ghost btn-sm" href="${escapeHtml(buildGoogleCalendarUrl(ev))}" target="_blank" rel="noopener noreferrer" onclick="trackEvent('event_calendar_add', {event_id: '${id}'})">📅 カレンダーに追加</a>
+          ${mainShare}
+        </div>
+        <details class="modal-more-actions">
+          <summary>その他の操作</summary>
+          <div class="modal-more-actions-grid">
+            <button type="button" class="btn btn-ghost btn-sm" onclick="downloadIcsForEvent('${id}')">⬇️ .icsで保存</button>
+            ${copyExtra}
+            <button type="button" class="btn btn-ghost btn-sm" onclick="generatePostImageForEvent('${id}')">🖼️ 投稿用画像</button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="shareEventOnLine('${id}')">LINEで共有</button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="shareEventOnX('${id}')">Xで共有</button>
+          </div>
+        </details>`;
+    }
+
+    const footerLinks = footer?.querySelector('.modal-footer-links');
+    if (footerLinks && footerLinks.children.length === 0) footerLinks.hidden = true;
+  }
+
+  function installModalActionPolish() {
+    if (typeof window.openModal !== 'function' || window.__wcModalPolishInstalled) return;
+    window.__wcModalPolishInstalled = true;
+    const original = window.openModal;
+    window.openModal = function openModalPolished(eventId) {
+      original(eventId);
+      const ev = eventsSafe().find(item => String(item.id) === String(eventId));
+      if (ev) requestAnimationFrame(() => polishModalActions(ev));
+    };
+  }
+
   function enhanceCalendarAria(root = document) {
     const title = document.getElementById('calendar-title')?.textContent || '';
     const match = title.match(/(\d{4})年\s*(\d{1,2})月/);
@@ -189,38 +296,113 @@
     });
   }
 
-  function watchCalendarAria() {
+  function compactDenseCalendar(root = document) {
+    root.querySelectorAll('.calendar-day').forEach(day => {
+      const chips = [...day.querySelectorAll('.day-event-chip')];
+      const more = day.querySelector('.day-more');
+      if (more) {
+        const m = more.textContent.match(/(?:他|\+)(\d+)件/);
+        let hidden = m ? Number(m[1]) : 0;
+        if (chips.length > 2) {
+          chips.slice(2).forEach(chip => chip.classList.add('calendar-chip-overflow'));
+          hidden += chips.length - 2;
+        }
+        if (hidden > 0) more.textContent = `+${hidden}件`;
+      }
+    });
+  }
+
+  function watchCalendarEnhancements() {
     const targets = ['calendar-grid', 'calendar-list', 'long-running-events']
       .map(id => document.getElementById(id)).filter(Boolean);
     if (!targets.length) return;
     let queued = false;
+    const run = () => {
+      compactDenseCalendar(document);
+      enhanceCalendarAria(document);
+    };
     const observer = new MutationObserver(() => {
       if (queued) return;
       queued = true;
       requestAnimationFrame(() => {
         queued = false;
-        enhanceCalendarAria(document);
+        run();
       });
     });
     targets.forEach(target => observer.observe(target, { childList: true, subtree: true }));
-    enhanceCalendarAria(document);
+    run();
+  }
+
+  function polishContactForm() {
+    const options = document.getElementById('entry-options');
+    if (!options || options.dataset.polished === 'true') return;
+    options.dataset.polished = 'true';
+
+    const byValue = new Map([...options.querySelectorAll('.entry-option')].map(label => [label.querySelector('input')?.value, label]));
+    const rename = (value, text) => {
+      const label = byValue.get(value);
+      const span = label?.querySelector('span');
+      if (span) span.textContent = text;
+    };
+    rename('new-org', 'イベントを掲載したい（初回）');
+    rename('returning-org', 'イベントを追加したい（登録済み団体）');
+    rename('edit-delete', '掲載中のイベントを修正・削除');
+    rename('org-info', '団体ページを登録・修正');
+
+    const makeGroup = (title, desc, values) => {
+      const group = document.createElement('div');
+      group.className = 'contact-entry-group';
+      group.innerHTML = `<div class="contact-entry-group-head"><strong>${title}</strong><span>${desc}</span></div>`;
+      const choices = document.createElement('div');
+      choices.className = 'contact-entry-choices';
+      values.forEach(value => { const el = byValue.get(value); if (el) choices.appendChild(el); });
+      group.appendChild(choices);
+      return group;
+    };
+
+    options.innerHTML = '';
+    options.appendChild(makeGroup('イベントを掲載する', '新しいイベントの掲載はこちら', ['new-org', 'returning-org']));
+    options.appendChild(makeGroup('掲載内容を変更する', 'イベントや団体情報の修正はこちら', ['edit-delete', 'org-info']));
+
+    const more = document.createElement('details');
+    more.className = 'contact-entry-more';
+    more.innerHTML = '<summary>その他のお問い合わせ</summary><div class="contact-entry-choices"></div>';
+    const moreChoices = more.querySelector('.contact-entry-choices');
+    ['sponsor', 'bug-report', 'other'].forEach(value => { const el = byValue.get(value); if (el) moreChoices.appendChild(el); });
+    options.appendChild(more);
+
+    const gcal = document.querySelector('.gcal-import-box');
+    if (gcal && !gcal.closest('.contact-gcal-details')) {
+      const details = document.createElement('details');
+      details.className = 'contact-gcal-details';
+      details.innerHTML = '<summary>Googleカレンダーから取り込む（任意）</summary>';
+      gcal.parentNode.insertBefore(details, gcal);
+      details.appendChild(gcal);
+    }
   }
 
   onReady(() => {
     installTokyoDateConsistency();
     polishNavigation();
+    polishSelectionControl();
     fixOrganizationEventHub();
     watchOrganizationEventHub();
     installMypagePolish();
     installUpcomingTemporalSort();
-    watchCalendarAria();
+    installModalActionPolish();
+    watchCalendarEnhancements();
+    polishContactForm();
 
     if (document.getElementById('mypage-content') && window.WC?.currentUser && typeof renderMypageLoggedIn === 'function') {
       renderMypageLoggedIn();
     }
     if (document.getElementById('upcoming-events') && typeof renderAll === 'function') {
       try { renderAll(); } catch (_) {}
-      requestAnimationFrame(() => enhanceCalendarAria(document));
+      requestAnimationFrame(() => {
+        compactDenseCalendar(document);
+        enhanceCalendarAria(document);
+        polishSelectionControl();
+      });
     }
   });
 })();
