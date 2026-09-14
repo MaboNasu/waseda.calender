@@ -1,5 +1,9 @@
-# Claude Code ローカル設定（個人環境のため共有しない）
-.claude/
+# Claude Code ローカル設定（個人環境のため共有しない）。
+# ただしskills/配下は個人設定ではなく恒久的なプロジェクト共有知識として扱うため、
+# .claude/skills/だけは例外的に追跡する(2026-09-14、ui-ux Skill追加時に変更)。
+# 親ディレクトリごと除外(.claude/)すると!による再包含が効かないため、.claude/*の形にしている。
+.claude/*
+!.claude/skills/
 
 # Windows / OneDrive が自動生成するファイル
 Thumbs.db
