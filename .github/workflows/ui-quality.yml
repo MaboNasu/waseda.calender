@@ -49,6 +49,7 @@ jobs:
             pwa-install.js \
             ux-improvements.js \
             ux-polish.js \
+            mobile-fixes.js \
             recommendation.js \
             event-page.js \
             organizations-page.js \
@@ -79,7 +80,9 @@ jobs:
           grep -q 'ux-improvements.js' auth-ui.js
           grep -q 'ux-polish.css' auth-ui.js
           grep -q 'ux-polish.js' auth-ui.js
-          grep -q 'ux-polish' service-worker.js
+          grep -q 'mobile-fixes.css' auth-ui.js
+          grep -q 'mobile-fixes.js' auth-ui.js
+          grep -q 'mobile-fixes' service-worker.js
 
       - name: Regenerate canonical static pages
         run: |
