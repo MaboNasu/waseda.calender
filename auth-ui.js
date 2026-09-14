@@ -124,6 +124,29 @@ window.addEventListener('wc-auth-error', (e) => {
   if (message) renderHeaderAuthError(message);
 });
 
+/**
+ * 全ページ共通のUX改善レイヤーをここから読み込む。
+ * auth-ui.js はトップ/個別イベント/団体/マイページ/問い合わせ/法務ページのすべてで既に読み込まれているため、
+ * 数百件の静的生成済みHTMLを一括編集せずに共通改善を配布できる。
+ */
+function loadUxImprovementLayer() {
+  if (!document.querySelector('link[data-wc-ux]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/ux-improvements.css?v=1';
+    link.dataset.wcUx = '1';
+    document.head.appendChild(link);
+  }
+  if (!document.querySelector('script[data-wc-ux]')) {
+    const script = document.createElement('script');
+    script.src = '/ux-improvements.js?v=1';
+    script.dataset.wcUx = '1';
+    document.body.appendChild(script);
+  }
+}
+
+loadUxImprovementLayer();
+
 document.addEventListener('DOMContentLoaded', () => {
   if (window.WC && window.WC.firebaseReady) {
     renderHeaderAuth(window.WC.currentUser || null);
