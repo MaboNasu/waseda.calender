@@ -103,9 +103,12 @@
       if (end !== null && end <= nowMinutes) return 3;
       return 0;
     };
+    const today = typeof getTodayStr === 'function' ? getTodayStr() : null;
     return [...events].sort((a, b) => rank(a) - rank(b)
       || String(a.startTime || '99:99').localeCompare(String(b.startTime || '99:99'))
-      || String(a.title || '').localeCompare(String(b.title || ''), 'ja'));
+      || (today && typeof sameDayOrderCompare === 'function'
+        ? sameDayOrderCompare(a, b, today)
+        : String(a.title || '').localeCompare(String(b.title || ''), 'ja')));
   }
 
   function installHomeRenderOverrides() {
@@ -133,9 +136,11 @@
         const weekAhead = getWeekAheadStr();
         const source = allFiltered || getFilteredEvents();
         const inWindow = source.filter(ev => (ev.date > today || isEventOnDate(ev, today)) && ev.date <= weekAhead);
-        const regular = inWindow.filter(ev => !isLongRunningEvent(ev)).sort((a, b) => a.date.localeCompare(b.date));
+        const dayTiebreak = (a, b) => (typeof sameDayOrderCompare === 'function' ? sameDayOrderCompare(a, b, today) : 0);
+        const regular = inWindow.filter(ev => !isLongRunningEvent(ev))
+          .sort((a, b) => a.date.localeCompare(b.date) || dayTiebreak(a, b));
         const longRunning = source.filter(ev => isLongRunningEvent(ev) && ev.date <= weekAhead && getEventEnd(ev) >= today)
-          .sort((a, b) => getEventEnd(a).localeCompare(getEventEnd(b)) || a.date.localeCompare(b.date));
+          .sort((a, b) => getEventEnd(a).localeCompare(getEventEnd(b)) || a.date.localeCompare(b.date) || dayTiebreak(a, b));
         const countEl = document.getElementById('upcoming-count');
         if (countEl) countEl.textContent = `${regular.length}件`;
         el.innerHTML = regular.length === 0
