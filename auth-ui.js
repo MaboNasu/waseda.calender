@@ -141,8 +141,11 @@ function loadUxImprovementLayer() {
 
   addCss('/ux-improvements.css?v=2', 'base-css');
   addCss('/ux-polish.css?v=2', 'polish-css');
+  addCss('/mobile-fixes.css?v=1', 'mobile-css');
   addScript('/ux-improvements.js?v=2', 'base-js', () => {
-    addScript('/ux-polish.js?v=2', 'polish-js');
+    addScript('/ux-polish.js?v=2', 'polish-js', () => {
+      addScript('/mobile-fixes.js?v=1', 'mobile-js');
+    });
   });
 }
 
