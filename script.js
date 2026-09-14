@@ -1165,6 +1165,13 @@ function openModal(eventId) {
   } else {
     extLink.style.display  = 'none';
   }
+  const regLink = document.getElementById('modal-reg-link');
+  if (ev.registrationUrl) {
+    regLink.href           = ev.registrationUrl;
+    regLink.style.display  = '';
+  } else {
+    regLink.style.display  = 'none';
+  }
 
   activateModal();
 }

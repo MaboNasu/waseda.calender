@@ -1229,6 +1229,10 @@ ul, ol { list-style: none; }
   flex-wrap: wrap;
   gap: 0.5rem;
 }
+/* registrationUrl(参加申し込み)とexternalUrl(公式サイト)、両方あるイベントでは
+   2つボタンが並ぶため、.modal-footerの直接の子はこのラッパー1つのままにして
+   justify-content:space-betweenの2分割レイアウトを崩さないようにする。 */
+.modal-footer-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 .modal-updated { font-size: 0.72rem; color: var(--text-muted); }
 .modal-share-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
 

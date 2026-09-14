@@ -40,7 +40,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- スタイルシート -->
-  <link rel="stylesheet" href="style.css?v=43">
+  <link rel="stylesheet" href="style.css?v=44">
 </head>
 <body>
 
@@ -358,8 +358,12 @@
       <!-- フッター -->
       <div class="modal-footer" id="modal-footer-section">
         <span class="modal-updated" id="modal-updated"></span>
-        <a id="modal-ext-link" href="#" target="_blank" rel="noopener noreferrer"
-          class="btn btn-ghost btn-sm" style="display:none;">公式サイトを見る ↗</a>
+        <div class="modal-footer-links">
+          <a id="modal-reg-link" href="#" target="_blank" rel="noopener noreferrer"
+            class="btn btn-enjy btn-sm" style="display:none;">参加申し込みはこちら ↗</a>
+          <a id="modal-ext-link" href="#" target="_blank" rel="noopener noreferrer"
+            class="btn btn-ghost btn-sm" style="display:none;">公式サイトを見る ↗</a>
+        </div>
       </div>
     </div>
   </div>
@@ -388,7 +392,7 @@
      スクリプト読み込み（events.js → script.js の順）
      ============================================================ -->
 <script src="events.js?v=6"></script>
-<script src="script.js?v=35"></script>
+<script src="script.js?v=36"></script>
 <script src="recommendation.js?v=2"></script>
 <script src="image-generator.js?v=6"></script>
 <script type="module" src="firebase-init.js?v=3"></script>
