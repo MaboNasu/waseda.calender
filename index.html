@@ -40,7 +40,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- スタイルシート -->
-  <link rel="stylesheet" href="style.css?v=42">
+  <link rel="stylesheet" href="style.css?v=43">
 </head>
 <body>
 
@@ -214,8 +214,10 @@
   <div class="container">
     <div class="section-title-row">
       <h2 class="section-title">
-        本日のイベント
-        <span id="today-count" style="font-size:0.85rem;font-weight:500;color:#6B7280;font-family:var(--font-main);margin-left:0.25rem;"></span>
+        <button type="button" class="section-title-toggle" id="today-toggle" aria-expanded="false" aria-controls="today-body">
+          <span>本日のイベント<span id="today-count" style="font-size:0.85rem;font-weight:500;color:#6B7280;font-family:var(--font-main);margin-left:0.25rem;"></span></span>
+          <span class="section-toggle-icon" aria-hidden="true">▾</span>
+        </button>
       </h2>
       <div class="density-toggle" role="group" aria-label="表示密度">
         <button type="button" class="density-btn active" data-density="large">大</button>
@@ -223,8 +225,10 @@
         <button type="button" class="density-btn" data-density="small">小</button>
       </div>
     </div>
-    <div id="today-events">
-      <!-- JSで描画 -->
+    <div id="today-body" hidden>
+      <div id="today-events">
+        <!-- JSで描画 -->
+      </div>
     </div>
   </div>
 </section>
@@ -237,8 +241,10 @@
   <div class="container">
     <div class="section-title-row">
       <h2 class="section-title">
-        今週開催のイベント
-        <span id="upcoming-count" style="font-size:0.85rem;font-weight:500;color:#6B7280;font-family:var(--font-main);margin-left:0.25rem;"></span>
+        <button type="button" class="section-title-toggle" id="upcoming-toggle" aria-expanded="false" aria-controls="upcoming-body">
+          <span>今週開催のイベント<span id="upcoming-count" style="font-size:0.85rem;font-weight:500;color:#6B7280;font-family:var(--font-main);margin-left:0.25rem;"></span></span>
+          <span class="section-toggle-icon" aria-hidden="true">▾</span>
+        </button>
       </h2>
       <div class="density-toggle" role="group" aria-label="表示密度">
         <button type="button" class="density-btn active" data-density="large">大</button>
@@ -246,8 +252,10 @@
         <button type="button" class="density-btn" data-density="small">小</button>
       </div>
     </div>
-    <div id="upcoming-events">
-      <!-- JSで描画 -->
+    <div id="upcoming-body" hidden>
+      <div id="upcoming-events">
+        <!-- JSで描画 -->
+      </div>
     </div>
   </div>
 </section>
@@ -380,7 +388,7 @@
      スクリプト読み込み（events.js → script.js の順）
      ============================================================ -->
 <script src="events.js?v=6"></script>
-<script src="script.js?v=34"></script>
+<script src="script.js?v=35"></script>
 <script src="recommendation.js?v=2"></script>
 <script src="image-generator.js?v=6"></script>
 <script type="module" src="firebase-init.js?v=3"></script>

@@ -235,6 +235,24 @@ ul, ol { list-style: none; }
   margin-bottom: 1.5rem;
 }
 .section-title-row .section-title { margin-bottom: 0; }
+/* 本日/今週開催セクションの開閉ボタン。フィルターパネル(.filter-title)と同じ
+   開閉パターン(aria-expandedでアイコン回転)だが、幅いっぱいには広げず
+   見出しテキスト分だけの幅にする（隣の表示密度ボタンと同じ行に収まるように）。 */
+.section-title-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.section-toggle-icon { font-size: 0.8rem; color: var(--gray-500); transition: transform var(--transition); flex-shrink: 0; }
+.section-title-toggle[aria-expanded="true"] .section-toggle-icon { transform: rotate(180deg); }
 .density-toggle { display: inline-flex; gap: 0.4rem; }
 .density-btn {
   background: var(--white);
