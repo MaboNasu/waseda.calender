@@ -1,0 +1,128 @@
+/* Waseda Calendar mobile hardening layer (2026-09)
+   Loaded after ux-polish.css. This file only addresses narrow-screen/mobile-browser issues. */
+
+@media (max-width: 768px) {
+  /* Desktop density preferences can persist via localStorage. Keep mobile cards one column
+     even when .density-medium/.density-small has higher selector specificity. */
+  .events-grid.density-medium,
+  .events-grid.density-small {
+    grid-template-columns: 1fr;
+  }
+
+  /* Prevent iOS Safari from zooming the viewport when focusing sub-16px inputs. */
+  .filter-select,
+  .filter-input,
+  .form-control,
+  .recommend-date-input,
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  /* Header/menu: keep all primary tap targets at least 44px and make a long menu scrollable. */
+  .hamburger {
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+  }
+  .mobile-nav {
+    max-height: calc(100dvh - var(--header-h));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+  .mobile-nav .nav-btn,
+  .header-login-btn,
+  .header-auth .btn-ghost,
+  .entry-option,
+  .form-wrapper .btn,
+  .org-page-btn {
+    min-height: 44px;
+  }
+
+  /* Mobile browser chrome changes the visual viewport height. Use dvh and safe-area insets
+     so the close button and bottom actions never sit behind browser/home-indicator UI. */
+  .modal-overlay {
+    padding: .5rem;
+    padding-top: max(.5rem, env(safe-area-inset-top));
+    padding-bottom: max(.5rem, env(safe-area-inset-bottom));
+  }
+  .modal {
+    max-height: calc(100dvh - 1rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    border-radius: 12px;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .modal-body {
+    padding-bottom: calc(1.1rem + env(safe-area-inset-bottom));
+  }
+  .modal-more-actions-grid .btn {
+    width: 100%;
+    min-height: 44px;
+    justify-content: center;
+  }
+
+  /* Fixed multi-select bar must not overlap the iPhone home indicator or cover page content. */
+  .selection-bar {
+    width: calc(100% - 1rem);
+    left: .5rem;
+    right: .5rem;
+    bottom: calc(.5rem + env(safe-area-inset-bottom));
+    transform: none;
+    border-radius: var(--radius-lg);
+    padding: .6rem;
+    gap: .5rem;
+  }
+  .selection-bar-count {
+    width: 100%;
+    text-align: center;
+  }
+  .selection-bar .btn {
+    flex: 1 1 calc(50% - .25rem);
+    min-height: 44px;
+    justify-content: center;
+  }
+  body.selection-mode {
+    padding-bottom: calc(7.5rem + env(safe-area-inset-bottom));
+  }
+
+  /* Mobile calendar is a list. Make long titles/range badges shrink instead of forcing overflow. */
+  .cal-list-event-item > div {
+    min-width: 0;
+    flex: 1;
+  }
+  .cal-event-title,
+  .cal-event-loc {
+    overflow-wrap: anywhere;
+  }
+  .cal-event-range-badge {
+    max-width: 100%;
+    white-space: normal;
+    margin-left: 0;
+  }
+
+  /* Reduce non-essential vertical chrome on content/form pages. */
+  .org-hero {
+    padding: 2rem 0 1.75rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .container { padding-left: .75rem; padding-right: .75rem; }
+  .logo-main { font-size: 1rem; }
+
+  /* Keep the 320px header from becoming wider than the viewport. Accessible name remains unchanged. */
+  .header-login-btn { font-size: 0; padding-left: .45rem; padding-right: .45rem; }
+  .header-login-btn::after { content: 'ログイン'; font-size: .72rem; }
+
+  /* Recommendation card keeps one clear action without squeezing three text blocks into 320px. */
+  .recommend-entry { padding: .7rem .75rem; gap: .5rem; }
+  .recommend-entry-icon,
+  .recommend-entry-desc { display: none; }
+  .recommend-entry-cta { padding: .4rem .55rem; }
+
+  .modal-header { padding: 1rem; }
+  .modal-title { font-size: 1rem; }
+}
