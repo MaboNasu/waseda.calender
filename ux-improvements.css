@@ -3,7 +3,6 @@
    accessibility and progressive-disclosure behavior. */
 
 :root {
-  /* #9CA3AF on white is too light for small body text. */
   --text-muted: #6B7280;
 }
 
@@ -129,7 +128,7 @@ summary:focus-visible {
 /* Empty states should always offer a useful next action. */
 .empty-state-action { margin-top: .75rem; }
 
-/* Hide empty social proof on cards. */
+/* Hide empty social proof on cards, while allowing live Firestore counts to reveal it. */
 .reaction-summary[data-empty="true"] { display: none; }
 
 /* Schedule entries are informational, not attendance events. */
@@ -187,4 +186,16 @@ summary:focus-visible {
   .display-settings { margin-left: 0; }
   .upcoming-long-running-item { align-items: flex-start; flex-direction: column; gap: .15rem; }
   .header-nav .nav-btn.nav-secondary { color: #fff; }
+
+  /* WCAG-friendly mobile touch targets without inflating the desktop month grid. */
+  .day-event-chip,
+  .day-more,
+  .cal-list-event-item,
+  .long-running-item,
+  .calendar-nav-btn,
+  .filter-title,
+  .scope-btn,
+  .show-more-btn {
+    min-height: 44px;
+  }
 }
