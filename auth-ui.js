@@ -140,9 +140,9 @@ function loadUxImprovementLayer() {
   };
 
   addCss('/ux-improvements.css?v=2', 'base-css');
-  addCss('/ux-polish.css?v=1', 'polish-css');
+  addCss('/ux-polish.css?v=2', 'polish-css');
   addScript('/ux-improvements.js?v=2', 'base-js', () => {
-    addScript('/ux-polish.js?v=1', 'polish-js');
+    addScript('/ux-polish.js?v=2', 'polish-js');
   });
 }
 
