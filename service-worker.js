@@ -4,7 +4,7 @@
  * HTML・イベントデータ・UX共通レイヤーはnetwork-first。
  * その他の静的アセットはstale-while-revalidate。
  */
-const CACHE_NAME = 'wc-cache-v6';
+const CACHE_NAME = 'wc-cache-v7';
 
 const PRECACHE_URLS = [
   '/',
@@ -14,6 +14,8 @@ const PRECACHE_URLS = [
   '/events.js',
   '/ux-improvements.css',
   '/ux-improvements.js',
+  '/ux-polish.css',
+  '/ux-polish.js',
   '/assets/icon.png'
 ];
 
@@ -44,8 +46,8 @@ const OFFLINE_RESPONSE = () => new Response('オフラインのため表示で�
 function isFreshnessCritical(url, request) {
   if (request.mode === 'navigate') return true;
   if (url.pathname === '/' || url.pathname.endsWith('.html')) return true;
-  return /\/(events|organizations|script|auth-ui|pwa-install|ux-improvements)\.js$/.test(url.pathname)
-    || /\/(style|ux-improvements)\.css$/.test(url.pathname);
+  return /\/(events|organizations|script|auth-ui|pwa-install|ux-improvements|ux-polish)\.js$/.test(url.pathname)
+    || /\/(style|ux-improvements|ux-polish)\.css$/.test(url.pathname);
 }
 
 self.addEventListener('fetch', event => {
