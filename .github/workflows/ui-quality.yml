@@ -1,0 +1,92 @@
+name: UI quality checks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '*.html'
+      - '*.js'
+      - '*.css'
+      - 'event/**'
+      - 'org/**'
+      - 'scripts/generate-event-pages.js'
+      - 'scripts/generate-org-pages.js'
+      - 'scripts/generate-sitemap.js'
+      - '.github/workflows/ui-quality.yml'
+  pull_request:
+    paths:
+      - '*.html'
+      - '*.js'
+      - '*.css'
+      - 'event/**'
+      - 'org/**'
+      - 'scripts/generate-event-pages.js'
+      - 'scripts/generate-org-pages.js'
+      - 'scripts/generate-sitemap.js'
+      - '.github/workflows/ui-quality.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check browser JavaScript syntax
+        run: |
+          set -e
+          for file in \
+            script.js \
+            auth-ui.js \
+            pwa-install.js \
+            ux-improvements.js \
+            ux-polish.js \
+            recommendation.js \
+            event-page.js \
+            organizations-page.js \
+            org-page.js \
+            mypage.js \
+            contact.js \
+            image-generator.js \
+            service-worker.js
+          do
+            echo "Checking $file"
+            node --check "$file"
+          done
+
+      - name: Block internal review notes from public HTML
+        shell: bash
+        run: |
+          shopt -s nullglob
+          files=(./*.html event/*.html org/*.html)
+          if grep -nH '\[要確認\]' "${files[@]}"; then
+            echo '公開HTMLに [要確認] が残っています。'
+            exit 1
+          fi
+          echo '公開HTMLに内部レビュー注記はありません。'
+
+      - name: Verify shared UX bootstrap
+        run: |
+          grep -q 'ux-improvements.css' auth-ui.js
+          grep -q 'ux-improvements.js' auth-ui.js
+          grep -q 'ux-polish.css' auth-ui.js
+          grep -q 'ux-polish.js' auth-ui.js
+          grep -q 'ux-polish' service-worker.js
+
+      - name: Regenerate canonical static pages
+        run: |
+          node scripts/generate-event-pages.js
+          node scripts/generate-org-pages.js
+          node scripts/generate-sitemap.js
+
+      - name: Verify generated pages are committed and in sync
+        run: |
+          git diff --exit-code -- event/ org/ sitemap.xml
