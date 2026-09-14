@@ -16,6 +16,24 @@
     try { return typeof ORGANIZATIONS !== 'undefined' ? ORGANIZATIONS : []; } catch (_) { return []; }
   };
 
+  function addDaysToDateStr(dateStr, days) {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const dt = new Date(Date.UTC(y, m - 1, d + days));
+    return `${dt.getUTCFullYear()}-${String(dt.getUTCMonth() + 1).padStart(2, '0')}-${String(dt.getUTCDate()).padStart(2, '0')}`;
+  }
+
+  function currentJstMinutes() {
+    const jst = new Date(Date.now() + 9 * 60 * 60 * 1000);
+    return jst.getUTCHours() * 60 + jst.getUTCMinutes();
+  }
+
+  function installTokyoDateConsistency() {
+    if (typeof window.getTodayStr !== 'function') return;
+    window.getWeekAheadStr = function getWeekAheadStrJst() {
+      return addDaysToDateStr(getTodayStr(), 6);
+    };
+  }
+
   function polishNavigation() {
     document.querySelectorAll('.header-nav .nav-btn, .mobile-nav .nav-btn').forEach(item => {
       const text = item.textContent.trim();
@@ -121,8 +139,7 @@
       const byId = new Map(eventsSafe().map(ev => [String(ev.id), ev]));
       const timeRank = ev => {
         if (!ev || ev.date !== today || !ev.startTime) return 1;
-        const now = new Date();
-        const nowMin = now.getHours() * 60 + now.getMinutes();
+        const nowMin = currentJstMinutes();
         const [sh, sm] = ev.startTime.split(':').map(Number);
         const start = sh * 60 + sm;
         if (ev.endTime) {
@@ -144,20 +161,66 @@
     };
   }
 
+  function enhanceCalendarAria(root = document) {
+    const title = document.getElementById('calendar-title')?.textContent || '';
+    const match = title.match(/(\d{4})年\s*(\d{1,2})月/);
+    const year = match ? Number(match[1]) : null;
+    const month = match ? Number(match[2]) : null;
+
+    root.querySelectorAll('.calendar-day:not(.other-month)').forEach(day => {
+      const dayButton = day.querySelector('.day-num-clickable');
+      const dayNumber = Number(day.querySelector('.day-num')?.textContent || 0);
+      if (dayButton && year && month && dayNumber) {
+        dayButton.setAttribute('aria-label', `${year}年${month}月${dayNumber}日のイベントを見る`);
+      }
+      const more = day.querySelector('.day-more');
+      if (more && year && month && dayNumber) {
+        more.setAttribute('aria-label', `${year}年${month}月${dayNumber}日の${more.textContent.trim()}を表示`);
+      }
+    });
+
+    root.querySelectorAll('.day-event-chip, .event-bar').forEach(el => {
+      const titleText = el.getAttribute('title') || el.textContent.trim();
+      if (titleText) el.setAttribute('aria-label', `${titleText}の詳細を見る`);
+    });
+    root.querySelectorAll('.cal-list-event-item, .long-running-item').forEach(el => {
+      const text = el.textContent.replace(/\s+/g, ' ').trim();
+      if (text) el.setAttribute('aria-label', `${text}の詳細を見る`);
+    });
+  }
+
+  function watchCalendarAria() {
+    const targets = ['calendar-grid', 'calendar-list', 'long-running-events']
+      .map(id => document.getElementById(id)).filter(Boolean);
+    if (!targets.length) return;
+    let queued = false;
+    const observer = new MutationObserver(() => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        enhanceCalendarAria(document);
+      });
+    });
+    targets.forEach(target => observer.observe(target, { childList: true, subtree: true }));
+    enhanceCalendarAria(document);
+  }
+
   onReady(() => {
+    installTokyoDateConsistency();
     polishNavigation();
     fixOrganizationEventHub();
     watchOrganizationEventHub();
     installMypagePolish();
     installUpcomingTemporalSort();
+    watchCalendarAria();
 
-    // My page may already have rendered before this async common layer arrived.
     if (document.getElementById('mypage-content') && window.WC?.currentUser && typeof renderMypageLoggedIn === 'function') {
       renderMypageLoggedIn();
     }
-    // Home may also already have rendered; refresh once so temporal sorting applies.
     if (document.getElementById('upcoming-events') && typeof renderAll === 'function') {
       try { renderAll(); } catch (_) {}
+      requestAnimationFrame(() => enhanceCalendarAria(document));
     }
   });
 })();
