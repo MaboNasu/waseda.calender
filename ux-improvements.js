@@ -1,11 +1,10 @@
 /* Waseda Calendar cross-site UX improvements (2026-09)
-   Loaded after each page's existing scripts via auth-ui.js. The layer deliberately
-   reuses existing rendering helpers and data rather than duplicating the product. */
+   Loaded after each page's existing scripts via auth-ui.js. */
 (() => {
   'use strict';
 
   const WC_UX = window.WC_UX = window.WC_UX || {};
-  const onReady = (fn) => {
+  const onReady = fn => {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn, { once: true });
     else fn();
   };
@@ -13,30 +12,24 @@
   function getAllEventsSafe() {
     try { return typeof EVENTS !== 'undefined' ? EVENTS : []; } catch (_) { return []; }
   }
-
   function getAllOrgsSafe() {
     try { return typeof ORGANIZATIONS !== 'undefined' ? ORGANIZATIONS : []; } catch (_) { return []; }
   }
-
   function findEventById(id) {
     return getAllEventsSafe().find(ev => String(ev.id) === String(id)) || null;
   }
-
   function currentEventFromUrl() {
     const params = new URLSearchParams(location.search);
     const pathMatch = location.pathname.match(/\/event\/([^/]+)\.html$/);
     const id = params.get('id') || (pathMatch ? decodeURIComponent(pathMatch[1]) : null);
     return id ? findEventById(id) : null;
   }
-
   function safeToday() {
     try { return typeof getTodayStr === 'function' ? getTodayStr() : new Date().toISOString().slice(0, 10); }
     catch (_) { return new Date().toISOString().slice(0, 10); }
   }
 
-  /* ------------------------------------------------------------
-     Global navigation / accessibility
-     ------------------------------------------------------------ */
+  /* ---------- Global navigation / accessibility ---------- */
   function addSkipLink() {
     if (document.querySelector('.skip-link')) return;
     const main = document.querySelector('main') || document.querySelector('#top');
@@ -50,18 +43,13 @@
   }
 
   function simplifyNavigation() {
-    const navs = document.querySelectorAll('.header-nav, .mobile-nav');
-    navs.forEach(nav => {
+    document.querySelectorAll('.header-nav, .mobile-nav').forEach(nav => {
       [...nav.querySelectorAll('.nav-btn')].forEach(item => {
         const text = item.textContent.trim();
-        if (text.includes('今週開催')) {
-          item.remove();
-          return;
-        }
+        if (text.includes('今週開催')) { item.remove(); return; }
         if (text.includes('本日のイベント')) item.textContent = '今日';
         if (text === '公認団体') item.textContent = '団体';
-        if (text.includes('掲載依頼')) item.classList.add('nav-secondary');
-        if (text.includes('マイページ')) item.classList.add('nav-secondary');
+        if (text.includes('掲載依頼') || text.includes('マイページ')) item.classList.add('nav-secondary');
       });
     });
   }
@@ -93,13 +81,12 @@
           if (node.nodeType === 1) makeClickableCalendarKeyboardFriendly(node);
         });
       }
+      updateReactionSummaryVisibility();
     });
     targets.forEach(t => observer.observe(t, { childList: true, subtree: true }));
   }
 
-  /* ------------------------------------------------------------
-     Home page hierarchy
-     ------------------------------------------------------------ */
+  /* ---------- Home page hierarchy ---------- */
   function sortTodayByUsefulness(events) {
     const now = new Date(Date.now() + 9 * 60 * 60 * 1000);
     const nowMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
@@ -111,10 +98,10 @@
     const rank = ev => {
       const start = toMinutes(ev.startTime);
       const end = toMinutes(ev.endTime);
-      if (start === null) return 2; // all-day/unknown time
-      if (start > nowMinutes) return 1; // later today
-      if (end !== null && end <= nowMinutes) return 3; // clearly ended
-      return 0; // currently ongoing or end time unknown after start
+      if (start === null) return 2;
+      if (start > nowMinutes) return 1;
+      if (end !== null && end <= nowMinutes) return 3;
+      return 0;
     };
     return [...events].sort((a, b) => rank(a) - rank(b)
       || String(a.startTime || '99:99').localeCompare(String(b.startTime || '99:99'))
@@ -159,34 +146,37 @@
       };
     }
 
-    if (typeof window.createReactionSummaryHTML === 'function') {
-      const originalReactionSummary = window.createReactionSummaryHTML;
-      window.createReactionSummaryHTML = function reactionSummaryUx(ev, activeType) {
-        try {
-          const total = Object.keys(REACTION_TYPES).reduce((sum, type) => sum + reactionCount(ev, type), 0);
-          if (total <= 0) return '';
-        } catch (_) {}
-        return originalReactionSummary(ev, activeType);
-      };
-    }
-
     if (typeof window.organizerHTML === 'function') {
       window.organizerHTML = function organizerHtmlUx(ev) {
         const text = escapeHtml(ev.organizer || '—');
         if (!ev.orgId) return text;
-        return `<a href="org/${encodeURIComponent(ev.orgId)}.html" class="organizer-link">${text}</a>`;
+        return `<a href="/org/${encodeURIComponent(ev.orgId)}.html" class="organizer-link">${text}</a>`;
       };
     }
+
+    if (typeof window.refreshLiveReactionCounts === 'function' && !WC_UX.reactionRefreshWrapped) {
+      WC_UX.reactionRefreshWrapped = true;
+      const originalRefresh = window.refreshLiveReactionCounts;
+      window.refreshLiveReactionCounts = async function refreshLiveReactionCountsUx(ids) {
+        await originalRefresh(ids);
+        updateReactionSummaryVisibility();
+      };
+    }
+  }
+
+  function updateReactionSummaryVisibility(root = document) {
+    root.querySelectorAll('.reaction-summary').forEach(summary => {
+      const total = [...summary.querySelectorAll('.reaction-count')]
+        .reduce((sum, el) => sum + (Number(el.textContent) || 0), 0);
+      summary.dataset.empty = total <= 0 ? 'true' : 'false';
+    });
   }
 
   function renderUpcomingLongRunning(events) {
     const section = document.getElementById('upcoming-section');
     if (!section) return;
     let wrap = document.getElementById('upcoming-long-running');
-    if (!events.length) {
-      if (wrap) wrap.remove();
-      return;
-    }
+    if (!events.length) { if (wrap) wrap.remove(); return; }
     if (!wrap) {
       wrap = document.createElement('div');
       wrap.id = 'upcoming-long-running';
@@ -203,7 +193,6 @@
 
   function homeDomEnhancements() {
     if (!document.querySelector('.hero')) return;
-
     const heroCtas = document.querySelectorAll('.hero-cta > *');
     if (heroCtas[0]) heroCtas[0].textContent = '📅 今日行けるイベントを見る';
     if (heroCtas[1]) heroCtas[1].textContent = '🗓 カレンダーから探す';
@@ -234,24 +223,20 @@
     if (todayToggle && todayBody) {
       todayToggle.setAttribute('aria-expanded', 'true');
       todayBody.hidden = false;
-      const todaySection = document.getElementById('today-events');
-      if (typeof collapseGridToOneRow === 'function') requestAnimationFrame(() => collapseGridToOneRow(todaySection));
+      if (typeof collapseGridToOneRow === 'function') requestAnimationFrame(() => collapseGridToOneRow(document.getElementById('today-events')));
     }
 
-    // Recommendation is assistance after the user has seen today's options.
     const recommendation = document.querySelector('.recommend-entry');
     if (recommendation) {
       try {
-        if (typeof RECOMMEND_QUESTIONS !== 'undefined' && RECOMMEND_QUESTIONS.length > 3) {
-          RECOMMEND_QUESTIONS.splice(3);
-        }
+        if (typeof RECOMMEND_QUESTIONS !== 'undefined' && RECOMMEND_QUESTIONS.length > 3) RECOMMEND_QUESTIONS.splice(3);
       } catch (_) {}
       const title = recommendation.querySelector('.recommend-entry-title');
       const desc = recommendation.querySelector('.recommend-entry-desc');
       const cta = recommendation.querySelector('.recommend-entry-cta');
       if (title) title.innerHTML = '迷った？ 今日、何する？<span class="beta-badge">β</span>';
       if (desc) desc.textContent = '3つの質問で、条件に合うイベントを3件選びます';
-      if (cta) cta.childNodes[0].textContent = '3問で選ぶ ';
+      if (cta && cta.firstChild) cta.firstChild.textContent = '3問で選ぶ ';
       const todayBodyEl = document.getElementById('today-body');
       if (todayBodyEl) todayBodyEl.after(recommendation);
     }
@@ -304,9 +289,7 @@
     scope.appendChild(btn);
   }
 
-  /* ------------------------------------------------------------
-     Event detail/modal semantics
-     ------------------------------------------------------------ */
+  /* ---------- Event detail/modal semantics ---------- */
   function installModalEnhancement() {
     if (typeof window.openModal !== 'function' || WC_UX.modalWrapped) return;
     WC_UX.modalWrapped = true;
@@ -322,7 +305,6 @@
     const modal = document.getElementById('event-modal');
     if (!modal) return;
     modal.classList.toggle('is-schedule', ev.scope === 'schedule');
-
     const desc = document.getElementById('modal-desc-section');
     const share = document.getElementById('modal-share-actions');
     if (desc && share && share.parentNode === desc.parentNode) share.parentNode.insertBefore(desc, share);
@@ -337,12 +319,11 @@
         if (label === '参加費') item.remove();
         if (label === '場所' && !ev.location) item.remove();
       });
-      if (!document.querySelector('#event-modal .schedule-detail-note')) {
+      if (!modal.querySelector('.schedule-detail-note')) {
         const note = document.createElement('p');
         note.className = 'schedule-detail-note';
         note.textContent = 'これは授業期間・休業・式典などの学事日程です。参加型イベントではありません。';
-        const grid = document.getElementById('modal-detail-content');
-        if (grid) grid.after(note);
+        document.getElementById('modal-detail-content')?.after(note);
       }
     } else {
       modal.querySelector('.schedule-detail-note')?.remove();
@@ -365,12 +346,11 @@
       if (anchor) body.insertBefore(descBlock, anchor);
     }
 
-    const secondaryItems = wrap.querySelectorAll('.event-secondary-info .modal-detail-item');
-    secondaryItems.forEach(item => {
+    wrap.querySelectorAll('.event-secondary-info .modal-detail-item').forEach(item => {
       const label = item.querySelector('.modal-detail-label')?.textContent.trim();
       if (label === '主催団体' && ev.orgId) {
         const value = item.querySelector('.modal-detail-value');
-        if (value) value.innerHTML = `<a class="organizer-link" href="../org/${encodeURIComponent(ev.orgId)}.html">${escapeHtml(ev.organizer || '団体詳細')}</a>`;
+        if (value) value.innerHTML = `<a class="organizer-link" href="/org/${encodeURIComponent(ev.orgId)}.html">${escapeHtml(ev.organizer || '団体詳細')}</a>`;
       }
     });
 
@@ -393,9 +373,7 @@
     }
   }
 
-  /* ------------------------------------------------------------
-     Organization UX / followed-event bug
-     ------------------------------------------------------------ */
+  /* ---------- Organization UX / followed-event bug ---------- */
   function installOrgEnhancements() {
     if (typeof window.collectFollowedOrgEventIds === 'function') {
       window.collectFollowedOrgEventIds = function collectFollowedOrgEventIdsUx(followedOrgIds) {
@@ -431,13 +409,17 @@
 
   function enhanceOrgDetail(root = document) {
     root.querySelectorAll('.org-detail').forEach(detail => {
-      const upcoming = [...detail.querySelectorAll('.org-related')].find(sec => sec.querySelector('h3')?.textContent.trim() === '関連イベント');
+      const upcoming = [...detail.querySelectorAll('.org-related')].find(sec => {
+        const text = sec.querySelector('h3')?.textContent.trim();
+        return text === '関連イベント' || text === '今後のイベント';
+      });
       if (!upcoming) return;
       upcoming.querySelector('h3').textContent = '今後のイベント';
       upcoming.classList.add('org-upcoming-primary');
       const header = detail.querySelector('.org-detail-header');
       const desc = detail.querySelector('.org-detail-desc');
-      if (header && upcoming && upcoming.parentNode === detail) detail.insertBefore(upcoming, desc || header.nextSibling);
+      if (desc && upcoming.nextElementSibling !== desc) detail.insertBefore(upcoming, desc);
+      else if (!desc && header && header.nextElementSibling !== upcoming) header.after(upcoming);
     });
   }
 
@@ -445,15 +427,21 @@
     const targets = document.querySelectorAll('.org-detail');
     if (!targets.length) return;
     targets.forEach(target => {
-      const observer = new MutationObserver(() => enhanceOrgDetail(target.parentElement || document));
+      let scheduled = false;
+      const observer = new MutationObserver(() => {
+        if (scheduled) return;
+        scheduled = true;
+        requestAnimationFrame(() => {
+          scheduled = false;
+          enhanceOrgDetail(target.parentElement || document);
+        });
+      });
       observer.observe(target, { childList: true, subtree: false });
     });
     enhanceOrgDetail();
   }
 
-  /* ------------------------------------------------------------
-     Contact form usability / a11y
-     ------------------------------------------------------------ */
+  /* ---------- Contact form usability / a11y ---------- */
   function installContactEnhancements() {
     const form = document.getElementById('contact-form');
     if (!form) return;
@@ -532,9 +520,15 @@
     setTimeout(() => first.focus({ preventScroll: true }), 250);
   }
 
-  /* ------------------------------------------------------------
-     Boot
-     ------------------------------------------------------------ */
+  function registerEngagementSignals() {
+    document.addEventListener('click', e => {
+      if (e.target.closest('.reaction-btn, .org-follow-btn, .event-participation-cta .btn')) {
+        window.dispatchEvent(new CustomEvent('wc-engaged'));
+      }
+    });
+  }
+
+  /* ---------- Boot ---------- */
   installHomeRenderOverrides();
   installModalEnhancement();
   installOrgEnhancements();
@@ -548,9 +542,9 @@
     watchDynamicAccessibility();
     watchOrgDetail();
     installContactEnhancements();
+    registerEngagementSignals();
+    updateReactionSummaryVisibility();
 
-    // If this layer arrived after the base DOMContentLoaded render, re-render once
-    // so the new sorting/long-running rules take effect immediately.
     if (document.getElementById('today-events') && typeof renderAll === 'function') {
       try { renderAll(); } catch (_) {}
       const todayToggle = document.getElementById('today-toggle');
