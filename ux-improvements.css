@@ -1,0 +1,190 @@
+/* Waseda Calendar UX improvement layer (2026-09)
+   Existing design tokens/components are preserved; this file only adjusts hierarchy,
+   accessibility and progressive-disclosure behavior. */
+
+:root {
+  /* #9CA3AF on white is too light for small body text. */
+  --text-muted: #6B7280;
+}
+
+/* Keyboard navigation */
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: 0.5rem;
+  z-index: 1000;
+  transform: translateY(-160%);
+  background: #fff;
+  color: var(--enjy);
+  border: 2px solid var(--enjy);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.9rem;
+  font-weight: 700;
+  transition: transform .15s ease;
+}
+.skip-link:focus { transform: translateY(0); }
+
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: 3px solid #C64040;
+  outline-offset: 3px;
+}
+
+/* Header hierarchy */
+.header-nav .nav-btn.nav-secondary {
+  border-color: transparent;
+  color: rgba(255,255,255,.82);
+}
+.header-nav .nav-btn.nav-secondary:hover { border-color: rgba(255,255,255,.4); }
+
+/* Hero: make event discovery the primary task. */
+.hero-live-count {
+  margin-top: .9rem;
+  font-size: .9rem;
+  font-weight: 700;
+  color: rgba(255,255,255,.92);
+}
+.hero-live-count strong { color: #fff; font-size: 1.05rem; }
+
+/* Recommendation becomes a helper after seeing today's choices. */
+#today-section .recommend-entry {
+  margin: 1rem 0 0;
+  box-shadow: var(--shadow-sm);
+  border-width: 1px;
+}
+#today-section .recommend-entry-title { font-family: var(--font-main); font-size: .95rem; }
+#today-section .recommend-entry-desc { font-size: .78rem; }
+
+/* Progressive disclosure for display-density controls. */
+.display-settings {
+  margin-left: auto;
+  position: relative;
+}
+.display-settings > summary {
+  list-style: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: .76rem;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: .35rem .6rem;
+  border-radius: var(--radius-sm);
+}
+.display-settings > summary::-webkit-details-marker { display: none; }
+.display-settings[open] > summary { color: var(--enjy); background: var(--enjy-pale); }
+.display-settings .density-toggle,
+.display-settings .org-columns-toggle {
+  margin-top: .35rem;
+  justify-content: flex-end;
+}
+
+/* Multi-select is an explicit mode, not persistent card chrome. */
+.event-card-select { display: none !important; }
+.selection-mode .event-card-select {
+  display: flex !important;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+.selection-mode .event-card-select input { width: 20px; height: 20px; }
+.selection-mode-toggle {
+  min-height: 44px;
+  margin-left: auto;
+}
+
+/* Long-running items are useful, but should not dominate the next-7-days list. */
+.upcoming-long-running {
+  margin-top: 1rem;
+  padding: .9rem 1rem;
+  background: var(--gray-50);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+.upcoming-long-running h3 { font-size: .82rem; color: var(--gray-700); margin-bottom: .55rem; }
+.upcoming-long-running-list { display: grid; gap: .35rem; }
+.upcoming-long-running-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  width: 100%;
+  min-height: 44px;
+  padding: .45rem .55rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  text-align: left;
+}
+.upcoming-long-running-item:hover { background: var(--enjy-pale); }
+.upcoming-long-running-range { flex-shrink: 0; font-size: .72rem; color: var(--text-muted); }
+
+/* Empty states should always offer a useful next action. */
+.empty-state-action { margin-top: .75rem; }
+
+/* Hide empty social proof on cards. */
+.reaction-summary[data-empty="true"] { display: none; }
+
+/* Schedule entries are informational, not attendance events. */
+.schedule-detail-note {
+  padding: .8rem 1rem;
+  margin: .75rem 0 1rem;
+  background: var(--gray-50);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: .84rem;
+}
+.event-detail-page.is-schedule .reaction-panel,
+#event-modal.is-schedule #modal-reactions { display: none; }
+.event-detail-page.is-schedule .event-participation-title,
+.event-detail-page.is-schedule .event-participation-chips { display: none; }
+
+/* Event detail: description before secondary/share actions. */
+.event-detail-page .modal-desc-text { font-size: .94rem; line-height: 1.85; }
+.event-detail-page .modal-share-actions { margin-top: 1rem; }
+
+/* Organization pages are event hubs first. */
+.org-detail .org-related.org-upcoming-primary {
+  border-top: none;
+  border-bottom: 1px solid var(--border);
+  padding-top: 0;
+  padding-bottom: 1rem;
+  margin-top: .75rem;
+  margin-bottom: 1rem;
+}
+
+/* Modal and tap targets */
+.modal-close { width: 44px; height: 44px; }
+.day-event-chip,
+.day-more,
+.event-bar,
+.cal-list-event-item,
+.long-running-item { min-height: 28px; }
+.day-num-clickable { min-width: 44px; min-height: 44px; margin: -10px 0 -10px -10px; }
+
+/* Contact form validation accessibility */
+.form-control[aria-invalid="true"],
+.filter-input[aria-invalid="true"] {
+  border-color: #B42318 !important;
+  box-shadow: 0 0 0 2px rgba(180,35,24,.08);
+}
+.field-error:not(:empty) { margin-top: .3rem; }
+
+/* PWA prompt is now an earned prompt and behaves like a dialog. */
+.pwa-install-modal { outline: none; }
+
+@media (max-width: 768px) {
+  .hero-cta .btn { width: 100%; justify-content: center; }
+  .selection-mode-toggle { margin-left: 0; }
+  .display-settings { margin-left: 0; }
+  .upcoming-long-running-item { align-items: flex-start; flex-direction: column; gap: .15rem; }
+  .header-nav .nav-btn.nav-secondary { color: #fff; }
+}
