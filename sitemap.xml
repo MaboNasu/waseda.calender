@@ -1603,12 +1603,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://wasedacalendar.com/event/evt-245.html</loc>
-    <lastmod>2026-08-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://wasedacalendar.com/event/evt-246.html</loc>
     <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -1724,7 +1718,7 @@
   </url>
   <url>
     <loc>https://wasedacalendar.com/event/evt-273.html</loc>
-    <lastmod>2026-09-10</lastmod>
+    <lastmod>2026-09-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
