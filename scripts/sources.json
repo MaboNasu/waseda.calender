@@ -1273,11 +1273,11 @@
       "id": "wso-tokyo",
       "name": "交響楽団",
       "category": "circle",
-      "url": "https://wso-tokyo.jp/",
-      "lastChecked": "2026-09-13T23:23:59.867Z",
-      "contentHash": "8910a0c1d0f59b07305b934e6df45afdae110de441ce20fb22e2c44e2cef5b54",
-      "notes": "organizations.js A-060。GPT(ChatGPT)による全件Web検索調査(2026-09-10)で現行公式サイトとして確認。このセッションからはegressポリシーによりアクセス不可、確認・監視はlocal/gpt側で行う。",
-      "dateTokensHash": "46be759f1eeb2d55e0166eb8779fa35474fc06df076c41e12596e92a732378f9",
+      "url": "https://wso-tokyo.jp/concertinfo/",
+      "lastChecked": "2026-09-14T08:19:15.305Z",
+      "contentHash": "bb453b323d5492e9949ce1af2957ff5651d05865dd2624d37e964611e54a1665",
+      "notes": "organizations.js A-060。GPT(ChatGPT)による全件Web検索調査(2026-09-10)で現行公式サイトとして確認。このセッションからはegressポリシーによりアクセス不可、確認・監視はlocal/gpt側で行う。 [URL変更 2026-09-14] トップページから演奏会情報専用ページへ変更。2026-09-17/23の2公演が具体的な日時・会場付きで掲載されており、トップページより明確に情報量が多い。",
+      "dateTokensHash": "1d729fa6d3801bc64a4fd3fbd8f15052074e208d8429cbaf6c310779616f45dc",
       "sourceType": "club",
       "expectedGenres": [
         "学生の会"
@@ -1285,17 +1285,18 @@
       "orgId": "A-060",
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "A"
+      "priority": "A",
+      "jsRendered": false
     },
     {
       "id": "wasedamandolin",
       "name": "マンドリン楽部",
       "category": "circle",
-      "url": "https://wasedamandolin.net/",
-      "lastChecked": "2026-09-13T23:24:00.638Z",
-      "contentHash": "629cfb4710d67436aea40bd8bed8173b6e6cd3f7f7c2df111caa7dd539c9affb",
-      "notes": "organizations.js A-063。GPT(ChatGPT)による全件Web検索調査(2026-09-10)で現行公式サイトとして確認。このセッションからはegressポリシーによりアクセス不可、確認・監視はlocal/gpt側で行う。",
-      "dateTokensHash": "420a887675b223c87ea6a70c917a7263fff397d1378ff8a9855cce9154b83987",
+      "url": "https://wasedamandolin.net/concert/",
+      "lastChecked": "2026-09-14T08:19:15.511Z",
+      "contentHash": "3ea030c176eba990f122d5f847b0221406a3dc2d3818d0eeb1112b863fcc3045",
+      "notes": "organizations.js A-063。GPT(ChatGPT)による全件Web検索調査(2026-09-10)で現行公式サイトとして確認。このセッションからはegressポリシーによりアクセス不可、確認・監視はlocal/gpt側で行う。 [URL変更 2026-09-14] トップページから演奏会情報専用ページへ変更。80年以上の演奏会履歴＋直近2件(2026-08-30/12-18)の詳細情報を確認。",
+      "dateTokensHash": "fbe8625f5822cbc44e6410e85cc628ec17fa6c888284a56a6602fa4dadfeb78a",
       "sourceType": "club",
       "expectedGenres": [
         "学生の会"
@@ -1303,7 +1304,8 @@
       "orgId": "A-063",
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "A"
+      "priority": "A",
+      "jsRendered": false
     },
     {
       "id": "rizdor",
@@ -2011,10 +2013,10 @@
       "id": "tokyohanabi-official",
       "name": "早稲田大学よさこいチーム東京花火",
       "category": "circle",
-      "url": "https://www.tokyohanabi-official.com/",
-      "lastChecked": "2026-09-13T23:24:36.478Z",
-      "contentHash": "790e67297d1acd1dec59195cc304ecc7a111bb17095824dfac4c859501d6c310",
-      "notes": "organizations.js C-121。GPT(ChatGPT)による全件Web検索調査(2026-09-10)で現行公式サイトとして確認。このセッションからはegressポリシーによりアクセス不可、確認・監視はlocal/gpt側で行う。",
+      "url": "https://www.tokyohanabi-official.com/%E5%87%BA%E6%BC%94%E4%BA%88%E5%AE%9A",
+      "lastChecked": "2026-09-14T08:19:16.141Z",
+      "contentHash": "8a12728b3abba48f75a13e44e6e4dc04288d954e9df9adf4d835bc92dbc62bda",
+      "notes": "organizations.js C-121。GPT(ChatGPT)による全件Web検索調査(2026-09-10)で現行公式サイトとして確認。このセッションからはegressポリシーによりアクセス不可、確認・監視はlocal/gpt側で行う。 [URL変更 2026-09-14] トップページから出演予定専用ページへ変更。WebFetch(JS実行あり)では2026年8-9月の具体的な出演日程(8/29-30, 9/20-21, 9/26-27)を確認できたが、check-sources.jsの素のfetch(JS非実行)ではテキストがほぼ空(204文字)で日付トークンも0件だったため、jsRendered:trueとし機械検知の精度が低い前提で運用する。",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "sourceType": "club",
       "expectedGenres": [
@@ -2023,7 +2025,8 @@
       "orgId": "C-121",
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "A"
+      "priority": "A",
+      "jsRendered": true
     },
     {
       "id": "shockers",
@@ -2119,10 +2122,10 @@
       "id": "highso-waseda",
       "name": "ハイソサエティ・オーケストラ",
       "category": "circle",
-      "url": "https://www.highso-waseda.com/",
-      "lastChecked": "2026-09-13T23:24:40.412Z",
-      "contentHash": "44d13f43fca0ecf7af69942ec970cb4859668c6e3a7f727d528d99e95fa3775a",
-      "notes": "organizations.js C-263。GPT(ChatGPT)による全件Web検索調査(2026-09-10)で現行公式サイトとして確認。このセッションからはegressポリシーによりアクセス不可、確認・監視はlocal/gpt側で行う。",
+      "url": "https://www.highso-waseda.com/live-information",
+      "lastChecked": "2026-09-14T08:19:16.452Z",
+      "contentHash": "d4155c5a3d0d20462747f1d9b3fe903ef3df0c4899605b43022288762c208e3e",
+      "notes": "organizations.js C-263。GPT(ChatGPT)による全件Web検索調査(2026-09-10)で現行公式サイトとして確認。このセッションからはegressポリシーによりアクセス不可、確認・監視はlocal/gpt側で行う。 [URL変更 2026-09-14] トップページからLIVE INFO専用ページへ変更。WebFetchでは複数の今後のライブ予定を確認できたが、素のfetchではテキストが薄く(1354文字)日付トークン0件のため、jsRendered:trueとし機械検知の精度が低い前提で運用する。",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "sourceType": "club",
       "expectedGenres": [
@@ -2131,7 +2134,8 @@
       "orgId": "C-263",
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "A"
+      "priority": "A",
+      "jsRendered": true
     },
     {
       "id": "nogakujuku",
@@ -2666,11 +2670,11 @@
       "id": "bankaraizm-wixsite",
       "name": "バンカライズム-万色主義-",
       "category": "circle",
-      "url": "https://wasedabankara17.wixsite.com/bankaraizm",
-      "lastChecked": "2026-09-14T05:01:28.023Z",
-      "contentHash": "760c55d42d843ee60ad63034a8fd92c3f9aa4d2f06b97774eb4bc632b5db0305",
-      "notes": "organizations.js C-271。2026-09-14にこのセッション(cloud)で直接確認。出演情報・代替わりブログ(2025年3月/11月付の投稿)を掲載、年次の代替わりペースで更新。",
-      "dateTokensHash": "c3759b4e5e1097bc1577f47e33ab027e032af9c9927e7af65d79269ca2ba2c36",
+      "url": "https://wasedabankara17.wixsite.com/bankaraizm/about-1",
+      "lastChecked": "2026-09-14T08:19:15.868Z",
+      "contentHash": "0b3bc8027dae1b70d64c76af430798f2bbedcb7c8374f0ce6d1935506ff920e3",
+      "notes": "organizations.js C-271。2026-09-14にこのセッション(cloud)で直接確認。出演情報・代替わりブログ(2025年3月/11月付の投稿)を掲載、年次の代替わりペースで更新。 [URL変更 2026-09-14] トップページから出演情報専用ページへ変更。2025〜2026年の具体的な出演日程(7/26, 8/1-2, 8/11等)を時系列で確認、トップページより情報量が多い。",
+      "dateTokensHash": "b2dc3897d34a963fc56cbd76332d09644adb67155e134e6ac73807c56eff3494",
       "sourceType": "club",
       "expectedGenres": [
         "学生の会"
@@ -2678,7 +2682,8 @@
       "orgId": "C-271",
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "jsRendered": false
     },
     {
       "id": "mynx-ameblo",
@@ -2705,7 +2710,7 @@
       "url": "https://getappers.wixsite.com/homepage",
       "lastChecked": "2026-09-14T05:01:28.262Z",
       "contentHash": "bc5e5bc41d40ef7d953dc84d84b4bcfa20b0b0f1f4b3d1d64dac83ce0b57172e",
-      "notes": "organizations.js C-217。2026-09-14にこのセッション(cloud)で直接確認。『早稲田大学公認サークル』と明記、年度ごとの演舞紹介ページあり。",
+      "notes": "organizations.js C-217。2026-09-14にこのセッション(cloud)で直接確認。『早稲田大学公認サークル』と明記、年度ごとの演舞紹介ページあり。 [2026-09-14再検証] メニューに演舞紹介以外の専用イベントページなし。素のfetchで日付トークン0件のためjsRendered:trueに変更(URL・既存ハッシュは変更なし)。",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "sourceType": "club",
       "expectedGenres": [
@@ -2714,7 +2719,8 @@
       "orgId": "C-217",
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "C"
+      "priority": "C",
+      "jsRendered": true
     },
     {
       "id": "waseda-ad",
@@ -2753,13 +2759,13 @@
       "priority": "C"
     },
     {
-      "id": "session-dancewaseda",
-      "name": "SesSion",
+      "id": "gekidankodama-studio",
+      "name": "劇団木霊",
       "category": "circle",
-      "url": "https://session-dancewaseda.amebaownd.com/",
-      "lastChecked": "2026-09-14T05:01:30.519Z",
-      "contentHash": "8808acda2a783f4e7f98d61366ec94ffe1f11ba6e6c0060114c4e7559bef9223",
-      "notes": "organizations.jsには該当エントリなし。早稲田大学公式サイトのサークル検索(waseda.jp/inst/weekly/circleguide, id=3456)でダンスサークルとして公認登録を確認。サイト自身で確認できた最新コンテンツは2022年の新歓関連投稿までで、それ以降の更新有無は未確認のため優先度Cとし、監視で継続的に無反応の場合は追跡継続要否を再検討すること。",
+      "url": "https://gekidankodama.studio.site/",
+      "lastChecked": "2026-09-14T08:19:16.805Z",
+      "contentHash": "a9e76d4f386511f3a6ad75d049611a7849fb811a1e788348fbe7ae8e6a2c00c7",
+      "notes": "organizations.jsには該当エントリなし。サイト自身のmeta description(og:description)に『早稲田大学の演劇サークル『劇団木霊』の公式ホームページです』と明記されており、これを一次証拠として公式性を確認(2026-09-14、curlで生HTMLを直接確認)。早稲田大学どらま館の公式ニュース(waseda.jp/culture/dramakan/news/10065)でevt-246(2026年9月公演)の実在も確認済み。STUDIO製サイトでNEWS/公演情報等の本文がJavaScriptでレンダリングされており、素のfetchではテキストがほぼ空(4文字)のためjsRendered:true。旧サイト(gekidankodama.com)は現在www.gekidankodama.comへ301リダイレクトされ内容未確認のため、公式が現在案内するSTUDIO版を優先。",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "sourceType": "club",
       "expectedGenres": [
@@ -2767,7 +2773,46 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "C"
+      "priority": "B",
+      "jsRendered": true
+    },
+    {
+      "id": "butabi-daa-jp",
+      "name": "舞台美術研究会",
+      "category": "circle",
+      "url": "https://butabi.daa.jp/%e6%98%a5%e5%ad%a3%e7%a0%94%e7%a9%b6%e4%bc%9a%e5%85%ac%e6%bc%94%e3%83%bb%e7%a7%8b%e5%ad%a3%e7%a0%94%e7%a9%b6%e4%bc%9a%e5%85%ac%e6%bc%94/",
+      "lastChecked": "2026-09-14T08:19:17.755Z",
+      "contentHash": "292d2878caa4927a9fdc1d652c14af8f8fb6d13e271b05b86064ef8811816f1b",
+      "notes": "organizations.js A-102。2026-09-14にこのセッション(cloud)で直接確認。『早稲田大学舞台美術研究会』と明記、70年以上の歴史を持つ裏方専門サークル。トップページは単なるナビゲーションのみで情報量が薄く(257文字)、個別公演ページ(例:2026年度春期公演の専用ページ)は公演終了後に陳腐化するため、2020年度〜現在まで全公演タイトルを年代順に列挙する『春季研究会公演・秋季研究会公演』一覧ページを採用(直近: 2026年度春季研究会公演『START。』)。ページ内の日付表記が『年度』単位(日次の日付なし)のためdateTokensHashは変化を拾えないが、新公演追加時にcontentHashは変化する。CoRich(butabi-corich)と一部内容が重複するが、チケット販売連動の告知として補完的に機能するため両方登録。",
+      "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceType": "club",
+      "expectedGenres": [
+        "学生の会"
+      ],
+      "orgId": "A-102",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "B",
+      "jsRendered": false
+    },
+    {
+      "id": "butabi-corich",
+      "name": "舞台美術研究会(CoRich)",
+      "category": "circle",
+      "url": "https://stage.corich.jp/troupe/4777/stages",
+      "lastChecked": "2026-09-14T08:19:18.660Z",
+      "contentHash": "66e2d263af9de44a580c0fa6da89d4bcae255bf5bad83891e99f7d46da4f3dac",
+      "notes": "organizations.js A-102。2026-09-14にこのセッション(cloud)で直接確認。CoRich上の団体ページで、公式サイト(butabi-daa-jp)と同じ『START。』(2026-04-25/26、早稲田大学学生会館)を含む過去32公演の履歴を確認。チケット販売プラットフォーム上の公演一覧のため、新規公演の告知が公式サイトより早く反映される可能性がある補完ソースとして追加。",
+      "dateTokensHash": "a006b2f4dc4caa909038dba5da4091ffcf10130888524803af34a5b4d88054d9",
+      "sourceType": "club",
+      "expectedGenres": [
+        "学生の会"
+      ],
+      "orgId": "A-102",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "B",
+      "jsRendered": false
     }
   ]
 }
