@@ -14,19 +14,15 @@ function authUiEscapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
-/** ログアウト直後に1回だけ「ログアウトしました」を表示するためのフラグ */
 let pendingLogoutToast = false;
-
-/** ログイン処理の二重クリック防止（signInWithGoogleの呼び出しが多重に走らないようにする） */
 let loginInProgress = false;
 
-/** Firebase Authenticationのエラーコード→日本語メッセージ */
 function translateAuthError(err) {
   const code = err && err.code;
   switch (code) {
     case 'auth/popup-closed-by-user':
     case 'auth/cancelled-popup-request':
-      return ''; // 利用者が自分でポップアップを閉じた/連打しただけなので、エラー表示はしない
+      return '';
     case 'auth/network-request-failed':
       return '通信エラーが発生しました。ネットワーク環境をご確認のうえ、再度お試しください。';
     case 'auth/user-disabled':
@@ -62,8 +58,6 @@ async function handleLoginClick(btn) {
   btn.textContent = 'ログイン中…';
   try {
     await window.WC.auth.signInWithGoogle();
-    // ポップアップ成功時はonAuthStateChanged経由でrenderHeaderAuthが呼ばれて描画が更新される。
-    // リダイレクト方式に切り替わった場合はページ遷移するため、ここには戻ってこない。
   } catch (err) {
     const message = translateAuthError(err);
     btn.disabled = false;
@@ -117,7 +111,6 @@ window.addEventListener('wc-auth-changed', (e) => {
   renderHeaderAuth(e.detail.user);
 });
 
-// リダイレクト方式ログインでの失敗（ポップアップと違いtry/catchで拾えない）をここで表示する
 window.addEventListener('wc-auth-error', (e) => {
   const message = translateAuthError(e.detail.error);
   renderHeaderAuth(null);
@@ -126,23 +119,31 @@ window.addEventListener('wc-auth-error', (e) => {
 
 /**
  * 全ページ共通のUX改善レイヤーをここから読み込む。
- * auth-ui.js はトップ/個別イベント/団体/マイページ/問い合わせ/法務ページのすべてで既に読み込まれているため、
- * 数百件の静的生成済みHTMLを一括編集せずに共通改善を配布できる。
+ * 数百件の静的生成済みHTMLを一括編集せず、共通アセットとして改善を配布する。
  */
 function loadUxImprovementLayer() {
-  if (!document.querySelector('link[data-wc-ux]')) {
+  const addCss = (href, key) => {
+    if (document.querySelector(`link[data-wc-ux="${key}"]`)) return;
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = '/ux-improvements.css?v=1';
-    link.dataset.wcUx = '1';
+    link.href = href;
+    link.dataset.wcUx = key;
     document.head.appendChild(link);
-  }
-  if (!document.querySelector('script[data-wc-ux]')) {
+  };
+  const addScript = (src, key, onload) => {
+    if (document.querySelector(`script[data-wc-ux="${key}"]`)) return;
     const script = document.createElement('script');
-    script.src = '/ux-improvements.js?v=1';
-    script.dataset.wcUx = '1';
+    script.src = src;
+    script.dataset.wcUx = key;
+    if (onload) script.addEventListener('load', onload, { once: true });
     document.body.appendChild(script);
-  }
+  };
+
+  addCss('/ux-improvements.css?v=2', 'base-css');
+  addCss('/ux-polish.css?v=1', 'polish-css');
+  addScript('/ux-improvements.js?v=2', 'base-js', () => {
+    addScript('/ux-polish.js?v=1', 'polish-js');
+  });
 }
 
 loadUxImprovementLayer();
