@@ -57,6 +57,16 @@
  *
  * reactions:
  *   現時点では静的な件数表示のみ。未指定の場合はすべて0件として扱われます。
+ *
+ * externalUrl（任意）:
+ *   イベントの公式サイト・詳細情報ページのURL。カード下部や個別ページ・モーダルの
+ *   「公式サイトを見る」「公式・詳細情報を見る」リンクに使われる。
+ *
+ * registrationUrl（任意）:
+ *   参加申込・登録フォームのURL。externalUrl（公式サイト・案内ページ）とは別に、
+ *   直接申し込めるフォーム等がある場合に指定する。指定すると個別ページ・モーダルに
+ *   externalUrlとは別枠で「参加申し込みはこちら」ボタンが表示される
+ *   （externalUrlのみの場合はそちらのボタンのみ表示され、この項目は省略可）。
  */
 
 const EVENTS = [
@@ -3719,17 +3729,18 @@ const EVENTS = [
     date: "2026-09-16",
     startTime: "13:30",
     endTime: "14:30",
-    location: "東京大学本郷キャンパス 福武ホール地下2階 福武ラーニングシアター",
+    location: "東京大学本郷キャンパス 情報学環・福武ホール地下2階 福武ラーニングシアター",
     campus: "outside",
     organizer: "アジア開発銀行(ADB)駐日代表事務所",
     category: "lecture",
     scope: "circle",
     target: ["student"],
     feeType: "free",
-    feeText: "無料(事前登録制、9/15(火)17:00締切、定員に達し次第終了)",
-    description: "早稲田大学田中愛治総長をはじめとした日本の主要大学トップ(慶應義塾大学 伊藤公平学長、東京大学 藤井輝夫学長、京都大学 湊長博学長)とADB神田眞人総裁による特別対談。英語開催(日本語通訳あり)。会場は東京大学本郷キャンパス。",
-    externalUrl: "https://www.pp.u-tokyo.ac.jp/student-bulletin/2026-08-28-56617/",
-    lastUpdated: "2026-09-13",
+    feeText: "無料(事前登録制)",
+    description: "早稲田大学田中愛治総長をはじめとした日本の主要大学トップ(慶應義塾大学 伊藤公平塾長、東京大学 藤井輝夫総長、京都大学 湊長博総長)とADB神田眞人総裁による特別対談。英語開催(日本語通訳あり)。会場は東京大学本郷キャンパス。",
+    externalUrl: "https://www.adb.org/sites/default/files/923751/adb-special-dialogue-event-jro.pdf",
+    registrationUrl: "https://forms.cloud.microsoft/r/SUeMFBWK0g",
+    lastUpdated: "2026-09-14",
     isPublished: true
   },
   {

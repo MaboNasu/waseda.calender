@@ -31,7 +31,10 @@ let organizationState = {
   sort: 'listed',
   keyword: '',
   selectedId: '',
-  page: 1
+  page: 1,
+  // 504団体を初期状態から全件表示すると情報過多になるため、検索語かジャンルを指定するか
+  // 「すべて表示する」を明示的に押すまでは一覧を表示しない（一度trueになったら維持する）。
+  hasSearched: false
 };
 
 /** モバイル幅(768px以下、.org-layoutが1カラムになる閾値と同じ)では、サイドの詳細asideが
@@ -274,6 +277,22 @@ function renderOrganizationCards() {
   const pagination = document.getElementById('organizations-pagination');
   if (!wrap) return;
 
+  // 検索語もジャンルも指定されていない初期状態では、504団体をいきなり全件表示せず、
+  // 絞り込みを促す案内だけを出す（一覧を見たい場合は明示的に「すべて表示する」を押す）。
+  if (!organizationState.hasSearched) {
+    if (count) count.textContent = '';
+    wrap.className = 'org-grid';
+    wrap.innerHTML = `
+      <div class="empty-state org-search-prompt">
+        <div class="empty-state-icon">🔍</div>
+        <p>団体名やジャンルで検索してください。</p>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="showAllOrganizations()">すべての団体を表示する（504件）</button>
+      </div>`;
+    if (pagination) pagination.innerHTML = '';
+    renderOrganizationDetail(organizationState.selectedId ? getOrganizations().find(org => org.id === organizationState.selectedId) : null);
+    return;
+  }
+
   const items = filteredOrganizations();
   if (count) count.textContent = `${items.length}件`;
 
@@ -298,6 +317,9 @@ function renderOrganizationCards() {
     organizationState.selectedId = pageItems[0].id;
   }
 
+  // カード自体は団体名+ジャンル+バッジのみのコンパクト表示にとどめ、説明文・リンク・関連イベントは
+  // クリック後の詳細ペイン(#organization-detail、renderOrganizationDetail)側にまとめる。
+  // 504件を一覧するページなので、1枚あたりの情報量を絞って一覧性を優先するため。
   wrap.innerHTML = pageItems.map(org => {
     const related = getEventsForOrganization(org);
     const activeClass = org.id === organizationState.selectedId ? ' active' : '';
@@ -306,11 +328,11 @@ function renderOrganizationCards() {
         <a class="org-name-btn" href="${buildOrgPageUrl(org)}" onclick="return handleOrgDetailClick(event, '${orgEscapeHtml(org.id)}')">
           ${orgEscapeHtml(org.name)}
         </a>
-        <span class="org-genre">${orgEscapeHtml(org.genre || 'その他')}</span>
-        ${orgListedBadgeHTML(org)}
-        ${orgDescriptionHTML(org)}
-        ${organizationLinksHTML(org)}
-        ${related.length ? `<button class="org-related-btn" type="button" onclick="handleOrgCardClick(event, '${orgEscapeHtml(org.id)}')">関連イベント ${related.length}件を見る</button>` : ''}
+        <div class="org-card-meta">
+          <span class="org-genre">${orgEscapeHtml(org.genre || 'その他')}</span>
+          ${orgListedBadgeHTML(org)}
+          ${related.length ? `<span class="org-event-count-badge">🗓️ ${related.length}</span>` : ''}
+        </div>
       </article>`;
   }).join('');
 
@@ -484,6 +506,7 @@ function setupOrganizationFilters() {
     organizationState.genre = genre.value;
     organizationState.selectedId = '';
     organizationState.page = 1;
+    if (genre.value !== 'すべて') organizationState.hasSearched = true;
     renderOrganizationCards();
   });
   if (sort) sort.addEventListener('change', () => {
@@ -495,8 +518,15 @@ function setupOrganizationFilters() {
     organizationState.keyword = keyword.value;
     organizationState.selectedId = '';
     organizationState.page = 1;
+    if (keyword.value.trim()) organizationState.hasSearched = true;
     renderOrganizationCards();
   });
+}
+
+/** 検索条件を指定せず、全団体をそのまま見たい場合のための明示的な呼び出し口 */
+function showAllOrganizations() {
+  organizationState.hasSearched = true;
+  renderOrganizationCards();
 }
 
 /** 1行あたりの表示件数（列数）の切り替え */
@@ -540,7 +570,10 @@ function setupOrganizationNav() {
 function applyOrganizationIdFromUrl() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
-  if (id) organizationState.selectedId = id;
+  if (id) {
+    organizationState.selectedId = id;
+    organizationState.hasSearched = true; // 特定団体へのリンク経由なら一覧も表示してよい
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

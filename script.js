@@ -710,9 +710,9 @@ function renderLongRunningEventsWidget(longRunningEvents) {
 
   const VISIBLE_COUNT = 4;
   const items = inMonth.map((ev, i) => {
-    const endLabel = formatShortDate(getEventEnd(ev));
-    // 表示中の月より前から始まっている場合は「〜終了日」、月内に開始する場合は「開始日〜終了日」
-    const rangeLabel = ev.date < monthStart ? `〜${endLabel}` : `${formatShortDate(ev.date)}〜${endLabel}`;
+    // 開催期間はいつ見ても「開始日〜終了日」を省略せず明記する（表示中の月より前に
+    // 始まっている場合でも、いつからいつまでの開催かが一目で分かるようにするため）。
+    const rangeLabel = `${formatShortDate(ev.date)}〜${formatShortDate(getEventEnd(ev))}`;
     const extraClass = i >= VISIBLE_COUNT ? ' long-running-item-extra' : '';
     return `<li class="long-running-item${extraClass}" onclick="openModal('${escapeHtml(String(ev.id))}')">
       <span class="long-running-item-title">${escapeHtml(ev.title)}</span>
@@ -833,14 +833,24 @@ function renderCalendarGrid(allFiltered) {
     // 超過分(hiddenBars)は個別の週ポップアップを作らず、日単位の「他N件」に畳み込む（後述）。
     const visibleBars = bars.filter(bar => bar.lane < MAX_VISIBLE_WEEK_BAR_LANES);
     const hiddenBars   = bars.filter(bar => bar.lane >= MAX_VISIBLE_WEEK_BAR_LANES);
-    const shownLanes   = Math.min(laneEndCols.length, MAX_VISIBLE_WEEK_BAR_LANES);
-    const dayEventsOffset = shownLanes > 0 ? `${shownLanes * BAR_HEIGHT + 6}px` : '';
 
     // 列インデックス(0〜6)ごとに、レーン超過で非表示になった複数日イベントの件数を集計
     const hiddenMultiDayCountByCol = {};
     hiddenBars.forEach(bar => {
       for (let c = bar.startCol; c < bar.startCol + bar.span; c++) {
         hiddenMultiDayCountByCol[c] = (hiddenMultiDayCountByCol[c] || 0) + 1;
+      }
+    });
+
+    // 列インデックス(0〜6)ごとに、その列に実際にかかっている複数日バー(表示上限内)の
+    // 最大レーン数を集計。週全体で揃えると、バーが1本もかかっていない日まで
+    // 一律に空いてしまうため、単日イベントの開始位置(margin-top)は列ごとの
+    // 実使用レーン数だけを空けるようにする（グリッド自体の行の高さは、CSS Gridの
+    // 既定挙動でその週内の一番背の高いセルに揃うため変わらない＝表示件数は増えない）。
+    const maxLaneByCol = {};
+    visibleBars.forEach(bar => {
+      for (let c = bar.startCol; c < bar.startCol + bar.span; c++) {
+        maxLaneByCol[c] = Math.max(maxLaneByCol[c] || 0, bar.lane + 1);
       }
     });
 
@@ -868,6 +878,8 @@ function renderCalendarGrid(allFiltered) {
       const moreBtn = totalHidden > 0
         ? `<div class="day-more" onclick="showDayEvents('${cell.dateStr}')">他${totalHidden}件</div>`
         : '';
+      const laneCountForCol = maxLaneByCol[colIdx] || 0;
+      const dayEventsOffset = laneCountForCol > 0 ? `${laneCountForCol * BAR_HEIGHT + 6}px` : '';
       const dayEventsStyle = dayEventsOffset ? ` style="margin-top:${dayEventsOffset}"` : '';
       const dayNumClass = (dayEvs.length > 0 || hiddenMultiDay > 0) ? 'day-num day-num-clickable' : 'day-num';
       const dayNumClick = (dayEvs.length > 0 || hiddenMultiDay > 0) ? ` onclick="showDayEvents('${cell.dateStr}')"` : '';
@@ -876,6 +888,9 @@ function renderCalendarGrid(allFiltered) {
     }).join('');
 
     // 複数日イベントのバーHTML（週の7列に対する絶対配置オーバーレイ。表示上限内のレーンのみ）
+    // 開催期間(M/D〜M/D)は、バーの見た目の長さだけでは伝わりにくいため常にツールチップに、
+    // かつ開始週のセグメント(continuesBeforeでない=前週から続いていない)にはタイトルの後ろに
+    // 直接表示する。他の週にまたがるセグメントは同じ範囲の繰り返しになるためタイトルのみ。
     const barsHtml = visibleBars.map(bar => {
       const leftPct  = (bar.startCol / 7) * 100;
       const widthPct = (bar.span / 7) * 100;
@@ -884,7 +899,9 @@ function renderCalendarGrid(allFiltered) {
         bar.continuesBefore ? 'bar-continues-before' : '',
         bar.continuesAfter ? 'bar-continues-after' : ''
       ].filter(Boolean).join(' ');
-      return `<div class="event-bar ${categoryClass(bar.ev.category)} ${edgeClasses}" style="left:${leftPct}%;width:${widthPct}%;top:${topPx}px;" onclick="openModal('${escapeHtml(String(bar.ev.id))}')" title="${escapeHtml(bar.ev.title)}">${escapeHtml(bar.ev.title)}</div>`;
+      const rangeText = `${formatShortDate(bar.ev.date)}〜${formatShortDate(getEventEnd(bar.ev))}`;
+      const label = bar.continuesBefore ? escapeHtml(bar.ev.title) : `${escapeHtml(bar.ev.title)}（${rangeText}）`;
+      return `<div class="event-bar ${categoryClass(bar.ev.category)} ${edgeClasses}" style="left:${leftPct}%;width:${widthPct}%;top:${topPx}px;" onclick="openModal('${escapeHtml(String(bar.ev.id))}')" title="${escapeHtml(bar.ev.title)}（${rangeText}）">${label}</div>`;
     }).join('');
     const weekBarsHtml = visibleBars.length > 0 ? `<div class="week-bars">${barsHtml}</div>` : '';
 
@@ -1147,6 +1164,13 @@ function openModal(eventId) {
     extLink.textContent    = '公式サイトを見る ↗';
   } else {
     extLink.style.display  = 'none';
+  }
+  const regLink = document.getElementById('modal-reg-link');
+  if (ev.registrationUrl) {
+    regLink.href           = ev.registrationUrl;
+    regLink.style.display  = '';
+  } else {
+    regLink.style.display  = 'none';
   }
 
   activateModal();
@@ -1624,7 +1648,13 @@ function renderAll() {
    ============================================================ */
 function scrollToSection(id) {
   const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: 'smooth' });
+  if (el) {
+    // 「本日のイベントを見る」等、このセクションを名指しする導線は中身を見せるのが目的
+    // なので、折りたたまれていれば先に展開してからスクロールする。
+    const toggle = el.querySelector('.section-title-toggle[aria-expanded="false"]');
+    if (toggle) toggle.click();
+    el.scrollIntoView({ behavior: 'smooth' });
+  }
   document.getElementById('mobile-nav')?.classList.remove('open');
 }
 
@@ -1671,6 +1701,27 @@ function setupFilterToggle() {
   });
 }
 
+/** 本日/今週開催セクションの開閉。ボタンが見出し(h2)の中にあり隣にbody divが
+ *  並んでいない構造のため、filter-toggleと違いCSSの隣接セレクタだけでは開閉できず、
+ *  hidden属性をJS側で直接付け外しする。初期状態は（HTML側で最初からhidden属性が
+ *  付いているため）折りたたみ＝非表示で、JS実行前からその見た目になりチラつかない。
+ *  展開時は、折りたたみ中に絞り込み変更等で中身が再描画されていた場合に備えて
+ *  collapseGridToOneRowを呼び直す（非表示(display:none)の間はoffsetHeightが常に0に
+ *  なり、「さらに表示」の1行判定を正しく測れないため）。 */
+function setupSectionToggle(toggleId, bodyId) {
+  const toggleBtn = document.getElementById(toggleId);
+  const body = document.getElementById(bodyId);
+  if (!toggleBtn || !body) return;
+  const sectionEl = toggleBtn.closest('section');
+  toggleBtn.addEventListener('click', () => {
+    const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+    const willExpand = !expanded;
+    toggleBtn.setAttribute('aria-expanded', String(willExpand));
+    body.hidden = !willExpand;
+    if (willExpand && sectionEl) collapseGridToOneRow(sectionEl);
+  });
+}
+
 /* ============================================================
    モーダル: オーバーレイクリック / Escで閉じる
    ============================================================ */
@@ -1709,6 +1760,8 @@ document.addEventListener('DOMContentLoaded', () => {
   setupScopeToggle();
   setupFilters();
   setupFilterToggle();
+  setupSectionToggle('today-toggle', 'today-body');
+  setupSectionToggle('upcoming-toggle', 'upcoming-body');
   setupModal();
   setupDensityToggle();
   renderAll();

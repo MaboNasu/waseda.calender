@@ -35,6 +35,13 @@ function trackEventMapClick(eventId) {
   }
 }
 
+/** 参加申し込みリンククリック時にGA4へevent_registration_clickイベントを送信する（遷移は妨げない） */
+function trackEventRegistrationLinkClick(eventId) {
+  if (typeof gtag === 'function') {
+    gtag('event', 'event_registration_click', { event_id: eventId });
+  }
+}
+
 /** OGP用の説明文（改行を除去し、長すぎる場合は切り詰める） */
 function buildOgDescription(ev) {
   const base = ev.description ? ev.description.replace(/\s+/g, ' ').trim() : '';
@@ -146,8 +153,11 @@ function renderEventDetailPage(ev) {
   updateEventPageMeta(ev);
   injectEventJsonLd(ev);
 
+  const regLinkHTML = ev.registrationUrl
+    ? `<a href="${escapeHtml(ev.registrationUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-enjy" onclick="trackEventRegistrationLinkClick('${escapeHtml(String(ev.id))}')">📝 参加申し込みはこちら ↗</a>`
+    : '';
   const extLinkHTML = ev.externalUrl
-    ? `<a href="${escapeHtml(ev.externalUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-enjy" onclick="trackEventExternalLinkClick('${escapeHtml(String(ev.id))}')">公式・詳細情報を見る ↗</a>`
+    ? `<a href="${escapeHtml(ev.externalUrl)}" target="_blank" rel="noopener noreferrer" class="btn ${ev.registrationUrl ? 'btn-ghost' : 'btn-enjy'}" onclick="trackEventExternalLinkClick('${escapeHtml(String(ev.id))}')">公式・詳細情報を見る ↗</a>`
     : '';
   const mapsUrl = buildMapsSearchUrl(ev);
   const mapLinkHTML = mapsUrl
@@ -177,7 +187,7 @@ function renderEventDetailPage(ev) {
           <span class="tag ${feeClass(ev.feeType)}">💴 ${escapeHtml(ev.feeText || feeLabel(ev.feeType))}</span>
         </div>
         ${mapLinkHTML}
-        ${extLinkHTML ? `<div class="event-participation-cta">${extLinkHTML}</div>` : ''}
+        ${regLinkHTML || extLinkHTML ? `<div class="event-participation-cta">${regLinkHTML}${extLinkHTML}</div>` : ''}
       </div>
 
       ${createReactionButtonsHTML(ev)}

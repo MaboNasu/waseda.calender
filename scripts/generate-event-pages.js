@@ -267,8 +267,11 @@ function renderEventPageHtml(ev, labelFns) {
   const jsonLd = jsonLdScriptSafe(buildEventJsonLd(ev, pageUrl, campusLabel));
   const ogImage = ogImageFor(ev);
 
+  const regLinkHTML = ev.registrationUrl
+    ? `<a href="${escapeHtml(ev.registrationUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-enjy" onclick="trackEventRegistrationLinkClick('${escapeHtml(String(ev.id))}')">📝 参加申し込みはこちら ↗</a>`
+    : '';
   const extLinkHTML = ev.externalUrl
-    ? `<a href="${escapeHtml(ev.externalUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-enjy" onclick="trackEventExternalLinkClick('${escapeHtml(String(ev.id))}')">公式・詳細情報を見る ↗</a>`
+    ? `<a href="${escapeHtml(ev.externalUrl)}" target="_blank" rel="noopener noreferrer" class="btn ${ev.registrationUrl ? 'btn-ghost' : 'btn-enjy'}" onclick="trackEventExternalLinkClick('${escapeHtml(String(ev.id))}')">公式・詳細情報を見る ↗</a>`
     : '';
   const mapsUrl = buildMapsSearchUrl(ev);
   const mapLinkHTML = mapsUrl
@@ -298,7 +301,7 @@ function renderEventPageHtml(ev, labelFns) {
           <span class="tag ${feeClass(ev.feeType)}">💴 ${escapeHtml(ev.feeText || feeLabel(ev.feeType))}</span>
         </div>
         ${mapLinkHTML}
-        ${extLinkHTML ? `<div class="event-participation-cta">${extLinkHTML}</div>` : ''}
+        ${regLinkHTML || extLinkHTML ? `<div class="event-participation-cta">${regLinkHTML}${extLinkHTML}</div>` : ''}
       </div>
 
       ${ev.description ? `
@@ -366,7 +369,7 @@ function renderEventPageHtml(ev, labelFns) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=41">
+  <link rel="stylesheet" href="/style.css?v=44">
   <script type="application/ld+json" id="event-page-jsonld">${jsonLd}</script>
 </head>
 <body>
@@ -442,9 +445,9 @@ function renderEventPageHtml(ev, labelFns) {
 </footer>
 
 <script src="/events.js?v=6"></script>
-<script src="/script.js?v=33"></script>
-<script src="/image-generator.js?v=5"></script>
-<script src="/event-page.js?v=10"></script>
+<script src="/script.js?v=36"></script>
+<script src="/image-generator.js?v=6"></script>
+<script src="/event-page.js?v=11"></script>
 <script type="module" src="/firebase-init.js?v=3"></script>
 <script src="/auth-ui.js?v=3"></script>
 <script src="/pwa-install.js?v=3"></script>
