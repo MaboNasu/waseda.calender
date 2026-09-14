@@ -710,9 +710,9 @@ function renderLongRunningEventsWidget(longRunningEvents) {
 
   const VISIBLE_COUNT = 4;
   const items = inMonth.map((ev, i) => {
-    const endLabel = formatShortDate(getEventEnd(ev));
-    // 表示中の月より前から始まっている場合は「〜終了日」、月内に開始する場合は「開始日〜終了日」
-    const rangeLabel = ev.date < monthStart ? `〜${endLabel}` : `${formatShortDate(ev.date)}〜${endLabel}`;
+    // 開催期間はいつ見ても「開始日〜終了日」を省略せず明記する（表示中の月より前に
+    // 始まっている場合でも、いつからいつまでの開催かが一目で分かるようにするため）。
+    const rangeLabel = `${formatShortDate(ev.date)}〜${formatShortDate(getEventEnd(ev))}`;
     const extraClass = i >= VISIBLE_COUNT ? ' long-running-item-extra' : '';
     return `<li class="long-running-item${extraClass}" onclick="openModal('${escapeHtml(String(ev.id))}')">
       <span class="long-running-item-title">${escapeHtml(ev.title)}</span>
@@ -876,6 +876,9 @@ function renderCalendarGrid(allFiltered) {
     }).join('');
 
     // 複数日イベントのバーHTML（週の7列に対する絶対配置オーバーレイ。表示上限内のレーンのみ）
+    // 開催期間(M/D〜M/D)は、バーの見た目の長さだけでは伝わりにくいため常にツールチップに、
+    // かつ開始週のセグメント(continuesBeforeでない=前週から続いていない)にはタイトルの後ろに
+    // 直接表示する。他の週にまたがるセグメントは同じ範囲の繰り返しになるためタイトルのみ。
     const barsHtml = visibleBars.map(bar => {
       const leftPct  = (bar.startCol / 7) * 100;
       const widthPct = (bar.span / 7) * 100;
@@ -884,7 +887,9 @@ function renderCalendarGrid(allFiltered) {
         bar.continuesBefore ? 'bar-continues-before' : '',
         bar.continuesAfter ? 'bar-continues-after' : ''
       ].filter(Boolean).join(' ');
-      return `<div class="event-bar ${categoryClass(bar.ev.category)} ${edgeClasses}" style="left:${leftPct}%;width:${widthPct}%;top:${topPx}px;" onclick="openModal('${escapeHtml(String(bar.ev.id))}')" title="${escapeHtml(bar.ev.title)}">${escapeHtml(bar.ev.title)}</div>`;
+      const rangeText = `${formatShortDate(bar.ev.date)}〜${formatShortDate(getEventEnd(bar.ev))}`;
+      const label = bar.continuesBefore ? escapeHtml(bar.ev.title) : `${escapeHtml(bar.ev.title)}（${rangeText}）`;
+      return `<div class="event-bar ${categoryClass(bar.ev.category)} ${edgeClasses}" style="left:${leftPct}%;width:${widthPct}%;top:${topPx}px;" onclick="openModal('${escapeHtml(String(bar.ev.id))}')" title="${escapeHtml(bar.ev.title)}（${rangeText}）">${label}</div>`;
     }).join('');
     const weekBarsHtml = visibleBars.length > 0 ? `<div class="week-bars">${barsHtml}</div>` : '';
 

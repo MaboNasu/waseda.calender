@@ -366,7 +366,7 @@ function renderEventPageHtml(ev, labelFns) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=41">
+  <link rel="stylesheet" href="/style.css?v=42">
   <script type="application/ld+json" id="event-page-jsonld">${jsonLd}</script>
 </head>
 <body>
@@ -442,8 +442,8 @@ function renderEventPageHtml(ev, labelFns) {
 </footer>
 
 <script src="/events.js?v=6"></script>
-<script src="/script.js?v=33"></script>
-<script src="/image-generator.js?v=5"></script>
+<script src="/script.js?v=34"></script>
+<script src="/image-generator.js?v=6"></script>
 <script src="/event-page.js?v=10"></script>
 <script type="module" src="/firebase-init.js?v=3"></script>
 <script src="/auth-ui.js?v=3"></script>

@@ -692,6 +692,7 @@ ul, ol { list-style: none; }
 }
 .empty-state-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
 .empty-state p { font-size: 0.9rem; }
+.org-search-prompt .btn { margin-top: 1rem; }
 
 /* マイページ（お気に入り・団体フォロー・リマインド） */
 .mypage-section + .mypage-section { margin-top: 2.5rem; }
@@ -1778,6 +1779,24 @@ textarea.form-control { resize: vertical; min-height: 120px; }
   color: var(--white);
   font-size: 0.7rem;
   font-weight: 700;
+}
+/* 団体一覧カードはメルカリのような一覧性重視のコンパクト表示にするため、
+   説明文・リンク・関連イベント数の詳細文はカードから外し(クリック後の
+   #organization-detailで表示)、カードにはこの行に収まる最小限の情報のみ出す。
+   .org-genre/.org-listed-badgeをこの行の中で使う場合は個別marginを打ち消しgapで揃える。 */
+.org-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.55rem 0;
+}
+.org-card-meta .org-genre,
+.org-card-meta .org-listed-badge { margin: 0; }
+.org-event-count-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-secondary);
 }
 .org-card p,
 .org-detail-desc {

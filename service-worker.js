@@ -11,7 +11,7 @@
  */
 /** PRECACHE_URLSの中身（index.html/style.css/script.js/events.js等）を更新する変更をデプロイするたびに、
  *  このバージョンを上げること。上げないと、インストール済みユーザーに古いキャッシュが残り続ける。 */
-const CACHE_NAME = 'wc-cache-v4';
+const CACHE_NAME = 'wc-cache-v5';
 
 const PRECACHE_URLS = [
   '/',

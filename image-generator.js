@@ -222,7 +222,20 @@ async function ensurePostImageFontsLoaded() {
   }
 }
 
-/** 指定イベントの投稿用画像を生成してPNGとしてダウンロードする */
+/** iOS/iPadOSかどうかの簡易判定。iPadOSはSafari/Chromeともに既定でMac相当の
+ *  UserAgentを名乗るため、UA文字列だけでは判別できず、タッチ対応も合わせて見る
+ *  （Macは通常マルチタッチ非対応なので、この組み合わせでiPadOSを検出できる）。 */
+function isIOSDevice() {
+  const ua = navigator.userAgent || '';
+  if (/iPhone|iPad|iPod/.test(ua)) return true;
+  return /Macintosh/.test(ua) && navigator.maxTouchPoints > 1;
+}
+
+/** 指定イベントの投稿用画像を生成してPNGとして保存する。
+ *  iOS/iPadOSではOS標準の共有シートを開き、「画像を保存」で直接カメラロールに
+ *  保存できるようにする（iOS/iPadOSではblob URLの<a download>だけだと「ファイルに
+ *  保存」的な選択を挟むことがあるため）。それ以外の環境(PC・Android等)では、
+ *  既に直接ダウンロードできているため従来通りの方式を維持する。 */
 async function generatePostImageForEvent(eventId) {
   const allEvents = typeof EVENTS !== 'undefined' ? EVENTS : [];
   const ev = allEvents.find(e => String(e.id) === String(eventId));
@@ -231,12 +244,27 @@ async function generatePostImageForEvent(eventId) {
   const [, bgImage] = await Promise.all([ensurePostImageFontsLoaded(), loadPostImageBackground()]);
   const canvas = drawPostImageCanvas(ev, bgImage);
 
-  canvas.toBlob(blob => {
+  canvas.toBlob(async blob => {
     if (!blob) return;
+    const filename = `${ev.id}-post.png`;
+
+    if (isIOSDevice() && navigator.canShare) {
+      const file = new File([blob], filename, { type: 'image/png' });
+      if (navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file] });
+          return;
+        } catch (err) {
+          if (err && err.name === 'AbortError') return; // 共有シートをキャンセルしただけなので何もしない
+          // 共有に失敗した場合は下のダウンロード方式にフォールバックする
+        }
+      }
+    }
+
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${ev.id}-post.png`;
+    a.download = filename;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
