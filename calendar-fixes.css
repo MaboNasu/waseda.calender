@@ -1,0 +1,55 @@
+/* Waseda Calendar desktop month-grid hardening (2026-09)
+   The month grid uses 18px JS lane spacing. Keep visual bar height within that lane
+   and let the day cell/date affordance carry the larger click target. */
+
+@media (min-width: 769px) {
+  .calendar-grid-view .week-bars {
+    z-index: 2;
+  }
+
+  .calendar-grid-view .event-bar {
+    height: 16px;
+    min-height: 16px;
+    line-height: 16px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .calendar-grid-view .day-events {
+    position: relative;
+    z-index: 1;
+    gap: 3px;
+  }
+
+  .calendar-grid-view .day-event-chip {
+    min-height: 18px;
+    line-height: 18px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  /* If an older cached polish layer hid a third chip, keep the native renderer authoritative. */
+  .calendar-grid-view .calendar-chip-overflow {
+    display: block !important;
+  }
+
+  .calendar-grid-view .calendar-more-fixed {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    min-height: 22px;
+    margin-top: 1px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: var(--gray-100);
+    color: var(--gray-600);
+    font-size: 0.65rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .calendar-grid-view .calendar-more-fixed:hover {
+    background: var(--enjy-pale);
+    color: var(--enjy);
+  }
+}
