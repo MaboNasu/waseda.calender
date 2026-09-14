@@ -1,0 +1,34 @@
+/* Final UX polish layered after ux-improvements.css */
+.header-nav .nav-btn[aria-current="page"],
+.mobile-nav .nav-btn[aria-current="page"] {
+  background: rgba(255,255,255,.18);
+  border-color: rgba(255,255,255,.72);
+  font-weight: 700;
+}
+
+.mypage-past-events {
+  margin-top: 1rem;
+  border-top: 1px solid var(--border);
+  padding-top: .75rem;
+}
+.mypage-past-events > summary {
+  cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  color: var(--text-secondary);
+  font-size: .86rem;
+  font-weight: 700;
+}
+.mypage-past-events > .events-grid { margin-top: .75rem; }
+
+.org-detail .org-upcoming-primary h2,
+.org-detail .org-upcoming-primary h3 {
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .mobile-nav .nav-btn[aria-current="page"] {
+    background: rgba(255,255,255,.16);
+  }
+}
