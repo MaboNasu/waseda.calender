@@ -32,11 +32,23 @@ function loadPostImageBackground() {
 /** 行頭に来てはいけない文字（句読点・閉じ括弧・長音などの禁則文字） */
 const KINSOKU_NO_LINE_START = new Set('、。，．・：；？！ヽヾゝゞ々’”）〕］｝〉》」』】ー%,.:;!?)'.split(''));
 
+/** 指定幅に収まるよう末尾を…で省略する */
+function trimTextToWidth(ctx, text, maxWidth) {
+  if (ctx.measureText(text).width <= maxWidth) return text;
+  let result = text;
+  while (result.length > 1 && ctx.measureText(result + '…').width > maxWidth) {
+    result = result.slice(0, -1);
+  }
+  return result + '…';
+}
+
 /** テキストをmaxWidthに収まるよう1文字ずつ折り返す（禁則処理付き）。ctx.fontは呼び出し前に設定しておくこと */
 function wrapTextForCanvas(ctx, text, maxWidth) {
+  if (!text) return [''];
+
   const lines = [];
   let current = '';
-  for (const ch of text) {
+  for (const ch of String(text)) {
     const test = current + ch;
     if (current && ctx.measureText(test).width > maxWidth) {
       lines.push(current);
@@ -47,59 +59,113 @@ function wrapTextForCanvas(ctx, text, maxWidth) {
   }
   if (current) lines.push(current);
 
-  // 禁則処理: 行頭に来てはいけない文字を前の行の末尾に送る
+  // 禁則処理。前行へ禁則文字を移して幅超過する場合は、前行末尾を次行へ戻して調整する。
   for (let i = 1; i < lines.length; i++) {
-    while (lines[i].length && KINSOKU_NO_LINE_START.has(lines[i][0])) {
-      lines[i - 1] += lines[i][0];
-      lines[i] = lines[i].slice(1);
+    while (lines[i] && KINSOKU_NO_LINE_START.has(lines[i][0])) {
+      const moved = lines[i][0];
+      const candidate = lines[i - 1] + moved;
+      if (ctx.measureText(candidate).width <= maxWidth) {
+        lines[i - 1] = candidate;
+        lines[i] = lines[i].slice(1);
+      } else {
+        const lastChar = lines[i - 1].slice(-1);
+        if (!lastChar) break;
+        lines[i - 1] = lines[i - 1].slice(0, -1);
+        lines[i] = lastChar + lines[i];
+      }
     }
   }
+
   return lines.filter(line => line.length > 0);
 }
 
-/**
- * イベント名のフォントサイズと行を決める。
- * maxFontSizeから縮小しながら1行に収まるサイズを探し、minFontSizeでも収まらなければ
- * minFontSizeのまま自然な位置（禁則処理済み）で複数行に折り返す（maxLinesを超える分は省略）。
- */
-function fitEventTitle(ctx, title, maxWidth, maxFontSize, minFontSize, maxLines) {
+/** 指定行数以内に収まる最大フォントサイズを探す汎用テキストフィット */
+function fitTextBlock(ctx, text, options) {
+  const {
+    fontWeight = 700,
+    maxWidth,
+    maxFontSize,
+    minFontSize,
+    maxLines,
+    lineHeightRatio = 1.25
+  } = options;
+
   for (let size = maxFontSize; size >= minFontSize; size -= 2) {
-    ctx.font = `700 ${size}px "${POST_IMAGE_FONT}", sans-serif`;
-    const lines = wrapTextForCanvas(ctx, title, maxWidth);
-    if (lines.length <= 1) return { fontSize: size, lines };
+    ctx.font = `${fontWeight} ${size}px \"${POST_IMAGE_FONT}\", sans-serif`;
+    const lines = wrapTextForCanvas(ctx, text, maxWidth);
+    if (lines.length <= maxLines) {
+      return {
+        fontSize: size,
+        lines,
+        lineHeight: Math.round(size * lineHeightRatio)
+      };
+    }
   }
 
-  ctx.font = `700 ${minFontSize}px "${POST_IMAGE_FONT}", sans-serif`;
-  let lines = wrapTextForCanvas(ctx, title, maxWidth);
+  ctx.font = `${fontWeight} ${minFontSize}px \"${POST_IMAGE_FONT}\", sans-serif`;
+  let lines = wrapTextForCanvas(ctx, text, maxWidth);
   if (lines.length > maxLines) {
     lines = lines.slice(0, maxLines);
-    let last = lines[maxLines - 1];
-    while (last.length > 1 && ctx.measureText(last + '…').width > maxWidth) {
-      last = last.slice(0, -1);
-    }
-    lines[maxLines - 1] = last + '…';
+    lines[maxLines - 1] = trimTextToWidth(ctx, lines[maxLines - 1], maxWidth);
   }
-  return { fontSize: minFontSize, lines };
+
+  return {
+    fontSize: minFontSize,
+    lines,
+    lineHeight: Math.round(minFontSize * lineHeightRatio)
+  };
 }
 
-/** アイコン+短文の1情報行を描画する。maxWidthに収まらない場合はwrapTextForCanvasで
- *  最大maxLines行まで折り返し、それでも収まらない残りは末尾を…で省略する
- *  （fitEventTitleと違い、こちらはフォントサイズは固定のまま行数だけ増やす。会場名・主催団体名は
- *  イベントごとに長さが読めないため、日付/会場/主催団体の全行にこの折り返しを適用しておく）。
- *  戻り値は次の情報行のY座標まで進めるべき量（呼び出し側でcursorYに加算する）。 */
-function drawWrappedInfoLine(ctx, text, x, y, maxWidth, maxLines) {
-  const lineHeight = 40;
-  const lines = wrapTextForCanvas(ctx, text, maxWidth);
-  const shown = lines.slice(0, maxLines);
+/** 情報行を指定サイズで折り返し、最大行数に収める */
+function getInfoLines(ctx, text, maxWidth, fontSize, maxLines) {
+  ctx.font = `700 ${fontSize}px \"${POST_IMAGE_FONT}\", sans-serif`;
+  let lines = wrapTextForCanvas(ctx, text, maxWidth);
   if (lines.length > maxLines) {
-    let last = shown[maxLines - 1];
-    while (last.length > 1 && ctx.measureText(last + '…').width > maxWidth) {
-      last = last.slice(0, -1);
-    }
-    shown[maxLines - 1] = last + '…';
+    lines = lines.slice(0, maxLines);
+    lines[maxLines - 1] = trimTextToWidth(ctx, lines[maxLines - 1], maxWidth);
   }
-  shown.forEach((line, i) => ctx.fillText(line, x, y + i * lineHeight));
-  return shown.length * lineHeight + 10;
+  return lines;
+}
+
+/** 情報行の描画に必要な高さを返す */
+function measureInfoRow(ctx, text, maxWidth, fontSize, maxLines) {
+  const lines = getInfoLines(ctx, text, maxWidth, fontSize, maxLines);
+  const lineHeight = Math.round(fontSize * 1.25);
+  return lines.length * lineHeight + 8;
+}
+
+/** アイコン列と本文列を分離して情報行を描画する */
+function drawInfoRow(ctx, options) {
+  const {
+    icon,
+    text,
+    x,
+    y,
+    maxWidth,
+    fontSize,
+    maxLines,
+    color
+  } = options;
+
+  const iconColWidth = 44;
+  const textX = x + iconColWidth;
+  const textWidth = maxWidth - iconColWidth;
+  const lineHeight = Math.round(fontSize * 1.25);
+
+  ctx.fillStyle = color;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'alphabetic';
+
+  ctx.font = `700 ${Math.max(fontSize - 1, 20)}px \"${POST_IMAGE_FONT}\", sans-serif`;
+  ctx.fillText(icon, x, y);
+
+  const lines = getInfoLines(ctx, text, textWidth, fontSize, maxLines);
+  ctx.font = `700 ${fontSize}px \"${POST_IMAGE_FONT}\", sans-serif`;
+  lines.forEach((line, i) => {
+    ctx.fillText(line, textX, y + i * lineHeight);
+  });
+
+  return lines.length * lineHeight + 8;
 }
 
 /** 角丸長方形のパスを作る */
@@ -140,9 +206,9 @@ function drawPostImageCanvas(ev, bgImage) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'alphabetic';
     ctx.fillStyle = c.white;
-    ctx.font = `700 44px "${POST_IMAGE_FONT}", sans-serif`;
+    ctx.font = `700 44px \"${POST_IMAGE_FONT}\", sans-serif`;
     ctx.fillText('Waseda Calendar', size / 2, 110);
-    ctx.font = `400 22px "${POST_IMAGE_FONT}", sans-serif`;
+    ctx.font = `400 22px \"${POST_IMAGE_FONT}\", sans-serif`;
     ctx.fillText('早稲田のイベントを、ひとつのカレンダーで。', size / 2, 145);
   }
 
@@ -159,12 +225,13 @@ function drawPostImageCanvas(ev, bgImage) {
 
   const innerX = cardX + 60;
   const innerWidth = cardWidth - 120;
-  let cursorY = cardY + 90;
+  const cardBottomPadding = 52;
+  let cursorY = cardY + 58;
 
-  // カテゴリタグ
+  // カテゴリタグ：旧レイアウトより少しコンパクトにし、タイトルと情報欄へ余白を回す
   const categoryText = (typeof categoryLabel === 'function') ? categoryLabel(ev.category) : (ev.category || '');
-  ctx.font = `700 28px "${POST_IMAGE_FONT}", sans-serif`;
-  const tagPaddingX = 24, tagHeight = 48;
+  ctx.font = `700 25px \"${POST_IMAGE_FONT}\", sans-serif`;
+  const tagPaddingX = 21, tagHeight = 44;
   const tagWidth = ctx.measureText(categoryText).width + tagPaddingX * 2;
   ctx.fillStyle = c.enjyPale;
   tracePostImageRoundRect(ctx, innerX, cursorY, tagWidth, tagHeight, tagHeight / 2);
@@ -172,20 +239,26 @@ function drawPostImageCanvas(ev, bgImage) {
   ctx.fillStyle = c.enjy;
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
-  ctx.fillText(categoryText, innerX + tagPaddingX, cursorY + tagHeight / 2 + 2);
+  ctx.fillText(categoryText, innerX + tagPaddingX, cursorY + tagHeight / 2 + 1);
 
-  cursorY += tagHeight + 40;
+  cursorY += tagHeight + 24;
 
-  // イベント名（自動縮小＋自然な改行）
+  // イベント名：1行化のために縮めず、「2行以内に収まる最大サイズ」を選ぶ
   ctx.textBaseline = 'alphabetic';
-  const titleFit = fitEventTitle(ctx, ev.title, innerWidth, 60, 34, 3);
-  ctx.font = `700 ${titleFit.fontSize}px "${POST_IMAGE_FONT}", sans-serif`;
-  ctx.fillStyle = c.textPrimary;
-  const lineHeight = titleFit.fontSize * 1.4;
-  titleFit.lines.forEach((line, i) => {
-    ctx.fillText(line, innerX, cursorY + titleFit.fontSize + i * lineHeight);
+  const titleFit = fitTextBlock(ctx, ev.title || '', {
+    fontWeight: 700,
+    maxWidth: innerWidth,
+    maxFontSize: 54,
+    minFontSize: 38,
+    maxLines: 2,
+    lineHeightRatio: 1.25
   });
-  cursorY += titleFit.fontSize + (titleFit.lines.length - 1) * lineHeight + 50;
+  ctx.font = `700 ${titleFit.fontSize}px \"${POST_IMAGE_FONT}\", sans-serif`;
+  ctx.fillStyle = c.textPrimary;
+  titleFit.lines.forEach((line, i) => {
+    ctx.fillText(line, innerX, cursorY + titleFit.fontSize + i * titleFit.lineHeight);
+  });
+  cursorY += titleFit.lines.length * titleFit.lineHeight + 24;
 
   // 区切り線
   ctx.strokeStyle = '#E5E7EB';
@@ -194,33 +267,53 @@ function drawPostImageCanvas(ev, bgImage) {
   ctx.moveTo(innerX, cursorY);
   ctx.lineTo(innerX + innerWidth, cursorY);
   ctx.stroke();
-  cursorY += 55;
+  cursorY += 28;
 
-  // 日時
+  // 日時・会場・主催団体：アイコン列を固定し、長い文字列の2行目を本文位置へ揃える。
+  // 残り高さを先に測り、30→28→26→24→22pxの順で最大サイズを採用する。
   const dateText = (typeof formatEventDateDisplay === 'function') ? formatEventDateDisplay(ev) : ev.date;
-  ctx.font = `700 32px "${POST_IMAGE_FONT}", sans-serif`;
-  ctx.fillStyle = c.textSecondary;
-  cursorY += drawWrappedInfoLine(ctx, '📅 ' + dateText, innerX, cursorY, innerWidth, 2);
+  const infoRows = [
+    { icon: '📅', text: dateText || '', maxLines: 1 },
+    ...(ev.location ? [{ icon: '📍', text: ev.location, maxLines: 2 }] : []),
+    { icon: '🏫', text: ev.organizer || '', maxLines: 2 }
+  ];
 
-  // 会場（未確認等で空の場合は行ごと省略）
-  if (ev.location) {
-    ctx.font = `700 32px "${POST_IMAGE_FONT}", sans-serif`;
-    ctx.fillStyle = c.textSecondary;
-    cursorY += drawWrappedInfoLine(ctx, '📍 ' + ev.location, innerX, cursorY, innerWidth, 2);
+  const infoTextWidth = innerWidth - 44;
+  const remainingHeight = (cardY + cardHeight) - cardBottomPadding - cursorY;
+  const infoFontCandidates = [30, 28, 26, 24, 22];
+  let chosenInfoFont = infoFontCandidates[infoFontCandidates.length - 1];
+
+  for (const sizeCandidate of infoFontCandidates) {
+    const totalHeight = infoRows.reduce((sum, row) => {
+      return sum + measureInfoRow(ctx, row.text, infoTextWidth, sizeCandidate, row.maxLines);
+    }, 0);
+    if (totalHeight <= remainingHeight) {
+      chosenInfoFont = sizeCandidate;
+      break;
+    }
   }
 
-  // 主催団体
-  ctx.font = `700 32px "${POST_IMAGE_FONT}", sans-serif`;
   ctx.fillStyle = c.textSecondary;
-  drawWrappedInfoLine(ctx, '🏫 ' + (ev.organizer || ''), innerX, cursorY, innerWidth, 2);
+  infoRows.forEach(row => {
+    cursorY += drawInfoRow(ctx, {
+      icon: row.icon,
+      text: row.text,
+      x: innerX,
+      y: cursorY,
+      maxWidth: innerWidth,
+      fontSize: chosenInfoFont,
+      maxLines: row.maxLines,
+      color: c.textSecondary
+    });
+  });
 
   // 下部：SNSハンドル・URL（背景画像がある場合は焼き込み済みのため描かない）
   if (!bgImage) {
     ctx.textAlign = 'center';
     ctx.fillStyle = c.white;
-    ctx.font = `700 30px "${POST_IMAGE_FONT}", sans-serif`;
+    ctx.font = `700 30px \"${POST_IMAGE_FONT}\", sans-serif`;
     ctx.fillText('@waseda_calendar', size / 2, 960);
-    ctx.font = `400 24px "${POST_IMAGE_FONT}", sans-serif`;
+    ctx.font = `400 24px \"${POST_IMAGE_FONT}\", sans-serif`;
     ctx.fillText('wasedacalendar.com', size / 2, 1000);
   }
 
@@ -230,7 +323,16 @@ function drawPostImageCanvas(ev, bgImage) {
 /** Canvas描画前にフォントの読み込みを待つ（未読込のままだとデフォルトフォントで描かれてしまうため） */
 async function ensurePostImageFontsLoaded() {
   const specs = [
-    `400 24px "${POST_IMAGE_FONT}"`, `700 32px "${POST_IMAGE_FONT}"`
+    `400 24px \"${POST_IMAGE_FONT}\"`,
+    `700 22px \"${POST_IMAGE_FONT}\"`,
+    `700 24px \"${POST_IMAGE_FONT}\"`,
+    `700 25px \"${POST_IMAGE_FONT}\"`,
+    `700 26px \"${POST_IMAGE_FONT}\"`,
+    `700 28px \"${POST_IMAGE_FONT}\"`,
+    `700 30px \"${POST_IMAGE_FONT}\"`,
+    `700 38px \"${POST_IMAGE_FONT}\"`,
+    `700 44px \"${POST_IMAGE_FONT}\"`,
+    `700 54px \"${POST_IMAGE_FONT}\"`
   ];
   try {
     await Promise.all(specs.map(spec => document.fonts.load(spec)));
