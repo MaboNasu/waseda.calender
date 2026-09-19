@@ -5075,6 +5075,25 @@ const EVENTS = [
     lastUpdated: "2026-09-07",
     isPublished: true
   },
+  {
+    id: "evt-295",
+    title: "キャンパスの隣で活動！プレイパーク ボランティア",
+    date: "2026-10-24",
+    startTime: "10:15",
+    endTime: "17:30",
+    location: "都立戸山公園「大久保地区」(西早稲田キャンパスに隣接)",
+    campus: "outside",
+    organizer: "早稲田大学WAVOC(平山郁夫記念ボランティアセンター)",
+    category: "community",
+    scope: "circle",
+    target: ["student"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "戸山公園内のプレイパークでの運営支援ボランティア。早稲田大学の学生対象。10:15集合、10:30活動開始、17:00終了。応募締切2026-10-14 12:00(応募状況により早期締切の場合あり)。",
+    externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/09/17/24678/",
+    lastUpdated: "2026-09-19",
+    isPublished: true
+  },
 
   // ---- 情報源チェック(2026-09-10) ----
   {
@@ -5097,25 +5116,25 @@ const EVENTS = [
     isPublished: true
   },
   {
-    id: "evt-264",
-    title: "「子ども食堂ボランティア」参加者募集",
-    date: "2026-10-16",
-    startTime: "15:15",
-    endTime: "20:30",
-    location: "ココキタ(東京都北区、JR王子駅からバス10分)",
-    campus: "outside",
-    organizer: "早稲田大学平山郁夫記念ボランティアセンター(WAVOC)",
-    category: "community",
+    id: "evt-296",
+    title: "公開講演会「医療DXとサイバーセキュリティ」",
+    date: "2026-10-04",
+    startTime: "10:00",
+    endTime: "12:00",
+    location: "早稲田キャンパス8号館106教室",
+    campus: "waseda",
+    organizer: "早稲田大学法学部国際コース(ICL)",
+    category: "lecture",
     scope: "circle",
-    target: ["student"],
-    feeType: "paid",
-    feeText: "王子駅〜現地間のバス代(500円程度)",
-    description: "子ども食堂「キタクマ」での調理・配膳・片付けや子どもとの交流ボランティア。定員5名(超過時抽選)。応募締切2026-10-05 17:00(応募状況により早期締切の場合あり)。",
-    externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/09/01/24412/",
-    lastUpdated: "2026-09-10",
+    target: ["student", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "松本尚氏(日本医科大学特任教授・内閣総理大臣補佐官)、原量宏氏(香川大学名誉教授)による医療DXとサイバーセキュリティに関する公開講演会。事前の参加登録制。",
+    externalUrl: "https://www.waseda.jp/folaw/icl/news/2026/09/15/12900/",
+    registrationUrl: "https://forms.gle/dhWc8en1JmgBFiZM7",
+    lastUpdated: "2026-09-19",
     isPublished: true
   },
-
   // ========================================
   // 75団体サイト情報収集(2026-09-10)で確認したイベント
   // ========================================
