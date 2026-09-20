@@ -5338,6 +5338,24 @@ const EVENTS = [
     lastUpdated: "2026-09-19",
     isPublished: true
   },
+  {
+    id: "evt-310",
+    title: "《企画展》源氏と狭衣 ―物語の書写と伝流―",
+    date: "2026-09-18",
+    endDate: "2026-11-08",
+    location: "早稲田大学総合学術情報センター2階展示室",
+    campus: "waseda",
+    organizer: "早稲田大学図書館展示委員会・平安朝文学研究会",
+    category: "culture",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "free",
+    feeText: "無料(図書館入館資格のない方も見学可能)",
+    description: "早稲田大学図書館の企画展。開館時間10:00〜18:00(日曜日は10:00〜17:00)。9/21〜23は休館。",
+    externalUrl: "https://www.waseda.jp/library/news/2026/09/01/30100/",
+    lastUpdated: "2026-09-20",
+    isPublished: true
+  },
 
   // ========================================
   // 75団体サイト情報収集(2026-09-10)で確認したイベント
