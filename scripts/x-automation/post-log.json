@@ -568,6 +568,17 @@
       "status": "dry-run",
       "postId": null,
       "errorType": null
+    },
+    {
+      "postedAt": "2026-09-22T00:58:56.835Z",
+      "postType": "recommend",
+      "targetDate": "2026-09-22",
+      "eventIds": [],
+      "campaign": "recommendation",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
     }
   ]
 }
