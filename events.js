@@ -5490,6 +5490,62 @@ const EVENTS = [
     isPublished: true
   },
 
+  // ---- 情報源チェック(2026-09-27) ----
+  {
+    id: "evt-318",
+    title: "野球部 秋季リーグ戦 vs明治大学",
+    date: "2026-09-28",
+    startTime: "13:30",
+    location: "明治神宮野球場",
+    campus: "outside",
+    organizer: "早稲田大学野球部",
+    category: "sports",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "早稲田大学野球部の2026秋季リーグ戦。対 明治大学。",
+    externalUrl: "http://www.wasedabbc.org/schedule/",
+    lastUpdated: "2026-09-27",
+    isPublished: true
+  },
+  {
+    id: "evt-319",
+    title: "準硬式野球部 秋季リーグ戦 vs慶應義塾大学",
+    date: "2026-09-28",
+    startTime: "12:30",
+    location: "早稲田大学東伏見キャンパス軟式野球場",
+    campus: "outside",
+    organizer: "早稲田大学準硬式野球部",
+    category: "sports",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "早稲田大学準硬式野球部の令和8年度秋季リーグ戦。対 慶應義塾大学。",
+    externalUrl: "https://w-junkoh.com/schedule",
+    lastUpdated: "2026-09-27",
+    isPublished: true
+  },
+  {
+    id: "evt-320",
+    title: "O.R.S 第40回関東大学女子サッカーリーグ戦1部後期 第7節 vs日本大学",
+    date: "2026-10-03",
+    startTime: "10:00",
+    location: "東伏見グラウンド",
+    campus: "outside",
+    organizer: "早稲田大学ア式蹴球部",
+    category: "sports",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "早稲田大学ア式蹴球部女子部のリーグ戦。対 日本大学。",
+    externalUrl: "https://www.waseda-afc.jp/",
+    lastUpdated: "2026-09-27",
+    isPublished: true
+  },
+
   // ========================================
   // 75団体サイト情報収集(2026-09-10)で確認したイベント
   // ========================================
