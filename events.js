@@ -5494,7 +5494,7 @@ const EVENTS = [
   {
     id: "evt-318",
     title: "野球部 秋季リーグ戦 vs明治大学",
-    date: "2026-09-28",
+    date: "2026-09-30",
     startTime: "13:30",
     location: "明治神宮野球場",
     campus: "outside",
@@ -5504,9 +5504,9 @@ const EVENTS = [
     target: ["student", "obog", "public"],
     feeType: "unknown",
     feeText: "料金不明",
-    description: "早稲田大学野球部の2026秋季リーグ戦。対 明治大学。",
+    description: "早稲田大学野球部の2026秋季リーグ戦。対 明治大学。当初9/28開催予定だったが天候不良のため9/30に順延。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-09-27",
+    lastUpdated: "2026-09-28",
     isPublished: true
   },
   {
@@ -5522,10 +5522,10 @@ const EVENTS = [
     target: ["student", "obog", "public"],
     feeType: "unknown",
     feeText: "料金不明",
-    description: "早稲田大学準硬式野球部の令和8年度秋季リーグ戦。対 慶應義塾大学。",
+    description: "早稲田大学準硬式野球部の令和8年度秋季リーグ戦。対 慶應義塾大学。天候不良のため試合中止(順延日未定、公式発表を待って再掲予定)。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-09-27",
-    isPublished: true
+    lastUpdated: "2026-09-28",
+    isPublished: false
   },
   {
     id: "evt-320",
@@ -5543,6 +5543,65 @@ const EVENTS = [
     description: "早稲田大学ア式蹴球部女子部のリーグ戦。対 日本大学。",
     externalUrl: "https://www.waseda-afc.jp/",
     lastUpdated: "2026-09-27",
+    isPublished: true
+  },
+
+  // ---- 情報源チェック(2026-09-28) ----
+  {
+    id: "evt-321",
+    title: "日本の美しい伝統芸術を体験しよう！生け花体験ワークショップ ICCジャパニーズ・カルチャー・イベント",
+    date: "2026-10-09",
+    startTime: "17:15",
+    endTime: "18:45",
+    location: "早稲田キャンパス内(詳細は参加者に後日通知)",
+    campus: "waseda",
+    organizer: "早稲田大学国際コミュニティセンター(ICC)",
+    category: "culture",
+    scope: "circle",
+    target: ["student"],
+    feeType: "free",
+    feeText: "無料",
+    description: "生け花を体験できるICCジャパニーズ・カルチャー・イベント。早大生対象。事前申込制(専用フォーム、申込締切10/2 9:00)。受付17:00〜。",
+    externalUrl: "https://www.waseda.jp/inst/icc/news/2026/09/04/43689/",
+    lastUpdated: "2026-09-28",
+    isPublished: true
+  },
+  {
+    id: "evt-322",
+    title: "早稲田大学ボランティア・アカデミー「開発途上国で広がる新たな環境問題―水銀汚染を前に学生に何ができるのか」",
+    date: "2026-10-13",
+    startTime: "17:00",
+    endTime: "18:40",
+    location: "早稲田大学 GCC Common Room",
+    campus: "waseda",
+    organizer: "早稲田大学平山郁夫記念ボランティアセンター(WAVOC)",
+    category: "lecture",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "free",
+    feeText: "無料(記載なし・推定)",
+    description: "水銀汚染をテーマにした開発途上国の環境問題についての講座。学生・教職員・一般が対象。事前申込制(所属により異なる申込フォーム、申込締切10/12 12:00)。",
+    externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/09/22/24578/",
+    lastUpdated: "2026-09-28",
+    isPublished: true
+  },
+  {
+    id: "evt-323",
+    title: "Ernst ist das Leben, heiter ist die Kunst – Theodor W. Adorno und Robert Gernhardt",
+    date: "2026-11-20",
+    startTime: "17:30",
+    endTime: "19:10",
+    location: "戸山キャンパス33号館第10会議室",
+    campus: "toyama",
+    organizer: "早稲田大学文学学術院ドイツ語ドイツ文学コース",
+    category: "lecture",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "free",
+    feeText: "無料(記載なし・推定)",
+    description: "アドルノとゲルンハルトをテーマにしたドイツ語圏文学の講演会(ドイツ語)。学生・大学院生・教員・一般が対象。事前申込不要。",
+    externalUrl: "https://www.waseda.jp/flas/hss/news/2026/09/28/16153/",
+    lastUpdated: "2026-09-28",
     isPublished: true
   },
 
