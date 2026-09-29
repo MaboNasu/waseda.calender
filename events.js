@@ -5605,6 +5605,27 @@ const EVENTS = [
     isPublished: true
   },
 
+  // ---- 情報源チェック(2026-09-29) ----
+  {
+    id: "evt-324",
+    title: "早稲田オープン・イノベーション・フォーラム2026(WOI'26)",
+    date: "2026-11-11",
+    startTime: "10:20",
+    endTime: "16:45",
+    location: "リサーチイノベーションセンター(121号館 1階・地下1階)",
+    campus: "waseda",
+    organizer: "早稲田大学",
+    category: "lecture",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "早稲田大学の産学連携・最先端研究を紹介するフォーラム。事前申込制。",
+    externalUrl: "https://waseda-oif26.jp/",
+    lastUpdated: "2026-09-29",
+    isPublished: true
+  },
+
   // ========================================
   // 75団体サイト情報収集(2026-09-10)で確認したイベント
   // ========================================
