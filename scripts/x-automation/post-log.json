@@ -744,6 +744,28 @@
       "status": "dry-run",
       "postId": null,
       "errorType": null
+    },
+    {
+      "postedAt": "2026-10-04T01:46:28.350Z",
+      "postType": "today",
+      "targetDate": "2026-10-04",
+      "eventIds": [
+        "evt-088",
+        "evt-354",
+        "evt-150",
+        "evt-151",
+        "evt-152",
+        "evt-296",
+        "evt-326",
+        "evt-231",
+        "evt-047",
+        "evt-310"
+      ],
+      "campaign": "today_waseda",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
     }
   ]
 }
