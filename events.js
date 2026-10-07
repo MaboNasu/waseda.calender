@@ -6711,6 +6711,27 @@ const EVENTS = [
     externalUrl: "https://www.waseda.jp/inst/weekly/",
     lastUpdated: "2026-10-06",
     isPublished: true
+  },
+
+  // ---- 情報源チェック(2026-10-07) ----
+  {
+    id: "evt-372",
+    title: "第11回 エンパク青空市",
+    date: "2026-11-04",
+    startTime: "11:00",
+    endTime: "15:00",
+    location: "早稲田大学演劇博物館前",
+    campus: "waseda",
+    organizer: "早稲田大学坪内博士記念演劇博物館",
+    category: "culture",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "演劇博物館前で開催される青空市。関連グッズ等の頒布会(お一人様10点まで)。",
+    externalUrl: "https://enpaku.w.waseda.jp/",
+    lastUpdated: "2026-10-07",
+    isPublished: true
   }
 
 ];
