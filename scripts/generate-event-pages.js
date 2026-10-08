@@ -446,7 +446,7 @@ function renderEventPageHtml(ev, labelFns) {
 
 <script src="/events.js?v=6"></script>
 <script src="/script.js?v=36"></script>
-<script src="/image-generator.js?v=8"></script>
+<script src="/image-generator.js?v=7"></script>
 <script src="/event-page.js?v=11"></script>
 <script type="module" src="/firebase-init.js?v=3"></script>
 <script src="/auth-ui.js?v=3"></script>
