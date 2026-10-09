@@ -1935,7 +1935,13 @@ function setupSectionToggle(toggleId, bodyId) {
     const willExpand = !expanded;
     toggleBtn.setAttribute('aria-expanded', String(willExpand));
     body.hidden = !willExpand;
-    if (willExpand && sectionEl) collapseGridToOneRow(sectionEl);
+    if (willExpand && sectionEl) {
+      requestAnimationFrame(() => {
+        collapseGridToOneRow(sectionEl);
+        const eventContainer = sectionEl.querySelector('#today-events, #upcoming-events');
+        if (eventContainer?.id) refreshLiveReactionCounts(getInitiallyVisibleCardIds(eventContainer.id));
+      });
+    }
   });
 }
 
