@@ -2785,7 +2785,7 @@
       "url": "https://gekidankodama.studio.site/",
       "lastChecked": "2026-10-08T22:34:02.500Z",
       "contentHash": "a9e76d4f386511f3a6ad75d049611a7849fb811a1e788348fbe7ae8e6a2c00c7",
-      "notes": "organizations.jsには該当エントリなし。サイト自身のmeta description(og:description)に『早稲田大学の演劇サークル『劇団木霊』の公式ホームページです』と明記されており、これを一次証拠として公式性を確認(2026-09-14、curlで生HTMLを直接確認)。早稲田大学どらま館の公式ニュース(waseda.jp/culture/dramakan/news/10065)でevt-246(2026年9月公演)の実在も確認済み。STUDIO製サイトでNEWS/公演情報等の本文がJavaScriptでレンダリングされており、素のfetchではテキストがほぼ空(4文字)のためjsRendered:true。旧サイト(gekidankodama.com)は現在www.gekidankodama.comへ301リダイレクトされ内容未確認のため、公式が現在案内するSTUDIO版を優先。",
+      "notes": "organizations.js A-100（劇団「こだま」）に対応。サイト自身のmeta description(og:description)に『早稲田大学の演劇サークル『劇団木霊』の公式ホームページです』と明記されており、これを一次証拠として公式性を確認(2026-09-14、curlで生HTMLを直接確認)。早稲田大学どらま館の公式ニュース(waseda.jp/culture/dramakan/news/10065)でevt-246(2026年9月公演)の実在も確認済み。STUDIO製サイトでNEWS/公演情報等の本文がJavaScriptでレンダリングされており、素のfetchではテキストがほぼ空(4文字)のためjsRendered:true。旧サイト(gekidankodama.com)は現在www.gekidankodama.comへ301リダイレクトされ内容未確認のため、公式が現在案内するSTUDIO版を優先。 2026-10-09: 既存の団体名表記差（木霊/「こだま」）を公式X・公演情報と突合しA-100へ紐付け。",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "sourceType": "club",
       "expectedGenres": [
@@ -2794,7 +2794,8 @@
       "cloudAccessible": true,
       "preferredReader": "cloud",
       "priority": "B",
-      "jsRendered": true
+      "jsRendered": true,
+      "orgId": "A-100"
     },
     {
       "id": "butabi-daa-jp",
