@@ -2600,7 +2600,7 @@
       "url": "https://tokosai.net/",
       "lastChecked": "2026-10-08T22:33:53.088Z",
       "contentHash": "6beb41f6fb219d3b74e0910cd9e6be37665f6e051519fb31c95ceade481cb846",
-      "notes": "所沢キャンパス祭実行委員会公式。robots.txt自体が存在しない(404)ドメインで、明示的な巡回制限なし。2026-09-11実査時点では開催日程・企画一覧とも未掲載(芸能人企画/教室内企画/ステージ企画/屋台のカテゴリ名のみ、詳細はkikaku.html等の別ページ参照)。開催が近づくにつれ情報が充実する季節性ソース。",
+      "notes": "所沢キャンパス祭実行委員会公式。robots.txt自体が存在しない(404)ドメインで、明示的な巡回制限なし。2026-09-11実査時点では開催日程・企画一覧とも未掲載(芸能人企画/教室内企画/ステージ企画/屋台のカテゴリ名のみ、詳細はkikaku.html等の別ページ参照)。開催が近づくにつれ情報が充実する季節性ソース。 organizations.js ET-055（所祭運営委員会）に対応する公式祭サイトとしてorgIdを付与。",
       "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "sourceType": "seasonal",
       "expectedGenres": [
@@ -2610,7 +2610,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "A"
+      "priority": "A",
+      "orgId": "ET-055"
     },
     {
       "id": "campfire-waseda-search",
@@ -2865,6 +2866,23 @@
       "cloudAccessible": true,
       "preferredReader": "cloud",
       "priority": "B",
+      "jsRendered": false
+    },
+    {
+      "id": "tottori-tomonkai-pref",
+      "name": "早稲田大学・関東鳥取県稲門会（鳥取県公式）",
+      "category": "circle",
+      "url": "https://www.pref.tottori.lg.jp/323855.htm",
+      "notes": "organizations.js B-031 鳥取学生稲門会の上流情報源。鳥取県公式ページで、現役学生を含む稲門会の2026年度行事と『例年、鳥取学生稲門会が稲門祭に模擬店を出店』との記載を確認。学生団体自身の公式サイトではないためwebsiteUrlには採用せず、upstreamとして低頻度監視する。",
+      "sourceType": "club",
+      "sourceRole": "upstream",
+      "expectedGenres": [
+        "その他"
+      ],
+      "orgId": "B-031",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "C",
       "jsRendered": false
     }
   ]
