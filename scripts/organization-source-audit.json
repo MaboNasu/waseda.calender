@@ -8,19 +8,20 @@
   },
   "summary": {
     "totalOrganizations": 504,
-    "automatableOrganizations": 107,
-    "nonAutomatableOrganizations": 397,
+    "automatableOrganizations": 109,
+    "nonAutomatableOrganizations": 395,
     "withOfficialGuide": 467,
     "withWebsite": 99,
-    "withSocialProfile": 403,
-    "unresolvedNoLinks": 10,
+    "withSocialProfile": 405,
+    "unresolvedNoLinks": 8,
     "sourceClassCounts": {
-      "sns-only": 322,
-      "official-site": 81,
+      "sns-only": 324,
+      "official-site": 82,
       "guide-only": 63,
       "official-blog": 8,
       "event-page": 18,
-      "none": 10,
+      "upstream": 1,
+      "none": 6,
       "profile-site-only": 2
     }
   },
@@ -3145,12 +3146,24 @@
       "websiteUrl": null,
       "instagramUrl": null,
       "twitterUrl": null,
-      "automatedSources": [],
-      "bestEventSourceUrl": null,
-      "sourceClass": "none",
-      "automatable": false,
-      "verificationStatus": "unresolved",
-      "verificationNote": null
+      "automatedSources": [
+        {
+          "id": "tottori-tomonkai-pref",
+          "name": "早稲田大学・関東鳥取県稲門会（鳥取県公式）",
+          "url": "https://www.pref.tottori.lg.jp/323855.htm",
+          "priority": "C",
+          "sourceType": "club",
+          "sourceRole": "upstream",
+          "cloudAccessible": true,
+          "preferredReader": "cloud",
+          "jsRendered": false
+        }
+      ],
+      "bestEventSourceUrl": "https://www.pref.tottori.lg.jp/323855.htm",
+      "sourceClass": "upstream",
+      "automatable": true,
+      "verificationStatus": "web-verified-2026-10-09",
+      "verificationNote": "鳥取県公式の稲門会ページで2026年度活動と鳥取学生稲門会の稲門祭出店を確認。学生団体自身のHPではなく上流情報源として扱う。"
     },
     {
       "orgId": "B-034",
@@ -4096,13 +4109,13 @@
       "guideUrl": null,
       "websiteUrl": null,
       "instagramUrl": null,
-      "twitterUrl": null,
+      "twitterUrl": "https://x.com/WasedaMusicInn",
       "automatedSources": [],
       "bestEventSourceUrl": null,
-      "sourceClass": "none",
+      "sourceClass": "sns-only",
       "automatable": false,
-      "verificationStatus": "unresolved",
-      "verificationNote": null
+      "verificationStatus": "web-verified-2026-10-09",
+      "verificationNote": "2026年も更新されているWaseda Music Inn公式Xアカウントをプロフィール情報として確認。"
     },
     {
       "orgId": "C-066",
@@ -7227,14 +7240,14 @@
       "registrationType": "同好会",
       "guideUrl": null,
       "websiteUrl": null,
-      "instagramUrl": null,
+      "instagramUrl": "https://www.instagram.com/weedl.2021/",
       "twitterUrl": null,
       "automatedSources": [],
       "bestEventSourceUrl": null,
-      "sourceClass": "none",
+      "sourceClass": "sns-only",
       "automatable": false,
-      "verificationStatus": "unresolved",
-      "verificationNote": null
+      "verificationStatus": "web-verified-2026-10-09",
+      "verificationNote": "2026年新歓情報で公式Instagram @weedl.2021 を確認。SNSは手動確認用のみ。"
     },
     {
       "orgId": "C-317",
@@ -8761,11 +8774,23 @@
       "websiteUrl": null,
       "instagramUrl": null,
       "twitterUrl": null,
-      "automatedSources": [],
-      "bestEventSourceUrl": null,
-      "sourceClass": "none",
-      "automatable": false,
-      "verificationStatus": "unresolved",
+      "automatedSources": [
+        {
+          "id": "tokosai-official",
+          "name": "所沢キャンパス祭 公式サイト",
+          "url": "https://tokosai.net/",
+          "priority": "A",
+          "sourceType": "seasonal",
+          "sourceRole": "official-site",
+          "cloudAccessible": true,
+          "preferredReader": "cloud",
+          "jsRendered": false
+        }
+      ],
+      "bestEventSourceUrl": "https://tokosai.net/",
+      "sourceClass": "official-site",
+      "automatable": true,
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
