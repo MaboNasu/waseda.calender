@@ -1230,6 +1230,8 @@ function showDayEvents(dateStr) {
   if (modal) {
     modal.classList.remove('is-schedule');
     modal.querySelector('.schedule-detail-note')?.remove();
+    const primaryActions = modal.querySelector('.modal-primary-actions');
+    if (primaryActions) primaryActions.hidden = true;
   }
   document.getElementById('modal-title').textContent = `${dateDisp} のイベント（${filtered.length}件）`;
   document.getElementById('modal-tags').innerHTML = '';
