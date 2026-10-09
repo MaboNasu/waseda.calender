@@ -33,6 +33,9 @@ jobs:
         id: check
         run: node scripts/check-sources.js
 
+      - name: 504団体監査ポリシーを検証
+        run: node scripts/generate-organization-source-audit.js --check
+
       - name: 結果を読み取る
         id: result
         run: |
