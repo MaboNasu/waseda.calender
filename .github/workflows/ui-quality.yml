@@ -13,6 +13,9 @@ on:
       - 'scripts/generate-org-pages.js'
       - 'scripts/generate-sitemap.js'
       - 'scripts/check-scale-ui.js'
+      - 'scripts/sources.json'
+      - 'scripts/organization-source-audit.json'
+      - 'scripts/generate-organization-source-audit.js'
       - '.github/workflows/ui-quality.yml'
   pull_request:
     paths:
@@ -25,6 +28,9 @@ on:
       - 'scripts/generate-org-pages.js'
       - 'scripts/generate-sitemap.js'
       - 'scripts/check-scale-ui.js'
+      - 'scripts/sources.json'
+      - 'scripts/organization-source-audit.json'
+      - 'scripts/generate-organization-source-audit.js'
       - '.github/workflows/ui-quality.yml'
 
 permissions:
@@ -68,6 +74,9 @@ jobs:
 
       - name: Check scale UI regressions
         run: node scripts/check-scale-ui.js
+
+      - name: Check 504-organization source audit
+        run: node scripts/generate-organization-source-audit.js --check
 
       - name: Block internal review notes from public HTML
         shell: bash
