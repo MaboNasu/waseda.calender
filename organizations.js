@@ -3095,7 +3095,7 @@ const ORGANIZATIONS = [
     registrationType: "同好会",
     description: "",
     instagramUrl: "",
-    twitterUrl: "",
+    twitterUrl: "https://x.com/WasedaMusicInn",
     guideUrl: "",
     websiteUrl: "",
     relatedEventIds: []
@@ -5572,7 +5572,7 @@ const ORGANIZATIONS = [
     genre: "その他",
     registrationType: "同好会",
     description: "",
-    instagramUrl: "",
+    instagramUrl: "https://www.instagram.com/weedl.2021/",
     twitterUrl: "",
     guideUrl: "",
     websiteUrl: "",
