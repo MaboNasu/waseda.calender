@@ -213,6 +213,7 @@ function formatTime(start, end) {
 /** 時刻未登録を「終日」と決めつけないための共通表示。
  *  学事日程または allDay:true のみ終日、それ以外は時刻未定として扱う。 */
 function getEventTimeLabel(ev, compact = false) {
+  if (ev.timeText) return ev.timeText;
   if (ev.startTime) {
     if (ev.endTime) return formatTime(ev.startTime, ev.endTime);
     return compact ? `${ev.startTime}〜` : `${ev.startTime}〜（終了時刻未定）`;
