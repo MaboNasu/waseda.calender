@@ -99,8 +99,7 @@ function compactSource(source) {
     sourceRole: inferSourceRole(source),
     cloudAccessible: source.cloudAccessible !== false,
     preferredReader: source.preferredReader || null,
-    jsRendered: source.jsRendered === true,
-    lastChecked: source.lastChecked || null
+    jsRendered: source.jsRendered === true
   };
 }
 
@@ -129,11 +128,6 @@ function classify(org, mappedSources) {
     return { sourceClass: 'guide-only', automatable: false, bestEventSourceUrl: null };
   }
   return { sourceClass: 'none', automatable: false, bestEventSourceUrl: null };
-}
-
-function latestCheck(sources) {
-  const values = sources.map(s => s.lastChecked).filter(Boolean).sort();
-  return values.length ? values[values.length - 1] : null;
 }
 
 function buildAudit() {
@@ -166,7 +160,7 @@ function buildAudit() {
 
     let verificationStatus = 'repository-profile';
     if (webVerificationNote) verificationStatus = 'web-verified-2026-10-09';
-    else if (mappedSources.length && latestCheck(mappedSources)) verificationStatus = 'automated-source-checked';
+    else if (mappedSources.length) verificationStatus = 'automated-source-configured';
     else if (!org.guideUrl && !org.websiteUrl && !org.instagramUrl && !org.twitterUrl) verificationStatus = 'unresolved';
 
     return {
@@ -182,7 +176,6 @@ function buildAudit() {
       bestEventSourceUrl: classification.bestEventSourceUrl,
       sourceClass: classification.sourceClass,
       automatable: classification.automatable,
-      lastAutomatedCheck: latestCheck(mappedSources),
       verificationStatus,
       verificationNote: webVerificationNote
     };
