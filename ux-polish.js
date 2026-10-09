@@ -303,9 +303,9 @@
       if (more) {
         const m = more.textContent.match(/(?:他|\+)(\d+)件/);
         let hidden = m ? Number(m[1]) : 0;
-        if (chips.length > 2) {
-          chips.slice(2).forEach(chip => chip.classList.add('calendar-chip-overflow'));
-          hidden += chips.length - 2;
+        if (chips.length > 3) {
+          chips.slice(3).forEach(chip => chip.classList.add('calendar-chip-overflow'));
+          hidden += chips.length - 3;
         }
         if (hidden > 0) more.textContent = `+${hidden}件`;
       }
