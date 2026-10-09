@@ -378,7 +378,7 @@
         }
       }
       wrap.querySelectorAll('.event-hero-row').forEach(row => {
-        if (!ev.location && row.textContent.includes('場所は未定')) row.remove();
+        if (!ev.location && row.textContent.trim().startsWith('📍')) row.remove();
       });
     }
   }
