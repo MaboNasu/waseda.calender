@@ -128,6 +128,7 @@ function formatTime(start, end) {
 }
 
 function getEventTimeLabel(ev) {
+  if (ev.timeText) return ev.timeText;
   if (ev.startTime) {
     return ev.endTime ? formatTime(ev.startTime, ev.endTime) : `${ev.startTime}〜（終了時刻未定）`;
   }
