@@ -183,7 +183,7 @@ function eventDurationDays(ev) {
  *  月間カレンダーの週バーからは除外し、renderLongRunningEventsWidgetで別途表示する
  *  （showDayEventsの日別一覧には isEventOnDate 経由で引き続き含まれる）。 */
 function isLongRunningEvent(ev) {
-  return isMultiDay(ev) && eventDurationDays(ev) >= LONG_RUNNING_EVENT_THRESHOLD_DAYS;
+  return isMultiDay(ev) && (ev.longRunning === true || eventDurationDays(ev) >= LONG_RUNNING_EVENT_THRESHOLD_DAYS);
 }
 
 /** 開催終了済みかどうか（終了日が今日より前）。UI上の「終了しました」表示にのみ使う。
@@ -629,7 +629,7 @@ function setupScopeToggle() {
    イベントカードのHTML生成
    ============================================================ */
 function createEventCardHTML(ev, showDate = true) {
-  const dateRow = showDate ? `
+  const dateRow = (showDate || isMultiDay(ev)) ? `
     <div class="event-info-row event-info-row-datetime">
       <span class="event-info-icon">📅</span>
       <span>${formatEventDateDisplay(ev)}</span>
@@ -824,7 +824,7 @@ function renderUpcomingEvents(allFiltered) {
   if (countEl) countEl.textContent = `${filtered.length}件`;
 
   el.innerHTML = filtered.length === 0
-    ? emptyStateHTML('今週開催のイベントは0件です。')
+    ? emptyStateHTML('この先7日間のイベントは0件です。')
     : eventsGridWithShowMoreHTML(filtered.map(ev => createEventCardHTML(ev, true)).join(''), 'upcoming-events');
   return filtered.map(ev => ev.id);
 }
