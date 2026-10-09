@@ -189,11 +189,16 @@
       const body = document.getElementById('upcoming-body');
       (body || section.querySelector('.container') || section).appendChild(wrap);
     }
-    const items = events.slice(0, 5).map(ev => {
+    const visibleCount = 5;
+    const items = events.map((ev, index) => {
       const range = `${formatShortDate(ev.date)}〜${formatShortDate(getEventEnd(ev))}`;
-      return `<button type="button" class="upcoming-long-running-item" onclick="openModal('${escapeHtml(String(ev.id))}')"><span>${escapeHtml(ev.title)}</span><span class="upcoming-long-running-range">${escapeHtml(range)}</span></button>`;
+      const extra = index >= visibleCount ? ' upcoming-long-running-extra' : '';
+      return `<button type="button" class="upcoming-long-running-item${extra}" onclick="openModal('${escapeHtml(String(ev.id))}')"><span>${escapeHtml(ev.title)}</span><span class="upcoming-long-running-range">${escapeHtml(range)}</span></button>`;
     }).join('');
-    wrap.innerHTML = `<h3>開催中の展示・長期企画</h3><div class="upcoming-long-running-list">${items}</div>`;
+    const more = events.length > visibleCount
+      ? `<button type="button" class="btn btn-ghost btn-sm upcoming-long-running-more" onclick="this.closest('.upcoming-long-running').classList.add('expanded');this.hidden=true;">すべて見る（他${events.length - visibleCount}件）</button>`
+      : '';
+    wrap.innerHTML = `<h3>開催中の展示・長期企画</h3><div class="upcoming-long-running-list">${items}</div>${more}`;
   }
 
   function homeDomEnhancements() {
