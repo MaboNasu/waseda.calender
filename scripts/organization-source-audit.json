@@ -38,7 +38,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -61,15 +60,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:33.828Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasedasports-sousupo.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:33.828Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -85,7 +82,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -102,7 +98,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -125,15 +120,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:36.216Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "http://kouyoukai.kill.jp/shigenobu/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:36.216Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -149,7 +142,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -166,7 +158,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -183,7 +174,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -200,7 +190,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -217,7 +206,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -234,7 +222,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -251,7 +238,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -268,7 +254,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -285,7 +270,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -302,7 +286,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -319,7 +302,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -336,7 +318,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -353,7 +334,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -370,7 +350,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -393,15 +372,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:37.470Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasedamarketing.net/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:37.470Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -417,7 +394,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -434,7 +410,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -457,15 +432,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:37.967Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://hoshikai-waseda.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:37.967Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -481,7 +454,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -498,7 +470,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -515,7 +486,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -532,7 +502,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -549,7 +518,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -566,7 +534,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -589,15 +556,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:39.120Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://sen-i.org/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:39.120Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -613,7 +578,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -636,15 +600,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:34:00.026Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.waseda-ad.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:34:00.026Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -666,15 +628,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": false,
           "preferredReader": "local",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:39.893Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://whk-official.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:39.893Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -696,15 +656,13 @@
           "sourceRole": "official-blog",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:55.872Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasedarailfan.wordpress.com/",
       "sourceClass": "official-blog",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:55.872Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -720,7 +678,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -743,15 +700,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:42.208Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.wps-exhibition.com/activities",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:42.208Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -767,7 +722,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -784,7 +738,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -807,15 +760,13 @@
           "sourceRole": "official-blog",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:42.340Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://soudaimanken.wordpress.com/",
       "sourceClass": "official-blog",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:42.340Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -831,7 +782,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -848,7 +798,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -865,7 +814,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -882,7 +830,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -905,15 +852,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:43.454Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://inahogama.hccj.co.jp/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:43.454Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -929,7 +874,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -952,15 +896,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:44.672Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wso-tokyo.jp/concertinfo/",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:44.672Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -976,7 +918,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -993,7 +934,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1016,15 +956,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:45.264Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasedamandolin.net/concert/",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:45.264Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -1040,7 +978,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1057,7 +994,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1074,7 +1010,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1091,7 +1026,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1114,15 +1048,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:45.472Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://rizdor.github.io/official/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:45.472Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -1138,7 +1070,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1161,15 +1092,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:46.486Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasephil.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:46.486Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -1191,15 +1120,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:46.602Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://waseda-chopin.github.io/website/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:46.602Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -1215,7 +1142,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1232,7 +1158,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1249,7 +1174,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1266,7 +1190,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1283,7 +1206,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1300,7 +1222,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1323,15 +1244,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:47.961Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "http://w-piano.com",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:47.961Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -1353,15 +1272,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:48.549Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasedachorus.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:48.549Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -1383,15 +1300,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:49.164Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.wasedaglee.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:49.164Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -1413,15 +1328,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:49.871Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://chorfluegel.org/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:49.871Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -1443,15 +1356,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:51.992Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://soukon.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:51.992Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -1473,15 +1384,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:52.788Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://acappellascs.jp",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:52.788Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -1497,7 +1406,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1514,7 +1422,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1531,7 +1438,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1548,7 +1454,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1565,7 +1470,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1582,7 +1486,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1599,7 +1502,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1616,7 +1518,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1633,7 +1534,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1650,7 +1550,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1667,7 +1566,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1690,15 +1588,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:55.278Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://sodaigekiken.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:55.278Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -1714,7 +1610,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1731,7 +1626,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1754,15 +1648,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:55.417Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://tomon-scenario-club.github.io/tomon-scenario-club/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:55.417Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -1784,8 +1676,7 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:34:04.045Z"
+          "jsRendered": false
         },
         {
           "id": "butabi-corich",
@@ -1796,15 +1687,13 @@
           "sourceRole": "upstream",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:34:04.879Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://butabi.daa.jp/%e6%98%a5%e5%ad%a3%e7%a0%94%e7%a9%b6%e4%bc%9a%e5%85%ac%e6%bc%94%e3%83%bb%e7%a7%8b%e5%ad%a3%e7%a0%94%e7%a9%b6%e4%bc%9a%e5%85%ac%e6%bc%94/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:34:04.879Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -1826,15 +1715,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:57.294Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://enkurasite2020.wixsite.com/enkura",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:57.294Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -1850,7 +1737,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1873,15 +1759,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:57.576Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.teatro50.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:57.576Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -1897,7 +1781,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1914,7 +1797,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1931,7 +1813,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1948,7 +1829,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1965,7 +1845,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -1988,15 +1867,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:57.759Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasedakaruta.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:57.759Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -2012,7 +1889,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2029,7 +1905,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2046,7 +1921,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2063,7 +1937,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2086,15 +1959,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:58.026Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://maimutou.info",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:58.026Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -2116,15 +1987,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:59.158Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://mitsudomoe.wixsite.com/mitsudome",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:59.158Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -2140,7 +2009,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2163,15 +2031,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:59.513Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasedarbbc.wixsite.com/my-site",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:59.513Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -2193,15 +2059,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:00.621Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasedagwrugby.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:00.621Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -2217,7 +2081,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2240,15 +2103,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:01.240Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wubls.netlify.app/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:01.240Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -2264,7 +2125,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2281,7 +2141,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2298,7 +2157,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2315,7 +2173,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2332,7 +2189,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2349,7 +2205,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2366,7 +2221,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2383,7 +2237,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2406,15 +2259,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:01.488Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.gakubunkai.net/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:01.488Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -2430,7 +2281,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2447,7 +2297,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2464,7 +2313,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2481,7 +2329,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2498,7 +2345,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2515,7 +2361,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2532,7 +2377,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2549,7 +2393,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2566,7 +2409,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2583,7 +2425,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2600,7 +2441,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2617,7 +2457,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2634,7 +2473,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2651,7 +2489,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2668,7 +2505,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2685,7 +2521,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2702,7 +2537,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2719,7 +2553,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2742,15 +2575,13 @@
           "sourceRole": "official-blog",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:01.573Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://ameblo.jp/waseda-ballroomdance/",
       "sourceClass": "official-blog",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:01.573Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -2766,7 +2597,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2783,7 +2613,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2800,7 +2629,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2823,15 +2651,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:01.875Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.waseda.run/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:01.875Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -2853,15 +2679,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:02.046Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.wasedaultimate.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:02.046Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -2877,7 +2701,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2894,7 +2717,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2911,7 +2733,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2928,7 +2749,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2945,7 +2765,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -2968,15 +2787,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:02.552Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://jikenwaseda.jimdofree.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:02.552Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -2992,7 +2809,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3009,7 +2825,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3032,15 +2847,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:03.120Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wmc-mw.sakura.ne.jp/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:03.120Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -3056,7 +2869,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3073,7 +2885,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3096,15 +2907,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:03.470Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.envrodorigues.com",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:03.470Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -3120,7 +2929,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3137,7 +2945,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3154,7 +2961,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3171,7 +2977,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3188,7 +2993,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3205,7 +3009,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3222,7 +3025,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3239,7 +3041,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3256,7 +3057,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3279,15 +3079,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:34:02.063Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasedacelt.wixsite.com/mysite",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:34:02.063Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -3303,7 +3101,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3320,7 +3117,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3337,7 +3133,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "web-verified-2026-10-09",
       "verificationNote": "現行の早稲田大学公認サークルガイドページ(id=3810)を確認。"
     },
@@ -3354,7 +3149,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "none",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "unresolved",
       "verificationNote": null
     },
@@ -3371,7 +3165,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3388,7 +3181,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "web-verified-2026-10-09",
       "verificationNote": "現行の早稲田大学公認サークルガイドページ(id=3807)を確認。"
     },
@@ -3405,7 +3197,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3422,7 +3213,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3439,7 +3229,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3456,7 +3245,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "none",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "unresolved",
       "verificationNote": null
     },
@@ -3473,7 +3261,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3490,7 +3277,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "none",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "unresolved",
       "verificationNote": null
     },
@@ -3507,7 +3293,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3524,7 +3309,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3541,7 +3325,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3558,7 +3341,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "none",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "unresolved",
       "verificationNote": null
     },
@@ -3581,15 +3363,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:05.037Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://waseda-massken.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:05.037Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -3611,15 +3391,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:06.787Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "http://spk.picaso.jp/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:06.787Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -3635,7 +3413,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3652,7 +3429,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3669,7 +3445,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3692,15 +3467,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:07.535Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://mokuyouzazen.jimdofree.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:07.535Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -3716,7 +3489,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3733,7 +3505,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3750,7 +3521,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3767,7 +3537,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3784,7 +3553,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3801,7 +3569,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3818,7 +3585,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3835,7 +3601,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3852,7 +3617,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3869,7 +3633,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3886,7 +3649,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3903,7 +3665,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3920,7 +3681,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3937,7 +3697,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3954,7 +3713,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3971,7 +3729,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -3988,7 +3745,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4005,7 +3761,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4022,7 +3777,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4039,7 +3793,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4056,7 +3809,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4073,7 +3825,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4090,7 +3841,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4107,7 +3857,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4130,15 +3879,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:08.277Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.winc.ne.jp/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:08.277Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -4160,15 +3907,13 @@
           "sourceRole": "official-blog",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:11.055Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://robostep.sakura.ne.jp/blog/",
       "sourceClass": "official-blog",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:11.055Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -4184,7 +3929,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4201,7 +3945,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4218,7 +3961,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4235,7 +3977,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4252,7 +3993,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4269,7 +4009,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4286,7 +4025,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4309,15 +4047,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:12.112Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "http://www.waseda-mmg.net/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:12.112Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -4333,7 +4069,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4350,7 +4085,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4367,7 +4101,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "none",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "unresolved",
       "verificationNote": null
     },
@@ -4384,7 +4117,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4401,7 +4133,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4418,7 +4149,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4435,7 +4165,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4452,7 +4181,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4469,7 +4197,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4486,7 +4213,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4503,7 +4229,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4526,15 +4251,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:12.459Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://soudaiomunibus.wixsite.com/omnibus",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:12.459Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -4556,15 +4279,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:13.666Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://kurumeru05.wixsite.com/kurumerutheater",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:13.666Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -4586,15 +4307,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:13.956Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.kontsert.jp",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:13.956Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -4616,15 +4335,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:15.901Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://gekidanshin2020.wixsite.com/shin",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:15.901Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -4640,7 +4357,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4657,7 +4373,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "none",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "unresolved",
       "verificationNote": null
     },
@@ -4674,7 +4389,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4691,7 +4405,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4708,7 +4421,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4725,7 +4437,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4742,7 +4453,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4759,7 +4469,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4782,15 +4491,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:16.548Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.seiren-musical-project.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:16.548Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -4806,7 +4513,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4823,7 +4529,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4840,7 +4545,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4857,7 +4561,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4874,7 +4577,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4891,7 +4593,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4914,15 +4615,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:17.916Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wask.anisei.net/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:17.916Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -4938,7 +4637,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4955,7 +4653,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "none",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "unresolved",
       "verificationNote": null
     },
@@ -4972,7 +4669,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -4989,7 +4685,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5006,7 +4701,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5023,7 +4717,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5040,7 +4733,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5057,7 +4749,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5080,15 +4771,13 @@
           "sourceRole": "official-blog",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:55.775Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://ameblo.jp/ludo-waseda/",
       "sourceClass": "official-blog",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:55.775Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -5104,7 +4793,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5121,7 +4809,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5144,15 +4831,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:18.318Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://odorisamurai-official.studio.site/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:18.318Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -5174,15 +4859,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": true,
-          "lastChecked": "2026-10-08T22:33:18.532Z"
+          "jsRendered": true
         }
       ],
       "bestEventSourceUrl": "https://www.tokyohanabi-official.com/%E5%87%BA%E6%BC%94%E4%BA%88%E5%AE%9A",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:18.532Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -5204,15 +4887,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:18.720Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.shockers.jp/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:18.720Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -5228,7 +4909,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5245,7 +4925,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5262,7 +4941,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5279,7 +4957,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5296,7 +4973,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5313,7 +4989,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5330,7 +5005,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5347,7 +5021,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5364,7 +5037,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5381,7 +5053,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5398,7 +5069,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5415,7 +5085,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5432,7 +5101,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5449,7 +5117,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5466,7 +5133,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5483,7 +5149,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5500,7 +5165,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5517,7 +5181,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "profile-site-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "web-verified-2026-10-09",
       "verificationNote": "公認軟式野球サークルの公式Wixサイトを確認。"
     },
@@ -5534,7 +5197,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5551,7 +5213,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5568,7 +5229,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5585,7 +5245,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5602,7 +5261,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5619,7 +5277,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5636,7 +5293,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5653,7 +5309,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5670,7 +5325,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5687,7 +5341,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5704,7 +5357,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5721,7 +5373,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5738,7 +5389,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5755,7 +5405,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5772,7 +5421,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5789,7 +5437,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5806,7 +5453,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5823,7 +5469,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5840,7 +5485,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5857,7 +5501,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5874,7 +5517,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5891,7 +5533,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5908,7 +5549,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5931,15 +5571,13 @@
           "sourceRole": "official-blog",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:18.840Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wssski.wordpress.com",
       "sourceClass": "official-blog",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:18.840Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -5955,7 +5593,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5972,7 +5609,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -5989,7 +5625,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6006,7 +5641,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6023,7 +5657,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6040,7 +5673,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6057,7 +5689,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6080,15 +5711,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:20.057Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wsdoasis.wixsite.com/oasisjazz",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:20.057Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -6104,7 +5733,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6121,7 +5749,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6138,7 +5765,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6155,7 +5781,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6172,7 +5797,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6195,15 +5819,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": true,
-          "lastChecked": "2026-10-08T22:33:58.878Z"
+          "jsRendered": true
         }
       ],
       "bestEventSourceUrl": "https://getappers.wixsite.com/homepage",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:58.878Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -6225,15 +5847,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:20.863Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://ciel2007.wixsite.com/wasedaballet",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:20.863Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -6249,7 +5869,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6266,7 +5885,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6289,15 +5907,13 @@
           "sourceRole": "official-blog",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:57.462Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://ameblo.jp/wasedamynx/",
       "sourceClass": "official-blog",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:57.462Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -6313,7 +5929,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6330,7 +5945,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6347,7 +5961,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6364,7 +5977,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6381,7 +5993,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6404,15 +6015,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:21.673Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasedawindsurfing.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:21.673Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -6428,7 +6037,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6445,7 +6053,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6462,7 +6069,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6479,7 +6085,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6496,7 +6101,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6513,7 +6117,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6530,7 +6133,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6547,7 +6149,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6564,7 +6165,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6581,7 +6181,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6598,7 +6197,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6615,7 +6213,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6632,7 +6229,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6649,7 +6245,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6666,7 +6261,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6683,7 +6277,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6700,7 +6293,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6717,7 +6309,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6734,7 +6325,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6757,15 +6347,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": true,
-          "lastChecked": "2026-10-08T22:33:21.895Z"
+          "jsRendered": true
         }
       ],
       "bestEventSourceUrl": "https://www.highso-waseda.com/live-information",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:21.895Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -6781,7 +6369,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6804,15 +6391,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:22.037Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://nogakujuku.github.io/official/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:22.037Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -6828,7 +6413,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6845,7 +6429,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6862,7 +6445,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6879,7 +6461,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6902,15 +6483,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:57.156Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasedabankara17.wixsite.com/bankaraizm/about-1",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:57.156Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -6926,7 +6505,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6943,7 +6521,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -6966,15 +6543,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:22.367Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasedafemalechorus.wixsite.com/wasejo",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:22.367Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -6996,15 +6571,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:24.741Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://waseda-futsal.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:24.741Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -7026,15 +6599,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:25.106Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.rotary-waseda.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:25.106Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -7050,7 +6621,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7067,7 +6637,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7084,7 +6653,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7101,7 +6669,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7118,7 +6685,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7135,7 +6701,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7152,7 +6717,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7169,7 +6733,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7186,7 +6749,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7203,7 +6765,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7220,7 +6781,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7237,7 +6797,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7254,7 +6813,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "web-verified-2026-10-09",
       "verificationNote": "早稲田ウィークリー掲載の公式SNSアカウントをプロフィール情報として確認。"
     },
@@ -7271,7 +6829,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7288,7 +6845,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7311,15 +6867,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:25.395Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.waseda-career-society-wcs.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:25.395Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -7335,7 +6889,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7352,7 +6905,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7369,7 +6921,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7386,7 +6937,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7409,15 +6959,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:25.991Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.tedxwasedau.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:25.991Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -7433,7 +6981,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "none",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "unresolved",
       "verificationNote": null
     },
@@ -7456,15 +7003,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:26.485Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://waseda.vken.org/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:26.485Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -7480,7 +7025,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7497,7 +7041,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7514,7 +7057,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7531,7 +7073,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7548,7 +7089,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7565,7 +7105,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "web-verified-2026-10-09",
       "verificationNote": "2026年の団体紹介でX/Instagram @amis_waseda を確認。"
     },
@@ -7582,7 +7121,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7599,7 +7137,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7616,7 +7153,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7633,7 +7169,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7650,7 +7185,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7667,7 +7201,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "web-verified-2026-10-09",
       "verificationNote": "現行の早稲田大学公認サークルガイドページ(id=3812)を確認。"
     },
@@ -7684,7 +7217,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "web-verified-2026-10-09",
       "verificationNote": "現行の早稲田大学公認サークルガイドページ(id=3808)を確認。"
     },
@@ -7701,7 +7233,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "none",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "unresolved",
       "verificationNote": null
     },
@@ -7724,14 +7255,12 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": null
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasedaaiclub.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": null,
       "verificationStatus": "web-verified-2026-10-09",
       "verificationNote": "現行サークルガイド(id=3811)と公式サイト wasedaaiclub.com を確認。"
     },
@@ -7748,7 +7277,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "web-verified-2026-10-09",
       "verificationNote": "現行の早稲田大学公認サークルガイドページ(id=3814)を確認。"
     },
@@ -7771,14 +7299,12 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:26.782Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.littleyangonpr.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:26.782Z",
       "verificationStatus": "web-verified-2026-10-09",
       "verificationNote": "現行の早稲田大学公認サークルガイドページ(id=3813)を確認。"
     },
@@ -7795,7 +7321,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "profile-site-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "web-verified-2026-10-09",
       "verificationNote": "現行サークルガイド(id=3809)と公式Webサイトを確認。"
     },
@@ -7812,7 +7337,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "web-verified-2026-10-09",
       "verificationNote": "2026年も活動中の公式X/Instagram @conan_waseda を確認。"
     },
@@ -7835,14 +7359,12 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": null
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://algo6le.main.jp/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": null,
       "verificationStatus": "web-verified-2026-10-09",
       "verificationNote": "公式サイト algo6le.main.jp と公式SNSを確認。"
     },
@@ -7859,7 +7381,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7876,7 +7397,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7893,7 +7413,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7910,7 +7429,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7927,7 +7445,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7944,7 +7461,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7961,7 +7477,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7978,7 +7493,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -7995,7 +7509,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8012,7 +7525,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8029,7 +7541,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8046,7 +7557,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8063,7 +7573,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8080,7 +7589,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8097,7 +7605,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8114,7 +7621,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8131,7 +7637,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8148,7 +7653,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8165,7 +7669,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8182,7 +7685,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8199,7 +7701,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8222,15 +7723,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:33.037Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasedabacchus.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:33.037Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -8246,7 +7745,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8263,7 +7761,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8280,7 +7777,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8303,15 +7799,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:33.810Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://rikovolley.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:33.810Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -8327,7 +7821,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8344,7 +7837,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8361,7 +7853,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8378,7 +7869,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8395,7 +7885,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8412,7 +7901,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8435,15 +7923,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:35.067Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://rikotaibig6.com/team/waseda/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:35.067Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -8459,7 +7945,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8476,7 +7961,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8493,7 +7977,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8510,7 +7993,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8533,15 +8015,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:38.403Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.wasesui.net/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:38.403Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -8557,7 +8037,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8574,7 +8053,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8591,7 +8069,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8608,7 +8085,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8625,7 +8101,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8642,7 +8117,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8659,7 +8133,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8682,15 +8155,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:39.340Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wce.jp/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:39.340Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -8712,15 +8183,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": false,
           "preferredReader": "local",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:39.624Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://waseda-fp.tumblr.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:39.624Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -8742,15 +8211,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:40.458Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://laissez-faire-tc.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:40.458Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -8772,15 +8239,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:40.840Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://circle.rikoten.com",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:40.840Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -8796,7 +8261,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8819,15 +8283,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:43.132Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://igem-waseda.netlify.app/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:43.132Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -8843,7 +8305,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8860,7 +8321,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8877,7 +8337,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8894,7 +8353,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8911,7 +8369,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8928,7 +8385,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8945,7 +8401,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -8968,15 +8423,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:33:44.491Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://soukon.com/tokorozawa/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:33:44.491Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -8992,7 +8445,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9009,7 +8461,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9026,7 +8477,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9043,7 +8493,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9060,7 +8509,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9077,7 +8525,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9094,7 +8541,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9111,7 +8557,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9128,7 +8573,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9145,7 +8589,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9162,7 +8605,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9179,7 +8621,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9196,7 +8637,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9213,7 +8653,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9230,7 +8669,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9247,7 +8685,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9264,7 +8701,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9281,7 +8717,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9298,7 +8733,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "guide-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9315,7 +8749,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "sns-only",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "repository-profile",
       "verificationNote": null
     },
@@ -9332,7 +8765,6 @@
       "bestEventSourceUrl": null,
       "sourceClass": "none",
       "automatable": false,
-      "lastAutomatedCheck": null,
       "verificationStatus": "unresolved",
       "verificationNote": null
     },
@@ -9355,15 +8787,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:07.637Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.waseda-kyudo.net/game2026/",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:07.637Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9385,15 +8815,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:20.605Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.waseda-afc.jp/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:20.605Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9415,15 +8843,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:08.166Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "http://w-lax.com/schedule/",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:08.166Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9445,15 +8871,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:13.195Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.wasedarugby.com/schedule",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:13.195Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9475,15 +8899,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:08.496Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasedaswim.com/schedule",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:08.496Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9505,15 +8927,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:17.073Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://waseda-basketball.com/schedule",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:17.073Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9535,15 +8955,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:09.997Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasedasumo-website.com/schedule",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:09.997Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9565,15 +8983,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:03.071Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "http://www.wasedabbc.org/schedule/",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:03.071Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9595,15 +9011,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:37.042Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "http://wuac.com/posts/schedule/",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:37.042Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9625,15 +9039,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:06.954Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "http://wlax-redbats.com/schedule/",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:06.954Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9655,15 +9067,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:43.499Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://w-junkoh.com/schedule",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:43.499Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9685,15 +9095,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:42.068Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "http://www.w-ouen.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:42.068Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9715,15 +9123,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:06.138Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "http://www.waseda-kendo.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:06.138Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9745,15 +9151,13 @@
           "sourceRole": "official-blog",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:45.857Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://waseda-bad.com/blog/%E5%B9%B4%E9%96%93%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB/",
       "sourceClass": "official-blog",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:45.857Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9775,15 +9179,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:04.199Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.wasedatennis.net/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:04.199Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9805,15 +9207,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:09.091Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://waseda-ac.jp/competition/schedule",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:09.091Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9835,15 +9235,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:06.800Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "http://www.waseda-judo.com/schedule/",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:06.800Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9865,15 +9263,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:32:09.561Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "http://waseda-shorinji.com/schedule/",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:32:09.561Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9895,15 +9291,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:51.918Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://waseda-shooting.com/schedule",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:51.918Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9925,15 +9319,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:25.978Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "http://www.waseda-boxing.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:25.978Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9955,15 +9347,13 @@
           "sourceRole": "event-page",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:40.987Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://wasedafencing.com/schedule/",
       "sourceClass": "event-page",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:40.987Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     },
     {
@@ -9985,15 +9375,13 @@
           "sourceRole": "official-site",
           "cloudAccessible": true,
           "preferredReader": "cloud",
-          "jsRendered": false,
-          "lastChecked": "2026-10-08T22:31:50.900Z"
+          "jsRendered": false
         }
       ],
       "bestEventSourceUrl": "https://www.waseda-wl.com/",
       "sourceClass": "official-site",
       "automatable": true,
-      "lastAutomatedCheck": "2026-10-08T22:31:50.900Z",
-      "verificationStatus": "automated-source-checked",
+      "verificationStatus": "automated-source-configured",
       "verificationNote": null
     }
   ]
