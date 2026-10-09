@@ -200,7 +200,7 @@ function buildMapsSearchUrl(ev) {
 function organizerHTML(ev) {
   const text = escapeHtml(ev.organizer || '—');
   if (!ev.orgId) return text;
-  return `<a href="${SITE_ORIGIN}/organizations.html?id=${encodeURIComponent(ev.orgId)}" class="organizer-link">${text}</a>`;
+  return `<a href="${SITE_ORIGIN}/org/${encodeURIComponent(ev.orgId)}.html" class="organizer-link">${text}</a>`;
 }
 
 /** OGP用の説明文（改行を除去し、長すぎる場合は切り詰める）。event-page.js の buildOgDescription の複製 */
