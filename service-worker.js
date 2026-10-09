@@ -4,7 +4,7 @@
  * HTML・イベントデータ・UX共通レイヤーはnetwork-first。
  * その他の静的アセットはstale-while-revalidate。
  */
-const CACHE_NAME = 'wc-cache-v10';
+const CACHE_NAME = 'wc-cache-v11';
 
 const PRECACHE_URLS = [
   '/',
