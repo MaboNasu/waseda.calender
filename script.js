@@ -264,7 +264,7 @@ function campusLabel(key) {
 function organizerHTML(ev) {
   const text = escapeHtml(ev.organizer || '—');
   if (!ev.orgId) return text;
-  return `<a href="organizations.html?id=${encodeURIComponent(ev.orgId)}" class="organizer-link">${text}</a>`;
+  return `<a href="/org/${encodeURIComponent(ev.orgId)}.html" class="organizer-link">${text}</a>`;
 }
 
 /** 参加費キー → 日本語 */
