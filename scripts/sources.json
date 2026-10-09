@@ -1,5 +1,5 @@
 {
-  "_readme": "早稲田大学関連のイベント情報源URL一覧。scripts/check-sources.js がこのファイルの各URLを取得し、前回チェック時とのcontentHashを比較して変更を検知する。lastCheckedとcontentHashはスクリプトが自動更新する（手動で編集しない）。notesは調査時のメモで、手動更新でOK。新しい情報源に気づいたら sources 配列に追記する。\n\nsourceType: \"club\"(1団体1サイト。既存の大半)か\"institutional\"(大学・学部・センター等が運営する、複数イベントが載る一覧ページ)を区別する。institutionalなソースは1回のチェックで複数の新規イベント候補が見つかる前提で分析すること。expectedGenres: そのソースが供給しやすいcategoryの配列（参考情報。将来「このソースは何件イベントを供給できているか」を評価する際に使う）。\n\npriority: そのソースがイベント情報源としてどれだけ価値が高いかの目安(A/B/C)。institutionalは既定でA、clubは既定でB、既存notesで情報の薄さ・取得困難が既に分かっているものはC。\ncloudAccessible: クラウド上のClaude Codeセッション(組織のネットワークegressポリシーの制約下)からこのURLに実際にアクセスできるか(true/false)。2026-09-10時点の実測に基づく。組織のポリシーは変わりうるため、定期的な再確認が望ましい。\npreferredReader: 変更検知後、誰(cloud=クラウドのClaude Code / local=ローカルのClaude Code+Chrome連携 / gpt=ChatGPT等)がこのソースの中身を読んで判断すべきかの既定値。cloudAccessibleがfalse、またはjsRenderedがtrueのソースはlocalを既定とする(クラウド側はJS描画ページを正しく取得できないため)。\n\norgId: organizations.js内の団体IDとの対応（新規追加ソースのみ持つ、任意）。\n\nurlTemplate / monthOffsets: 月別ページ({YYYY-MM}のようなプレースホルダを含むURLパターン)を、複数月分まとめて1エントリで自動追跡したい場合に使う(通常のurlのみのソースでは使わない、任意)。urlTemplateにプレースホルダ付きURLパターンを、monthOffsetsに追跡したい月オフセットの配列(例: [0,1,2,3]で当月+3ヶ月先)を指定すると、check-sources.js実行時点の年月から毎回動的にURLを計算して取得するため、日付をハードコードしたエントリを毎月手動で足す必要がない。この場合contentHash/dateTokensHashはoffset文字列をキーとするオブジェクト({\"0\": \"...\", \"1\": \"...\"})になり、urlフィールドはoffset 0(先頭要素)の代表URLとして毎回再計算される参考値。変更検知時はlast-check-changed.jsonの当該エントリにoffsetsフィールド(変更があったoffsetごとのym/url/changeStatus)が追加される。",
+  "_readme": "早稲田大学関連のイベント情報源URL一覧。scripts/check-sources.js がこのファイルの各URLを取得し、前回チェック時とのcontentHashを比較して変更を検知する。lastCheckedとcontentHashはスクリプトが自動更新する（手動で編集しない）。notesは調査時のメモで、手動更新でOK。新しい情報源に気づいたら sources 配列に追記する。\n\nsourceType: \"club\"(1団体1サイト。既存の大半)か\"institutional\"(大学・学部・センター等が運営する、複数イベントが載る一覧ページ)を区別する。institutionalなソースは1回のチェックで複数の新規イベント候補が見つかる前提で分析すること。expectedGenres: そのソースが供給しやすいcategoryの配列（参考情報。将来「このソースは何件イベントを供給できているか」を評価する際に使う）。\n\npriority: そのソースがイベント情報源としてどれだけ価値が高いかの目安(A/B/C)。institutionalは既定でA、clubは既定でB、既存notesで情報の薄さ・取得困難が既に分かっているものはC。\ncloudAccessible: クラウド上のClaude Codeセッション(組織のネットワークegressポリシーの制約下)からこのURLに実際にアクセスできるか(true/false)。2026-09-10時点の実測に基づく。組織のポリシーは変わりうるため、定期的な再確認が望ましい。\npreferredReader: 変更検知後、誰(cloud=クラウドのClaude Code / local=ローカルのClaude Code+Chrome連携 / gpt=ChatGPT等)がこのソースの中身を読んで判断すべきかの既定値。cloudAccessibleがfalse、またはjsRenderedがtrueのソースはlocalを既定とする(クラウド側はJS描画ページを正しく取得できないため)。\n\norgId: organizations.js内の団体IDとの対応（新規追加ソースのみ持つ、任意）。\n\nurlTemplate / monthOffsets: 月別ページ({YYYY-MM}のようなプレースホルダを含むURLパターン)を、複数月分まとめて1エントリで自動追跡したい場合に使う(通常のurlのみのソースでは使わない、任意)。urlTemplateにプレースホルダ付きURLパターンを、monthOffsetsに追跡したい月オフセットの配列(例: [0,1,2,3]で当月+3ヶ月先)を指定すると、check-sources.js実行時点の年月から毎回動的にURLを計算して取得するため、日付をハードコードしたエントリを毎月手動で足す必要がない。この場合contentHash/dateTokensHashはoffset文字列をキーとするオブジェクト({\"0\": \"...\", \"1\": \"...\"})になり、urlフィールドはoffset 0(先頭要素)の代表URLとして毎回再計算される参考値。変更検知時はlast-check-changed.jsonの当該エントリにoffsetsフィールド(変更があったoffsetごとのym/url/changeStatus)が追加される。\n\n自動監視ポリシー: Instagram / X(Twitter) / TikTok 等のSNSプロフィールは organizations.js の団体メタデータ・人手確認用フォールバックとしてのみ保持し、sources.json の自動fetch/hash監視対象には追加しない。SNSしか最新情報源がない団体は organization-source-audit.json で sns-only と明示する。非公式スクレイピングや非公式APIは使用しない。\n\nsourceRole（任意）: official-site / event-page / official-blog / upstream。団体ごとの最適情報源を監査レポートで分類するための補助情報。未指定の既存ソースはURL・notesから保守的に推定する。",
   "version": 3,
   "sources": [
     {
@@ -68,7 +68,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-008"
     },
     {
       "id": "tennis",
@@ -85,7 +86,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-015"
     },
     {
       "id": "rowing",
@@ -119,7 +121,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-013"
     },
     {
       "id": "judo",
@@ -136,7 +139,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-017"
     },
     {
       "id": "kyudo",
@@ -153,7 +157,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-001"
     },
     {
       "id": "swimming",
@@ -170,7 +175,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-005"
     },
     {
       "id": "track-field",
@@ -187,7 +193,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-016"
     },
     {
       "id": "sumo",
@@ -204,7 +211,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-007"
     },
     {
       "id": "rugby",
@@ -221,7 +229,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-004"
     },
     {
       "id": "alpine",
@@ -289,7 +298,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-006"
     },
     {
       "id": "soccer",
@@ -306,7 +316,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-002"
     },
     {
       "id": "soccer-league",
@@ -375,7 +386,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-020"
     },
     {
       "id": "gymnastics",
@@ -460,7 +472,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-009"
     },
     {
       "id": "american-football",
@@ -545,7 +558,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-021"
     },
     {
       "id": "cheerleading",
@@ -562,7 +576,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-012"
     },
     {
       "id": "soft-tennis",
@@ -596,7 +611,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-011"
     },
     {
       "id": "cycling",
@@ -630,7 +646,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-014"
     },
     {
       "id": "aviation",
@@ -698,7 +715,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-022"
     },
     {
       "id": "shooting",
@@ -715,7 +733,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-019"
     },
     {
       "id": "aikido",
@@ -816,7 +835,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-010"
     },
     {
       "id": "lacrosse-women",
@@ -833,7 +853,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-003"
     },
     {
       "id": "shorinji-kempo",
@@ -850,7 +871,8 @@
       ],
       "cloudAccessible": true,
       "preferredReader": "cloud",
-      "priority": "B"
+      "priority": "B",
+      "orgId": "T-018"
     },
     {
       "id": "waseda-events-list",
@@ -949,11 +971,8 @@
         "theater",
         "culture"
       ],
-      "url": "https://www.waseda.jp/culture/dramakan/schedule",
-      "lastChecked": "2026-10-08T22:32:18.449Z",
-      "contentHash": "cd892f8e59cbe2cd556e496e525db78d7cdfb8cc2ede67db8fbc9db3225fa4cf",
-      "notes": "演劇公演情報。日時・会場・予約URLまで構造化されているケースが多く情報品質が高い。",
-      "dateTokensHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "url": "https://www.waseda.jp/culture/dramakan/performance",
+      "notes": "早稲田小劇場どらま館の現行『公演情報』一覧。旧 /culture/dramakan/schedule は2026-10時点で404のため、現行の /performance へ更新。学生公演・学外団体公演の将来日程を横断確認できる一次情報。",
       "cloudAccessible": true,
       "preferredReader": "cloud",
       "priority": "A"
@@ -2809,6 +2828,40 @@
         "学生の会"
       ],
       "orgId": "A-102",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "B",
+      "jsRendered": false
+    },
+    {
+      "id": "waseda-ai-club",
+      "name": "早稲田AI研究会 公式サイト",
+      "category": "circle",
+      "url": "https://wasedaaiclub.com/",
+      "notes": "organizations.js C-317。2026年度から公認。公式サイトに活動報告・イベント実績が日付付きで継続掲載されており、団体プロフィールより変化検知価値が高い。SNSは自動監視せず、公式Webのみ対象。",
+      "sourceType": "club",
+      "sourceRole": "official-site",
+      "expectedGenres": [
+        "その他"
+      ],
+      "orgId": "C-317",
+      "cloudAccessible": true,
+      "preferredReader": "cloud",
+      "priority": "B",
+      "jsRendered": false
+    },
+    {
+      "id": "algo-official",
+      "name": "早稲田大学謎解き企画algo 公式サイト",
+      "category": "circle",
+      "url": "https://algo6le.main.jp/",
+      "notes": "organizations.js C-322。公式サイトにEvent・LATEST NEWSがあり、公演やフェス情報の追加を検知できる。SNSはプロフィール/人手確認用のみで自動監視しない。",
+      "sourceType": "club",
+      "sourceRole": "official-site",
+      "expectedGenres": [
+        "その他"
+      ],
+      "orgId": "C-322",
       "cloudAccessible": true,
       "preferredReader": "cloud",
       "priority": "B",
