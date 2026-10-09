@@ -629,6 +629,7 @@ function setupScopeToggle() {
    イベントカードのHTML生成
    ============================================================ */
 function createEventCardHTML(ev, showDate = true) {
+  const isSchedule = getEventScope(ev) === 'schedule';
   const dateRow = (showDate || isMultiDay(ev)) ? `
     <div class="event-info-row event-info-row-datetime">
       <span class="event-info-icon">📅</span>
@@ -658,22 +659,22 @@ function createEventCardHTML(ev, showDate = true) {
         <div class="event-card-meta">
           ${endedTagHTML(ev)}
           <span class="tag ${categoryClass(ev.category)}">${categoryLabel(ev.category)}</span>
-          <span class="tag ${feeClass(ev.feeType)}">${escapeHtml(ev.feeText || feeLabel(ev.feeType))}</span>
+          ${isSchedule ? '' : `<span class="tag ${feeClass(ev.feeType)}">${escapeHtml(ev.feeText || feeLabel(ev.feeType))}</span>`}
         </div>
         <h3 class="event-card-title">${escapeHtml(ev.title)}</h3>
         <div class="event-card-info">
           ${dateRow}
           ${timeRow}
-          <div class="event-info-row event-info-row-location">
+          ${isSchedule && !ev.location ? '' : `<div class="event-info-row event-info-row-location">
             <span class="event-info-icon">📍</span>
             <span>${escapeHtml(getEventLocationLabel(ev))}</span>
-          </div>
+          </div>`}
           <div class="event-info-row event-info-row-organizer">
             <span class="event-info-icon">🏫</span>
             <span>${organizerHTML(ev)}</span>
           </div>
         </div>
-        ${createReactionSummaryHTML(ev)}
+        ${isSchedule ? '' : createReactionSummaryHTML(ev)}
         ${ev.description ? `<p class="event-card-desc">${escapeHtml(ev.description)}</p>` : ''}
       </div>
       <div class="event-card-footer">
@@ -1124,13 +1125,13 @@ function renderCalendarList(allFiltered) {
         <span class="cal-event-time">${escapeHtml(getEventTimeLabel(ev, true))}</span>
         <span class="cal-list-event-main">
           <span class="cal-event-title">${escapeHtml(ev.title)} ${rangeBadge}</span>
-          <span class="cal-event-loc">${escapeHtml(getEventLocationLabel(ev))}</span>
+          ${getEventScope(ev) === 'schedule' && !ev.location ? '' : `<span class="cal-event-loc">${escapeHtml(getEventLocationLabel(ev))}</span>`}
         </span>
       </button>`;
     }).join('');
     const hiddenCount = Math.max(0, dayEvs.length - visibleDayEvs.length);
     const more = hiddenCount
-      ? `<button type="button" class="cal-list-more" onclick="showDayEvents('${dateStr}')">他${hiddenCount}件を見る</button>`
+      ? `<button type="button" class="cal-list-more" onclick="showDayEvents('${dateStr}')">この日のイベントをすべて見る</button>`
       : '';
 
     html += `
@@ -1221,7 +1222,7 @@ function showDayEvents(dateStr) {
           ${isMultiDay(ev) ? `<span class="day-event-list-range">${escapeHtml(formatShortDate(ev.date))}〜${escapeHtml(formatShortDate(getEventEnd(ev)))}</span>` : ''}
         </span>
         <strong class="day-event-list-title">${escapeHtml(ev.title)}</strong>
-        <span class="day-event-list-location">📍 ${escapeHtml(location)}</span>
+        ${getEventScope(ev) === 'schedule' && !ev.location ? '' : `<span class="day-event-list-location">📍 ${escapeHtml(location)}</span>`}
       </span>
     </button>`;
   }).join('');
