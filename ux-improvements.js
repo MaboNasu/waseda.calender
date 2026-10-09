@@ -46,7 +46,7 @@
     document.querySelectorAll('.header-nav, .mobile-nav').forEach(nav => {
       [...nav.querySelectorAll('.nav-btn')].forEach(item => {
         const text = item.textContent.trim();
-        if (text.includes('今週開催')) { item.remove(); return; }
+        if (text.includes('今週開催') || text.includes('この先7日間')) { item.remove(); return; }
         if (text.includes('本日のイベント')) item.textContent = '今日';
         if (text === '公認団体') item.textContent = '団体';
         if (text.includes('掲載依頼') || text.includes('マイページ')) item.classList.add('nav-secondary');
