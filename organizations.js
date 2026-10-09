@@ -2312,7 +2312,7 @@ const ORGANIZATIONS = [
     description: "",
     instagramUrl: "",
     twitterUrl: "",
-    guideUrl: "",
+    guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3810",
     websiteUrl: "",
     relatedEventIds: []
   },
@@ -2354,7 +2354,7 @@ const ORGANIZATIONS = [
     description: "",
     instagramUrl: "",
     twitterUrl: "",
-    guideUrl: "",
+    guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3807",
     websiteUrl: "",
     relatedEventIds: []
   },
@@ -3937,7 +3937,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "",
     guideUrl: "",
-    websiteUrl: "",
+    websiteUrl: "https://soudaigrandslam.wixsite.com/waseda/",
     relatedEventIds: []
   },
   {
@@ -5236,8 +5236,8 @@ const ORGANIZATIONS = [
     genre: "その他",
     registrationType: "同好会",
     description: "",
-    instagramUrl: "",
-    twitterUrl: "",
+    instagramUrl: "https://www.instagram.com/w__snowboard/",
+    twitterUrl: "https://twitter.com/W_snowboard",
     guideUrl: "",
     websiteUrl: "",
     relatedEventIds: []
@@ -5460,8 +5460,8 @@ const ORGANIZATIONS = [
     genre: "その他",
     registrationType: "同好会",
     description: "",
-    instagramUrl: "",
-    twitterUrl: "",
+    instagramUrl: "https://www.instagram.com/amis_waseda/",
+    twitterUrl: "https://twitter.com/amis_waseda",
     guideUrl: "",
     websiteUrl: "",
     relatedEventIds: []
@@ -5546,7 +5546,7 @@ const ORGANIZATIONS = [
     description: "",
     instagramUrl: "",
     twitterUrl: "",
-    guideUrl: "",
+    guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3812",
     websiteUrl: "",
     relatedEventIds: []
   },
@@ -5560,7 +5560,7 @@ const ORGANIZATIONS = [
     description: "",
     instagramUrl: "",
     twitterUrl: "",
-    guideUrl: "",
+    guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3808",
     websiteUrl: "",
     relatedEventIds: []
   },
@@ -5586,10 +5586,10 @@ const ORGANIZATIONS = [
     genre: "その他",
     registrationType: "同好会",
     description: "",
-    instagramUrl: "",
-    twitterUrl: "",
-    guideUrl: "",
-    websiteUrl: "",
+    instagramUrl: "https://www.instagram.com/waseda_ai/",
+    twitterUrl: "https://x.com/waseda_ai",
+    guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3811",
+    websiteUrl: "https://wasedaaiclub.com/",
     relatedEventIds: []
   },
   {
@@ -5602,7 +5602,7 @@ const ORGANIZATIONS = [
     description: "",
     instagramUrl: "",
     twitterUrl: "",
-    guideUrl: "",
+    guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3814",
     websiteUrl: "",
     relatedEventIds: []
   },
@@ -5616,7 +5616,7 @@ const ORGANIZATIONS = [
     description: "",
     instagramUrl: "",
     twitterUrl: "",
-    guideUrl: "",
+    guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3813",
     websiteUrl: "https://www.littleyangonpr.com/",
     relatedEventIds: []
   },
@@ -5630,8 +5630,8 @@ const ORGANIZATIONS = [
     description: "",
     instagramUrl: "",
     twitterUrl: "",
-    guideUrl: "",
-    websiteUrl: "",
+    guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3809",
+    websiteUrl: "https://wavoc-social-business.vercel.app/",
     relatedEventIds: []
   },
   {
@@ -5642,8 +5642,8 @@ const ORGANIZATIONS = [
     genre: "その他",
     registrationType: "同好会",
     description: "",
-    instagramUrl: "",
-    twitterUrl: "",
+    instagramUrl: "https://www.instagram.com/conan_waseda/",
+    twitterUrl: "https://x.com/conan_waseda",
     guideUrl: "",
     websiteUrl: "",
     relatedEventIds: []
@@ -5656,10 +5656,10 @@ const ORGANIZATIONS = [
     genre: "その他",
     registrationType: "同好会",
     description: "",
-    instagramUrl: "",
-    twitterUrl: "",
+    instagramUrl: "https://www.instagram.com/algo6le/",
+    twitterUrl: "https://twitter.com/algo6le",
     guideUrl: "",
-    websiteUrl: "",
+    websiteUrl: "https://algo6le.main.jp/",
     relatedEventIds: []
   },
   {
