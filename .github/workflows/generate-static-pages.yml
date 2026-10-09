@@ -1,8 +1,8 @@
 name: 静的ページの自動生成
 
-# events.js / organizations.js が main に push されたら、sitemap.xml と個別ページ
-# (event/*.html, org/*.html)を自動で再生成してコミットする。どれも scripts/generate-*.js が
-# 生成する派生ファイルであり、手動での再生成を忘れるとSEO面での更新が漏れるため自動化している。
+# データまたは静的ページに影響する共通UI/生成スクリプトがmainへ入った時と、
+# JSTの日付が変わった直後に sitemap.xml と個別ページ(event/*.html, org/*.html)を再生成する。
+# 日付依存の「終了しました」表示も、無関係なPRまで翌日に差分が出る状態を避けて毎日同期する。
 
 on:
   push:
@@ -10,6 +10,17 @@ on:
     paths:
       - 'events.js'
       - 'organizations.js'
+      - 'style.css'
+      - 'script.js'
+      - 'event-page.js'
+      - 'organizations-page.js'
+      - 'image-generator.js'
+      - 'auth-ui.js'
+      - 'scripts/generate-event-pages.js'
+      - 'scripts/generate-org-pages.js'
+  # 「終了しました」など日付依存の静的表示をJSTの日付変更後に同期する。
+  schedule:
+    - cron: '10 15 * * *'
   workflow_dispatch: {}
 
 permissions:
@@ -25,7 +36,7 @@ jobs:
       - name: Node.jsをセットアップ
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: sitemap.xmlを再生成
         run: node scripts/generate-sitemap.js

@@ -127,6 +127,22 @@ function formatTime(start, end) {
   return `${start}〜${end}`;
 }
 
+function getEventTimeLabel(ev) {
+  if (ev.startTime) {
+    return ev.endTime ? formatTime(ev.startTime, ev.endTime) : `${ev.startTime}〜（終了時刻未定）`;
+  }
+  if (ev.allDay === true || ev.scope === 'schedule') return '終日';
+  return '時刻未定';
+}
+
+function getEventLocationLabel(ev, campusLabel) {
+  if (ev.location) return ev.location;
+  if (ev.campus === 'online') return 'オンライン';
+  const campus = campusLabel(ev.campus);
+  if (campus && campus !== '—' && ev.campus !== 'outside') return `${campus}（会場未定）`;
+  return '会場未定';
+}
+
 function makeLabelFn(labels) {
   return (key) => labels[key] || key || '—';
 }
@@ -184,7 +200,7 @@ function buildMapsSearchUrl(ev) {
 function organizerHTML(ev) {
   const text = escapeHtml(ev.organizer || '—');
   if (!ev.orgId) return text;
-  return `<a href="${SITE_ORIGIN}/organizations.html?id=${encodeURIComponent(ev.orgId)}" class="organizer-link">${text}</a>`;
+  return `<a href="${SITE_ORIGIN}/org/${encodeURIComponent(ev.orgId)}.html" class="organizer-link">${text}</a>`;
 }
 
 /** OGP用の説明文（改行を除去し、長すぎる場合は切り詰める）。event-page.js の buildOgDescription の複製 */
@@ -290,8 +306,8 @@ function renderEventPageHtml(ev, labelFns) {
       </div>
 
       <div class="event-hero-info">
-        <div class="event-hero-row">📅 ${formatEventDateDisplay(ev)}${ev.startTime ? `　${escapeHtml(formatTime(ev.startTime, ev.endTime))}` : '　終日'}</div>
-        <div class="event-hero-row">📍 ${escapeHtml(ev.location || '場所は未定・確認中です')}</div>
+        <div class="event-hero-row">📅 ${formatEventDateDisplay(ev)}　${escapeHtml(getEventTimeLabel(ev))}</div>
+        <div class="event-hero-row">📍 ${escapeHtml(getEventLocationLabel(ev, campusLabel))}</div>
       </div>
 
       <div class="event-participation-box">
@@ -369,7 +385,7 @@ function renderEventPageHtml(ev, labelFns) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=45">
+  <link rel="stylesheet" href="/style.css?v=46">
   <script type="application/ld+json" id="event-page-jsonld">${jsonLd}</script>
 </head>
 <body>
@@ -382,7 +398,7 @@ function renderEventPageHtml(ev, labelFns) {
     </a>
     <nav class="header-nav" aria-label="メインナビゲーション">
       <a class="nav-btn" href="/index.html#today-section">本日のイベント</a>
-      <a class="nav-btn" href="/index.html#upcoming-section">今週開催</a>
+      <a class="nav-btn" href="/index.html#upcoming-section">この先7日間</a>
       <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
       <a class="nav-btn" href="/organizations.html">公認団体</a>
       <a class="nav-btn" href="/contact.html">掲載依頼</a>
@@ -397,7 +413,7 @@ function renderEventPageHtml(ev, labelFns) {
 
 <nav class="mobile-nav" id="mobile-nav" aria-label="モバイルナビゲーション">
   <a class="nav-btn" href="/index.html#today-section">本日のイベント</a>
-  <a class="nav-btn" href="/index.html#upcoming-section">今週開催</a>
+  <a class="nav-btn" href="/index.html#upcoming-section">この先7日間</a>
   <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
   <a class="nav-btn" href="/organizations.html">公認団体</a>
   <a class="nav-btn" href="/contact.html">掲載依頼・問い合わせ</a>
@@ -445,11 +461,11 @@ function renderEventPageHtml(ev, labelFns) {
 </footer>
 
 <script src="/events.js?v=6"></script>
-<script src="/script.js?v=36"></script>
-<script src="/image-generator.js?v=7"></script>
-<script src="/event-page.js?v=11"></script>
+<script src="/script.js?v=37"></script>
+<script src="/image-generator.js?v=8"></script>
+<script src="/event-page.js?v=12"></script>
 <script type="module" src="/firebase-init.js?v=3"></script>
-<script src="/auth-ui.js?v=3"></script>
+<script src="/auth-ui.js?v=4"></script>
 <script src="/pwa-install.js?v=3"></script>
 </body>
 </html>

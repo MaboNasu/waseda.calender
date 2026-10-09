@@ -132,7 +132,11 @@ function relatedEventsForOrg(org, events) {
 
 function getEventsForOrganization(org, events) {
   const today = todayStr();
-  return relatedEventsForOrg(org, events).filter((ev) => eventEnd(ev) >= today);
+  return relatedEventsForOrg(org, events)
+    .filter((ev) => eventEnd(ev) >= today)
+    .sort((a, b) => a.date.localeCompare(b.date)
+      || String(a.startTime || '99:99').localeCompare(String(b.startTime || '99:99'))
+      || String(a.title || '').localeCompare(String(b.title || ''), 'ja'));
 }
 
 function getPastEventsForOrganization(org, events) {
@@ -207,14 +211,23 @@ function relatedEventsHTML(org, events) {
 
 function pastEventsHTML(org, events) {
   const past = getPastEventsForOrganization(org, events);
+  const visibleCount = 8;
+  const items = past.map((ev, index) => {
+    const extra = index >= visibleCount ? ' org-archive-event-extra' : '';
+    return `
+        <a class="org-related-event org-archive-event${extra}" href="${buildEventPageUrl(ev)}">
+          <strong>${escapeHtml(ev.title)}</strong>
+          <span>${escapeHtml(ev.date)}${ev.endDate && ev.endDate !== ev.date ? `〜${escapeHtml(ev.endDate)}` : ''}</span>
+        </a>`;
+  }).join('');
+  const more = past.length > visibleCount
+    ? `<button type="button" class="btn btn-ghost btn-sm org-archive-more-btn" onclick="toggleOrgArchive(this)">過去の実績をもっと見る（他${past.length - visibleCount}件）</button>`
+    : '';
   return `
     <div class="org-related org-archive">
       <h2>開催実績</h2>
-      ${past.length === 0 ? '<p class="org-muted">開催実績はまだありません。</p>' : past.map((ev) => `
-        <a class="org-related-event org-archive-event" href="${buildEventPageUrl(ev)}">
-          <strong>${escapeHtml(ev.title)}</strong>
-          <span>${escapeHtml(ev.date)}${ev.endDate && ev.endDate !== ev.date ? `〜${escapeHtml(ev.endDate)}` : ''}</span>
-        </a>`).join('')}
+      ${past.length === 0 ? '<p class="org-muted">開催実績はまだありません。</p>' : items}
+      ${more}
     </div>`;
 }
 
@@ -302,7 +315,7 @@ function renderOrgPageHtml(org, events) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=45">
+  <link rel="stylesheet" href="/style.css?v=46">
   <script type="application/ld+json" id="org-page-jsonld">${jsonLd}</script>
 </head>
 <body>
@@ -315,7 +328,7 @@ function renderOrgPageHtml(org, events) {
     </a>
     <nav class="header-nav" aria-label="メインナビゲーション">
       <a class="nav-btn" href="/index.html#today-section">本日のイベント</a>
-      <a class="nav-btn" href="/index.html#upcoming-section">今週開催</a>
+      <a class="nav-btn" href="/index.html#upcoming-section">この先7日間</a>
       <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
       <a class="nav-btn" href="/organizations.html">公認団体</a>
       <a class="nav-btn" href="/contact.html">掲載依頼</a>
@@ -330,7 +343,7 @@ function renderOrgPageHtml(org, events) {
 
 <nav class="mobile-nav" id="mobile-nav" aria-label="モバイルナビゲーション">
   <a class="nav-btn" href="/index.html#today-section">本日のイベント</a>
-  <a class="nav-btn" href="/index.html#upcoming-section">今週開催</a>
+  <a class="nav-btn" href="/index.html#upcoming-section">この先7日間</a>
   <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
   <a class="nav-btn" href="/organizations.html">公認団体</a>
   <a class="nav-btn" href="/contact.html">掲載依頼・問い合わせ</a>
@@ -380,10 +393,10 @@ function renderOrgPageHtml(org, events) {
 
 <script src="/events.js?v=6"></script>
 <script src="/organizations.js?v=8"></script>
-<script src="/organizations-page.js?v=15"></script>
+<script src="/organizations-page.js?v=16"></script>
 <script src="/org-page.js?v=1"></script>
 <script type="module" src="/firebase-init.js?v=3"></script>
-<script src="/auth-ui.js?v=3"></script>
+<script src="/auth-ui.js?v=4"></script>
 <script src="/pwa-install.js?v=3"></script>
 </body>
 </html>

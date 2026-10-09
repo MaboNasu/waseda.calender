@@ -2087,3 +2087,173 @@ textarea.form-control { resize: vertical; min-height: 120px; }
     scroll-behavior: auto !important;
   }
 }
+
+
+/* ============================================================
+   2026-10: イベント増加に対応するスケールUI
+   ============================================================ */
+
+/* 大カードだけが長文で極端に縦長にならないよう、主要テキストに上限を設ける。 */
+.events-grid:not(.density-medium):not(.density-small) .event-card-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+.events-grid:not(.density-medium):not(.density-small) .event-info-row-location > span:last-child,
+.events-grid:not(.density-medium):not(.density-small) .event-info-row-organizer > span:last-child {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+/* PCでは日付セルの余白自体を日別一覧への入口にする。イベント要素側はJSで二重発火を防ぐ。 */
+@media (min-width: 769px) {
+  .calendar-day.calendar-day-clickable {
+    cursor: pointer;
+    transition: background-color 0.16s ease, box-shadow 0.16s ease;
+  }
+  .calendar-day.calendar-day-clickable:hover {
+    background: rgba(139, 0, 0, 0.035);
+    box-shadow: inset 0 0 0 1px rgba(139, 0, 0, 0.12);
+  }
+}
+
+/* 日別一覧モーダル: 件数が20件を超えても追いやすいコンパクトな時刻順リスト。 */
+.day-event-list {
+  display: grid;
+  gap: 0.45rem;
+}
+.day-event-list-item {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 5.6rem minmax(0, 1fr);
+  gap: 0.85rem;
+  align-items: start;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--white);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+}
+.day-event-list-item:hover,
+.day-event-list-item:focus-visible {
+  border-color: rgba(139, 0, 0, 0.35);
+  background: #fffafa;
+  outline: none;
+}
+.day-event-list-item:active { transform: translateY(1px); }
+.day-event-list-time {
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--enjy);
+  white-space: nowrap;
+  padding-top: 0.1rem;
+}
+.day-event-list-content {
+  min-width: 0;
+  display: grid;
+  gap: 0.32rem;
+}
+.day-event-list-topline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+.day-event-list-topline .tag {
+  font-size: 0.68rem;
+  padding: 0.18rem 0.45rem;
+}
+.day-event-list-range {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+.day-event-list-title {
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.day-event-list-location {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+
+/* スマホ月間カレンダー: 各日3件だけ先に見せ、残りは日別一覧へ。 */
+.cal-list-event-item {
+  width: 100%;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+.cal-list-event-main {
+  min-width: 0;
+  flex: 1;
+  display: block;
+}
+.cal-list-event-main .cal-event-title,
+.cal-list-event-main .cal-event-loc {
+  display: block;
+}
+.cal-list-more {
+  width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px dashed rgba(139, 0, 0, 0.28);
+  border-radius: 10px;
+  background: rgba(139, 0, 0, 0.025);
+  color: var(--enjy);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.cal-list-more:hover,
+.cal-list-more:focus-visible {
+  background: rgba(139, 0, 0, 0.06);
+  outline: none;
+}
+
+/* 団体数504件でもタブレット帯で5列が潰れないよう段階的に列数を落とす。 */
+@media (max-width: 1100px) and (min-width: 769px) {
+  .org-grid.org-grid-cols-5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .org-grid.org-grid-cols-4 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) and (min-width: 769px) {
+  .org-layout { grid-template-columns: minmax(0, 1fr) 300px; }
+  .org-grid.org-grid-cols-5,
+  .org-grid.org-grid-cols-4,
+  .org-grid.org-grid-cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* 団体ページの開催実績は初期表示を抑え、長大化を防ぐ。 */
+.org-archive-event.org-archive-event-extra { display: none; }
+.org-archive.expanded .org-archive-event.org-archive-event-extra { display: flex; }
+.org-archive-more-btn {
+  margin-top: 0.65rem;
+  width: 100%;
+}
+
+/* 今週の長期企画も5件以降を無言で捨てず、明示的に展開できるようにする。 */
+.upcoming-long-running-item.upcoming-long-running-extra { display: none; }
+.upcoming-long-running.expanded .upcoming-long-running-item.upcoming-long-running-extra { display: flex; }
+.upcoming-long-running-more {
+  margin-top: 0.55rem;
+}
+
+@media (max-width: 768px) {
+  .day-event-list-item {
+    grid-template-columns: 4.8rem minmax(0, 1fr);
+    gap: 0.65rem;
+    padding: 0.72rem 0.75rem;
+  }
+  .day-event-list-time {
+    font-size: 0.76rem;
+  }
+}

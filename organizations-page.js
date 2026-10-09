@@ -142,7 +142,11 @@ function relatedEventsForOrg(org) {
 /** 団体の開催予定イベント（終了していない、公開済みのもの） */
 function getEventsForOrganization(org) {
   const today = orgPageTodayStr();
-  return relatedEventsForOrg(org).filter(ev => orgPageEventEnd(ev) >= today);
+  return relatedEventsForOrg(org)
+    .filter(ev => orgPageEventEnd(ev) >= today)
+    .sort((a, b) => a.date.localeCompare(b.date)
+      || String(a.startTime || '99:99').localeCompare(String(b.startTime || '99:99'))
+      || String(a.title || '').localeCompare(String(b.title || ''), 'ja'));
 }
 
 /** 団体の開催実績（終了済み・公開済みのイベント、開催日の新しい順） */
@@ -286,7 +290,7 @@ function renderOrganizationCards() {
       <div class="empty-state org-search-prompt">
         <div class="empty-state-icon">🔍</div>
         <p>団体名やジャンルで検索してください。</p>
-        <button type="button" class="btn btn-ghost btn-sm" onclick="showAllOrganizations()">すべての団体を表示する（504件）</button>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="showAllOrganizations()">すべての団体を表示する（${getOrganizations().length}件）</button>
       </div>`;
     if (pagination) pagination.innerHTML = '';
     renderOrganizationDetail(organizationState.selectedId ? getOrganizations().find(org => org.id === organizationState.selectedId) : null);
@@ -470,15 +474,31 @@ window.addEventListener('wc-auth-changed', () => {
 /** 団体の開催実績（終了済みイベント）セクションのHTML */
 function renderOrgPastEventsHTML(org) {
   const past = getPastEventsForOrganization(org);
+  const visibleCount = 8;
+  const items = past.map((ev, index) => {
+    const extraClass = index >= visibleCount ? ' org-archive-event-extra' : '';
+    return `
+      <a class="org-related-event org-archive-event${extraClass}" href="${orgPageBuildEventPageUrl(ev)}">
+        <strong>${orgEscapeHtml(ev.title)}</strong>
+        <span>${orgEscapeHtml(ev.date)}${ev.endDate && ev.endDate !== ev.date ? `〜${orgEscapeHtml(ev.endDate)}` : ''}</span>
+      </a>`;
+  }).join('');
+  const more = past.length > visibleCount
+    ? `<button type="button" class="btn btn-ghost btn-sm org-archive-more-btn" onclick="toggleOrgArchive(this)">過去の実績をもっと見る（他${past.length - visibleCount}件）</button>`
+    : '';
   return `
     <div class="org-related org-archive">
       <h3>開催実績</h3>
-      ${past.length === 0 ? '<p class="org-muted">開催実績はまだありません。</p>' : past.map(ev => `
-        <a class="org-related-event org-archive-event" href="${orgPageBuildEventPageUrl(ev)}">
-          <strong>${orgEscapeHtml(ev.title)}</strong>
-          <span>${orgEscapeHtml(ev.date)}${ev.endDate && ev.endDate !== ev.date ? `〜${orgEscapeHtml(ev.endDate)}` : ''}</span>
-        </a>`).join('')}
+      ${past.length === 0 ? '<p class="org-muted">開催実績はまだありません。</p>' : items}
+      ${more}
     </div>`;
+}
+
+function toggleOrgArchive(button) {
+  const archive = button?.closest('.org-archive');
+  if (!archive) return;
+  archive.classList.add('expanded');
+  button.hidden = true;
 }
 
 /** 団体を選択済みにする。一覧の再フィルタ・再ソート・再描画は不要なので、

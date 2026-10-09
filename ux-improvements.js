@@ -46,7 +46,7 @@
     document.querySelectorAll('.header-nav, .mobile-nav').forEach(nav => {
       [...nav.querySelectorAll('.nav-btn')].forEach(item => {
         const text = item.textContent.trim();
-        if (text.includes('今週開催')) { item.remove(); return; }
+        if (text.includes('今週開催') || text.includes('この先7日間')) { item.remove(); return; }
         if (text.includes('本日のイベント')) item.textContent = '今日';
         if (text === '公認団体') item.textContent = '団体';
         if (text.includes('掲載依頼') || text.includes('マイページ')) item.classList.add('nav-secondary');
@@ -144,7 +144,7 @@
         const countEl = document.getElementById('upcoming-count');
         if (countEl) countEl.textContent = `${regular.length}件`;
         el.innerHTML = regular.length === 0
-          ? emptyStateHTML('今週開催のイベントは0件です。')
+          ? emptyStateHTML('この先7日間のイベントは0件です。')
           : eventsGridWithShowMoreHTML(regular.map(ev => createEventCardHTML(ev, true)).join(''), 'upcoming-events');
         renderUpcomingLongRunning(longRunning);
         return [...regular, ...longRunning].map(ev => ev.id);
@@ -189,11 +189,16 @@
       const body = document.getElementById('upcoming-body');
       (body || section.querySelector('.container') || section).appendChild(wrap);
     }
-    const items = events.slice(0, 5).map(ev => {
+    const visibleCount = 5;
+    const items = events.map((ev, index) => {
       const range = `${formatShortDate(ev.date)}〜${formatShortDate(getEventEnd(ev))}`;
-      return `<button type="button" class="upcoming-long-running-item" onclick="openModal('${escapeHtml(String(ev.id))}')"><span>${escapeHtml(ev.title)}</span><span class="upcoming-long-running-range">${escapeHtml(range)}</span></button>`;
+      const extra = index >= visibleCount ? ' upcoming-long-running-extra' : '';
+      return `<button type="button" class="upcoming-long-running-item${extra}" onclick="openModal('${escapeHtml(String(ev.id))}')"><span>${escapeHtml(ev.title)}</span><span class="upcoming-long-running-range">${escapeHtml(range)}</span></button>`;
     }).join('');
-    wrap.innerHTML = `<h3>開催中の展示・長期企画</h3><div class="upcoming-long-running-list">${items}</div>`;
+    const more = events.length > visibleCount
+      ? `<button type="button" class="btn btn-ghost btn-sm upcoming-long-running-more" onclick="this.closest('.upcoming-long-running').classList.add('expanded');this.hidden=true;">すべて見る（他${events.length - visibleCount}件）</button>`
+      : '';
+    wrap.innerHTML = `<h3>開催中の展示・長期企画</h3><div class="upcoming-long-running-list">${items}</div>${more}`;
   }
 
   function homeDomEnhancements() {
@@ -373,7 +378,7 @@
         }
       }
       wrap.querySelectorAll('.event-hero-row').forEach(row => {
-        if (!ev.location && row.textContent.includes('場所は未定')) row.remove();
+        if (!ev.location && row.textContent.trim().startsWith('📍')) row.remove();
       });
     }
   }

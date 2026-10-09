@@ -76,6 +76,15 @@ const LONG_RUNNING_EVENT_THRESHOLD_DAYS = 14;
  *  統一し、超過分は日単位の「他N件」に畳み込む（renderCalendarGrid参照）。 */
 const MAX_VISIBLE_WEEK_BAR_LANES = 3;
 
+/** モバイルでは「1行」だと1件しか見えないため、用途別に初期表示件数を固定する。 */
+const MOBILE_INITIAL_EVENT_COUNTS = {
+  'today-section': 3,
+  'upcoming-section': 5
+};
+
+/** スマホ月間リストで1日あたり最初に見せる件数。残りは日別一覧モーダルへ送る。 */
+const MOBILE_CALENDAR_DAY_VISIBLE_COUNT = 3;
+
 let activeFilters = {
   scope:    '',
   category: '',
@@ -96,6 +105,19 @@ let activeFilters = {
 function getTodayStr() {
   const jst = new Date(Date.now() + 9 * 60 * 60 * 1000);
   return `${jst.getUTCFullYear()}-${String(jst.getUTCMonth() + 1).padStart(2, '0')}-${String(jst.getUTCDate()).padStart(2, '0')}`;
+}
+
+/** JST基準の今日を年月日に分解する。端末タイムゾーンには依存しない。 */
+function getTodayPartsJST() {
+  const [year, month, day] = getTodayStr().split('-').map(Number);
+  return { year, month, day };
+}
+
+/** YYYY-MM-DD に日数を加算する。UTCで日付だけを計算しDST/端末TZの影響を受けない。 */
+function addDaysToDateStr(dateStr, days) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d + days));
+  return `${dt.getUTCFullYear()}-${String(dt.getUTCMonth() + 1).padStart(2, '0')}-${String(dt.getUTCDate()).padStart(2, '0')}`;
 }
 
 /** Dateオブジェクト → YYYY-MM-DD */
@@ -161,7 +183,7 @@ function eventDurationDays(ev) {
  *  月間カレンダーの週バーからは除外し、renderLongRunningEventsWidgetで別途表示する
  *  （showDayEventsの日別一覧には isEventOnDate 経由で引き続き含まれる）。 */
 function isLongRunningEvent(ev) {
-  return isMultiDay(ev) && eventDurationDays(ev) >= LONG_RUNNING_EVENT_THRESHOLD_DAYS;
+  return isMultiDay(ev) && (ev.longRunning === true || eventDurationDays(ev) >= LONG_RUNNING_EVENT_THRESHOLD_DAYS);
 }
 
 /** 開催終了済みかどうか（終了日が今日より前）。UI上の「終了しました」表示にのみ使う。
@@ -186,6 +208,34 @@ function formatTime(start, end) {
   if (!start) return '';
   if (!end)   return `${start}〜`;
   return `${start}〜${end}`;
+}
+
+/** 時刻未登録を「終日」と決めつけないための共通表示。
+ *  学事日程または allDay:true のみ終日、それ以外は時刻未定として扱う。 */
+function getEventTimeLabel(ev, compact = false) {
+  if (ev.startTime) {
+    if (ev.endTime) return formatTime(ev.startTime, ev.endTime);
+    return compact ? `${ev.startTime}〜` : `${ev.startTime}〜（終了時刻未定）`;
+  }
+  if (ev.allDay === true || getEventScope(ev) === 'schedule') return '終日';
+  return '時刻未定';
+}
+
+/** 場所未登録時の表示をカード・モーダル・カレンダーで統一する。 */
+function getEventLocationLabel(ev) {
+  if (ev.location) return ev.location;
+  if (ev.campus === 'online') return 'オンライン';
+  const campus = campusLabel(ev.campus);
+  if (campus && campus !== '—' && ev.campus !== 'outside') return `${campus}（会場未定）`;
+  return '会場未定';
+}
+
+/** 日別一覧向け。開始時刻ありを時刻順、時刻未定を後ろに置き、同時刻は公平順で決める。 */
+function compareEventsChronologically(a, b, seedDateStr) {
+  const aTime = a.startTime || '99:99';
+  const bTime = b.startTime || '99:99';
+  return aTime.localeCompare(bTime)
+    || sameDayOrderCompare(a, b, seedDateStr || getTodayStr());
 }
 
 /** カテゴリキー → 日本語 */
@@ -214,7 +264,7 @@ function campusLabel(key) {
 function organizerHTML(ev) {
   const text = escapeHtml(ev.organizer || '—');
   if (!ev.orgId) return text;
-  return `<a href="organizations.html?id=${encodeURIComponent(ev.orgId)}" class="organizer-link">${text}</a>`;
+  return `<a href="/org/${encodeURIComponent(ev.orgId)}.html" class="organizer-link">${text}</a>`;
 }
 
 /** 参加費キー → 日本語 */
@@ -331,21 +381,41 @@ function createReactionSummaryHTML(ev, activeType = '') {
  * events.js由来の静的な数値はページ描画直後にすぐ出せる初期表示用、こちらは非同期の実数値。
  * 取得に失敗しても静的な表示のまま残るだけなので、エラーは握りつぶしてよい。
  */
+const liveReactionCounterCache = new Map();
+const LIVE_REACTION_CACHE_TTL_MS = 60 * 1000;
+
+function applyLiveReactionCounts(counters) {
+  Object.entries(counters || {}).forEach(([id, counts]) => {
+    Object.keys(counts || {}).forEach(type => {
+      document.querySelectorAll(`[data-count-for="${id}:${type}"]`).forEach(el => {
+        el.textContent = counts[type];
+      });
+    });
+  });
+}
+
 async function refreshLiveReactionCounts(eventIds) {
   if (!window.WC || !window.WC.auth || !window.WC.auth.getEventCounters) return;
   const ids = Array.from(new Set((eventIds || []).map(String)));
   if (ids.length === 0) return;
+
+  const now = Date.now();
+  const cached = {};
+  const missing = [];
+  ids.forEach(id => {
+    const entry = liveReactionCounterCache.get(id);
+    if (entry && now - entry.fetchedAt < LIVE_REACTION_CACHE_TTL_MS) cached[id] = entry.counts;
+    else missing.push(id);
+  });
+  applyLiveReactionCounts(cached);
+  if (!missing.length) return;
+
   try {
-    const counters = await window.WC.auth.getEventCounters(ids);
-    ids.forEach(id => {
-      const counts = counters[id];
-      if (!counts) return;
-      Object.keys(counts).forEach(type => {
-        document.querySelectorAll(`[data-count-for="${id}:${type}"]`).forEach(el => {
-          el.textContent = counts[type];
-        });
-      });
+    const counters = await window.WC.auth.getEventCounters(missing);
+    Object.entries(counters || {}).forEach(([id, counts]) => {
+      liveReactionCounterCache.set(id, { counts, fetchedAt: Date.now() });
     });
+    applyLiveReactionCounts(counters);
   } catch (err) {
     // ライブ取得に失敗しても静的な表示が残るだけなので無視する
   }
@@ -496,7 +566,7 @@ function getFilteredEvents() {
     }
     if (activeFilters.keyword) {
       const kw       = activeFilters.keyword.toLowerCase();
-      const haystack = `${ev.title} ${ev.organizer} ${ev.description}`.toLowerCase();
+      const haystack = `${ev.title || ''} ${ev.organizer || ''} ${ev.description || ''} ${ev.location || ''} ${campusLabel(ev.campus)}`.toLowerCase();
       if (!haystack.includes(kw)) return false;
     }
     return true;
@@ -559,17 +629,17 @@ function setupScopeToggle() {
    イベントカードのHTML生成
    ============================================================ */
 function createEventCardHTML(ev, showDate = true) {
-  const dateRow = showDate ? `
+  const dateRow = (showDate || isMultiDay(ev)) ? `
     <div class="event-info-row event-info-row-datetime">
       <span class="event-info-icon">📅</span>
       <span>${formatEventDateDisplay(ev)}</span>
     </div>` : '';
 
-  const timeRow = ev.startTime ? `
+  const timeRow = `
     <div class="event-info-row event-info-row-datetime">
       <span class="event-info-icon">🕐</span>
-      <span>${escapeHtml(formatTime(ev.startTime, ev.endTime))}</span>
-    </div>` : '';
+      <span>${escapeHtml(getEventTimeLabel(ev, true))}</span>
+    </div>`;
 
   const extLink = ev.externalUrl
     ? `<a href="${escapeHtml(ev.externalUrl)}" target="_blank" rel="noopener noreferrer" class="event-external-link">公式サイト ↗</a>`
@@ -596,7 +666,7 @@ function createEventCardHTML(ev, showDate = true) {
           ${timeRow}
           <div class="event-info-row event-info-row-location">
             <span class="event-info-icon">📍</span>
-            <span>${escapeHtml(ev.location || campusLabel(ev.campus))}</span>
+            <span>${escapeHtml(getEventLocationLabel(ev))}</span>
           </div>
           <div class="event-info-row event-info-row-organizer">
             <span class="event-info-icon">🏫</span>
@@ -647,11 +717,31 @@ function collapseGridToOneRow(sectionEl) {
   const cards = Array.from(grid.children);
   if (cards.length === 0) { btn.style.display = 'none'; return; }
 
+  const section = sectionEl.closest('section');
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  const mobileLimit = section ? MOBILE_INITIAL_EVENT_COUNTS[section.id] : null;
+
+  if (isMobile && mobileLimit) {
+    const visibleCount = Math.min(mobileLimit, cards.length);
+    if (visibleCount >= cards.length) {
+      btn.style.display = 'none';
+      return;
+    }
+    const firstTop = cards[0].offsetTop;
+    const lastVisible = cards[visibleCount - 1];
+    const visibleHeight = (lastVisible.offsetTop - firstTop) + lastVisible.offsetHeight;
+    grid.style.maxHeight = `${visibleHeight}px`;
+    grid.style.overflow = 'hidden';
+    btn.textContent = `さらに表示（他${cards.length - visibleCount}件）`;
+    btn.dataset.action = 'expand';
+    btn.style.display = '';
+    return;
+  }
+
   const firstTop = cards[0].offsetTop;
   const firstRowCount = cards.filter(c => c.offsetTop === firstTop).length;
 
   if (firstRowCount >= cards.length) {
-    // 全カードが1行に収まっている場合はボタン不要
     btn.style.display = 'none';
     return;
   }
@@ -677,6 +767,8 @@ function toggleShowMore(sectionId) {
     grid.dataset.expanded = 'true';
     btn.textContent = '閉じる';
     btn.dataset.action = 'collapse';
+    const ids = Array.from(grid.querySelectorAll('.event-card[data-id]')).map(card => card.dataset.id);
+    refreshLiveReactionCounts(ids);
   } else {
     grid.dataset.expanded = 'false';
     collapseGridToOneRow(sectionEl);
@@ -714,9 +806,7 @@ function renderTodayEvents(allFiltered) {
  *  月曜始まりの暦週ではなく「今日からの7日間」にしているのは、週の後半(木〜土)に見たときに
  *  残り日数が減って寂しく見えるのを避けるため。 */
 function getWeekAheadStr() {
-  const d = new Date();
-  d.setDate(d.getDate() + 6);
-  return formatDateStr(d);
+  return addDaysToDateStr(getTodayStr(), 6);
 }
 
 /** @param {Array} [allFiltered] renderTodayEventsと同じく、renderAll()から受け取れば再計算を省ける。 */
@@ -734,7 +824,7 @@ function renderUpcomingEvents(allFiltered) {
   if (countEl) countEl.textContent = `${filtered.length}件`;
 
   el.innerHTML = filtered.length === 0
-    ? emptyStateHTML('今週開催のイベントは0件です。')
+    ? emptyStateHTML('この先7日間のイベントは0件です。')
     : eventsGridWithShowMoreHTML(filtered.map(ev => createEventCardHTML(ev, true)).join(''), 'upcoming-events');
   return filtered.map(ev => ev.id);
 }
@@ -930,7 +1020,7 @@ function renderCalendarGrid(allFiltered) {
 
       const maxShow = 3;
       const chips   = dayEvs.slice(0, maxShow).map(ev =>
-        `<div class="day-event-chip ${categoryClass(ev.category)}" onclick="openModal('${escapeHtml(String(ev.id))}')" title="${escapeHtml(ev.title)}">${escapeHtml(ev.title)}</div>`
+        `<div class="day-event-chip ${categoryClass(ev.category)}" onclick="event.stopPropagation();openModal('${escapeHtml(String(ev.id))}')" title="${escapeHtml(ev.title)}">${escapeHtml(ev.title)}</div>`
       ).join('');
       // その日に存在するが画面上には表示されない件数（単日の超過分＋複数日バーのレーン超過分）を
       // 1つの「他N件」にまとめる。同じ日に「+N」が複数出ないようにするための統合カウント。
@@ -938,15 +1028,18 @@ function renderCalendarGrid(allFiltered) {
       const hiddenMultiDay = hiddenMultiDayCountByCol[colIdx] || 0;
       const totalHidden = hiddenSingle + hiddenMultiDay;
       const moreBtn = totalHidden > 0
-        ? `<div class="day-more" onclick="showDayEvents('${cell.dateStr}')">他${totalHidden}件</div>`
+        ? `<div class="day-more" onclick="event.stopPropagation();showDayEvents('${cell.dateStr}')">他${totalHidden}件</div>`
         : '';
       const laneCountForCol = maxLaneByCol[colIdx] || 0;
       const dayEventsOffset = laneCountForCol > 0 ? `${laneCountForCol * BAR_HEIGHT + 6}px` : '';
       const dayEventsStyle = dayEventsOffset ? ` style="margin-top:${dayEventsOffset}"` : '';
-      const dayNumClass = (dayEvs.length > 0 || hiddenMultiDay > 0) ? 'day-num day-num-clickable' : 'day-num';
-      const dayNumClick = (dayEvs.length > 0 || hiddenMultiDay > 0) ? ` onclick="showDayEvents('${cell.dateStr}')"` : '';
+      const hasAnyEvents = filtered.some(ev => isEventOnDate(ev, cell.dateStr));
+      const dayNumClass = hasAnyEvents ? 'day-num day-num-clickable' : 'day-num';
+      const dayNumClick = hasAnyEvents ? ` onclick="event.stopPropagation();showDayEvents('${cell.dateStr}')"` : '';
+      const cellClickableClass = hasAnyEvents ? ' calendar-day-clickable' : '';
+      const cellClick = hasAnyEvents ? ` onclick="handleCalendarDayCellClick(event, '${cell.dateStr}')"` : '';
 
-      return `<div class="${classes}"${holidayTitle}>${holidayMark}<span class="${dayNumClass}"${dayNumClick}>${cell.dayNum}</span><div class="day-events"${dayEventsStyle}>${chips}${moreBtn}</div></div>`;
+      return `<div class="${classes}${cellClickableClass}"${holidayTitle}${cellClick}>${holidayMark}<span class="${dayNumClass}"${dayNumClick}>${cell.dayNum}</span><div class="day-events"${dayEventsStyle}>${chips}${moreBtn}</div></div>`;
     }).join('');
 
     // 複数日イベントのバーHTML（週の7列に対する絶対配置オーバーレイ。表示上限内のレーンのみ）
@@ -963,7 +1056,7 @@ function renderCalendarGrid(allFiltered) {
       ].filter(Boolean).join(' ');
       const rangeText = `${formatShortDate(bar.ev.date)}〜${formatShortDate(getEventEnd(bar.ev))}`;
       const label = bar.continuesBefore ? escapeHtml(bar.ev.title) : `${escapeHtml(bar.ev.title)}（${rangeText}）`;
-      return `<div class="event-bar ${categoryClass(bar.ev.category)} ${edgeClasses}" style="left:${leftPct}%;width:${widthPct}%;top:${topPx}px;" onclick="openModal('${escapeHtml(String(bar.ev.id))}')" title="${escapeHtml(bar.ev.title)}（${rangeText}）">${label}</div>`;
+      return `<div class="event-bar ${categoryClass(bar.ev.category)} ${edgeClasses}" style="left:${leftPct}%;width:${widthPct}%;top:${topPx}px;" onclick="event.stopPropagation();openModal('${escapeHtml(String(bar.ev.id))}')" title="${escapeHtml(bar.ev.title)}（${rangeText}）">${label}</div>`;
     }).join('');
     const weekBarsHtml = visibleBars.length > 0 ? `<div class="week-bars">${barsHtml}</div>` : '';
 
@@ -988,8 +1081,8 @@ function renderCalendarList(allFiltered) {
   // 表示中が「今月」の場合のみ、今日より前の日付は一覧から省く
   // （スマホ横幅の都合でリスト表示になった時、過ぎた日付を延々スクロールしなくて済むように。
   //  前月以前に移動した時は、その月の内容をそのまま全部見られるようにする）
-  const now = new Date();
-  const isCurrentMonth = calendarYear === now.getFullYear() && calendarMonth === now.getMonth();
+  const jstToday = getTodayPartsJST();
+  const isCurrentMonth = calendarYear === jstToday.year && calendarMonth === jstToday.month - 1;
 
   // 長期開催イベント(展示等)は、PC版のカレンダーグリッドと同様にリストからも除外し、
   // 別枠のrenderLongRunningEventsWidgetにまとめる（毎日同じ展示が延々表示され続けるのを防ぐ）。
@@ -1002,7 +1095,7 @@ function renderCalendarList(allFiltered) {
     const dateStr = formatDateStr(new Date(calendarYear, calendarMonth, d));
     if (isCurrentMonth && dateStr < today) continue;
     const dayEvs = filtered.filter(ev => isEventOnDate(ev, dateStr) && !isLongRunningEvent(ev))
-      .sort((a, b) => sameDayOrderCompare(a, b, today));
+      .sort((a, b) => compareEventsChronologically(a, b, today));
     if (dayEvs.length > 0) evByDate[dateStr] = dayEvs;
   }
 
@@ -1021,20 +1114,24 @@ function renderCalendarList(allFiltered) {
     const isToday   = dateStr === today;
     const dayEvs    = evByDate[dateStr];
 
-    const items = dayEvs.map(ev => {
+    const visibleDayEvs = dayEvs.slice(0, MOBILE_CALENDAR_DAY_VISIBLE_COUNT);
+    const items = visibleDayEvs.map(ev => {
       const rangeBadge = isMultiDay(ev)
         ? `<span class="cal-event-range-badge">${formatShortDate(ev.date)}〜${formatShortDate(ev.endDate)}</span>`
         : '';
-      const timeText = ev.startTime ? escapeHtml(ev.startTime) : (isMultiDay(ev) ? '終日' : '—');
       return `
-      <div class="cal-list-event-item" onclick="openModal('${escapeHtml(String(ev.id))}')">
-        <span class="cal-event-time">${timeText}</span>
-        <div>
-          <div class="cal-event-title">${escapeHtml(ev.title)} ${rangeBadge}</div>
-          <div class="cal-event-loc">${escapeHtml(ev.location || campusLabel(ev.campus))}</div>
-        </div>
-      </div>`;
+      <button type="button" class="cal-list-event-item" onclick="openModal('${escapeHtml(String(ev.id))}')">
+        <span class="cal-event-time">${escapeHtml(getEventTimeLabel(ev, true))}</span>
+        <span class="cal-list-event-main">
+          <span class="cal-event-title">${escapeHtml(ev.title)} ${rangeBadge}</span>
+          <span class="cal-event-loc">${escapeHtml(getEventLocationLabel(ev))}</span>
+        </span>
+      </button>`;
     }).join('');
+    const hiddenCount = Math.max(0, dayEvs.length - visibleDayEvs.length);
+    const more = hiddenCount
+      ? `<button type="button" class="cal-list-more" onclick="showDayEvents('${dateStr}')">他${hiddenCount}件を見る</button>`
+      : '';
 
     html += `
       <div class="cal-list-day ${isToday ? 'today' : ''} has-events">
@@ -1046,7 +1143,7 @@ function renderCalendarList(allFiltered) {
           <span class="day-label">${m}月${d}日（${dow}）</span>
           <span class="cal-event-count">${dayEvs.length}件</span>
         </div>
-        <div class="cal-list-events">${items}</div>
+        <div class="cal-list-events">${items}${more}</div>
       </div>`;
   });
 
@@ -1093,37 +1190,62 @@ function renderCalendar(allFiltered) {
 /* ============================================================
    特定日のイベント一覧（「他N件」クリック時）
    ============================================================ */
+/** PCのカレンダーセル背景クリック。子のイベント/ボタン操作は二重発火させない。 */
+function handleCalendarDayCellClick(event, dateStr) {
+  if (window.matchMedia('(max-width: 768px)').matches) return;
+  if (event.target.closest('.day-event-chip, .day-more, .day-num-clickable, a, button, input, label')) return;
+  showDayEvents(dateStr);
+}
+
 function showDayEvents(dateStr) {
-  const today     = getTodayStr();
-  const filtered  = getFilteredEvents().filter(ev => isEventOnDate(ev, dateStr))
-    .sort((a, b) => sameDayOrderCompare(a, b, today));
-  const dateDisp  = formatDateDisplay(dateStr);
+  const today = getTodayStr();
+  const filtered = getFilteredEvents()
+    .filter(ev => isEventOnDate(ev, dateStr))
+    .sort((a, b) => compareEventsChronologically(a, b, today));
+  const dateDisp = formatDateDisplay(dateStr);
   if (filtered.length === 0) return;
 
-  // 1件だけなら直接モーダルを開く
   if (filtered.length === 1) {
     openModal(filtered[0].id);
     return;
   }
 
-  // 複数件: 一覧リストをモーダルに表示
-  const listHTML = filtered.map(ev =>
-    `<div style="padding:0.6rem 0;border-bottom:1px solid #eee;cursor:pointer;"
-       onclick="openModal('${escapeHtml(String(ev.id))}')">
-      <strong>${escapeHtml(ev.title)}</strong>
-      <div style="font-size:0.8rem;color:#6B7280;">${escapeHtml(formatTime(ev.startTime, ev.endTime))} ／ ${escapeHtml(ev.location || campusLabel(ev.campus))}</div>
-    </div>`
-  ).join('');
+  const listHTML = filtered.map(ev => {
+    const time = getEventTimeLabel(ev, true);
+    const location = getEventLocationLabel(ev);
+    return `<button type="button" class="day-event-list-item" onclick="openModal('${escapeHtml(String(ev.id))}')">
+      <span class="day-event-list-time">${escapeHtml(time)}</span>
+      <span class="day-event-list-content">
+        <span class="day-event-list-topline">
+          <span class="tag ${categoryClass(ev.category)}">${escapeHtml(categoryLabel(ev.category))}</span>
+          ${isMultiDay(ev) ? `<span class="day-event-list-range">${escapeHtml(formatShortDate(ev.date))}〜${escapeHtml(formatShortDate(getEventEnd(ev)))}</span>` : ''}
+        </span>
+        <strong class="day-event-list-title">${escapeHtml(ev.title)}</strong>
+        <span class="day-event-list-location">📍 ${escapeHtml(location)}</span>
+      </span>
+    </button>`;
+  }).join('');
 
-  document.getElementById('modal-title').textContent = `${dateDisp} のイベント`;
-  document.getElementById('modal-tags').innerHTML    = '';
-  document.getElementById('modal-detail-content').innerHTML = listHTML;
+  const modal = document.getElementById('event-modal');
+  if (modal) {
+    modal.classList.remove('is-schedule');
+    modal.querySelector('.schedule-detail-note')?.remove();
+    const primaryActions = modal.querySelector('.modal-primary-actions');
+    if (primaryActions) primaryActions.hidden = true;
+  }
+  document.getElementById('modal-title').textContent = `${dateDisp} のイベント（${filtered.length}件）`;
+  document.getElementById('modal-tags').innerHTML = '';
+  document.getElementById('modal-detail-content').innerHTML = `<div class="day-event-list">${listHTML}</div>`;
   const reactions = document.getElementById('modal-reactions');
   if (reactions) reactions.innerHTML = '';
   const shareActions = document.getElementById('modal-share-actions');
   if (shareActions) shareActions.innerHTML = '';
-  document.getElementById('modal-desc-section').style.display  = 'none';
-  document.getElementById('modal-footer-section').style.display = 'none';
+  const descSection = document.getElementById('modal-desc-section');
+  if (descSection) descSection.style.display = 'none';
+  const descText = document.getElementById('modal-desc-text');
+  if (descText) descText.textContent = '';
+  const footerSection = document.getElementById('modal-footer-section');
+  if (footerSection) footerSection.style.display = 'none';
   activateModal();
 }
 
@@ -1182,11 +1304,11 @@ function openModal(eventId) {
     </div>
     <div class="modal-detail-item">
       <span class="modal-detail-label">時間</span>
-      <span class="modal-detail-value">${ev.startTime ? escapeHtml(formatTime(ev.startTime, ev.endTime)) : '終日'}</span>
+      <span class="modal-detail-value">${escapeHtml(getEventTimeLabel(ev))}</span>
     </div>
     <div class="modal-detail-item">
       <span class="modal-detail-label">場所</span>
-      <span class="modal-detail-value">${escapeHtml(ev.location || '—')}</span>
+      <span class="modal-detail-value">${escapeHtml(getEventLocationLabel(ev))}</span>
     </div>
     <div class="modal-detail-item">
       <span class="modal-detail-label">キャンパス区分</span>
@@ -1293,8 +1415,7 @@ function renderSelectionBar() {
 function pad2(n) { return String(n).padStart(2, '0'); }
 
 function addOneDay(dateStr) {
-  const [y, m, d] = dateStr.split('-').map(Number);
-  return formatDateStr(new Date(y, m - 1, d + 1));
+  return addDaysToDateStr(dateStr, 1);
 }
 
 function icsDateTime(dateStr, timeStr) {
@@ -1306,18 +1427,30 @@ function icsDateTime(dateStr, timeStr) {
 
 /** 日付+時刻に分単位を加算し、日をまたぐ場合はdateStrも繰り上げる。 */
 function addMinutesToDateTime(dateStr, timeStr, minutes) {
-  const [y, m, d] = dateStr.split('-').map(Number);
   const [hh, mm] = timeStr.split(':').map(Number);
-  const dt = new Date(y, m - 1, d, hh, mm + minutes);
-  return { date: formatDateStr(dt), time: `${pad2(dt.getHours())}:${pad2(dt.getMinutes())}` };
+  const total = hh * 60 + mm + minutes;
+  const dayOffset = Math.floor(total / (24 * 60));
+  const minuteOfDay = ((total % (24 * 60)) + (24 * 60)) % (24 * 60);
+  return {
+    date: addDaysToDateStr(dateStr, dayOffset),
+    time: `${pad2(Math.floor(minuteOfDay / 60))}:${pad2(minuteOfDay % 60)}`
+  };
 }
 
-/** イベントの終了(日付+時刻)。endTimeが既知ならそのまま、不明なら開始の2時間後を仮の終了時刻とする
- *  （終了時刻=開始時刻にすると「0分の予定」になり、ページ上の「13:00〜（終了時間不明）」という
- *  表示と矛盾するため）。 */
+/** カレンダーサービスには終了時刻が必要なため、未定の場合のみ開始2時間後を技術上の仮値にする。
+ *  画面・説明文には必ず「終了時刻未定」と明記し、確定情報のようには見せない。 */
 function assumedEndDateTime(ev, endDate) {
-  if (ev.endTime) return { date: endDate, time: ev.endTime };
-  return addMinutesToDateTime(endDate, ev.startTime, 120);
+  if (ev.endTime) return { date: endDate, time: ev.endTime, assumed: false };
+  const fallback = addMinutesToDateTime(endDate, ev.startTime, 120);
+  return { ...fallback, assumed: true };
+}
+
+function calendarDescription(ev) {
+  const base = ev.description || '';
+  const note = ev.startTime && !ev.endTime
+    ? '※終了時刻は未定です。カレンダー上の終了時刻は開始2時間後を仮設定しています。'
+    : '';
+  return [base, note].filter(Boolean).join('\n\n');
 }
 
 function icsTimestampUTC() {
@@ -1349,7 +1482,7 @@ function buildIcsVeventLines(ev) {
     dtStartLine,
     dtEndLine,
     `SUMMARY:${escapeIcsText(ev.title)}`,
-    `DESCRIPTION:${escapeIcsText(ev.description || '')}`,
+    `DESCRIPTION:${escapeIcsText(calendarDescription(ev))}`,
     `LOCATION:${escapeIcsText(ev.location || campusLabel(ev.campus))}`,
     'END:VEVENT'
   ];
@@ -1411,7 +1544,7 @@ function buildGoogleCalendarUrl(ev) {
     action: 'TEMPLATE',
     text: ev.title || '',
     dates: datesParam,
-    details: ev.description || '',
+    details: calendarDescription(ev),
     location: ev.location || campusLabel(ev.campus),
     ctz: 'Asia/Tokyo'
   });
@@ -1694,18 +1827,39 @@ function applyAllStoredDensities() {
   });
 }
 
+function getInitiallyVisibleCardIds(containerId) {
+  const container = document.getElementById(containerId);
+  const section = container?.closest('section');
+  const body = section?.querySelector('[id$="-body"]');
+  if (body?.hidden) return [];
+  const grid = container?.querySelector('.events-grid');
+  if (!grid) return [];
+  const cards = Array.from(grid.querySelectorAll('.event-card[data-id]'));
+  if (grid.dataset.expanded === 'true' || !grid.style.maxHeight) return cards.map(card => card.dataset.id);
+  const maxHeight = parseFloat(grid.style.maxHeight) || 0;
+  const firstTop = cards[0]?.offsetTop || 0;
+  return cards
+    .filter(card => (card.offsetTop - firstTop) < maxHeight)
+    .map(card => card.dataset.id);
+}
+
 function renderAll() {
-  // getFilteredEvents()を1回だけ計算し、各区画に使い回す(以前は今日/今週/カレンダーグリッド/
-  // カレンダーリストの4箇所がそれぞれ独自に計算していた)。あわせて、今日の一覧と今週の一覧は
-  // イベントが重複しやすいため、Firestoreのリアクション数取得も重複idを除いて1回にまとめる。
+  // 絞り込みは1回だけ計算して各区画に使い回す。リアクション実数は初期表示で実際に
+  // 見えているカードだけ取得し、「さらに表示」を開いた時に残りを取得する。
   const filteredEvents = getFilteredEvents();
-  const todayIds = renderTodayEvents(filteredEvents);
-  const upcomingIds = renderUpcomingEvents(filteredEvents);
+  renderTodayEvents(filteredEvents);
+  renderUpcomingEvents(filteredEvents);
   renderCalendar(filteredEvents);
-  refreshLiveReactionCounts([...new Set([...todayIds, ...upcomingIds])]);
   injectEventsJsonLd();
   applyAllStoredDensities();
   renderSelectionBar();
+  requestAnimationFrame(() => {
+    const ids = [...new Set([
+      ...getInitiallyVisibleCardIds('today-events'),
+      ...getInitiallyVisibleCardIds('upcoming-events')
+    ])];
+    refreshLiveReactionCounts(ids);
+  });
 }
 
 /* ============================================================
@@ -1783,7 +1937,13 @@ function setupSectionToggle(toggleId, bodyId) {
     const willExpand = !expanded;
     toggleBtn.setAttribute('aria-expanded', String(willExpand));
     body.hidden = !willExpand;
-    if (willExpand && sectionEl) collapseGridToOneRow(sectionEl);
+    if (willExpand && sectionEl) {
+      requestAnimationFrame(() => {
+        collapseGridToOneRow(sectionEl);
+        const eventContainer = sectionEl.querySelector('#today-events, #upcoming-events');
+        if (eventContainer?.id) refreshLiveReactionCounts(getInitiallyVisibleCardIds(eventContainer.id));
+      });
+    }
   });
 }
 
@@ -1817,9 +1977,9 @@ function setupModal() {
    初期化
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
-  const now      = new Date();
-  calendarYear   = now.getFullYear();
-  calendarMonth  = now.getMonth();
+  const todayJst = getTodayPartsJST();
+  calendarYear   = todayJst.year;
+  calendarMonth  = todayJst.month - 1;
 
   setupHamburger();
   setupScopeToggle();
