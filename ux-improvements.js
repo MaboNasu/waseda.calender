@@ -144,7 +144,7 @@
         const countEl = document.getElementById('upcoming-count');
         if (countEl) countEl.textContent = `${regular.length}件`;
         el.innerHTML = regular.length === 0
-          ? emptyStateHTML('今週開催のイベントは0件です。')
+          ? emptyStateHTML('この先7日間のイベントは0件です。')
           : eventsGridWithShowMoreHTML(regular.map(ev => createEventCardHTML(ev, true)).join(''), 'upcoming-events');
         renderUpcomingLongRunning(longRunning);
         return [...regular, ...longRunning].map(ev => ev.id);
