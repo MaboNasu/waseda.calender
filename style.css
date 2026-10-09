@@ -2188,14 +2188,13 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 /* スマホ月間カレンダー: 各日3件だけ先に見せ、残りは日別一覧へ。 */
 .cal-list-event-item {
   width: 100%;
-  border: 0;
-  background: transparent;
   color: inherit;
   font: inherit;
   text-align: left;
 }
 .cal-list-event-main {
   min-width: 0;
+  flex: 1;
   display: block;
 }
 .cal-list-event-main .cal-event-title,
