@@ -6732,6 +6732,46 @@ const EVENTS = [
     externalUrl: "https://enpaku.w.waseda.jp/",
     lastUpdated: "2026-10-07",
     isPublished: true
+  },
+
+  // ---- 情報源チェック(2026-10-09) ----
+  {
+    id: "evt-373",
+    title: "早スポpresents 早稲田スポーツ展",
+    date: "2026-10-09",
+    endDate: "2026-10-21",
+    location: "早稲田大学周辺店舗",
+    campus: "outside",
+    organizer: "早稲田スポーツ新聞会",
+    category: "culture",
+    scope: "circle",
+    orgId: "A-002",
+    target: ["student", "obog", "public"],
+    feeType: "free",
+    feeText: "無料",
+    description: "体育各部の勇姿を伝える展示。早稲田大学周辺の複数店舗で開催(各店舗の営業時間内)。早稲田文化芸術週間2026の一環。",
+    externalUrl: "https://www.waseda.jp/culture/event/?date=2026-10",
+    lastUpdated: "2026-10-09",
+    isPublished: true
+  },
+  {
+    id: "evt-374",
+    title: "柳井イニシアティブ Open Talk「文楽の女が嘆くとき」",
+    date: "2026-11-02",
+    startTime: "14:00",
+    endTime: "15:00",
+    location: "国際文学館(村上春樹ライブラリー) 地下1階",
+    campus: "waseda",
+    organizer: "柳井イニシアティブ",
+    category: "lecture",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "free",
+    feeText: "無料",
+    description: "文楽の女性登場人物の嘆きをめぐるOpen Talk。",
+    externalUrl: "https://www.waseda.jp/culture/event/?date=2026-10",
+    lastUpdated: "2026-10-09",
+    isPublished: true
   }
 
 ];
