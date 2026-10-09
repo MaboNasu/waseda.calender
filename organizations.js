@@ -479,7 +479,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/was_105th",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3084",
-    websiteUrl: "",
+    websiteUrl: "https://www.waseda-ad.com/",
     relatedEventIds: []
   },
   {
@@ -493,7 +493,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/whknetnow",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3087",
-    websiteUrl: "",
+    websiteUrl: "https://whk-official.com/",
     relatedEventIds: []
   },
   {
@@ -507,7 +507,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/wasedarail",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3088",
-    websiteUrl: "",
+    websiteUrl: "https://wasedarailfan.wordpress.com/",
     relatedEventIds: []
   },
   {
@@ -1193,7 +1193,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/gekidankodama",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3141",
-    websiteUrl: "",
+    websiteUrl: "https://gekidankodama.studio.site/",
     relatedEventIds: []
   },
   {
@@ -1221,7 +1221,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/butabi_w",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3143",
-    websiteUrl: "",
+    websiteUrl: "https://butabi.daa.jp/",
     relatedEventIds: []
   },
   {
@@ -2271,7 +2271,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/wasecelt/",
     twitterUrl: "https://twitter.com/wasedacelt",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3633",
-    websiteUrl: "",
+    websiteUrl: "https://wasedacelt.wixsite.com/mysite",
     relatedEventIds: []
   },
   {
@@ -3615,7 +3615,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "https://twitter.com/WasedaLUDO",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3356",
-    websiteUrl: "",
+    websiteUrl: "https://ameblo.jp/ludo-waseda/",
     relatedEventIds: []
   },
   {
@@ -4469,7 +4469,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/getappers/",
     twitterUrl: "https://twitter.com/getappers",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3459",
-    websiteUrl: "",
+    websiteUrl: "https://getappers.wixsite.com/homepage",
     relatedEventIds: []
   },
   {
@@ -4525,7 +4525,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/wasejyomynx/",
     twitterUrl: "https://twitter.com/wasejyomynx",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3464",
-    websiteUrl: "",
+    websiteUrl: "https://wasedamynx.jimdofree.com/",
     relatedEventIds: []
   },
   {
@@ -4987,7 +4987,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/bankaraizm0425/",
     twitterUrl: "https://twitter.com/bankaraizm0425",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3722",
-    websiteUrl: "",
+    websiteUrl: "https://wasedabankara17.wixsite.com/bankaraizm",
     relatedEventIds: []
   },
   {
@@ -6317,7 +6317,7 @@ const ORGANIZATIONS = [
     instagramUrl: "https://www.instagram.com/wasedaformulaproject/",
     twitterUrl: "https://twitter.com/wasedafp",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3624",
-    websiteUrl: "",
+    websiteUrl: "https://waseda-fp.tumblr.com/",
     relatedEventIds: []
   },
   {
@@ -6779,7 +6779,7 @@ const ORGANIZATIONS = [
     instagramUrl: "",
     twitterUrl: "",
     guideUrl: "",
-    websiteUrl: "",
+    websiteUrl: "https://tokosai.net/",
     relatedEventIds: []
   },
 
