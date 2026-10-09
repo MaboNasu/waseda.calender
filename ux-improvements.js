@@ -100,7 +100,8 @@
       const end = toMinutes(ev.endTime);
       if (start === null) return 2;
       if (start > nowMinutes) return 1;
-      if (end !== null && end <= nowMinutes) return 3;
+      if (end === null) return 2;
+      if (end <= nowMinutes) return 3;
       return 0;
     };
     const today = typeof getTodayStr === 'function' ? getTodayStr() : null;

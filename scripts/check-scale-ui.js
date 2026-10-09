@@ -88,12 +88,12 @@ assertIncludes(orgPage, 'getOrganizations().length', '団体総数の動的表�
 
 // キャッシュ/静的生成の版ズレ防止。
 assertIncludes(generator, '/style.css?v=46', '生成イベントページ style version');
-assertIncludes(generator, '/script.js?v=37', '生成イベントページ script version');
+assertIncludes(generator, '/script.js?v=38', '生成イベントページ script version');
 assertIncludes(generator, '/image-generator.js?v=8', '生成イベントページ image generator version');
-assertIncludes(generator, '/auth-ui.js?v=4', '生成イベントページ auth UI version');
+assertIncludes(generator, '/auth-ui.js?v=5', '生成イベントページ auth UI version');
 assertIncludes(contactHtml, 'organizations.js?v=8', '問い合わせページ organization data version');
 assertIncludes(serviceWorker, 'image-generator', 'Service Worker freshness-critical assets');
-assertIncludes(serviceWorker, "wc-cache-v10", 'Service Worker cache version');
+assertIncludes(serviceWorker, "wc-cache-v11", 'Service Worker cache version');
 
 // 実データに長文が増えても、UI側に長文対策が残っていることを確認する。
 // 現時点で長文データが無い環境でもチェック自体は失敗させない。
