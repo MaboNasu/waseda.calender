@@ -1827,6 +1827,9 @@ function applyAllStoredDensities() {
 
 function getInitiallyVisibleCardIds(containerId) {
   const container = document.getElementById(containerId);
+  const section = container?.closest('section');
+  const body = section?.querySelector('[id$="-body"]');
+  if (body?.hidden) return [];
   const grid = container?.querySelector('.events-grid');
   if (!grid) return [];
   const cards = Array.from(grid.querySelectorAll('.event-card[data-id]'));
