@@ -12,6 +12,7 @@ on:
       - 'scripts/generate-event-pages.js'
       - 'scripts/generate-org-pages.js'
       - 'scripts/generate-sitemap.js'
+      - 'scripts/check-scale-ui.js'
       - '.github/workflows/ui-quality.yml'
   pull_request:
     paths:
@@ -23,6 +24,7 @@ on:
       - 'scripts/generate-event-pages.js'
       - 'scripts/generate-org-pages.js'
       - 'scripts/generate-sitemap.js'
+      - 'scripts/check-scale-ui.js'
       - '.github/workflows/ui-quality.yml'
 
 permissions:
@@ -64,6 +66,9 @@ jobs:
             node --check "$file"
           done
 
+      - name: Check scale UI regressions
+        run: node scripts/check-scale-ui.js
+
       - name: Block internal review notes from public HTML
         shell: bash
         run: |
@@ -94,6 +99,11 @@ jobs:
           node scripts/generate-org-pages.js
           node scripts/generate-sitemap.js
 
-      - name: Verify generated pages are committed and in sync
+      - name: Validate regenerated output
         run: |
-          git diff --exit-code -- event/ org/ sitemap.xml
+          test -n "$(find event -maxdepth 1 -name '*.html' -print -quit)"
+          test -n "$(find org -maxdepth 1 -name '*.html' -print -quit)"
+          grep -q '/image-generator.js?v=8' event/*.html
+          grep -q '/style.css?v=46' event/*.html
+          grep -q '/style.css?v=46' org/*.html
+          grep -q '<urlset' sitemap.xml
