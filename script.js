@@ -767,6 +767,8 @@ function toggleShowMore(sectionId) {
     grid.dataset.expanded = 'true';
     btn.textContent = '閉じる';
     btn.dataset.action = 'collapse';
+    const ids = Array.from(grid.querySelectorAll('.event-card[data-id]')).map(card => card.dataset.id);
+    refreshLiveReactionCounts(ids);
   } else {
     grid.dataset.expanded = 'false';
     collapseGridToOneRow(sectionEl);
@@ -1411,8 +1413,7 @@ function renderSelectionBar() {
 function pad2(n) { return String(n).padStart(2, '0'); }
 
 function addOneDay(dateStr) {
-  const [y, m, d] = dateStr.split('-').map(Number);
-  return formatDateStr(new Date(y, m - 1, d + 1));
+  return addDaysToDateStr(dateStr, 1);
 }
 
 function icsDateTime(dateStr, timeStr) {
@@ -1424,10 +1425,14 @@ function icsDateTime(dateStr, timeStr) {
 
 /** 日付+時刻に分単位を加算し、日をまたぐ場合はdateStrも繰り上げる。 */
 function addMinutesToDateTime(dateStr, timeStr, minutes) {
-  const [y, m, d] = dateStr.split('-').map(Number);
   const [hh, mm] = timeStr.split(':').map(Number);
-  const dt = new Date(y, m - 1, d, hh, mm + minutes);
-  return { date: formatDateStr(dt), time: `${pad2(dt.getHours())}:${pad2(dt.getMinutes())}` };
+  const total = hh * 60 + mm + minutes;
+  const dayOffset = Math.floor(total / (24 * 60));
+  const minuteOfDay = ((total % (24 * 60)) + (24 * 60)) % (24 * 60);
+  return {
+    date: addDaysToDateStr(dateStr, dayOffset),
+    time: `${pad2(Math.floor(minuteOfDay / 60))}:${pad2(minuteOfDay % 60)}`
+  };
 }
 
 /** カレンダーサービスには終了時刻が必要なため、未定の場合のみ開始2時間後を技術上の仮値にする。
@@ -1820,18 +1825,36 @@ function applyAllStoredDensities() {
   });
 }
 
+function getInitiallyVisibleCardIds(containerId) {
+  const container = document.getElementById(containerId);
+  const grid = container?.querySelector('.events-grid');
+  if (!grid) return [];
+  const cards = Array.from(grid.querySelectorAll('.event-card[data-id]'));
+  if (grid.dataset.expanded === 'true' || !grid.style.maxHeight) return cards.map(card => card.dataset.id);
+  const maxHeight = parseFloat(grid.style.maxHeight) || 0;
+  const firstTop = cards[0]?.offsetTop || 0;
+  return cards
+    .filter(card => (card.offsetTop - firstTop) < maxHeight)
+    .map(card => card.dataset.id);
+}
+
 function renderAll() {
-  // getFilteredEvents()を1回だけ計算し、各区画に使い回す(以前は今日/今週/カレンダーグリッド/
-  // カレンダーリストの4箇所がそれぞれ独自に計算していた)。あわせて、今日の一覧と今週の一覧は
-  // イベントが重複しやすいため、Firestoreのリアクション数取得も重複idを除いて1回にまとめる。
+  // 絞り込みは1回だけ計算して各区画に使い回す。リアクション実数は初期表示で実際に
+  // 見えているカードだけ取得し、「さらに表示」を開いた時に残りを取得する。
   const filteredEvents = getFilteredEvents();
-  const todayIds = renderTodayEvents(filteredEvents);
-  const upcomingIds = renderUpcomingEvents(filteredEvents);
+  renderTodayEvents(filteredEvents);
+  renderUpcomingEvents(filteredEvents);
   renderCalendar(filteredEvents);
-  refreshLiveReactionCounts([...new Set([...todayIds, ...upcomingIds])]);
   injectEventsJsonLd();
   applyAllStoredDensities();
   renderSelectionBar();
+  requestAnimationFrame(() => {
+    const ids = [...new Set([
+      ...getInitiallyVisibleCardIds('today-events'),
+      ...getInitiallyVisibleCardIds('upcoming-events')
+    ])];
+    refreshLiveReactionCounts(ids);
+  });
 }
 
 /* ============================================================
