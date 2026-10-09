@@ -176,8 +176,8 @@ function renderEventDetailPage(ev) {
       </div>
 
       <div class="event-hero-info">
-        <div class="event-hero-row">📅 ${formatEventDateDisplay(ev)}${ev.startTime ? `　${escapeHtml(formatTime(ev.startTime, ev.endTime))}` : '　終日'}</div>
-        <div class="event-hero-row">📍 ${escapeHtml(ev.location || '場所は未定・確認中です')}</div>
+        <div class="event-hero-row">📅 ${formatEventDateDisplay(ev)}　${escapeHtml(getEventTimeLabel(ev))}</div>
+        <div class="event-hero-row">📍 ${escapeHtml(getEventLocationLabel(ev))}</div>
       </div>
 
       <div class="event-participation-box">
