@@ -936,6 +936,26 @@
       "status": "dry-run",
       "postId": null,
       "errorType": null
+    },
+    {
+      "postedAt": "2026-10-12T01:30:07.649Z",
+      "postType": "weekly",
+      "targetDate": "2026-10-12",
+      "eventIds": [
+        "evt-151",
+        "evt-152",
+        "evt-306",
+        "evt-309",
+        "evt-396",
+        "evt-397",
+        "evt-398",
+        "evt-223"
+      ],
+      "campaign": "weekly_waseda",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
     }
   ]
 }
