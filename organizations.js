@@ -4586,8 +4586,8 @@ const ORGANIZATIONS = [
   },
   {
     id: "C-228",
-    name: "スクーバダイビングチームあんこう",
-    nameKana: "すくーばだいびんぐちーむあんこう",
+    name: "スキューバダイビングチームあんこう",
+    nameKana: "すきゅーばだいびんぐちーむあんこう",
     alphabetName: "",
     genre: "スポーツ",
     registrationType: "同好会",
