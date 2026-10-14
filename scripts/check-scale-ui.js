@@ -75,6 +75,8 @@ assertIncludes(script, "'today-section': 3", 'スマホ本日初期表示');
 assertIncludes(script, "'upcoming-section': 5", 'スマホ7日間初期表示');
 assertIncludes(script, 'handleCalendarDayCellClick', 'PC日付セルクリック');
 assertIncludes(script, 'compareEventsChronologically', '日別時刻順');
+assertIncludes(script, 'getCalendarDayEvents', 'カレンダー日別イベントの共通集合');
+assertIncludes(script, '!isLongRunningEvent(ev)', '日別一覧の長期イベント分離');
 assertIncludes(script, 'getEventTimeLabel', '時刻状態の共通表示');
 assertIncludes(script, 'getEventLocationLabel', '場所状態の共通表示');
 assertIncludes(script, "ev.location || ''", '場所を含むキーワード検索');
@@ -82,6 +84,8 @@ assertIncludes(script, 'LIVE_REACTION_CACHE_TTL_MS', 'リアクション取得�
 assertIncludes(style, '-webkit-line-clamp: 3', '長いイベントタイトルのクランプ');
 assertIncludes(style, '.cal-list-more', 'スマホ日別の残件導線');
 assertIncludes(style, '.day-event-list-item', '日別一覧のコンパクトUI');
+assertIncludes(style, '.day-event-list-title', '日別一覧タイトルの長文対策');
+assertIncludes(style, '.cal-event-title', 'スマホ月間タイトルの長文対策');
 assertIncludes(style, '.org-archive-event-extra', '団体開催実績の折りたたみ');
 assert(!orgPage.includes('すべての団体を表示する（504件）'), '団体総数を504件で固定しないでください');
 assertIncludes(orgPage, 'getOrganizations().length', '団体総数の動的表示');
@@ -93,7 +97,7 @@ assertIncludes(generator, '/image-generator.js?v=8', '生成イベントペー�
 assertIncludes(generator, '/auth-ui.js?v=5', '生成イベントページ auth UI version');
 assertIncludes(contactHtml, 'organizations.js?v=8', '問い合わせページ organization data version');
 assertIncludes(serviceWorker, 'image-generator', 'Service Worker freshness-critical assets');
-assertIncludes(serviceWorker, "wc-cache-v11", 'Service Worker cache version');
+assertIncludes(serviceWorker, "wc-cache-v12", 'Service Worker cache version');
 
 // 実データに長文が増えても、UI側に長文対策が残っていることを確認する。
 // 現時点で長文データが無い環境でもチェック自体は失敗させない。

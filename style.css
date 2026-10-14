@@ -1135,7 +1135,16 @@ ul, ol { list-style: none; }
 }
 .cal-list-event-item:hover { background: var(--enjy-pale); }
 .cal-event-time { font-size: 0.75rem; color: var(--enjy); font-weight: 700; white-space: nowrap; padding-top: 1px; }
-.cal-event-title { font-size: 0.85rem; font-weight: 600; }
+.cal-event-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
 .cal-event-range-badge {
   display: inline-block;
   font-size: 0.65rem;
@@ -1147,7 +1156,16 @@ ul, ol { list-style: none; }
   margin-left: 0.3rem;
   white-space: nowrap;
 }
-.cal-event-loc { font-size: 0.75rem; color: var(--text-muted); }
+.cal-event-loc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  overflow: hidden;
+}
 
 /* ============================================================
    モーダル
@@ -2178,11 +2196,21 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 .day-event-list-title {
   line-height: 1.45;
   overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 .day-event-list-location {
   font-size: 0.78rem;
   color: var(--text-muted);
   overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 
 /* スマホ月間カレンダー: 各日3件だけ先に見せ、残りは日別一覧へ。 */
@@ -2199,7 +2227,7 @@ textarea.form-control { resize: vertical; min-height: 120px; }
 }
 .cal-list-event-main .cal-event-title,
 .cal-list-event-main .cal-event-loc {
-  display: block;
+  min-width: 0;
 }
 .cal-list-more {
   width: 100%;

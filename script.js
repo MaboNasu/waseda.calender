@@ -186,6 +186,14 @@ function isLongRunningEvent(ev) {
   return isMultiDay(ev) && (ev.longRunning === true || eventDurationDays(ev) >= LONG_RUNNING_EVENT_THRESHOLD_DAYS);
 }
 
+/** 月間カレンダーの日セル/日別一覧に表示するイベント。
+ *  長期開催は専用ウィジェットに分離しているため、日セル件数と日別モーダルの件数を
+ *  同じ集合に揃える（長期企画が増えても「7件→開くと15件」のようなズレを起こさない）。 */
+function getCalendarDayEvents(dateStr, sourceEvents) {
+  const source = sourceEvents || getFilteredEvents();
+  return source.filter(ev => isEventOnDate(ev, dateStr) && !isLongRunningEvent(ev));
+}
+
 /** 開催終了済みかどうか（終了日が今日より前）。UI上の「終了しました」表示にのみ使う。
  *  JSON-LDのeventStatusは架空の完了状態を作らないため、ここの判定とは別に既存のScheduledのまま維持している。 */
 function isEventEnded(ev) {
@@ -924,7 +932,7 @@ function renderCalendarGrid(allFiltered) {
 
   // 2. 単日イベント・複数日イベント(短期)・長期開催イベントの3種に分ける。
   //    長期開催イベントは週バーの対象から外し、renderLongRunningEventsWidgetで別枠表示する
-  //    （日別一覧では isEventOnDate 経由で引き続き見られる。showDayEvents参照）。
+  //    （日別一覧も通常イベントに揃え、長期開催は上の専用ウィジェットから開く）。
   const shortMultiDayEvents = filtered.filter(ev => isMultiDay(ev) && !isLongRunningEvent(ev));
   const longRunningEvents   = filtered.filter(isLongRunningEvent);
   const singleDayByDate = {};
@@ -1034,7 +1042,7 @@ function renderCalendarGrid(allFiltered) {
       const laneCountForCol = maxLaneByCol[colIdx] || 0;
       const dayEventsOffset = laneCountForCol > 0 ? `${laneCountForCol * BAR_HEIGHT + 6}px` : '';
       const dayEventsStyle = dayEventsOffset ? ` style="margin-top:${dayEventsOffset}"` : '';
-      const hasAnyEvents = filtered.some(ev => isEventOnDate(ev, cell.dateStr));
+      const hasAnyEvents = getCalendarDayEvents(cell.dateStr, filtered).length > 0;
       const dayNumClass = hasAnyEvents ? 'day-num day-num-clickable' : 'day-num';
       const dayNumClick = hasAnyEvents ? ` onclick="event.stopPropagation();showDayEvents('${cell.dateStr}')"` : '';
       const cellClickableClass = hasAnyEvents ? ' calendar-day-clickable' : '';
@@ -1087,7 +1095,7 @@ function renderCalendarList(allFiltered) {
 
   // 長期開催イベント(展示等)は、PC版のカレンダーグリッドと同様にリストからも除外し、
   // 別枠のrenderLongRunningEventsWidgetにまとめる（毎日同じ展示が延々表示され続けるのを防ぐ）。
-  // showDayEvents（日クリック時の一覧）には isEventOnDate 経由で引き続き含まれる。
+  // showDayEvents（日クリック時の一覧）も通常イベントだけに揃え、長期開催は上の専用枠に分離する。
   renderLongRunningEventsWidget(filtered.filter(isLongRunningEvent));
 
   // 複数日イベント(短期)も、その月にかかる日すべてに表示する（isEventOnDateで判定）
@@ -1095,7 +1103,7 @@ function renderCalendarList(allFiltered) {
   for (let d = 1; d <= totalDays; d++) {
     const dateStr = formatDateStr(new Date(calendarYear, calendarMonth, d));
     if (isCurrentMonth && dateStr < today) continue;
-    const dayEvs = filtered.filter(ev => isEventOnDate(ev, dateStr) && !isLongRunningEvent(ev))
+    const dayEvs = getCalendarDayEvents(dateStr, filtered)
       .sort((a, b) => compareEventsChronologically(a, b, today));
     if (dayEvs.length > 0) evByDate[dateStr] = dayEvs;
   }
@@ -1200,8 +1208,7 @@ function handleCalendarDayCellClick(event, dateStr) {
 
 function showDayEvents(dateStr) {
   const today = getTodayStr();
-  const filtered = getFilteredEvents()
-    .filter(ev => isEventOnDate(ev, dateStr))
+  const filtered = getCalendarDayEvents(dateStr)
     .sort((a, b) => compareEventsChronologically(a, b, today));
   const dateDisp = formatDateDisplay(dateStr);
   if (filtered.length === 0) return;
