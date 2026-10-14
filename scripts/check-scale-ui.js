@@ -44,6 +44,7 @@ const orgPage = read('organizations-page.js');
 const generator = read('scripts/generate-event-pages.js');
 const contactHtml = read('contact.html');
 const serviceWorker = read('service-worker.js');
+const homeIndex = read('index.html');
 
 const eventIds = new Set();
 published.forEach(ev => {
@@ -95,11 +96,15 @@ assertIncludes(style, '.org-archive-event-extra', '団体開催実績の折り�
 assert(!orgPage.includes('すべての団体を表示する（504件）'), '団体総数を504件で固定しないでください');
 assertIncludes(orgPage, 'getOrganizations().length', '団体総数の動的表示');
 
+// Ensure the homepage uses the same cache-busting versions as generated pages.
+for (const [asset, version] of [['events.js', '7'], ['script.js', '39'], ['auth-ui.js', '6']]) {
+  assertIncludes(homeIndex, asset + '?v=' + version, 'ホームの' + asset + 'キャッシュ版');
+}
 // キャッシュ/静的生成の版ズレ防止。
 assertIncludes(generator, '/style.css?v=46', '生成イベントページ style version');
-assertIncludes(generator, '/script.js?v=38', '生成イベントページ script version');
+assertIncludes(generator, '/script.js?v=39', '生成イベントページ script version');
 assertIncludes(generator, '/image-generator.js?v=8', '生成イベントページ image generator version');
-assertIncludes(generator, '/auth-ui.js?v=5', '生成イベントページ auth UI version');
+assertIncludes(generator, '/auth-ui.js?v=6', '生成イベントページ auth UI version');
 assertIncludes(contactHtml, 'organizations.js?v=8', '問い合わせページ organization data version');
 assertIncludes(serviceWorker, 'image-generator', 'Service Worker freshness-critical assets');
 assertIncludes(serviceWorker, "wc-cache-v13", 'Service Worker cache version');

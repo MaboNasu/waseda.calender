@@ -13,6 +13,7 @@ on:
       - 'scripts/generate-org-pages.js'
       - 'scripts/generate-sitemap.js'
       - 'scripts/check-scale-ui.js'
+      - 'scripts/check-home-sections.js'
       - '.github/workflows/ui-quality.yml'
   pull_request:
     paths:
@@ -25,6 +26,7 @@ on:
       - 'scripts/generate-org-pages.js'
       - 'scripts/generate-sitemap.js'
       - 'scripts/check-scale-ui.js'
+      - 'scripts/check-home-sections.js'
       - '.github/workflows/ui-quality.yml'
 
 permissions:
@@ -68,6 +70,9 @@ jobs:
 
       - name: Check scale UI regressions
         run: node scripts/check-scale-ui.js
+
+      - name: Check home event classification
+        run: node scripts/check-home-sections.js
 
       - name: Block internal review notes from public HTML
         shell: bash
