@@ -107,6 +107,25 @@
     return {rank:5,label:'本日終了'};
   }
 
+
+  /** Hide expired single-day cards only from the homepage today list.
+   * Multi-day opening hours and academic schedules are not assumed to be day-specific.
+   */
+  function isHomeTodayAvailable(ev, nowMinutes) {
+    if (getEventScope(ev) === 'schedule' || isMultiDay(ev)) return true;
+    const minutes = value => {
+      if (!/^\d{2}:\d{2}$/.test(value || '')) return null;
+      const [h, m] = value.split(':').map(Number);
+      return h < 24 && m < 60 ? h * 60 + m : null;
+    };
+    const end = minutes(ev.endTime);
+    const start = minutes(ev.startTime);
+    // Where an end time exists, still let users discover a live event after its start.
+    // Without an end time, do not assume it is still joinable after the start.
+    const cutoff = end === null ? start : end;
+    return cutoff === null || nowMinutes < cutoff;
+  }
+
   function classifyHomeEvents(events,today,now,scopeValue=''){
     const todayEvents=[],longRunning=[],upcoming=[];
     const from=addDaysToDateStr(today,1),through=addDaysToDateStr(today,7);
@@ -118,7 +137,7 @@
         if(isEventOnDate(ev,today))longRunning.push(ev);
         continue;
       }
-      if(isEventOnDate(ev,today))todayEvents.push(ev);
+      if(isEventOnDate(ev,today) && isHomeTodayAvailable(ev,now))todayEvents.push(ev);
       // The tests for today and tomorrow are independent: short multi-day events may overlap.
       for(let day=1;day<=7;day++){
         const date=addDaysToDateStr(today,day);
@@ -595,6 +614,75 @@
     });
   }
 
+
+  /** Refresh on meaningful clock boundaries, not a costly full-calendar redraw every 30s. */
+  function installHomeClockRefresh() {
+    if (!document.getElementById('today-events') || WC_UX.homeClockRefreshInstalled) return;
+    WC_UX.homeClockRefreshInstalled = true;
+    let lastDate = getTodayStr();
+
+    const snapshot = source => {
+      const date = getTodayStr(), now = getHomeNowMinutes();
+      return classifyHomeEvents(source, date, now, activeFilters.scope || '').todayEvents
+        .map(ev => String(ev.id) + ':' + getHomeTodayStatus(ev, date, now).label).join('|');
+    };
+    let last = snapshot(getFilteredEvents());
+
+    const update = () => {
+      if (document.hidden) return;
+      const date = getTodayStr();
+      if (lastDate !== date) {
+        lastDate = date;
+        renderAll(); // At midnight also update tomorrow's week and the month calendar.
+        last = snapshot(getFilteredEvents());
+        return;
+      }
+      const source = getFilteredEvents();
+      const next = snapshot(source);
+      if (next === last) return;
+
+      const container = document.getElementById('today-events');
+      const section = document.getElementById('today-section');
+      const expanded = container?.querySelector('.events-grid')?.dataset.expanded === 'true';
+      const ids = renderTodayEvents(source);
+      applyDensity(section, getStoredDensity('today-section'));
+
+      const grid = container?.querySelector('.events-grid');
+      if (grid && expanded) {
+        grid.dataset.expanded = 'true';
+        const button = container.querySelector('.show-more-btn');
+        if (button) {
+          button.style.display = '';
+          button.dataset.action = 'collapse';
+          button.textContent = '閉じる';
+        }
+      } else if (grid) {
+        requestAnimationFrame(() => collapseGridToOneRow(container));
+      }
+
+      if (!ids.length) {
+        const body = document.getElementById('upcoming-body');
+        const toggle = document.getElementById('upcoming-toggle');
+        if (body?.hidden && toggle) {
+          body.hidden = false;
+          toggle.setAttribute('aria-expanded', 'true');
+          requestAnimationFrame(() => collapseGridToOneRow(document.getElementById('upcoming-events')));
+        }
+      }
+      requestAnimationFrame(() => {
+        if (typeof refreshLiveReactionCounts === 'function' && typeof getInitiallyVisibleCardIds === 'function') {
+          refreshLiveReactionCounts(getInitiallyVisibleCardIds('today-events'));
+        }
+      });
+      last = next;
+    };
+
+    window.setInterval(update, 30000);
+    document.addEventListener('visibilitychange', update);
+    window.addEventListener('focus', update);
+    window.addEventListener('pageshow', update);
+  }
+
   /* ---------- Boot ---------- */
   installHomeRenderOverrides();
   installModalEnhancement();
@@ -621,6 +709,7 @@
         todayBody.hidden = false;
         if (typeof collapseGridToOneRow === 'function') requestAnimationFrame(() => collapseGridToOneRow(document.getElementById('today-events')));
       }
+      installHomeClockRefresh();
     }
   });
 })();

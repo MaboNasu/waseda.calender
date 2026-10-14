@@ -79,6 +79,8 @@ assertIncludes(script, 'compareEventsChronologically', '日別時刻順');
 assertIncludes(script, 'getCalendarDayEvents', 'カレンダー日別イベントの共通集合');
 assertIncludes(script, "window.matchMedia('(max-width: 768px)').matches ? 'small' : 'large'", 'スマホ既定密度');
 assertIncludes(read('ux-improvements.js'), 'classifyHomeEvents', 'ホーム分類');
+assertIncludes(read('ux-improvements.js'), 'isHomeTodayAvailable', '当日終了イベントの非表示');
+assertIncludes(read('ux-improvements.js'), 'installHomeClockRefresh', '時刻更新フック');
 assertIncludes(read('ux-improvements.js'), 'renderHomeLongRunning', '長期展示補助枠');
 assertIncludes(read('ux-improvements.js'), 'home-upcoming-day-heading', '日付別表示');
 assertIncludes(read('mobile-fixes.css'), '#top.hero', 'モバイルヒーロー縮小');
@@ -107,7 +109,7 @@ assertIncludes(generator, '/image-generator.js?v=8', '生成イベントペー�
 assertIncludes(generator, '/auth-ui.js?v=6', '生成イベントページ auth UI version');
 assertIncludes(contactHtml, 'organizations.js?v=8', '問い合わせページ organization data version');
 assertIncludes(serviceWorker, 'image-generator', 'Service Worker freshness-critical assets');
-assertIncludes(serviceWorker, "wc-cache-v13", 'Service Worker cache version');
+assertIncludes(serviceWorker, "wc-cache-v14", 'Service Worker cache version');
 
 // 実データに長文が増えても、UI側に長文対策が残っていることを確認する。
 // 現時点で長文データが無い環境でもチェック自体は失敗させない。

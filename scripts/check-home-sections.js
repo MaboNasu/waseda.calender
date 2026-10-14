@@ -65,6 +65,26 @@ assert(!academic.longRunning.length, 'Academic scope must hide exhibitions');
 const circle = classify(events.filter(ev => ev.scope !== 'schedule'), today, 9 * 60, 'circle');
 assert.deepEqual(ids(model.todayEvents).sort(), ids(circle.todayEvents).sort(), 'All / Events today mismatch');
 
+
+/* Homepage expiry: end-time preferred; start-time fallback; unknown/multi-day stay. */
+const timedEnd = {id:'test-end', date:today, isPublished:true, scope:'circle', startTime:'12:30', endTime:'13:00'};
+const startOnly = {id:'test-start', date:today, isPublished:true, scope:'circle', startTime:'12:30'};
+const unknownTime = {id:'test-unknown', date:today, isPublished:true, scope:'circle'};
+const multiDay = {id:'test-multi', date:today, endDate:'2026-10-16', isPublished:true, scope:'circle', startTime:'12:30', endTime:'13:00'};
+const academicDay = {id:'test-academic', date:today, isPublished:true, scope:'schedule', startTime:'08:00'};
+const timeTestData = [timedEnd, startOnly, unknownTime, multiDay, academicDay];
+const homeIdsAt = now => ids(classify(timeTestData, today, now, '').todayEvents);
+assert(homeIdsAt(749).includes('test-start'), 'start-only event must remain before start');
+assert(!homeIdsAt(750).includes('test-start'), 'start-only event must disappear at start');
+assert(homeIdsAt(750).includes('test-end'), 'event with known end must remain after start');
+assert(homeIdsAt(779).includes('test-end'), 'event with known end remains until end');
+assert(!homeIdsAt(780).includes('test-end'), 'event must disappear at end');
+assert(homeIdsAt(1380).includes('test-unknown'), 'unknown-time event remains on same day');
+assert(homeIdsAt(1380).includes('test-multi'), 'multi-day event must not be hidden by ambiguous hours');
+assert(classify(timeTestData, today, 1380, 'schedule').todayEvents.some(ev => ev.id === 'test-academic'), 'academic event remains');
+assert(classify(timeTestData, today, 1380, '').upcoming.some(x => x.ev.id === 'test-multi'), 'future occurrence of multi-day event remains');
+assert(!classify(timeTestData, '2026-10-15', 540, '').todayEvents.some(ev => ev.id === 'test-end'), 'yesterday event must stay out');
+
 const timed = {id:'sample', date:today, startTime:'12:30', endTime:'13:00', scope:'circle'};
 assert.equal(status(timed, today, 540).rank, 1, '09:00 should be future');
 assert.equal(status(timed, today, 760).rank, 0, '12:40 should be in progress');
