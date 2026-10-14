@@ -104,7 +104,7 @@ assert(!orgPage.includes('すべての団体を表示する（504件）'), '団�
 assertIncludes(orgPage, 'getOrganizations().length', '団体総数の動的表示');
 
 // Ensure the homepage uses the same cache-busting versions as generated pages.
-for (const [asset, version] of [['events.js', '7'], ['script.js', '39'], ['auth-ui.js', '6']]) {
+for (const [asset, version] of [['events.js', '7'], ['script.js', '39'], ['auth-ui.js', '7']]) {
   assertIncludes(homeIndex, asset + '?v=' + version, 'ホームの' + asset + 'キャッシュ版');
 }
 // キャッシュ/静的生成の版ズレ防止。
