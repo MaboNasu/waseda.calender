@@ -320,11 +320,9 @@
       const title = recommendation.querySelector('.recommend-entry-title');
       const desc = recommendation.querySelector('.recommend-entry-desc');
       const cta = recommendation.querySelector('.recommend-entry-cta');
-      if (title) title.innerHTML = '迷った？ 今日、何する？<span class="beta-badge">β</span>';
+      if (title) title.innerHTML = '今日、何する？<span class="beta-badge">β</span>';
       if (desc) desc.textContent = '3つの質問で、条件に合うイベントを3件選びます';
       if (cta && cta.firstChild) cta.firstChild.textContent = '3問で選ぶ ';
-      const todayBodyEl = document.getElementById('today-body');
-      if (todayBodyEl) todayBodyEl.after(recommendation);
     }
 
     wrapDisplaySettings();

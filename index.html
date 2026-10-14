@@ -112,7 +112,7 @@
 
 
 <!-- ============================================================
-     絞り込みパネル
+     今日、何する？（おすすめの入口）
      ============================================================ -->
 <div class="container">
   <button type="button" class="recommend-entry" onclick="openRecommendModal()">
@@ -129,81 +129,6 @@
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg>
     </span>
   </button>
-  <div class="scope-toggle" role="group" aria-label="表示範囲" style="margin-top:1.25rem;">
-    <button type="button" class="scope-btn active" data-scope="">全部</button>
-    <button type="button" class="scope-btn" data-scope="schedule">学事日程</button>
-    <button type="button" class="scope-btn" data-scope="circle">サークルイベント</button>
-  </div>
-  <div class="filter-section">
-    <button type="button" class="filter-title" id="filter-toggle" aria-expanded="false" aria-controls="filter-body">
-      <span>🔍 イベントを絞り込む<span class="filter-active-badge" id="filter-active-badge" hidden></span></span>
-      <span class="filter-toggle-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
-    </button>
-    <div class="filter-body" id="filter-body">
-      <div class="filter-grid">
-        <!-- カテゴリ -->
-        <div class="filter-group">
-          <label for="filter-category">カテゴリ</label>
-          <select id="filter-category" class="filter-select">
-            <option value="">すべて</option>
-            <option value="sports">スポーツ</option>
-            <option value="culture">文化</option>
-            <option value="music">音楽</option>
-            <option value="theater">演劇</option>
-            <option value="lecture">講演</option>
-            <option value="community">地域</option>
-            <option value="other">その他</option>
-          </select>
-        </div>
-        <!-- 対象者 -->
-        <div class="filter-group">
-          <label for="filter-target">対象者</label>
-          <select id="filter-target" class="filter-select">
-            <option value="">すべて</option>
-            <option value="student">在学生向け</option>
-            <option value="obog">OBOG向け</option>
-            <option value="public">一般参加可</option>
-            <option value="applicant">受験生向け</option>
-          </select>
-        </div>
-        <!-- 開催場所 -->
-        <div class="filter-group">
-          <label for="filter-campus">開催場所</label>
-          <select id="filter-campus" class="filter-select">
-            <option value="">すべて</option>
-            <option value="waseda">早稲田キャンパス</option>
-            <option value="toyama">戸山キャンパス</option>
-            <option value="nishiwaseda">西早稲田キャンパス</option>
-            <option value="tokorozawa">所沢キャンパス</option>
-            <option value="takadanobaba">高田馬場周辺</option>
-            <option value="outside">学外</option>
-            <option value="online">オンライン</option>
-          </select>
-        </div>
-        <!-- 参加費 -->
-        <div class="filter-group">
-          <label for="filter-fee">参加費</label>
-          <select id="filter-fee" class="filter-select">
-            <option value="">すべて</option>
-            <option value="free">無料</option>
-            <option value="paid">有料</option>
-          </select>
-        </div>
-        <!-- キーワード -->
-        <div class="filter-group" style="grid-column: 1 / -1;">
-          <label for="filter-keyword">キーワード検索</label>
-          <input type="text" id="filter-keyword" class="filter-input"
-            placeholder="イベント名・主催団体・開催場所・説明文で検索（Enterキーでも検索）">
-        </div>
-      </div>
-      <div class="filter-actions">
-        <button id="filter-reset" class="btn btn-ghost btn-sm">リセット</button>
-        <button id="filter-apply" class="btn btn-enjy btn-sm">🔍 この条件で絞り込む</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 将来的に広告掲載・スポンサー枠を追加する場合はこの位置を利用 -->
 </div>
 
 
@@ -267,6 +192,14 @@
 <section class="section scroll-target" id="calendar-section">
   <div class="container">
     <h2 class="section-title">イベントカレンダー</h2>
+    <div class="calendar-scope-controls">
+      <p class="calendar-scope-label">表示内容を切り替える（イベント一覧・カレンダー共通）</p>
+  <div class="scope-toggle" role="group" aria-label="表示範囲">
+    <button type="button" class="scope-btn active" data-scope="">全部</button>
+    <button type="button" class="scope-btn" data-scope="schedule">学事日程</button>
+    <button type="button" class="scope-btn" data-scope="circle">サークルイベント</button>
+  </div>
+    </div>
     <div class="calendar-wrapper">
       <!-- カレンダーナビ -->
       <div class="calendar-nav">
@@ -396,7 +329,7 @@
 <script src="recommendation.js?v=2"></script>
 <script src="image-generator.js?v=8"></script>
 <script type="module" src="firebase-init.js?v=3"></script>
-<script src="auth-ui.js?v=6"></script>
+<script src="auth-ui.js?v=7"></script>
 
 <script src="pwa-install.js?v=3"></script>
 </body>

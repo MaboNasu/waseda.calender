@@ -139,11 +139,11 @@ function loadUxImprovementLayer() {
     document.body.appendChild(script);
   };
 
-  addCss('/ux-improvements.css?v=4', 'base-css');
+  addCss('/ux-improvements.css?v=5', 'base-css');
   addCss('/ux-polish.css?v=3', 'polish-css');
   addCss('/calendar-fixes.css?v=2', 'calendar-css');
   addCss('/mobile-fixes.css?v=3', 'mobile-css');
-  addScript('/ux-improvements.js?v=6', 'base-js', () => {
+  addScript('/ux-improvements.js?v=7', 'base-js', () => {
     // calendar-fixes must register before ux-polish's MutationObserver so +N counts
     // remain idempotent on every calendar re-render.
     addScript('/calendar-fixes.js?v=2', 'calendar-js', () => {

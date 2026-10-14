@@ -50,14 +50,21 @@ summary:focus-visible {
 }
 .hero-live-count strong { color: #fff; font-size: 1.05rem; }
 
-/* Recommendation becomes a helper after seeing today's choices. */
-#today-section .recommend-entry {
-  margin: 1rem 0 0;
-  box-shadow: var(--shadow-sm);
-  border-width: 1px;
+/* Lead directly from the recommendation card into today's actionable events. */
+#today-section { padding-top: 1.65rem; }
+.calendar-scope-controls {
+  margin: 0 0 1.35rem;
+  padding: .7rem .9rem;
+  border-radius: var(--radius-md);
+  background: var(--gray-50);
+  border: 1px solid var(--border);
 }
-#today-section .recommend-entry-title { font-family: var(--font-main); font-size: .95rem; }
-#today-section .recommend-entry-desc { font-size: .78rem; }
+.calendar-scope-label {
+  margin: 0 0 .45rem;
+  color: var(--text-muted);
+  font-size: .76rem;
+}
+.calendar-scope-controls .scope-toggle { margin-bottom: 0; }
 
 /* Progressive disclosure for display-density controls. */
 .display-settings {
