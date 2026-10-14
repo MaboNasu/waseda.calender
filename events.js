@@ -8043,10 +8043,10 @@ const EVENTS = [
     target: ["student", "public"],
     feeType: "free",
     feeText: "無料(Peatixで入場券の取得が必要)",
-    description: "早稲田祭2026での早稲田大学マスコミ研究会主催の講演会。開場14:00。入場券は学生予約10/16〜、一般予約10/23〜、当日予約11/7 8:00〜。",
+    description: "早稲田祭2026での早稲田大学マスコミ研究会主催の講演会。開場14:00。入場券は学生予約10/16〜、一般予約10/23〜、当日予約11/7 8:00〜。14:45以降の入場はキャンセル扱い。",
     externalUrl: "https://waseda-massken.com/miyuki_uekusa/",
     registrationUrl: "https://peatix.com/event/5220640",
-    lastUpdated: "2026-10-13",
+    lastUpdated: "2026-10-14",
     isPublished: true
   },
   {
