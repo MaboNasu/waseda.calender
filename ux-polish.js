@@ -164,7 +164,7 @@
       if (!el || typeof getTodayStr !== 'function') return ids;
       const today = getTodayStr();
       const grid = el.querySelector('.events-grid');
-      if (!grid) return ids;
+      if (!grid || el.dataset.homeGrouped === 'true') return ids;
       const cards = [...grid.querySelectorAll('.event-card')];
       const byId = new Map(eventsSafe().map(ev => [String(ev.id), ev]));
       const timeRank = ev => {

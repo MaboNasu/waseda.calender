@@ -87,70 +87,135 @@
   }
 
   /* ---------- Home page hierarchy ---------- */
-  function sortTodayByUsefulness(events) {
-    const now = new Date(Date.now() + 9 * 60 * 60 * 1000);
-    const nowMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
-    const toMinutes = value => {
-      if (!value || !/^\d{2}:\d{2}$/.test(value)) return null;
-      const [h, m] = value.split(':').map(Number);
-      return h * 60 + m;
-    };
-    const rank = ev => {
-      const start = toMinutes(ev.startTime);
-      const end = toMinutes(ev.endTime);
-      if (start === null) return 2;
-      if (start > nowMinutes) return 1;
-      if (end === null) return 2;
-      if (end <= nowMinutes) return 3;
-      return 0;
-    };
-    const today = typeof getTodayStr === 'function' ? getTodayStr() : null;
-    return [...events].sort((a, b) => rank(a) - rank(b)
-      || String(a.startTime || '99:99').localeCompare(String(b.startTime || '99:99'))
-      || (today && typeof sameDayOrderCompare === 'function'
-        ? sameDayOrderCompare(a, b, today)
-        : String(a.title || '').localeCompare(String(b.title || ''), 'ja')));
+  function getHomeNowMinutes(){
+    const d=new Date(Date.now()+32400000);
+    return d.getUTCHours()*60+d.getUTCMinutes();
+  }
+
+  function getHomeTodayStatus(ev,today,now){
+    if(getEventScope(ev)==='schedule')return {rank:3,label:''};
+    if(isMultiDay(ev)){
+      const day=Math.round((Date.parse(today+'T00:00:00Z')-Date.parse(ev.date+'T00:00:00Z'))/86400000)+1;
+      return {rank:2,label:today===getEventEnd(ev)?'最終日':`${eventDurationDays(ev)}日間の${day}日目`};
+    }
+    const t=x=>/^\d{2}:\d{2}$/.test(x||'')?Number(x.slice(0,2))*60+Number(x.slice(3)):null;
+    const start=t(ev.startTime),end=t(ev.endTime);
+    if(start===null)return {rank:3,label:'時刻未定'};
+    if(start>now)return {rank:1,label:start-now<=60?`まもなく ${ev.startTime}`:`このあと ${ev.startTime}`};
+    if(end===null)return {rank:4,label:`${ev.startTime}開始`};
+    if(end>now)return {rank:0,label:`開催中 〜${ev.endTime}`};
+    return {rank:5,label:'本日終了'};
+  }
+
+  function classifyHomeEvents(events,today,now,scopeValue=''){
+    const todayEvents=[],longRunning=[],upcoming=[];
+    const from=addDaysToDateStr(today,1),through=addDaysToDateStr(today,7);
+    for(const ev of events){
+      if(!ev||!ev.isPublished)continue;
+      const schedule=getEventScope(ev)==='schedule';
+      if(scopeValue==='schedule'?!schedule:schedule)continue;
+      if(!schedule&&isLongRunningEvent(ev)){
+        if(isEventOnDate(ev,today))longRunning.push(ev);
+        continue;
+      }
+      if(isEventOnDate(ev,today))todayEvents.push(ev);
+      // The tests for today and tomorrow are independent: short multi-day events may overlap.
+      for(let day=1;day<=7;day++){
+        const date=addDaysToDateStr(today,day);
+        if(isEventOnDate(ev,date)){upcoming.push({ev,displayDate:date});break;}
+      }
+    }
+    todayEvents.sort((a,b)=>{
+      const aa=getHomeTodayStatus(a,today,now),bb=getHomeTodayStatus(b,today,now);
+      return aa.rank-bb.rank
+        ||String(a.startTime||'99:99').localeCompare(String(b.startTime||'99:99'))
+        ||(typeof sameDayOrderCompare==='function'?sameDayOrderCompare(a,b,today):0);
+    });
+    longRunning.sort((a,b)=>getEventEnd(a).localeCompare(getEventEnd(b))||a.date.localeCompare(b.date));
+    upcoming.sort((a,b)=>a.displayDate.localeCompare(b.displayDate)
+      ||String(a.ev.startTime||'99:99').localeCompare(String(b.ev.startTime||'99:99'))
+      ||(typeof sameDayOrderCompare==='function'?sameDayOrderCompare(a.ev,b.ev,today):0));
+    return {todayEvents,longRunning,upcoming,from,through};
+  }
+
+  function homeClassification(source){
+    return classifyHomeEvents(source||getFilteredEvents(),getTodayStr(),getHomeNowMinutes(),activeFilters.scope||'');
+  }
+
+  function homeTodayCard(ev,today,now){
+    const status=getHomeTodayStatus(ev,today,now);
+    const html=createEventCardHTML(ev,false);
+    if(!status.label)return html;
+    return html.replace('<div class="event-card-meta">',`<div class="event-card-meta"><span class="tag home-status home-status-${status.rank}">${escapeHtml(status.label)}</span>`);
+  }
+
+  function updateHomeHero(source){
+    const el=document.querySelector('.hero-live-count');if(!el)return;
+    const model=homeClassification(source);
+    el.innerHTML=(activeFilters.scope||'')==='schedule'
+      ?`今日は <strong>${model.todayEvents.length}件</strong> の学事日程があります。`
+      :`今日は <strong>${model.todayEvents.length}件</strong> のイベント・会期中の展示や企画 <strong>${model.longRunning.length}件</strong>`;
   }
 
   function installHomeRenderOverrides() {
-    if (typeof window.renderTodayEvents === 'function' && typeof window.createEventCardHTML === 'function') {
-      window.renderTodayEvents = function renderTodayEventsUx(allFiltered) {
-        const el = document.getElementById('today-events');
-        if (!el) return [];
-        const today = getTodayStr();
-        const source = allFiltered || getFilteredEvents();
-        const filtered = sortTodayByUsefulness(source.filter(ev => isEventOnDate(ev, today)));
-        const countEl = document.getElementById('today-count');
-        if (countEl) countEl.textContent = `${filtered.length}件`;
-        el.innerHTML = filtered.length === 0
-          ? `<div class="empty-state"><div class="empty-state-icon">📭</div><p>本日のイベントは0件です。</p><p class="empty-state-action"><button type="button" class="btn btn-ghost btn-sm" onclick="scrollToSection('upcoming-section')">今週のイベントを見る</button></p></div>`
-          : eventsGridWithShowMoreHTML(filtered.map(ev => createEventCardHTML(ev, false)).join(''), 'today-events');
-        return filtered.map(ev => ev.id);
-      };
+    if (typeof window.renderTodayEvents === 'function') window.renderTodayEvents = function renderTodayEventsUx(allFiltered){
+  const el=document.getElementById('today-events');if(!el)return [];
+  const source=allFiltered||getFilteredEvents(),model=homeClassification(source);
+  const today=getTodayStr(),now=getHomeNowMinutes();
+  const count=document.getElementById('today-count');if(count)count.textContent=`${model.todayEvents.length}件`;
+  el.innerHTML=model.todayEvents.length
+    ?eventsGridWithShowMoreHTML(model.todayEvents.map(ev=>homeTodayCard(ev,today,now)).join(''),'today-events')
+    :`<div class="empty-state"><div class="empty-state-icon">📭</div><p>${(activeFilters.scope||'')==='schedule'?'本日の学事日程はありません。':'本日のイベントは0件です。'}</p><p class="empty-state-action"><button type="button" class="btn btn-ghost btn-sm" onclick="scrollToSection('upcoming-section')">明日から7日間を見る</button></p></div>`;
+  renderHomeLongRunning(model.longRunning);
+  updateHomeHero(source);
+  return model.todayEvents.map(ev=>ev.id);
+};
+    if (typeof window.renderUpcomingEvents === 'function') window.renderUpcomingEvents = function renderUpcomingEventsUx(allFiltered){
+  const el=document.getElementById('upcoming-events');if(!el)return [];
+  const model=homeClassification(allFiltered||getFilteredEvents());
+  document.getElementById('upcoming-long-running')?.remove();
+  const count=document.getElementById('upcoming-count');if(count)count.textContent=`${model.upcoming.length}件`;
+  el.dataset.homeGrouped='true';
+  if(!model.upcoming.length){el.innerHTML=emptyStateHTML('明日から7日間の予定は0件です。');return [];}
+  const firstDay=model.upcoming.filter(item=>item.displayDate===model.from);
+  const following=model.upcoming.filter(item=>item.displayDate!==model.from);
+  const initial=[...firstDay.slice(0,3)];
+  initial.push(...following.slice(0,Math.max(0,5-initial.length)));
+  const shown=new Set(initial.map(x=>String(x.ev.id)));
+  const groups=new Map();
+  for(const item of model.upcoming){
+    if(!groups.has(item.displayDate))groups.set(item.displayDate,[]);
+    groups.get(item.displayDate).push(item);
+  }
+  const parts=[];
+  for(const [date,items] of groups){
+    const hasVisible=items.some(x=>shown.has(String(x.ev.id)));
+    parts.push(`<div class="home-upcoming-day-heading home-upcoming-extra" data-date="${date}"${hasVisible?'':' hidden'}><span>${escapeHtml(formatDateDisplay(date))}</span><span>${items.length}件</span></div>`);
+    for(const item of items){
+      let html=createEventCardHTML(item.ev,true);
+      if(!shown.has(String(item.ev.id)))html=html.replace('class="event-card"','class="event-card home-upcoming-extra" hidden');
+      parts.push(html);
     }
-
-    if (typeof window.renderUpcomingEvents === 'function') {
-      window.renderUpcomingEvents = function renderUpcomingEventsUx(allFiltered) {
-        const el = document.getElementById('upcoming-events');
-        if (!el) return [];
-        const today = getTodayStr();
-        const weekAhead = getWeekAheadStr();
-        const source = allFiltered || getFilteredEvents();
-        const inWindow = source.filter(ev => (ev.date > today || isEventOnDate(ev, today)) && ev.date <= weekAhead);
-        const dayTiebreak = (a, b) => (typeof sameDayOrderCompare === 'function' ? sameDayOrderCompare(a, b, today) : 0);
-        const regular = inWindow.filter(ev => !isLongRunningEvent(ev))
-          .sort((a, b) => a.date.localeCompare(b.date) || dayTiebreak(a, b));
-        const longRunning = source.filter(ev => isLongRunningEvent(ev) && ev.date <= weekAhead && getEventEnd(ev) >= today)
-          .sort((a, b) => getEventEnd(a).localeCompare(getEventEnd(b)) || a.date.localeCompare(b.date) || dayTiebreak(a, b));
-        const countEl = document.getElementById('upcoming-count');
-        if (countEl) countEl.textContent = `${regular.length}件`;
-        el.innerHTML = regular.length === 0
-          ? emptyStateHTML('この先7日間のイベントは0件です。')
-          : eventsGridWithShowMoreHTML(regular.map(ev => createEventCardHTML(ev, true)).join(''), 'upcoming-events');
-        renderUpcomingLongRunning(longRunning);
-        return [...regular, ...longRunning].map(ev => ev.id);
-      };
-    }
+  }
+  const hiddenCount=model.upcoming.length-shown.size;
+  el.innerHTML=`<div class="events-grid home-upcoming-grid">${parts.join('')}</div>${hiddenCount?`<div class="home-upcoming-more-wrap"><button type="button" class="home-upcoming-more" aria-expanded="false">すべて見る（他${hiddenCount}件）</button></div>`:''}`;
+  el.querySelector('.home-upcoming-more')?.addEventListener('click',e=>{
+    const btn=e.currentTarget,expanded=btn.getAttribute('aria-expanded')==='true';
+    el.querySelectorAll('.home-upcoming-extra').forEach(node=>{
+      if(!expanded){node.hidden=false;return;}
+      if(node.classList.contains('home-upcoming-day-heading'))node.hidden=!(groups.get(node.dataset.date)||[]).some(x=>shown.has(String(x.ev.id)));
+      else node.hidden=!shown.has(String(node.dataset.id));
+    });
+    btn.setAttribute('aria-expanded',String(!expanded));
+    btn.textContent=expanded?`すべて見る（他${hiddenCount}件）`:'閉じる';
+    if(!expanded&&typeof refreshLiveReactionCounts==='function')refreshLiveReactionCounts(model.upcoming.map(x=>x.ev.id));
+  });
+  if(!model.todayEvents.length){
+    const body=document.getElementById('upcoming-body'),toggle=document.getElementById('upcoming-toggle');
+    if(body&&toggle&&body.hidden){body.hidden=false;toggle.setAttribute('aria-expanded','true');}
+  }
+  return model.upcoming.map(x=>x.ev.id);
+};
 
     if (typeof window.organizerHTML === 'function') {
       window.organizerHTML = function organizerHtmlUx(ev) {
@@ -178,28 +243,29 @@
     });
   }
 
-  function renderUpcomingLongRunning(events) {
-    const section = document.getElementById('upcoming-section');
-    if (!section) return;
-    let wrap = document.getElementById('upcoming-long-running');
-    if (!events.length) { if (wrap) wrap.remove(); return; }
-    if (!wrap) {
-      wrap = document.createElement('div');
-      wrap.id = 'upcoming-long-running';
-      wrap.className = 'upcoming-long-running';
-      const body = document.getElementById('upcoming-body');
-      (body || section.querySelector('.container') || section).appendChild(wrap);
-    }
-    const visibleCount = 5;
-    const items = events.map((ev, index) => {
-      const range = `${formatShortDate(ev.date)}〜${formatShortDate(getEventEnd(ev))}`;
-      const extra = index >= visibleCount ? ' upcoming-long-running-extra' : '';
-      return `<button type="button" class="upcoming-long-running-item${extra}" onclick="openModal('${escapeHtml(String(ev.id))}')"><span>${escapeHtml(ev.title)}</span><span class="upcoming-long-running-range">${escapeHtml(range)}</span></button>`;
-    }).join('');
-    const more = events.length > visibleCount
-      ? `<button type="button" class="btn btn-ghost btn-sm upcoming-long-running-more" onclick="this.closest('.upcoming-long-running').classList.add('expanded');this.hidden=true;">すべて見る（他${events.length - visibleCount}件）</button>`
-      : '';
-    wrap.innerHTML = `<h3>開催中の展示・長期企画</h3><div class="upcoming-long-running-list">${items}</div>${more}`;
+  function renderHomeLongRunning(events){
+    const today=document.getElementById('today-events');if(!today)return;
+    let box=document.getElementById('home-long-running');
+    if(!events.length){box?.remove();return;}
+    if(!box){box=document.createElement('aside');box.id='home-long-running';box.className='home-long-running';box.setAttribute('aria-label','会期中の展示・長期企画');today.after(box);}
+    const visible=window.matchMedia('(max-width: 768px)').matches?1:2;
+    const rows=events.map(ev=>{
+      const remaining=Math.round((Date.parse(getEventEnd(ev)+'T00:00:00Z')-Date.parse(getTodayStr()+'T00:00:00Z'))/86400000);
+      return `<button type="button" class="home-long-item" onclick="openModal('${escapeHtml(String(ev.id))}')"><span class="home-long-item-title">${escapeHtml(ev.title)}</span><span class="home-long-item-date">〜${escapeHtml(formatShortDate(getEventEnd(ev)))}</span>${remaining>=0&&remaining<=7?'<span class="home-long-soon">まもなく終了</span>':''}</button>`;
+    });
+    const extra=Math.max(0,events.length-visible);
+    box.innerHTML=`<h3>🖼 会期中の展示・長期企画 <span class="home-long-count">${events.length}件</span></h3>
+      <div class="home-long-list">${rows.slice(0,visible).join('')}</div>
+      ${extra?`<div class="home-long-extra" id="home-long-extra" hidden>${rows.slice(visible).join('')}</div>
+        <button type="button" class="home-long-toggle" aria-expanded="false" aria-controls="home-long-extra">ほか${extra}件を見る ▸</button>`:''}
+      <p class="home-long-note">会期内の企画です。開館日・休館日は公式情報をご確認ください。</p>`;
+    const toggle=box.querySelector('.home-long-toggle');
+    toggle?.addEventListener('click',()=>{
+      const open=toggle.getAttribute('aria-expanded')==='true';
+      box.querySelector('#home-long-extra').hidden=open;
+      toggle.setAttribute('aria-expanded',String(!open));
+      toggle.textContent=open?`ほか${extra}件を見る ▸`:'閉じる';
+    });
   }
 
   function homeDomEnhancements() {
@@ -211,19 +277,9 @@
 
     const heroSub = document.querySelector('.hero-sub');
     if (heroSub && !document.querySelector('.hero-live-count')) {
-      const today = safeToday();
-      const published = getAllEventsSafe().filter(ev => ev.isPublished);
-      const todayCount = typeof isEventOnDate === 'function' ? published.filter(ev => isEventOnDate(ev, today)).length : 0;
-      let weekCount = 0;
-      try {
-        const weekAhead = getWeekAheadStr();
-        weekCount = published.filter(ev => (ev.date > today || isEventOnDate(ev, today)) && ev.date <= weekAhead && !isLongRunningEvent(ev)).length;
-      } catch (_) {}
-      const p = document.createElement('p');
-      p.className = 'hero-live-count';
-      p.innerHTML = `今日は <strong>${todayCount}件</strong>・この先7日間は <strong>${weekCount}件</strong> のイベントがあります。`;
-      heroSub.after(p);
+      const p = document.createElement('p'); p.className = 'hero-live-count'; heroSub.after(p);
     }
+    if (typeof getFilteredEvents === 'function') updateHomeHero(getFilteredEvents());
 
     document.querySelectorAll('.scope-btn').forEach(btn => {
       if (btn.dataset.scope === 'circle') btn.textContent = 'イベント';

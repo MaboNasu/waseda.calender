@@ -126,3 +126,22 @@
   .modal-header { padding: 1rem; }
   .modal-title { font-size: 1rem; }
 }
+
+/* Put a genuine event above the fold on phone-size home pages. */
+@media (max-width: 768px) {
+  #top.hero { padding: 1rem 0 1.1rem; }
+  #top .hero-badge, #top .hero-sub { display: none; }
+  #top.hero h1 { font-size: 1.35rem; line-height: 1.35; margin-bottom: .5rem; }
+  #top .hero-cta { gap: 0; }
+  #top .hero-cta > :not(:first-child) { display: none; }
+  #top .hero-cta .btn { min-height: 44px; padding: .5rem .85rem; font-size: .83rem; }
+  #top .hero-live-count { margin-top: .65rem; font-size: .82rem; line-height: 1.4; }
+  #top .hero-live-count strong { font-size: .91rem; }
+  #today-section { padding-top: 1.5rem; }
+  #today-section .section-title-row { margin-bottom: .8rem; }
+}
+@media (max-width: 360px) {
+  #top.hero { padding: .85rem 0 1rem; }
+  #today-section { padding-top: .9rem; }
+  #today-section .section-title-row { margin-bottom: .6rem; }
+}

@@ -1779,9 +1779,9 @@ function getStoredDensity(sectionId) {
     const stored = localStorage.getItem(`${DENSITY_STORAGE_KEY}-${sectionId}`);
     // 旧バージョン（大きめ/コンパクトの2択）で保存された値を新しい3段階に読み替える
     if (stored === 'compact') return 'small';
-    return stored || 'large';
+    return stored || (window.matchMedia('(max-width: 768px)').matches ? 'small' : 'large');
   } catch (e) {
-    return 'large';
+    return window.matchMedia('(max-width: 768px)').matches ? 'small' : 'large';
   }
 }
 
@@ -1842,7 +1842,7 @@ function getInitiallyVisibleCardIds(containerId) {
   if (body?.hidden) return [];
   const grid = container?.querySelector('.events-grid');
   if (!grid) return [];
-  const cards = Array.from(grid.querySelectorAll('.event-card[data-id]'));
+  const cards = Array.from(grid.querySelectorAll('.event-card[data-id]')).filter(card => !card.hidden);
   if (grid.dataset.expanded === 'true' || !grid.style.maxHeight) return cards.map(card => card.dataset.id);
   const maxHeight = parseFloat(grid.style.maxHeight) || 0;
   const firstTop = cards[0]?.offsetTop || 0;

@@ -199,3 +199,26 @@ summary:focus-visible {
     min-height: 44px;
   }
 }
+
+/* Home discovery: a compact exhibition lane and date-grouped upcoming cards. */
+.home-long-running { margin-top: 1rem; padding: .8rem .9rem; border: 1px solid var(--border); background: var(--gray-50); border-radius: var(--radius-md); }
+.home-long-running h3 { margin: 0 0 .5rem; color: var(--gray-700); font-size: .85rem; line-height: 1.5; }
+.home-long-count { font-weight: 500; color: var(--text-muted); margin-left: .25rem; }
+.home-long-list, .home-long-extra { display: grid; gap: .25rem; }
+.home-long-extra[hidden] { display: none !important; }
+.home-long-item { display: flex; align-items: center; gap: .55rem; width: 100%; min-height: 44px; padding: .4rem .45rem; background: white; border: 1px solid var(--border); border-radius: 7px; cursor: pointer; text-align: left; font: inherit; }
+.home-long-item:hover { background: var(--enjy-pale); }
+.home-long-item-title { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .82rem; }
+.home-long-item-date { flex: 0 0 auto; font-size: .75rem; color: var(--text-muted); }
+.home-long-soon { flex: 0 0 auto; font-size: .69rem; color: var(--enjy); }
+.home-long-toggle { min-height: 44px; margin-top: .2rem; padding: .45rem .25rem; border: 0; color: var(--enjy); background: none; font: inherit; font-weight: 700; font-size: .8rem; cursor: pointer; }
+.home-long-note { margin: .25rem 0 0; font-size: .71rem; color: var(--text-muted); line-height: 1.5; }
+.home-status { order: -1; background: var(--enjy-pale); color: var(--enjy); }
+.home-status-0 { background: #e6f5ec; color: #17653a; }
+.home-status-5 { background: var(--gray-100); color: var(--text-muted); }
+.home-upcoming-day-heading { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .5rem .15rem .25rem; border-bottom: 1px solid var(--border); font-size: .84rem; font-weight: 700; color: var(--gray-700); }
+.home-upcoming-day-heading > span:last-child { font-weight: 500; color: var(--text-muted); font-size: .75rem; }
+.home-upcoming-grid > [hidden] { display: none !important; }
+.home-upcoming-more-wrap { padding: .65rem 0; text-align: center; }
+.home-upcoming-more { min-height: 44px; padding: .55rem 1rem; background: transparent; border: 1px solid var(--enjy); border-radius: 8px; color: var(--enjy); font: inherit; font-weight: 700; cursor: pointer; }
+@media (max-width: 768px) { .home-long-soon { display: none; } .home-upcoming-day-heading { margin-top: .2rem; } }

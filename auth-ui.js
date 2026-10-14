@@ -139,15 +139,15 @@ function loadUxImprovementLayer() {
     document.body.appendChild(script);
   };
 
-  addCss('/ux-improvements.css?v=3', 'base-css');
+  addCss('/ux-improvements.css?v=4', 'base-css');
   addCss('/ux-polish.css?v=3', 'polish-css');
   addCss('/calendar-fixes.css?v=2', 'calendar-css');
-  addCss('/mobile-fixes.css?v=2', 'mobile-css');
-  addScript('/ux-improvements.js?v=4', 'base-js', () => {
+  addCss('/mobile-fixes.css?v=3', 'mobile-css');
+  addScript('/ux-improvements.js?v=5', 'base-js', () => {
     // calendar-fixes must register before ux-polish's MutationObserver so +N counts
     // remain idempotent on every calendar re-render.
     addScript('/calendar-fixes.js?v=2', 'calendar-js', () => {
-      addScript('/ux-polish.js?v=3', 'polish-js', () => {
+      addScript('/ux-polish.js?v=4', 'polish-js', () => {
         addScript('/mobile-fixes.js?v=2', 'mobile-js');
       });
     });
