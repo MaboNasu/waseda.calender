@@ -1790,9 +1790,9 @@ const EVENTS = [
     target: ["student", "obog", "public"],
     feeType: "unknown",
     feeText: "料金不明",
-    description: "関東大学ラグビー対抗戦グループ。早稲田大学 対 青山学院大学。",
+    description: "関東大学ラグビー対抗戦グループ。早稲田大学 対 青山学院大学。40分×2。開場12:00。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-10-15",
     isPublished: true
   },
   {
@@ -7211,24 +7211,6 @@ const EVENTS = [
     feeText: "無料(観覧自由)",
     description: "踊り侍による第27回東京よさこい出演。2日目は12:18/13:30/15:18/17:36/18:06の5ステージ。2026年度演舞「BRAIN」の三代納め。",
     externalUrl: "https://www.instagram.com/odorisamurai/",
-    lastUpdated: "2026-10-09",
-    isPublished: true
-  },
-  {
-    id: "evt-393",
-    title: "関東大学対抗戦 vs青山学院大学",
-    date: "2026-10-11",
-    startTime: "13:00",
-    location: "森エンジニアリング桐生スタジアム",
-    campus: "outside",
-    organizer: "早稲田大学ラグビー蹴球部",
-    category: "sports",
-    scope: "circle",
-    target: ["student", "obog", "public"],
-    feeType: "unknown",
-    feeText: "料金不明",
-    description: "早稲田大学ラグビー蹴球部の関東大学対抗戦。対 青山学院大学。40分×2。開場12:00。",
-    externalUrl: "https://www.instagram.com/wasedarugby_1918/",
     lastUpdated: "2026-10-09",
     isPublished: true
   },
