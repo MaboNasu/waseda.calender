@@ -461,7 +461,7 @@ function renderEventPageHtml(ev, labelFns) {
 </footer>
 
 <script src="/events.js?v=7"></script>
-<script src="/script.js?v=39"></script>
+<script src="/script.js?v=40"></script>
 <script src="/image-generator.js?v=8"></script>
 <script src="/event-page.js?v=12"></script>
 <script type="module" src="/firebase-init.js?v=3"></script>

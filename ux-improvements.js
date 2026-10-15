@@ -643,7 +643,6 @@
       const section = document.getElementById('today-section');
       const expanded = container?.querySelector('.events-grid')?.dataset.expanded === 'true';
       const ids = renderTodayEvents(source);
-      applyDensity(section, getStoredDensity('today-section'));
 
       const grid = container?.querySelector('.events-grid');
       if (grid && expanded) {

@@ -229,3 +229,82 @@ summary:focus-visible {
 .home-upcoming-more-wrap { padding: .65rem 0; text-align: center; }
 .home-upcoming-more { min-height: 44px; padding: .55rem 1rem; background: transparent; border: 1px solid var(--enjy); border-radius: 8px; color: var(--enjy); font: inherit; font-weight: 700; cursor: pointer; }
 @media (max-width: 768px) { .home-long-soon { display: none; } .home-upcoming-day-heading { margin-top: .2rem; } }
+
+/* Homepage responsive cards: no manual size choice.
+   With the 1200px site container, 260px minimum gives 4 cards on wide desktop,
+   2 on mid-sized layouts, and readable full-width cards on phones. */
+#today-events > .events-grid,
+#upcoming-events > .events-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: .9rem;
+}
+#today-section .event-card,
+#upcoming-section .event-card {
+  min-width: 0;
+}
+#today-section .event-card-body,
+#upcoming-section .event-card-body {
+  padding: .9rem 1rem;
+}
+#today-section .event-card-title,
+#upcoming-section .event-card-title {
+  font-size: .95rem;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+#today-section .event-card-info,
+#upcoming-section .event-card-info {
+  font-size: .79rem;
+  gap: .25rem;
+  margin-bottom: .4rem;
+}
+#today-section .event-info-row-organizer,
+#upcoming-section .event-info-row-organizer,
+#today-section .event-info-row-location,
+#upcoming-section .event-info-row-location {
+  display: flex;
+  min-width: 0;
+}
+#today-section .event-info-row-organizer > span:last-child,
+#upcoming-section .event-info-row-organizer > span:last-child,
+#today-section .event-info-row-location > span:last-child,
+#upcoming-section .event-info-row-location > span:last-child {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+#today-section .event-card-desc,
+#upcoming-section .event-card-desc {
+  display: none;
+}
+#today-section .event-card-footer,
+#upcoming-section .event-card-footer {
+  padding: .65rem .85rem;
+}
+#today-section .btn-detail,
+#upcoming-section .btn-detail {
+  font-size: .8rem;
+}
+@media (max-width: 640px) {
+  #today-events > .events-grid,
+  #upcoming-events > .events-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: .7rem;
+  }
+  #today-section .event-card-body,
+  #upcoming-section .event-card-body {
+    padding: .75rem .85rem;
+  }
+  #today-section .event-card-info,
+  #upcoming-section .event-card-info {
+    font-size: .78rem;
+  }
+}

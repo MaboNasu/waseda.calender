@@ -77,7 +77,12 @@ assertIncludes(script, "'upcoming-section': 5", 'スマホ7日間初期表示');
 assertIncludes(script, 'handleCalendarDayCellClick', 'PC日付セルクリック');
 assertIncludes(script, 'compareEventsChronologically', '日別時刻順');
 assertIncludes(script, 'getCalendarDayEvents', 'カレンダー日別イベントの共通集合');
-assertIncludes(script, "window.matchMedia('(max-width: 768px)').matches ? 'small' : 'large'", 'スマホ既定密度');
+assertIncludes(script, 'function refreshHomeCardLayout()', 'カードのレスポンシブ再計測');
+assert(!homeIndex.includes('class="density-toggle"'), 'トップの表示密度切替を廃止');
+assert(!script.includes("localStorage.getItem(`\${DENSITY_STORAGE_KEY}"), '旧密度設定への依存を除去');
+assertIncludes(read('ux-improvements.css'), 'grid-template-columns: repeat(auto-fit', 'カード横幅の自動調整');
+assertIncludes(read('ux-improvements.css'), '#today-section .event-info-row-organizer', '主催団体の表示');
+assertIncludes(read('ux-improvements.css'), '#upcoming-section .event-info-row-location', '開催場所の表示');
 assertIncludes(read('ux-improvements.js'), 'classifyHomeEvents', 'ホーム分類');
 assert(homeIndex.indexOf('class="recommend-entry"') >= 0 && homeIndex.indexOf('class="recommend-entry"') < homeIndex.indexOf('id="today-section"'), 'おすすめ導線は本日のイベントより前');
 assert(!homeIndex.includes('class="filter-section"') && !homeIndex.includes('id="filter-toggle"'), 'トップの大型絞り込みパネルを廃止');
@@ -104,17 +109,17 @@ assert(!orgPage.includes('すべての団体を表示する（504件）'), '団�
 assertIncludes(orgPage, 'getOrganizations().length', '団体総数の動的表示');
 
 // Ensure the homepage uses the same cache-busting versions as generated pages.
-for (const [asset, version] of [['events.js', '7'], ['script.js', '39'], ['auth-ui.js', '7']]) {
+for (const [asset, version] of [['events.js', '7'], ['script.js', '40'], ['auth-ui.js', '7']]) {
   assertIncludes(homeIndex, asset + '?v=' + version, 'ホームの' + asset + 'キャッシュ版');
 }
 // キャッシュ/静的生成の版ズレ防止。
 assertIncludes(generator, '/style.css?v=46', '生成イベントページ style version');
-assertIncludes(generator, '/script.js?v=39', '生成イベントページ script version');
+assertIncludes(generator, '/script.js?v=40', '生成イベントページ script version');
 assertIncludes(generator, '/image-generator.js?v=8', '生成イベントページ image generator version');
 assertIncludes(generator, '/auth-ui.js?v=6', '生成イベントページ auth UI version');
 assertIncludes(contactHtml, 'organizations.js?v=8', '問い合わせページ organization data version');
 assertIncludes(serviceWorker, 'image-generator', 'Service Worker freshness-critical assets');
-assertIncludes(serviceWorker, "wc-cache-v15", 'Service Worker cache version');
+assertIncludes(serviceWorker, "wc-cache-v16", 'Service Worker cache version');
 
 // 実データに長文が増えても、UI側に長文対策が残っていることを確認する。
 // 現時点で長文データが無い環境でもチェック自体は失敗させない。

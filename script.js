@@ -1768,70 +1768,19 @@ function injectEventsJsonLd() {
 /* ============================================================
    まとめて再描画
    ============================================================ */
-/* ============================================================
-   表示密度切り替え（大きめ／コンパクト）
-   ============================================================ */
-const DENSITY_STORAGE_KEY = 'wc-events-density';
-
-/** セクションごと（本日のイベント/今週開催）に独立して密度設定を保存・復元する */
-function getStoredDensity(sectionId) {
-  try {
-    const stored = localStorage.getItem(`${DENSITY_STORAGE_KEY}-${sectionId}`);
-    // 旧バージョン（大きめ/コンパクトの2択）で保存された値を新しい3段階に読み替える
-    if (stored === 'compact') return 'small';
-    return stored || (window.matchMedia('(max-width: 768px)').matches ? 'small' : 'large');
-  } catch (e) {
-    return window.matchMedia('(max-width: 768px)').matches ? 'small' : 'large';
-  }
-}
-
-function setStoredDensity(sectionId, value) {
-  try {
-    localStorage.setItem(`${DENSITY_STORAGE_KEY}-${sectionId}`, value);
-  } catch (e) {
-    // localStorageが使えない環境（プライベートモード等）では保存をスキップ
-  }
-}
-
-/** 指定セクション内の表示密度（大/中/小）だけを適用する（他セクションには影響しない） */
-function applyDensity(sectionEl, density) {
-  if (!sectionEl) return;
-  sectionEl.querySelectorAll('.events-grid').forEach(grid => {
-    grid.classList.toggle('density-medium', density === 'medium');
-    grid.classList.toggle('density-small', density === 'small');
-  });
-  sectionEl.querySelectorAll('.density-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.density === density);
-  });
-}
-
-function setupDensityToggle() {
-  document.querySelectorAll('.density-toggle').forEach(toggle => {
-    const sectionEl = toggle.closest('section');
-    if (!sectionEl) return;
-    toggle.querySelectorAll('.density-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        setStoredDensity(sectionEl.id, btn.dataset.density);
-        applyDensity(sectionEl, btn.dataset.density);
-        // 密度が変わると1行の高さも変わるため、展開状態をリセットして1行分に折りたたみ直す
-        const grid = sectionEl.querySelector('.events-grid');
-        if (grid) grid.dataset.expanded = 'false';
-        collapseGridToOneRow(sectionEl);
-      });
-    });
-  });
-}
-
-function applyAllStoredDensities() {
-  document.querySelectorAll('.density-toggle').forEach(toggle => {
-    const sectionEl = toggle.closest('section');
-    if (!sectionEl) return;
-    applyDensity(sectionEl, getStoredDensity(sectionEl.id));
-    // 密度クラスを当てた後（＝グリッドの実際のカードサイズが確定した後）でないと
-    // 1行分の高さを正しく測れないため、必ずこの後で折りたたみを行う
-    const grid = sectionEl.querySelector('.events-grid');
-    if (grid) grid.dataset.expanded = 'false';
-    collapseGridToOneRow(sectionEl);
+/**
+ * Home cards use CSS Grid auto-layout instead of saved "large/medium/small" preferences.
+ * Recompute initial row height when the content is rendered. Window resize and user
+ * "show more" still use the existing collapseGridToOneRow implementation.
+ */
+function refreshHomeCardLayout() {
+  document.querySelectorAll('#today-events, #upcoming-events').forEach(container => {
+    const grid = container.querySelector('.events-grid');
+    if (!grid) return;
+    // Old grid density classes or persisted user preferences must not constrain widths.
+    grid.classList.remove('density-small', 'density-medium');
+    grid.dataset.expanded = 'false';
+    collapseGridToOneRow(container);
   });
 }
 
@@ -1859,7 +1808,7 @@ function renderAll() {
   renderUpcomingEvents(filteredEvents);
   renderCalendar(filteredEvents);
   injectEventsJsonLd();
-  applyAllStoredDensities();
+  refreshHomeCardLayout();
   renderSelectionBar();
   requestAnimationFrame(() => {
     const ids = [...new Set([
@@ -1996,7 +1945,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setupSectionToggle('today-toggle', 'today-body');
   setupSectionToggle('upcoming-toggle', 'upcoming-body');
   setupModal();
-  setupDensityToggle();
   renderAll();
 
   // 画面幅が変わると1行に入るカード枚数（＝1行の高さ）も変わるため、折りたたみ中の
