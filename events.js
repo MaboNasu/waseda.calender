@@ -8981,6 +8981,49 @@ const EVENTS = [
     externalUrl: "https://www.instagram.com/p/DeHXdCRvKyL/",
     lastUpdated: "2026-10-15",
     isPublished: true
+  },
+
+  // ---- Instagram情報による追加(2026-10-15第2便収集分) ----
+
+  {
+    id: "evt-490",
+    title: "早稲田祭2026 出演",
+    date: "2026-11-07",
+    startTime: "11:30",
+    endTime: "12:00",
+    location: "ストリートステージ(8号館前)",
+    campus: "waseda",
+    organizer: "WASElele",
+    category: "other",
+    scope: "circle",
+    orgId: "C-289",
+    target: ["student", "obog", "public"],
+    feeType: "free",
+    feeText: "無料(チケット不要・入場自由)",
+    description: "WASEleleによる早稲田祭2026出演。",
+    externalUrl: "https://www.instagram.com/p/DeMALpFhPKC/",
+    lastUpdated: "2026-10-15",
+    isPublished: true
+  },
+  {
+    id: "evt-491",
+    title: "早稲田祭2026 出演",
+    date: "2026-11-08",
+    startTime: "15:10",
+    endTime: "15:40",
+    location: "カフェテリアステージ(戸山カフェテリア)",
+    campus: "toyama",
+    organizer: "WASElele",
+    category: "other",
+    scope: "circle",
+    orgId: "C-289",
+    target: ["student", "obog", "public"],
+    feeType: "free",
+    feeText: "無料(チケット不要・入場自由)",
+    description: "WASEleleによる早稲田祭2026出演。",
+    externalUrl: "https://www.instagram.com/p/DeMALpFhPKC/",
+    lastUpdated: "2026-10-15",
+    isPublished: true
   }
 
 ];
