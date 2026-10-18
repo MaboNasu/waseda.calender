@@ -8807,19 +8807,20 @@ const EVENTS = [
   },
   {
     id: "evt-480",
-    title: "早慶戦(ホッケー部)",
+    title: "第100回早慶ホッケー定期戦",
     date: "2026-11-15",
-    location: "大井ホッケー競技場",
+    startTime: "13:30",
+    location: "大井ホッケー競技場 メインピッチ",
     campus: "outside",
     organizer: "早稲田大学ホッケー部",
     category: "sports",
     scope: "circle",
     target: ["student", "obog", "public"],
-    feeType: "unknown",
-    feeText: "料金不明",
-    description: "早稲田大学ホッケー部(男子・女子)と慶應義塾大学による伝統の早慶戦。",
-    externalUrl: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/",
-    lastUpdated: "2026-10-15",
+    feeType: "free",
+    feeText: "無料(第100回記念で一般観戦も無料開放)",
+    description: "早稲田大学ホッケー部と慶應義塾大学による第100回記念早慶定期戦。女子戦13:30〜、男子戦15:15〜。事前申込不要。",
+    externalUrl: "https://www.waseda-hockey.com/2026/10/17/teammates事業-早慶ホッケー定期戦について/",
+    lastUpdated: "2026-10-18",
     isPublished: true
   },
   {
@@ -9293,6 +9294,29 @@ const EVENTS = [
     description: "ICCによる異文化交流イベント。サッカーを通じた交流会。定員100名程度(抽選制)、応募締切10/26 9:00。",
     externalUrl: "https://www.waseda.jp/inst/icc/other/2026/09/14/44387/",
     lastUpdated: "2026-10-17",
+    isPublished: true
+  },
+
+  // ---- Instagram情報による追加(2026-10-18収集分) ----
+
+  {
+    id: "evt-507",
+    title: "早稲田祭企画『バカの学問「バカデミック」ツアー』",
+    date: "2026-11-08",
+    startTime: "10:00",
+    endTime: "17:00",
+    location: "戸山キャンパス 32号館 325教室",
+    campus: "toyama",
+    organizer: "Walkin'",
+    category: "other",
+    scope: "circle",
+    orgId: "C-040",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明",
+    description: "Walkin'による早稲田祭2026の体験型企画『バカの学問「バカデミック」ツアー』。",
+    externalUrl: "https://www.instagram.com/p/DeeL4E8oNWn/",
+    lastUpdated: "2026-10-18",
     isPublished: true
   }
 
