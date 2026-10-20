@@ -9753,7 +9753,7 @@ const EVENTS = [
     target: ["student", "obog", "public"],
     feeType: "free",
     feeText: "無料",
-    description: "狂言研究会による早稲田祭2026企画「早稲田狂言座」。開場12:30。入退場自由。",
+    description: "狂言研究会による早稲田祭2026企画「早稲田狂言座」。狂言4曲と小舞1曲を上演予定。開場12:30。入退場自由。",
     externalUrl: "https://www.instagram.com/p/DerSMfdyzIN/",
     lastUpdated: "2026-10-20",
     isPublished: true
