@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "policy": "Same official program = one event; independent programs and dates stay separate; ambiguities require user approval.",
+  "decisions": [
+    {
+      "decision": "merge",
+      "confirmedBy": "site-owner",
+      "canonicalEventId": "evt-452",
+      "oldEventIds": [
+        "evt-469"
+      ],
+      "date": "2026-11-04",
+      "time": "12:25-12:55",
+      "title": "早稲田祭2026 Countdown Event",
+      "source": "https://wasedasai.net/former",
+      "notes": "下駄っぱーずと魁響を統合。11月3日は対象外。"
+    }
+  ]
+}

@@ -3140,7 +3140,7 @@ const ORGANIZATIONS = [
     twitterUrl: "https://twitter.com/sakigake_hibiki",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3310",
     websiteUrl: "",
-    relatedEventIds: []
+    relatedEventIds: ["evt-452"]
   },
   {
     id: "C-069",
@@ -3686,7 +3686,7 @@ const ORGANIZATIONS = [
     twitterUrl: "https://twitter.com/shockers_waseda",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3364",
     websiteUrl: "https://www.shockers.jp/",
-    relatedEventIds: []
+    relatedEventIds: ["evt-452"]
   },
   {
     id: "C-123",
@@ -4470,7 +4470,7 @@ const ORGANIZATIONS = [
     twitterUrl: "https://twitter.com/getappers",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3459",
     websiteUrl: "",
-    relatedEventIds: []
+    relatedEventIds: ["evt-452"]
   },
   {
     id: "C-218",
@@ -4526,7 +4526,7 @@ const ORGANIZATIONS = [
     twitterUrl: "https://twitter.com/wasejyomynx",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3464",
     websiteUrl: "",
-    relatedEventIds: []
+    relatedEventIds: ["evt-452"]
   },
   {
     id: "C-224",
@@ -5114,7 +5114,7 @@ const ORGANIZATIONS = [
     twitterUrl: "https://twitter.com/WASEDA_SAZANAMI",
     guideUrl: "https://www.waseda.jp/inst/weekly/circleguide/detail/?id=3747",
     websiteUrl: "",
-    relatedEventIds: []
+    relatedEventIds: ["evt-452"]
   },
   {
     id: "C-283",
@@ -5604,7 +5604,7 @@ const ORGANIZATIONS = [
     twitterUrl: "",
     guideUrl: "",
     websiteUrl: "",
-    relatedEventIds: []
+    relatedEventIds: ["evt-452"]
   },
   {
     id: "C-319",
