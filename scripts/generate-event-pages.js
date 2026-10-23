@@ -203,6 +203,14 @@ function organizerHTML(ev) {
   return `<a href="${SITE_ORIGIN}/org/${encodeURIComponent(ev.orgId)}.html" class="organizer-link">${text}</a>`;
 }
 
+function performersHTML(ev) {
+  if (!Array.isArray(ev.performers)) return '';
+  return ev.performers.map(group => {
+    const text = escapeHtml(group.name || '出演団体');
+    return group.orgId ? `<a class="organizer-link" href="${SITE_ORIGIN}/org/${encodeURIComponent(group.orgId)}.html">${text}</a>` : text;
+  }).join('、');
+}
+
 /** OGP用の説明文（改行を除去し、長すぎる場合は切り詰める）。event-page.js の buildOgDescription の複製 */
 function buildOgDescription(ev) {
   const base = ev.description ? ev.description.replace(/\s+/g, ' ').trim() : '';
@@ -331,6 +339,10 @@ function renderEventPageHtml(ev, labelFns) {
           <span class="modal-detail-label">主催団体</span>
           <span class="modal-detail-value">${organizerHTML(ev)}</span>
         </div>
+        ${ev.performers?.length ? `<div class="modal-detail-item">
+          <span class="modal-detail-label">出演団体</span>
+          <span class="modal-detail-value">${performersHTML(ev)}</span>
+        </div>` : ''}
         <div class="modal-detail-item">
           <span class="modal-detail-label">キャンパス区分</span>
           <span class="modal-detail-value">${escapeHtml(campusLabel(ev.campus))}</span>
@@ -521,7 +533,19 @@ function main() {
     fs.writeFileSync(path.join(OUTPUT_DIR, `${ev.id}.html`), html, 'utf8');
   });
 
-  console.log(`event/*.html を生成しました（${publishedEvents.length}件）。`);
+  // Keep canonical redirects for event IDs archived by an editorial merge.
+  const publishedIds = new Set(publishedEvents.map(ev => String(ev.id)));
+  const aliases = events.filter(ev => ev.mergedInto);
+  aliases.forEach(ev => {
+    if (ev.isPublished || !publishedIds.has(String(ev.mergedInto)))
+      throw new Error(`Invalid merged event: ${ev.id} -> ${ev.mergedInto}`);
+    const url = `${SITE_ORIGIN}/event/${encodeURIComponent(ev.mergedInto)}.html`;
+    const safe = escapeHtml(url);
+    const html = `<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>統合されたイベント – Waseda Calendar</title><link rel="canonical" href="${safe}"><meta http-equiv="refresh" content="0;url=${safe}"><script>location.replace(${JSON.stringify(url)})</script></head><body><p>イベント情報は統合されました。<a href="${safe}">統合先を見る</a></p></body></html>`;
+    fs.writeFileSync(path.join(OUTPUT_DIR, `${ev.id}.html`), html, 'utf8');
+  });
+
+  console.log(`event/*.html を生成しました（${publishedEvents.length}件＋統合案内${aliases.length}件）。`);
 }
 
 main();

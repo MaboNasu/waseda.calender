@@ -203,6 +203,10 @@ function renderEventDetailPage(ev) {
           <span class="modal-detail-label">主催団体</span>
           <span class="modal-detail-value">${escapeHtml(ev.organizer || '—')}</span>
         </div>
+        ${ev.performers?.length ? `<div class="modal-detail-item">
+          <span class="modal-detail-label">出演団体</span>
+          <span class="modal-detail-value">${performersHTML(ev)}</span>
+        </div>` : ''}
         <div class="modal-detail-item">
           <span class="modal-detail-label">キャンパス区分</span>
           <span class="modal-detail-value">${campusLabel(ev.campus)}</span>
@@ -247,6 +251,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const pathMatch = window.location.pathname.match(/\/event\/([^/]+)\.html$/);
   const id = params.get('id') || (pathMatch ? decodeURIComponent(pathMatch[1]) : null);
+  const old = id && (typeof EVENTS !== 'undefined' ? EVENTS : []).find(e => String(e.id) === String(id) && e.mergedInto);
+  if (old) {
+    window.location.replace(buildEventPageUrl({id: old.mergedInto}));
+    return;
+  }
   const ev = id ? findPublishedEventById(id) : null;
 
   if (ev) {

@@ -275,6 +275,17 @@ function organizerHTML(ev) {
   return `<a href="/org/${encodeURIComponent(ev.orgId)}.html" class="organizer-link">${text}</a>`;
 }
 
+/** Render performer links for a program shared by multiple student organizations. */
+function performersHTML(ev, maxCount = Infinity) {
+  if (!Array.isArray(ev.performers) || !ev.performers.length) return '';
+  const items = ev.performers.slice(0, maxCount).map(group => {
+    const text = escapeHtml(group.name || '出演団体');
+    return group.orgId ? `<a class="organizer-link" href="/org/${encodeURIComponent(group.orgId)}.html">${text}</a>` : text;
+  });
+  const extra = ev.performers.length - items.length;
+  return items.join('、') + (extra ? ` ほか${extra}団体` : '');
+}
+
 /** 参加費キー → 日本語 */
 function feeLabel(key) {
   return (typeof FEE_LABELS !== 'undefined' && FEE_LABELS[key]) || key || '—';
@@ -681,6 +692,7 @@ function createEventCardHTML(ev, showDate = true) {
             <span class="event-info-icon">🏫</span>
             <span>${organizerHTML(ev)}</span>
           </div>
+          ${ev.performers?.length ? `<div class="event-info-row event-info-row-performers"><span class="event-info-icon">🎭</span><span>出演：${performersHTML(ev, 2)}</span></div>` : ''}
         </div>
         ${isSchedule ? '' : createReactionSummaryHTML(ev)}
         ${ev.description ? `<p class="event-card-desc">${escapeHtml(ev.description)}</p>` : ''}
@@ -1326,6 +1338,10 @@ function openModal(eventId) {
       <span class="modal-detail-label">主催団体</span>
       <span class="modal-detail-value">${organizerHTML(ev)}</span>
     </div>
+    ${ev.performers?.length ? `<div class="modal-detail-item">
+      <span class="modal-detail-label">出演団体</span>
+      <span class="modal-detail-value">${performersHTML(ev)}</span>
+    </div>` : ''}
     <div class="modal-detail-item">
       <span class="modal-detail-label">対象者</span>
       <span class="modal-detail-value">${targetLabel(ev.target)}</span>
