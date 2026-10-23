@@ -8380,10 +8380,11 @@ const EVENTS = [
     category: "theater",
     scope: "circle",
     performers: [
-      { name: "リサイクルズ" },
-      { name: "魁響(さきがけひびき)", orgId: "C-068" },
-      { name: "SHOCKERS", orgId: "C-122" },
+      // カード上の短い表示では今回の登録元2団体を先に案内する。
       { name: "早稲田大学 下駄っぱーず", orgId: "C-217" },
+      { name: "魁響(さきがけひびき)", orgId: "C-068" },
+      { name: "リサイクルズ" },
+      { name: "SHOCKERS", orgId: "C-122" },
       { name: "Prismile", orgId: "C-318" },
       { name: "早稲田大学書道パフォーマンスサークル漣", orgId: "C-282" },
       { name: "早稲田大学チアダンスチームMYNX", orgId: "C-222" }
