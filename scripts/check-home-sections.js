@@ -100,6 +100,94 @@ for (const [id, date] of [['evt-309','2026-10-17'], ['evt-337','2026-10-28'], ['
 }
 for (const id of ['evt-458', 'evt-459', 'evt-460', 'evt-461', 'evt-462']) assert(byId.has(id), 'New session missing: ' + id);
 
+
+/* ============================================================
+   スマホ版v2（mobile-home.js）の純粋関数
+   ============================================================ */
+const MH = require(path.join(ROOT, 'mobile-home.js'));
+const mhDeps = {
+  isEventOnDate: ctx.isEventOnDate, isLongRunningEvent: ctx.isLongRunningEvent, isMultiDay: ctx.isMultiDay,
+  getEventEnd: ctx.getEventEnd, eventDurationDays: ctx.eventDurationDays, getEventScope: ctx.getEventScope,
+  sameDayOrderCompare: () => 0, campusLabel: () => '',
+  getHomeTodayStatus: ctx.getHomeTodayStatus, isHomeTodayAvailable: ctx.isHomeTodayAvailable
+};
+assert.equal(typeof mhDeps.isHomeTodayAvailable, 'function', 'isHomeTodayAvailable must be loadable for v2');
+
+function checkAgenda(from, to, now, scope) {
+  const m = MH.buildAgendaModel(events, { from, to, today: from, now, scope }, mhDeps);
+  // 区間は from〜to をちょうど1回ずつ覆う
+  let expect = from;
+  for (const seg of m.segments) {
+    const start = seg.type === 'day' ? seg.date : seg.from;
+    const end = seg.type === 'day' ? seg.date : seg.to;
+    assert.equal(start, expect, `segments must be contiguous (${scope}) at ${start}`);
+    expect = MH.addDays(end, 1);
+    if (seg.type === 'day') {
+      assert.equal(seg.count, seg.active.length + seg.done.length, 'count = active + done ' + seg.date);
+      const badge = MH.dayBadge(events, seg.date, scope, {}, mhDeps);
+      assert.equal(badge.count, seg.count, `bar count must equal agenda rows (${scope}) ${seg.date}`);
+      for (const r of [...seg.active, ...seg.done]) {
+        if (scope === 'schedule') {
+          assert(r.ev.scope === 'schedule' && !r.ev.weeklyClassOnly, 'schedule mode rows are events/holidays only');
+        } else {
+          assert(r.ev.scope !== 'schedule' && !ctx.isLongRunningEvent(r.ev), 'regular rows only ' + r.ev.id);
+        }
+        assert(ctx.isEventOnDate(r.ev, seg.date), 'row must be on its date ' + r.ev.id);
+      }
+      if (seg.date !== from) assert(seg.done.length === 0, 'only today can have done rows');
+    } else {
+      for (let d = seg.from; d <= seg.to; d = MH.addDays(d, 1)) {
+        assert.equal(MH.dayRows(events, d, scope, mhDeps).length, 0, `empty run must have no rows (${scope}) ${d}`);
+      }
+    }
+  }
+  assert.equal(expect, MH.addDays(to, 1), 'segments must end at to');
+  assert(m.segments[0].type === 'day' && m.segments[0].isToday, 'today always rendered as a day');
+  return m;
+}
+for (const now of [540, 760, 1080, 1410]) {
+  for (const scope of ['', 'circle', 'schedule']) checkAgenda('2026-10-23', '2026-12-31', now, scope);
+}
+// 早稲田祭（35件規模）は日別画面、少ない日は全件
+const fest = MH.buildAgendaModel(events, { from: '2026-11-07', to: '2026-11-07', today: '2026-10-23', now: 540, scope: '' }, mhDeps).segments[0];
+assert(fest.count >= 9 && fest.tier === 'dayview', '11/7 must use the day view');
+const tierOf = n => n <= MH.MH_CONST.INLINE_LIMIT ? 'all' : n <= MH.MH_CONST.INLINE_EXPAND_MAX ? 'expand' : 'dayview';
+assert.deepEqual([0, 5, 6, 8, 9, 35].map(tierOf), ['all', 'all', 'expand', 'expand', 'dayview', 'dayview']);
+
+// 学事モード: 授業週だけの日は●なし、臨時休業の日は●あり。授業週ラベルは日曜に出ない
+assert.equal(MH.dayBadge(events, '2026-10-23', 'schedule', {}, mhDeps).mark, false, 'class week alone is not a mark');
+assert.equal(MH.dayBadge(events, '2026-11-05', 'schedule', {}, mhDeps).mark, true, 'temporary closure is a mark');
+assert(MH.scheduleOn(events, '2026-10-23', mhDeps).weekly.length === 1, 'weekday shows class week label');
+assert.equal(MH.scheduleOn(events, '2026-10-25', mhDeps).weekly.length, 0, 'Sunday hides class week label');
+
+// 今日の終了判定: 終了時刻ありは「本日終了」、開始のみは終了と断定しない
+const doneDay = MH.buildAgendaModel(timeTestData, { from: today, to: today, today, now: 1080, scope: '' }, mhDeps).segments[0];
+const labelOf = id => [...doneDay.active, ...doneDay.done].find(r => r.ev.id === id)?.state;
+assert.equal(labelOf('test-end').label, '本日終了');
+assert.equal(labelOf('test-end').group, 'done');
+assert(labelOf('test-start').label.includes('終了時刻不明') && labelOf('test-start').ended === false, 'start-only must not be called ended');
+assert.equal(labelOf('test-unknown').group, 'active', 'unknown time stays active all day');
+assert.equal(labelOf('test-multi').group, 'active', 'multi-day stays active');
+assert.equal(doneDay.count, 4, 'academic row excluded from regular count');
+
+// URL: 不正値は落として正規化、m は保持
+assert.deepEqual(MH.parseHomeUrl('?m=v2&date=2026-11-07&view=day'), { date: '2026-11-07', view: 'day', q: '', m: 'v2', normalized: false });
+assert.equal(MH.parseHomeUrl('?date=2026-02-30').normalized, true, 'invalid date normalized');
+assert.equal(MH.parseHomeUrl('?view=day').view, null, 'day view needs a date');
+assert.equal(MH.parseHomeUrl('?view=hack').normalized, true, 'unknown view normalized');
+assert.equal(MH.buildHomeUrl({ m: 'v2', date: '2026-11-07', view: 'search', q: '早慶' }, '/'), '/?m=v2&date=2026-11-07&view=search&q=%E6%97%A9%E6%85%B6');
+assert.equal(MH.buildHomeUrl({ m: null, date: null, view: null }, '/'), '/');
+assert.equal(MH.weekStartOf('2026-10-25'), '2026-10-19', 'week starts on Monday (Sunday belongs to previous week)');
+
+// 検索: 学事は出さない、既定は今日以降、主催名で見つかる
+const someOrg = events.find(ev => ev.scope !== 'schedule' && ev.organizer && (ev.endDate || ev.date) >= '2026-10-23');
+const found = MH.searchEvents(events, { keyword: someOrg.organizer, category: '' }, '2026-10-23', false, mhDeps);
+assert(found.some(ev => ev.id === someOrg.id), 'organizer search finds the event');
+assert(found.every(ev => ev.scope !== 'schedule' && (ev.endDate || ev.date) >= '2026-10-23'), 'search excludes schedule and past');
+assert.equal(MH.searchEvents(events, { keyword: '', category: '' }, '2026-10-23', false, mhDeps).length, 0, 'empty query returns nothing');
+
+console.log('Mobile v2 agenda verified.');
+
 console.log('Homepage classification verified:', {
   published: events.length, today: model.todayEvents.length, inPeriod: model.longRunning.length,
   next7: model.upcoming.length, from: model.from, through: model.through

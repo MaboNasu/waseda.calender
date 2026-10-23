@@ -1833,6 +1833,8 @@ function renderAll() {
     ])];
     refreshLiveReactionCounts(ids);
   });
+  // スマホ版v2（mobile-home.js）への描画完了の通知。受け手は renderAll を呼ばない（ループしない）。
+  document.dispatchEvent(new Event('wc:rendered'));
 }
 
 /* ============================================================

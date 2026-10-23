@@ -143,15 +143,48 @@ function loadUxImprovementLayer() {
   addCss('/ux-polish.css?v=3', 'polish-css');
   addCss('/calendar-fixes.css?v=2', 'calendar-css');
   addCss('/mobile-fixes.css?v=3', 'mobile-css');
-  addScript('/ux-improvements.js?v=9', 'base-js', () => {
+  addScript('/ux-improvements.js?v=10', 'base-js', () => {
     // calendar-fixes must register before ux-polish's MutationObserver so +N counts
     // remain idempotent on every calendar re-render.
     addScript('/calendar-fixes.js?v=2', 'calendar-js', () => {
       addScript('/ux-polish.js?v=5', 'polish-js', () => {
-        addScript('/mobile-fixes.js?v=2', 'mobile-js');
+        addScript('/mobile-fixes.js?v=2', 'mobile-js', () => loadMobileHome(addCss, addScript));
       });
     });
   });
+}
+
+/**
+ * スマホ版トップ v2（週カレンダー＋連続アジェンダ、mobile-home.js）。
+ * プレビュー期間は ?m=v2 を付けたときだけ有効（同じタブの間は sessionStorage で維持、?m=v1 で解除）。
+ * 正式公開時は MOBILE_HOME_DEFAULT_ON を true にする（?m=v1 で4週間は旧UIに戻せる）。
+ * 初回だけの判定にせず、PC幅→スマホ幅に変わったときにも読み込む。
+ */
+const MOBILE_HOME_DEFAULT_ON = false;
+function isMobileHomeEnabled() {
+  const m = new URLSearchParams(location.search).get('m');
+  try {
+    if (m === 'v2') sessionStorage.setItem('wc-mobile-home', 'v2');
+    if (m === 'v1') sessionStorage.removeItem('wc-mobile-home');
+  } catch (_) {}
+  if (m === 'v1') return false;
+  if (m === 'v2' || MOBILE_HOME_DEFAULT_ON) return true;
+  try { return sessionStorage.getItem('wc-mobile-home') === 'v2'; } catch (_) { return false; }
+}
+function loadMobileHome(addCss, addScript) {
+  if (!document.getElementById('today-events') || !isMobileHomeEnabled()) return;
+  const mq = window.matchMedia('(max-width: 768px)');
+  const load = () => {
+    addCss('/mobile-home.css?v=1', 'mobile-home-css');
+    addScript('/mobile-home.js?v=1', 'mobile-home-js');
+  };
+  if (mq.matches) { load(); return; }
+  const onChange = e => {
+    if (!e.matches) return;
+    load();
+    if (mq.removeEventListener) mq.removeEventListener('change', onChange); else mq.removeListener(onChange);
+  };
+  if (mq.addEventListener) mq.addEventListener('change', onChange); else mq.addListener(onChange);
 }
 
 loadUxImprovementLayer();
