@@ -2696,7 +2696,7 @@
   </url>
   <url>
     <loc>https://wasedacalendar.com/event/evt-452.html</loc>
-    <lastmod>2026-10-14</lastmod>
+    <lastmod>2026-10-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -2762,12 +2762,6 @@
   </url>
   <url>
     <loc>https://wasedacalendar.com/event/evt-468.html</loc>
-    <lastmod>2026-10-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://wasedacalendar.com/event/evt-469.html</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -4875,6 +4869,11 @@
   </url>
   <url>
     <loc>https://wasedacalendar.com/org/C-313.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://wasedacalendar.com/org/C-318.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
