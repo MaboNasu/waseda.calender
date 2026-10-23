@@ -106,7 +106,7 @@ assert(homeIndex.indexOf('class="recommend-entry"') >= 0 && homeIndex.indexOf('c
 assert(!homeIndex.includes('class="filter-section"') && !homeIndex.includes('id="filter-toggle"'), 'トップの大型絞り込みパネルを廃止');
 assert(homeIndex.indexOf('class="scope-toggle"') > homeIndex.indexOf('id="calendar-section"'), '表示範囲タブをカレンダーへ移動');
 assert(!read('ux-improvements.js').includes('todayBodyEl.after(recommendation)'), 'おすすめ導線を本日の下へ再移動しない');
-assertIncludes(homeIndex, 'auth-ui.js?v=7', 'トップのブートストラップキャッシュ更新');
+assertIncludes(homeIndex, 'auth-ui.js?v=8', 'トップのブートストラップキャッシュ更新');
 assertIncludes(read('ux-improvements.js'), 'isHomeTodayAvailable', '当日終了イベントの非表示');
 assertIncludes(read('ux-improvements.js'), 'installHomeClockRefresh', '時刻更新フック');
 assertIncludes(read('ux-improvements.js'), 'renderHomeLongRunning', '長期展示補助枠');
