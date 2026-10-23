@@ -476,6 +476,11 @@
     if (typeof window.renderMypageFavoritesHTML === 'function') {
       window.renderMypageFavoritesHTML = function renderMypageFavoritesHTMLUx(favorites) {
         const favoriteMap = new Map((favorites || []).map(f => [String(f.id), f]));
+        // Show old saved IDs under the canonical card; do not change stored Firestore data.
+        getAllEventsSafe().filter(ev => ev.mergedInto).forEach(ev => {
+          if (favoriteMap.has(String(ev.id)) && !favoriteMap.has(String(ev.mergedInto)))
+            favoriteMap.set(String(ev.mergedInto), favoriteMap.get(String(ev.id)));
+        });
         const events = getAllEventsSafe().filter(ev => ev.isPublished && favoriteMap.has(String(ev.id)))
           .sort((a, b) => a.date.localeCompare(b.date));
         const labels = { interested: '☆ 気になる', wantToGo: '↗ 行きたい', going: '✓ 参加予定' };

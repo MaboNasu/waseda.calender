@@ -120,6 +120,11 @@
     if (typeof window.renderMypageFavoritesHTML === 'function') {
       window.renderMypageFavoritesHTML = function renderMypageFavoritesPolished(favorites) {
         const favoriteMap = new Map((favorites || []).map(f => [String(f.id), f]));
+        // Show old saved IDs under the canonical card; do not change stored Firestore data.
+        eventsSafe().filter(ev => ev.mergedInto).forEach(ev => {
+          if (favoriteMap.has(String(ev.id)) && !favoriteMap.has(String(ev.mergedInto)))
+            favoriteMap.set(String(ev.mergedInto), favoriteMap.get(String(ev.id)));
+        });
         const today = typeof getTodayStr === 'function' ? getTodayStr() : new Date().toISOString().slice(0, 10);
         const all = eventsSafe().filter(ev => ev.isPublished && favoriteMap.has(String(ev.id)));
         const upcoming = all.filter(ev => (ev.endDate || ev.date) >= today)

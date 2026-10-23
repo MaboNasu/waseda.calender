@@ -58,6 +58,10 @@
  * imageUrl（任意）:
  *   検索結果の構造化データ（schema.org/Event）に使う画像URL。未指定の場合はサイト共通のOGP画像が使われる。
  *
+ * performers（任意・配列）: 同一イベントの出演団体を {name, orgId?} で列挙。
+ * mergedInto（任意）: 統合先イベントID。旧レコードは isPublished:false とし、
+ *   共有済みURLのリダイレクト用に保持する。
+ *
  * orgId（任意）:
  *   organizations.js の団体IDと紐づける場合に指定（例: "org-001"）。
  *   指定すると、終了済み（today > endDate）になった際にその団体のプロフィールページの
@@ -8370,18 +8374,28 @@ const EVENTS = [
     date: "2026-11-04",
     startTime: "12:25",
     endTime: "12:55",
-    location: "大隈講堂前広場",
+    location: "早稲田キャンパス 大隈講堂前",
     campus: "waseda",
-    organizer: "早稲田大学 下駄っぱーず",
+    organizer: "早稲田祭2026運営スタッフ",
     category: "theater",
     scope: "circle",
-    orgId: "C-217",
+    performers: [
+      // カード上の短い表示では今回の登録元2団体を先に案内する。
+      { name: "早稲田大学 下駄っぱーず", orgId: "C-217" },
+      { name: "魁響(さきがけひびき)", orgId: "C-068" },
+      { name: "リサイクルズ" },
+      { name: "SHOCKERS", orgId: "C-122" },
+      { name: "Prismile", orgId: "C-318" },
+      { name: "早稲田大学書道パフォーマンスサークル漣", orgId: "C-282" },
+      { name: "早稲田大学チアダンスチームMYNX", orgId: "C-222" }
+    ],
     target: ["student", "obog", "public"],
     feeType: "unknown",
     feeText: "料金不明",
-    description: "下駄っぱーずによる早稲田祭2026カウントダウンイベントへの出演。",
-    externalUrl: "https://www.instagram.com/p/DeRc2HABGKv/",
-    lastUpdated: "2026-10-14",
+    description: "早稲田祭2026の祭当日前企画。11月4日の回は大隈講堂前にて開催し、下駄っぱーずと魁響を含む7団体が出演する。",
+    externalUrl: "https://wasedasai.net/former",
+    sourceUrls: ["https://wasedasai.net/former", "https://www.instagram.com/p/DeRc2HABGKv/", "https://www.instagram.com/p/DeY-F0nGcTP/"],
+    lastUpdated: "2026-10-23",
     isPublished: true
   },
   {
@@ -8616,7 +8630,9 @@ const EVENTS = [
     description: "魁響(和太鼓)による早稲田祭2026カウントダウンイベントへの出演。",
     externalUrl: "https://www.instagram.com/p/DeY-F0nGcTP/",
     lastUpdated: "2026-10-14",
-    isPublished: true
+    // Owner-approved merge; old ID retained for legacy links.
+    mergedInto: "evt-452",
+    isPublished: false
   },
   {
     id: "evt-470",

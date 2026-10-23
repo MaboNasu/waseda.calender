@@ -54,6 +54,10 @@ Each source also carries `priority` (`"A"`/`"B"`/`"C"`, editorial value as an ev
 
 Because both this nightly workflow and local edits touch `scripts/sources.json`, expect merge conflicts there periodically — every conflict block so far has been purely "which check timestamp is newer," and the remote/newer side is always correct to keep (see `.claude/skills/source-check` and this repo's git history for the resolution pattern).
 
+### Multi-organization event deduplication (owner-approved decisions)
+
+Before merging similarly named event records, check `EVENT_REVIEW_RULES.md` and `scripts/event-merge-decisions.json`. Matching titles do not imply matching programs. Compare the official schedule (date/time/venue) and whether different circles are participants in one program. When uncertain, ask the site owner to decide; never auto-merge questionable candidates. For confirmed merges, keep one canonical event, list multiple groups under `performers`, attach their `relatedEventIds`, and retain the old ID with `mergedInto` and an event-page redirect. Nov 4 Countdown Event `evt-469` is confirmed to be the same program as `evt-452`; Nov 3 remains separate.
+
 ### Other generated/automated files
 
 - `sitemap.xml`, `event/*.html`, `org/*.html` also regenerate automatically via `.github/workflows/generate-static-pages.yml` whenever `events.js` or `organizations.js` is pushed to `main` — but that only fires *after* a push, so regenerate locally too before you push if you want to see/verify the result first.
