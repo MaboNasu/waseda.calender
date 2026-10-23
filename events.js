@@ -8321,9 +8321,9 @@ const EVENTS = [
     target: ["student", "obog", "public"],
     feeType: "free",
     feeText: "無料(要予約・抽選)",
-    description: "第22回出版甲子園の決勝大会。観覧は要予約(抽選、10/18 10:00予約開始)で、YouTube配信あり。",
+    description: "第22回出版甲子園の決勝大会。観覧は要予約(抽選、10/18 10:00予約開始)で、YouTube配信あり。ゲストトークショーに加藤シゲアキ・小川哲・蝉谷めぐ実の3名が出演予定。",
     externalUrl: "https://www.instagram.com/p/DeWZbvrTtgc/",
-    lastUpdated: "2026-10-13",
+    lastUpdated: "2026-10-23",
     isPublished: true
   },
 
@@ -9317,9 +9317,9 @@ const EVENTS = [
     target: ["student", "obog", "public"],
     feeType: "unknown",
     feeText: "料金不明",
-    description: "Walkin'による早稲田祭2026の体験型企画『バカの学問「バカデミック」ツアー』。",
+    description: "Walkin'による早稲田祭2026の体験型企画『バカの学問「バカデミック」ツアー』(「夜のバカガク研究所」とも)。",
     externalUrl: "https://www.instagram.com/p/DeeL4E8oNWn/",
-    lastUpdated: "2026-10-18",
+    lastUpdated: "2026-10-23",
     isPublished: true
   },
 
@@ -9873,6 +9873,27 @@ const EVENTS = [
     description: "ウクライナの現代美術家ニキータ・カダン氏による公開講演会。ウクライナ語講演・日本語逐次通訳付き。",
     externalUrl: "https://www.waseda.jp/fedu/edu/news/2026/10/16/21213/",
     lastUpdated: "2026-10-22",
+    isPublished: true
+  },
+  {
+    id: "evt-536",
+    title: "ReF 早稲田祭フリーマーケット",
+    date: "2026-11-07",
+    endDate: "2026-11-08",
+    startTime: "10:00",
+    endTime: "17:00",
+    location: "早稲田キャンパス 3号館709号室",
+    campus: "waseda",
+    organizer: "Rethink Fashion Waseda",
+    category: "culture",
+    scope: "circle",
+    orgId: "C-285",
+    target: ["student", "obog", "public"],
+    feeType: "free",
+    feeText: "無料",
+    description: "Rethink Fashion Wasedaによる早稲田祭2026での古着フリーマーケット。リメイク品の販売とアップサイクルワークショップも実施。",
+    externalUrl: "https://www.instagram.com/p/DerVDVZqT0Z/",
+    lastUpdated: "2026-10-23",
     isPublished: true
   }
 
