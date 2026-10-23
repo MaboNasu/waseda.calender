@@ -1,0 +1,219 @@
+/* mobile-home.css — スマホ版トップ v2（週カレンダー＋連続アジェンダ）
+   body.mh-active のときだけ効く。PC（mh-active が付かない）には一切影響しない。 */
+
+#mh-root[hidden] { display: none !important; }
+.mh-visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---- 旧UIを隠す（DOMは残す）---- */
+body.mh-active #top,
+body.mh-active #today-section,
+body.mh-active #upcoming-section,
+body.mh-active #calendar-section { display: none !important; }
+body.mh-active .recommend-entry { margin-top: .5rem; }
+html.mh-locked, html.mh-locked body { overflow: hidden; }
+/* style.css の body{overflow-x:hidden} は body をスクロールコンテナにしてしまい、sticky が効かない。
+   clip はスクロールコンテナを作らないので、横はみ出し防止を保ったまま sticky が効く（非対応ブラウザは従来どおり）。 */
+@supports (overflow: clip) {
+  body.mh-active { overflow-x: clip; }
+}
+/* おすすめの入口は1行に（説明文は省略。機能はそのまま） */
+body.mh-active .recommend-entry { padding: .5rem .75rem; min-height: 48px; }
+body.mh-active .recommend-entry-desc { display: none; }
+body.mh-active .recommend-entry-icon { width: 30px; height: 30px; }
+
+/* ---- ヘッダーの自動非表示（transform だけを動かす）---- */
+body.mh-active .site-header { transition: transform .2s ease; }
+body.mh-active.mh-header-hidden .site-header { transform: translateY(-100%); }
+@media (prefers-reduced-motion: reduce) {
+  body.mh-active .site-header, body.mh-active .mh-bar { transition: none; }
+}
+
+#mh-root { --mh-header: 56px; margin-top: .3rem; padding-bottom: 2rem; }
+
+/* ---- カレンダーバー（sticky）---- */
+.mh-bar {
+  position: sticky;
+  top: var(--mh-header);
+  z-index: 150; /* ヘッダー(200)より下、本文より上 */
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 6px rgba(0,0,0,.05);
+  padding: .1rem .5rem .25rem;
+  transition: top .2s ease;
+}
+body.mh-header-hidden .mh-bar { top: 0; }
+.mh-bar-top { display: flex; align-items: center; gap: .1rem; min-height: 38px; }
+.mh-range { font-weight: 700; font-size: .9rem; color: var(--text-primary); padding-left: .35rem; white-space: nowrap; }
+.mh-week-label { font-size: .72rem; color: var(--enjy); font-weight: 700; margin-left: .35rem; white-space: nowrap; }
+.mh-bar-top .mh-icon-btn:first-of-type { margin-left: auto; }
+.mh-icon-btn, .mh-text-btn {
+  min-width: 44px; min-height: 38px; border: 0; background: transparent; color: var(--text-secondary);
+  border-radius: var(--radius-sm); display: inline-flex; align-items: center; justify-content: center;
+  font-size: 1.15rem; font-weight: 700;
+}
+.mh-text-btn { font-size: .8rem; padding: 0 .55rem; color: var(--enjy); }
+.mh-text-btn.is-active { background: var(--enjy-pale); }
+.mh-icon-btn:focus-visible, .mh-text-btn:focus-visible, .mh-day-cell:focus-visible, .mh-chip:focus-visible,
+.mh-row-main:focus-visible, .mh-mcell:focus-visible, .mh-more:focus-visible { outline: 3px solid var(--enjy); outline-offset: 1px; }
+
+.mh-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.mh-day-cell {
+  min-height: 52px; border: 0; background: transparent; border-radius: var(--radius-md);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0;
+  color: var(--text-primary); padding: 1px 0; position: relative;
+}
+.mh-dow { font-size: .66rem; color: var(--text-secondary); line-height: 1.1; }
+.mh-date { font-size: .98rem; font-weight: 700; line-height: 1.2; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+.mh-count { font-size: .68rem; font-weight: 700; color: var(--enjy); line-height: 1.1; min-height: 12px; }
+.mh-count.is-empty { color: var(--gray-300, #D1D5DB); font-weight: 400; }
+.mh-day-cell.is-sun .mh-dow, .mh-day-cell.is-sun .mh-date { color: #B91C1C; }
+.mh-day-cell.is-sat .mh-dow, .mh-day-cell.is-sat .mh-date { color: #1D4ED8; }
+.mh-day-cell.is-past { opacity: .55; }
+.mh-day-cell.is-today .mh-date { box-shadow: inset 0 0 0 2px var(--enjy); }
+.mh-day-cell.is-visible { background: var(--enjy-pale); }
+.mh-day-cell.is-visible .mh-date { background: var(--enjy); color: #fff; }
+.mh-legend { font-size: .68rem; color: var(--text-secondary); text-align: right; padding: 0 .35rem; }
+
+/* ---- 月表示（バーの中で開く）---- */
+.mh-month { border-top: 1px solid var(--border); margin-top: .3rem; padding-top: .35rem; max-height: calc(100dvh - 180px); overflow-y: auto; overscroll-behavior: contain; }
+.mh-month-head { display: flex; align-items: center; justify-content: center; gap: .25rem; }
+.mh-month-head strong { font-size: .95rem; min-width: 7.5em; text-align: center; }
+.mh-month-head .mh-text-btn { margin-left: auto; }
+.mh-month-dow, .mh-month-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+.mh-month-dow span { text-align: center; font-size: .66rem; color: var(--text-secondary); padding: .15rem 0; }
+.mh-mcell {
+  min-height: 44px; border: 0; background: transparent; border-radius: var(--radius-sm);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-primary); padding: 0;
+}
+.mh-mdate { font-size: .85rem; font-weight: 700; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+.mh-mcount { font-size: .62rem; font-weight: 700; color: var(--enjy); min-height: 10px; line-height: 1; }
+.mh-mcell.is-out { opacity: .35; }
+.mh-mcell.is-sun .mh-mdate { color: #B91C1C; }
+.mh-mcell.is-sat .mh-mdate { color: #1D4ED8; }
+.mh-mcell.is-today .mh-mdate { box-shadow: inset 0 0 0 2px var(--enjy); }
+.mh-mcell.is-visible { background: var(--enjy-pale); }
+
+/* ---- scope チップ ---- */
+.mh-scope, .mh-chips { display: flex; gap: .4rem; padding: .4rem .75rem .15rem; overflow-x: auto; scrollbar-width: none; }
+.mh-scope::-webkit-scrollbar, .mh-chips::-webkit-scrollbar { display: none; }
+.mh-chip {
+  flex: none; min-height: 36px; padding: 0 .85rem; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--white); color: var(--text-secondary); font-size: .8rem; font-weight: 700;
+}
+.mh-chip.is-active { background: var(--enjy); border-color: var(--enjy); color: #fff; }
+.mh-chip-select { margin-left: auto; }
+
+/* ---- アジェンダ ---- */
+.mh-agenda { padding: 0 .75rem; }
+.mh-day { margin-top: .5rem; }
+.mh-agenda > .mh-day:first-child { margin-top: 0; }
+.mh-day-heading {
+  position: sticky; top: calc(var(--mh-header) + var(--mh-bar-h, 96px)); z-index: 5;
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: .1rem .5rem;
+  background: var(--gray-50); padding: .4rem .1rem .25rem; margin: 0;
+  font-family: var(--font-main); font-size: .88rem; font-weight: 700; color: var(--text-primary);
+  border-bottom: 1px solid var(--border);
+}
+body.mh-header-hidden .mh-day-heading { top: var(--mh-bar-h, 96px); }
+.mh-day.is-today .mh-day-date { color: var(--enjy); }
+.mh-day-note { font-size: .72rem; font-weight: 500; color: var(--text-secondary); }
+.mh-day-count { margin-left: auto; font-size: .75rem; color: var(--text-secondary); font-weight: 500; }
+.mh-day.is-past .mh-day-heading { color: var(--text-secondary); }
+
+.mh-row { display: flex; align-items: stretch; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); margin-top: .4rem; overflow: hidden; }
+.mh-row.is-done { opacity: .65; }
+.mh-row-main {
+  flex: 1; min-width: 0; display: flex; gap: .55rem; align-items: flex-start; text-align: left;
+  padding: .6rem .7rem; border: 0; background: transparent; color: inherit; min-height: 64px;
+  text-decoration: none !important;
+}
+.mh-time { flex: none; width: 3.4em; font-size: .78rem; font-weight: 700; color: var(--enjy); line-height: 1.35; padding-top: .1rem; word-break: keep-all; }
+.mh-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: .15rem; }
+.mh-row-date { font-size: .72rem; font-weight: 700; color: var(--text-secondary); }
+.mh-title {
+  font-size: .92rem; font-weight: 700; line-height: 1.4; color: var(--text-primary);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere;
+}
+.mh-meta { font-size: .76rem; color: var(--text-secondary); line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mh-sep { color: var(--text-muted); }
+.mh-tags { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .1rem; }
+.mh-status { font-size: .68rem; font-weight: 700; padding: .05rem .45rem; border-radius: 999px; background: var(--gray-100); color: var(--text-secondary); }
+.mh-status-0 { background: #DCFCE7; color: #166534; }   /* 開催中 */
+.mh-status-1 { background: var(--enjy-pale); color: var(--enjy); } /* このあと・まもなく */
+.mh-cat { font-size: .66rem !important; padding: .05rem .45rem !important; }
+
+/* 複数選択（既存の selection-mode を共有） */
+.mh-row .mh-select { position: static; border-radius: 0; box-shadow: none; background: transparent; }
+.selection-mode .mh-row .mh-select { display: flex !important; flex: none; width: 44px; height: auto; align-items: center; justify-content: center; border-right: 1px solid var(--border); }
+
+.mh-more {
+  display: block; width: 100%; min-height: 44px; margin-top: .4rem; border: 1px dashed var(--border);
+  border-radius: var(--radius-md); background: var(--white); color: var(--enjy); font-size: .82rem; font-weight: 700;
+}
+.mh-earlier { margin-top: .6rem; }
+.mh-empty-today { font-size: .82rem; color: var(--text-secondary); padding: .6rem .2rem; }
+
+.mh-empty {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .1rem .6rem; margin-top: .5rem;
+  padding: .45rem .4rem; border-radius: var(--radius-sm); font-size: .78rem; color: var(--text-muted);
+  border-top: 1px dashed var(--border);
+}
+.mh-empty-date { font-weight: 700; color: var(--text-secondary); }
+.mh-empty-jump { width: 100%; color: var(--enjy); font-weight: 700; }
+
+.mh-long, .mh-done { margin-top: .4rem; }
+.mh-long-toggle, .mh-done-toggle {
+  width: 100%; min-height: 44px; display: flex; align-items: center; gap: .35rem; text-align: left;
+  border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--white);
+  padding: .4rem .7rem; font-size: .82rem; color: var(--text-primary);
+}
+.mh-long-toggle span, .mh-done-toggle span { margin-left: auto; color: var(--text-muted); transition: transform .15s; }
+.mh-long-toggle[aria-expanded="true"] span, .mh-done-toggle[aria-expanded="true"] span { transform: rotate(90deg); }
+.mh-done-toggle { color: var(--text-secondary); background: var(--gray-50); }
+.mh-long-list { padding: .2rem 0 0; }
+.mh-long-item {
+  width: 100%; min-height: 44px; display: flex; align-items: center; gap: .5rem; text-align: left;
+  border: 0; border-bottom: 1px solid var(--border); background: transparent; padding: .45rem .3rem; font-size: .82rem; color: var(--text-primary);
+}
+.mh-long-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mh-long-date { flex: none; font-size: .74rem; color: var(--text-secondary); }
+.mh-long-date em { font-style: normal; color: var(--enjy); font-weight: 700; margin-left: .2rem; }
+.mh-note { font-size: .72rem; color: var(--text-secondary); padding: .4rem .2rem; }
+.mh-month-long { padding: 0 .1rem .3rem; }
+
+/* ---- 全画面オーバーレイ（検索・日別画面）---- */
+.mh-overlay[hidden] { display: none; }
+.mh-overlay { position: fixed; inset: 0; z-index: 260; background: rgba(0,0,0,.4); }
+.mh-dialog {
+  position: absolute; inset: 0; background: var(--gray-50); display: flex; flex-direction: column;
+  padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom);
+}
+.mh-dialog-head { display: flex; align-items: center; gap: .5rem; padding: .5rem .75rem; background: var(--white); border-bottom: 1px solid var(--border); }
+.mh-dialog-head h2 { font-family: var(--font-main); font-size: 1rem; font-weight: 700; flex: 1; min-width: 0; }
+.mh-search-box { padding: .6rem .75rem 0; background: var(--white); }
+.mh-search-box input {
+  width: 100%; min-height: 44px; border: 1px solid var(--border); border-radius: var(--radius-md);
+  padding: 0 .8rem; font-size: 16px; background: var(--gray-50);
+}
+.mh-dialog .mh-chips { background: var(--white); padding-bottom: .5rem; }
+.mh-past-toggle { display: flex; align-items: center; gap: .4rem; font-size: .8rem; color: var(--text-secondary); padding: .2rem .75rem .6rem; background: var(--white); border-bottom: 1px solid var(--border); min-height: 36px; }
+.mh-dialog-body { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: .4rem .75rem 1.5rem; -webkit-overflow-scrolling: touch; }
+.mh-result-count { font-size: .76rem; color: var(--text-secondary); padding: .3rem .1rem 0; }
+.mh-noresult { padding: 1rem .2rem; font-size: .85rem; color: var(--text-secondary); }
+
+/* ---- 768px（iPad縦）: 中央寄せ ---- */
+@media (min-width: 600px) {
+  #mh-root .mh-agenda, #mh-root .mh-scope { max-width: 640px; margin-left: auto; margin-right: auto; }
+  .mh-week { max-width: 720px; margin: 0 auto; }
+  .mh-dialog { left: 50%; transform: translateX(-50%); max-width: 640px; width: 100%; }
+}
+@media (max-width: 360px) {
+  .mh-bar { padding-left: .25rem; padding-right: .25rem; }
+  .mh-range { font-size: .82rem; padding-left: .2rem; }
+  .mh-text-btn { padding: 0 .35rem; }
+  .mh-agenda { padding: 0 .5rem; }
+  .mh-time { width: 3.1em; font-size: .74rem; }
+}

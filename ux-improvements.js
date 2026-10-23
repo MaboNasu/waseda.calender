@@ -161,6 +161,9 @@
     return classifyHomeEvents(source||getFilteredEvents(),getTodayStr(),getHomeNowMinutes(),activeFilters.scope||'');
   }
 
+  // スマホ版v2（mobile-home.js）が同じ判定を使えるよう、読み取り専用で公開する（関数は上書きしない）。
+  WC_UX.home = Object.freeze({ getHomeNowMinutes, getHomeTodayStatus, isHomeTodayAvailable, classifyHomeEvents });
+
   function homeTodayCard(ev,today,now){
     const status=getHomeTodayStatus(ev,today,now);
     const html=createEventCardHTML(ev,false);

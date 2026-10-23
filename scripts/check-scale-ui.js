@@ -106,7 +106,7 @@ assert(homeIndex.indexOf('class="recommend-entry"') >= 0 && homeIndex.indexOf('c
 assert(!homeIndex.includes('class="filter-section"') && !homeIndex.includes('id="filter-toggle"'), 'トップの大型絞り込みパネルを廃止');
 assert(homeIndex.indexOf('class="scope-toggle"') > homeIndex.indexOf('id="calendar-section"'), '表示範囲タブをカレンダーへ移動');
 assert(!read('ux-improvements.js').includes('todayBodyEl.after(recommendation)'), 'おすすめ導線を本日の下へ再移動しない');
-assertIncludes(homeIndex, 'auth-ui.js?v=8', 'トップのブートストラップキャッシュ更新');
+assertIncludes(homeIndex, 'auth-ui.js?v=9', 'トップのブートストラップキャッシュ更新');
 assertIncludes(read('ux-improvements.js'), 'isHomeTodayAvailable', '当日終了イベントの非表示');
 assertIncludes(read('ux-improvements.js'), 'installHomeClockRefresh', '時刻更新フック');
 assertIncludes(read('ux-improvements.js'), 'renderHomeLongRunning', '長期展示補助枠');
@@ -126,18 +126,39 @@ assertIncludes(style, '.org-archive-event-extra', '団体開催実績の折り�
 assert(!orgPage.includes('すべての団体を表示する（504件）'), '団体総数を504件で固定しないでください');
 assertIncludes(orgPage, 'getOrganizations().length', '団体総数の動的表示');
 
+// スマホ版v2（mobile-home）: 既存関数を上書きせず、PCに影響しないこと。
+{
+  const mh = read('mobile-home.js');
+  const mhCss = read('mobile-home.css');
+  const auth = read('auth-ui.js');
+  assertIncludes(auth, "/mobile-home.js?v=", 'v2の読み込み');
+  assertIncludes(auth, 'function isMobileHomeEnabled', 'v2の有効化条件');
+  assertIncludes(auth, "matchMedia('(max-width: 768px)')", 'v2は768px以下だけ');
+  assertIncludes(serviceWorker, 'mobile-home', 'v2アセットのService Worker鮮度管理');
+  assertIncludes(script, "new Event('wc:rendered')", '描画完了の通知');
+  assertIncludes(read('ux-improvements.js'), 'WC_UX.home = Object.freeze', '今日判定の共有');
+  assert(!/window\.(render[A-Za-z]*|openModal|showDayEvents|getFilteredEvents)\s*=(?!=)/.test(mh), 'mobile-home.js は既存の関数を上書きしない');
+  assert(!/root\.(render[A-Za-z]*|openModal|showDayEvents|getFilteredEvents)\s*=(?!=)/.test(mh), 'mobile-home.js は既存の関数を上書きしない');
+  for (const sel of ['#top', '#today-section', '#upcoming-section', '#calendar-section']) {
+    assertIncludes(mhCss, 'body.mh-active ' + sel, 'v2の旧UI非表示は mh-active 限定: ' + sel);
+  }
+  assert(!/^\s*#(top|today-section|upcoming-section|calendar-section)\b/m.test(mhCss), 'mobile-home.css が mh-active なしで旧UIを隠していない');
+  assertIncludes(mh, '掲載イベントなし', '0件の日の表記（予定なしと書かない）');
+  assertIncludes(mh, '終了時刻不明', '開始済み・終了時刻不明の区別');
+}
+
 // Ensure the homepage uses the same cache-busting versions as generated pages.
-for (const [asset, version] of [['events.js', '8'], ['script.js', '41'], ['auth-ui.js', '8']]) {
+for (const [asset, version] of [['events.js', '8'], ['script.js', '42'], ['auth-ui.js', '9']]) {
   assertIncludes(homeIndex, asset + '?v=' + version, 'ホームの' + asset + 'キャッシュ版');
 }
 // キャッシュ/静的生成の版ズレ防止。
 assertIncludes(generator, '/style.css?v=46', '生成イベントページ style version');
-assertIncludes(generator, '/script.js?v=41', '生成イベントページ script version');
+assertIncludes(generator, '/script.js?v=42', '生成イベントページ script version');
 assertIncludes(generator, '/image-generator.js?v=8', '生成イベントページ image generator version');
-assertIncludes(generator, '/auth-ui.js?v=8', '生成イベントページ auth UI version');
+assertIncludes(generator, '/auth-ui.js?v=9', '生成イベントページ auth UI version');
 assertIncludes(contactHtml, 'organizations.js?v=9', '問い合わせページ organization data version');
 assertIncludes(serviceWorker, 'image-generator', 'Service Worker freshness-critical assets');
-assertIncludes(serviceWorker, "wc-cache-v17", 'Service Worker cache version');
+assertIncludes(serviceWorker, "wc-cache-v18", 'Service Worker cache version');
 
 // 実データに長文が増えても、UI側に長文対策が残っていることを確認する。
 // 現時点で長文データが無い環境でもチェック自体は失敗させない。

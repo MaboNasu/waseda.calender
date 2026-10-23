@@ -55,6 +55,7 @@ jobs:
             ux-polish.js \
             calendar-fixes.js \
             mobile-fixes.js \
+            mobile-home.js \
             recommendation.js \
             event-page.js \
             organizations-page.js \
@@ -97,6 +98,8 @@ jobs:
           grep -q 'mobile-fixes.js' auth-ui.js
           grep -q 'calendar-fixes' service-worker.js
           grep -q 'mobile-fixes' service-worker.js
+          grep -q 'mobile-home.js' auth-ui.js
+          grep -q 'mobile-home' service-worker.js
 
       - name: Regenerate canonical static pages
         run: |
