@@ -279,11 +279,22 @@ function jsonLdScriptSafe(obj) {
   return JSON.stringify(obj).replace(/</g, '\\u003c');
 }
 
+
+function renderRelatedEventLinks(ev, all) {
+  const choices = all.filter(e => String(e.id) !== String(ev.id)).map(e => {
+    const sameOrg = (ev.orgId && e.orgId && ev.orgId === e.orgId) || (ev.organizer && e.organizer && ev.organizer === e.organizer);
+    const diff = Math.abs(Date.parse(e.date+'T00:00:00Z')-Date.parse(ev.date+'T00:00:00Z'))/86400000;
+    return {e, score:(sameOrg?100:0)+(ev.category===e.category?20:0)+(ev.campus===e.campus?5:0)+Math.max(0,10-diff/3)};
+  }).sort((a,b)=>b.score-a.score||a.e.date.localeCompare(b.e.date)).slice(0,4).map(x=>x.e);
+  if(!choices.length)return '';
+  return `<nav class="related-events-section" aria-label="関連イベント"><h2 class="section-title">関連イベント</h2><ul>${choices.map(e=>`<li><a href="/event/${encodeURIComponent(e.id)}.html">${escapeHtml(e.title)}（${escapeHtml(e.date)}）</a></li>`).join('')}</ul></nav>`;
+}
+
 /* ============================================================
    ページ生成
    ============================================================ */
 
-function renderEventPageHtml(ev, labelFns) {
+function renderEventPageHtml(ev, labelFns, allPublished) {
   const { categoryLabel, campusLabel, feeLabel, targetLabel } = labelFns;
   const pageUrl = buildEventPageUrl(ev);
   const pageTitle = `${escapeHtml(ev.title)} – Waseda Calendar`;
@@ -445,7 +456,7 @@ function renderEventPageHtml(ev, labelFns) {
       </a>
       <div id="event-detail" class="event-detail-page">${detailContent}
       </div>
-      <div id="event-related"></div>
+      <div id="event-related">${renderRelatedEventLinks(ev, allPublished)}</div>
     </div>
   </section>
 </main>
@@ -529,7 +540,7 @@ function main() {
     .forEach((name) => fs.unlinkSync(path.join(OUTPUT_DIR, name)));
 
   publishedEvents.forEach((ev) => {
-    const html = renderEventPageHtml(ev, labelFns);
+    const html = renderEventPageHtml(ev, labelFns, publishedEvents);
     fs.writeFileSync(path.join(OUTPUT_DIR, `${ev.id}.html`), html, 'utf8');
   });
 

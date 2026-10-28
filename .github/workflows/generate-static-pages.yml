@@ -18,6 +18,7 @@ on:
       - 'auth-ui.js'
       - 'scripts/generate-event-pages.js'
       - 'scripts/generate-org-pages.js'
+      - 'organizations.html'
   # 「終了しました」など日付依存の静的表示をJSTの日付変更後に同期する。
   schedule:
     - cron: '10 15 * * *'
@@ -51,6 +52,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add sitemap.xml event/ org/
+          git add sitemap.xml event/ org/ organizations.html
           git diff --cached --quiet || git commit -m "chore: 静的ページ(sitemap.xml / event/*.html / org/*.html)を自動再生成 [skip ci]"
           git push

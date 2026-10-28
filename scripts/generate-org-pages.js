@@ -403,6 +403,29 @@ function renderOrgPageHtml(org, events) {
 `;
 }
 
+
+function updateOrganizationDirectory(organizations, events) {
+  const file = path.join(ROOT, 'organizations.html');
+  const source = fs.readFileSync(file,'utf8');
+  const start = '<!-- org-directory-generated:start -->', end = '<!-- org-directory-generated:end -->';
+  const i = source.indexOf(start), j = source.indexOf(end);
+  if (i === -1 || j <= i || source.lastIndexOf(start)!==i) throw new Error('directory markers missing');
+  const eligible = organizations.filter(org => isOrgIndexEligible(org, events))
+    .sort((a,b)=>String(a.nameKana||a.name).localeCompare(String(b.nameKana||b.name),'ja'));
+  const links = eligible.map(org => `<a href="/org/${encodeURIComponent(org.id)}.html">${escapeHtml(org.name)}</a>`).join('\n');
+  const html = `
+        <details class="org-static-directory">
+          <summary>団体名から探す（掲載情報のある${eligible.length}団体）</summary>
+          <p>団体の個別ページへ移動できます。その他の団体は上の検索欄から探せます。</p>
+          <nav class="org-static-directory-links" aria-label="掲載情報のある団体の一覧">
+${links}
+          </nav>
+        </details>
+      `;
+  const updated = source.slice(0,i+start.length) + html + source.slice(j);
+  if(updated!==source) fs.writeFileSync(file,updated,'utf8');
+}
+
 /** idが重複する要素があれば列挙してビルドを中止する(汎用)。fs.writeFileSyncで同じ
  *  ファイル名に書き込むと片方が静かに上書きされて消えるため、事前に検知する。
  *  複数人・複数セッションが同時にデータを追記する運用のため、同じタイミングで
@@ -445,6 +468,7 @@ function main() {
     if (isOrgIndexEligible(org, events)) indexableCount++;
   });
 
+  updateOrganizationDirectory(organizations, events);
   console.log(`org/*.html を生成しました（全${organizations.length}件、うち索引対象${indexableCount}件）。`);
 }
 
