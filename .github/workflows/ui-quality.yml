@@ -14,6 +14,7 @@ on:
       - 'scripts/generate-sitemap.js'
       - 'scripts/check-scale-ui.js'
       - 'scripts/check-home-sections.js'
+      - 'scripts/check-seo-links.js'
       - '.github/workflows/ui-quality.yml'
   pull_request:
     paths:
@@ -27,6 +28,7 @@ on:
       - 'scripts/generate-sitemap.js'
       - 'scripts/check-scale-ui.js'
       - 'scripts/check-home-sections.js'
+      - 'scripts/check-seo-links.js'
       - '.github/workflows/ui-quality.yml'
 
 permissions:
@@ -106,6 +108,7 @@ jobs:
           node scripts/generate-event-pages.js
           node scripts/generate-org-pages.js
           node scripts/generate-sitemap.js
+          node scripts/check-seo-links.js
 
       - name: Validate regenerated output
         run: |
