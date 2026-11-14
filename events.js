@@ -8029,8 +8029,8 @@ const EVENTS = [
     feeType: "free",
     feeText: "無料",
     description: "ハワイ民族舞踊研究会(wasehula)の単独公演「Mauloa」昼公演。24th〜26thの3代でつくる公演。開場14:30。チケットは特設サイトで取得(プロフィールのリンク)。",
-    externalUrl: "https://www.instagram.com/p/Debu3y9JVer/",
-    lastUpdated: "2026-10-14",
+    externalUrl: "https://www.instagram.com/p/DfmF7kETCKV/",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8049,8 +8049,8 @@ const EVENTS = [
     feeType: "free",
     feeText: "無料",
     description: "ハワイ民族舞踊研究会(wasehula)の単独公演「Mauloa」夜公演。24th〜26thの3代でつくる公演。開場17:20。チケットは特設サイトで取得(プロフィールのリンク)。",
-    externalUrl: "https://www.instagram.com/p/Debu3y9JVer/",
-    lastUpdated: "2026-10-14",
+    externalUrl: "https://www.instagram.com/p/DfmF7kETCKV/",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -13174,6 +13174,44 @@ const EVENTS = [
     description: "JR東日本カップ2026 第100回関東大学サッカーリーグ戦1部 第22節。早稲田大学 対 日本体育大学。",
     externalUrl: "https://www.waseda-afc.jp/",
     lastUpdated: "2026-11-12",
+    isPublished: true
+  },
+  {
+    id: "evt-705",
+    title: "2026年度定期公演『Fly』",
+    date: "2026-12-08",
+    startTime: "17:00",
+    location: "早稲田大学 大隈記念講堂 大講堂",
+    campus: "waseda",
+    organizer: "SEIREN",
+    category: "theater",
+    scope: "circle",
+    orgId: "C-095",
+    target: ["student", "obog", "public"],
+    feeType: "free",
+    feeText: "無料(要予約・ライブポケットで受付)",
+    description: "ミュージカルサークルSEIRENの2026年度定期公演『Fly』。開場16:00。",
+    externalUrl: "https://www.instagram.com/p/DfemXRmk-fV/",
+    lastUpdated: "2026-11-14",
+    isPublished: true
+  },
+  {
+    id: "evt-706",
+    title: "第19回定期公演「Flügel」",
+    date: "2026-12-24",
+    startTime: "17:00",
+    location: "早稲田大学 小野記念講堂",
+    campus: "waseda",
+    organizer: "TAP-LOVERS (タップラバーズ)",
+    category: "theater",
+    scope: "circle",
+    orgId: "C-216",
+    target: ["student", "obog", "public"],
+    feeType: "unknown",
+    feeText: "料金不明(チケット情報は今後公開予定)",
+    description: "タップダンスサークルTAP-LOVERSの第19回定期公演「Flügel」。開場16:15(予定)。",
+    externalUrl: "https://www.instagram.com/p/DflqEr8SGxr/",
+    lastUpdated: "2026-11-14",
     isPublished: true
   }
 
