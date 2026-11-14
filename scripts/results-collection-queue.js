@@ -107,7 +107,7 @@ function queue(events, publishedResults, state, options) {
     if (age < 1 || (!options.backfill && age > 30)) continue;
     const s = state.events[e.id] || {};
     if (DONE.has(s.status) || s.status === 'conflict') continue; // Conflict: human resolution only.
-    if (s.checkedAt) {
+    if (s.checkedAt && s.status !== 'pending') {
       if (!validDate(s.checkedAt)) throw Error('Invalid checkedAt for ' + e.id);
       const lastAge = dayDiff(s.checkedAt, end);
       if (lastAge > age) throw Error('checkedAt is in the future for ' + e.id);
@@ -161,10 +161,8 @@ function mark(statePath, args) {
   if (!STATES.has(args.status)) throw Error('Invalid --status');
   const checkedAt = args.checkedAt || todayJst();
   if (!validDate(checkedAt)) throw Error('Invalid --checked-at');
-  const state = readState(statePath);
-  const old = state.events[args.id] || {};
-  const next = { status: args.status, checkedAt, note: args.note === undefined ? (old.note || '') : args.note };
   const dir = path.dirname(statePath);
+  let next;
   fs.mkdirSync(dir, { recursive: true });
   // Exclusive lock avoids simultaneous runs overwriting status updates.
   const lock = statePath + '.lock';
@@ -172,6 +170,8 @@ function mark(statePath, args) {
   try {
     // Re-read while holding the lock, in case another update completed.
     const latest = readState(statePath);
+    const old = latest.events[args.id] || {};
+    next = { status: args.status, checkedAt, note: args.note === undefined ? (old.note || '') : args.note };
     latest.events[args.id] = next;
     const temp = statePath + '.' + process.pid + '.tmp';
     try {
