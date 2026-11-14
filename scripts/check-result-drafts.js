@@ -122,8 +122,7 @@ function main(argv = process.argv.slice(2)) {
     if (!['--as-of', '--out', '--events'].includes(rest[i]) || i + 1 >= rest.length) throw Error('Unknown/incomplete argument: ' + rest[i]);
     args[rest[i].slice(2)] = rest[++i];
   }
-  const asOf = args['as-of'] || require('./results-collection-queue').mainDateForTests?.() ||
-    (() => {
+  const asOf = args['as-of'] || (() => {
       const parts = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
       const get = (type) => parts.find((p) => p.type === type).value;
       return get('year') + '-' + get('month') + '-' + get('day');
