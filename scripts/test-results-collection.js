@@ -63,7 +63,7 @@ test('not_found is rescheduled at milestones, not on every run', () => {
 });
 
 test('backfill is opt-in and sorts recent events first', () => {
-  const items = [event('evt-1', { date: '2026-08-01' }), event('evt-2', { date: '2026-10-20' })];
+  const items = [event('evt-1', { date: '2026-08-01' }), event('evt-2', { date: '2026-09-20' })];
   assert.equal(q.queue(items, {}, state, opts).length, 0);
   assert.deepEqual(q.queue(items, {}, state, { ...opts, backfill: true }).map((x) => x.id), ['evt-2', 'evt-1']);
 });
