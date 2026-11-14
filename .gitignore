@@ -19,3 +19,7 @@ scripts/last-check-changed.json
 
 # X自動投稿の認証情報（ローカル動作確認用。本番はGitHub Secretsを使うためコミット不要）
 .env
+
+# 出典照合（verify-event-sources.js）の結果と、照合用の根拠の引用（Instagramのキャプションの抜粋など。公開しない）
+scripts/last-verify-report.json
+.verify-evidence/

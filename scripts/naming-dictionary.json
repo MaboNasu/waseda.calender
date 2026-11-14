@@ -1,0 +1,104 @@
+{
+  "_readme": [
+    "Waseda Calendar の会場・団体の正式名称辞書。check-event-data.js が表記ゆれの検査と --fix に使う。",
+    "ここに載っている組み合わせだけが自動で書き換えられる。AIはこのファイルに直接追加しない。追加・変更は週次の確認で運営者が承認したものだけ（docs/EDITORIAL_RULES.md 3章）。",
+    "venues[].aliases は「この文字列と完全に一致する location を display に置き換える」もの。部分一致では置き換えない（教室名などを失わないため）。",
+    "venues[].forbidden は誤記として必ず止める文字列（部分一致）。",
+    "organizers は orgId ごとの表示名。organizations.js の name は大学の公認団体一覧の表記で、団体自身の名乗りと違うことがあるため、表示名は別に持つ。",
+    "authorityUrl は名称の根拠にした公式ページ。"
+  ],
+  "version": "2026-11-14",
+  "venues": [
+    {
+      "id": "ono-auditorium",
+      "name": "小野記念講堂",
+      "display": "小野記念講堂（27号館 地下2階）",
+      "campus": "waseda",
+      "authorityUrl": "https://www.waseda.jp/culture/facility/ono/",
+      "aliases": [
+        "小野記念講堂",
+        "早稲田大学小野記念講堂",
+        "早稲田大学 小野記念講堂",
+        "早稲田キャンパス 小野記念講堂",
+        "早稲田キャンパス27号館 小野記念講堂",
+        "27号館小野記念講堂",
+        "早稲田大学 小野記念講堂(27号館 地下2階)"
+      ],
+      "forbidden": ["小野梓記念講堂"]
+    },
+    {
+      "id": "okuma-auditorium-main",
+      "name": "大隈記念講堂 大講堂",
+      "display": "大隈記念講堂 大講堂",
+      "campus": "waseda",
+      "authorityUrl": "https://www.waseda.jp/culture/facility/",
+      "aliases": [
+        "大隈記念講堂 大講堂",
+        "早稲田大学 大隈記念講堂 大講堂"
+      ],
+      "forbidden": []
+    },
+    {
+      "id": "okuma-auditorium-small",
+      "name": "大隈記念講堂 小講堂",
+      "display": "大隈記念講堂 小講堂",
+      "campus": "waseda",
+      "authorityUrl": "https://www.waseda.jp/culture/facility/",
+      "aliases": [
+        "大隈記念講堂 小講堂",
+        "早稲田大学 大隈小講堂",
+        "早稲田キャンパス 大隈小講堂"
+      ],
+      "forbidden": []
+    },
+    {
+      "id": "okuma-auditorium",
+      "name": "大隈記念講堂",
+      "display": "大隈記念講堂",
+      "campus": "waseda",
+      "authorityUrl": "https://www.waseda.jp/culture/facility/",
+      "aliases": [
+        "大隈記念講堂",
+        "早稲田大学 大隈記念講堂",
+        "大隈講堂",
+        "早稲田大学 大隈講堂"
+      ],
+      "forbidden": []
+    },
+    {
+      "id": "murakami-library",
+      "name": "国際文学館（村上春樹ライブラリー）",
+      "display": "国際文学館（村上春樹ライブラリー）",
+      "campus": "waseda",
+      "authorityUrl": "https://www.waseda.jp/culture/facility/",
+      "aliases": [
+        "国際文学館(村上春樹ライブラリー)",
+        "国際文学館（村上春樹ライブラリー）"
+      ],
+      "forbidden": []
+    },
+    {
+      "id": "murakami-library-b1",
+      "name": "国際文学館（村上春樹ライブラリー） 地下1階",
+      "display": "国際文学館（村上春樹ライブラリー） 地下1階",
+      "campus": "waseda",
+      "authorityUrl": "https://www.waseda.jp/culture/facility/",
+      "aliases": [
+        "国際文学館(村上春樹ライブラリー) 地下1階",
+        "国際文学館（村上春樹ライブラリー）4号館地下1階",
+        "早稲田大学国際文学館地下1階"
+      ],
+      "forbidden": []
+    },
+    {
+      "id": "dramakan",
+      "name": "早稲田小劇場どらま館",
+      "display": "早稲田小劇場どらま館",
+      "campus": "waseda",
+      "authorityUrl": "https://www.waseda.jp/culture/facility/",
+      "aliases": ["早稲田小劇場どらま館"],
+      "forbidden": []
+    }
+  ],
+  "organizers": {}
+}

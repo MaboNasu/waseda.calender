@@ -49,11 +49,22 @@
  *   "waseda" | "toyama" | "nishiwaseda" | "tokorozawa" | "takadanobaba" | "outside" | "online"
  *
  * feeType の選択肢:
- *   "free" | "paid"
+ *   "free" | "paid" | "unknown"
+ *   unknown のときの feeText は「料金未確認」（調べていない・見つからない）か「料金未公表」（公式に未定・後日発表）。
+ *   出典に書いていない料金を推測で書かない（「無料(推定)」などは scripts/check-event-data.js がエラーにする）。
+ *   詳しくは docs/EDITORIAL_RULES.md 5章。
  *
  * isPublished:
  *   true → サイトに表示する
  *   false → 非表示（下書き）
+ *
+ * reviewStatus（任意）/ reviewReason（任意）:
+ *   出典との照合（scripts/verify-event-sources.js）で自動公開にならなかったイベントの状態。isPublished:false と組み合わせる。
+ *   "pending"  … C判定。運営者の確認待ち（scripts/review-queue.js で1日10件まで提示）
+ *   "partial"  … B判定。開始時刻か会場が欠けているだけ（試験期間中は非公開）
+ *   "rejected" … 運営者が見送ったもの（同じものを再提案しないために残す）
+ *   reviewReason はその理由（出典にない項目など）。運営者が OK すると両方とも消えて公開される。
+ *   location・organizer・title の書き方は docs/EDITORIAL_RULES.md（翻訳しない・出典の表記のまま）。
  *
  * imageUrl（任意）:
  *   検索結果の構造化データ（schema.org/Event）に使う画像URL。未指定の場合はサイト共通のOGP画像が使われる。
@@ -880,10 +891,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学競走部と慶應義塾大学による伝統の早慶戦（陸上競技）。",
     externalUrl: "https://www.waseda.jp/inst/athletic/club/track-field/",
-    lastUpdated: "2026-07-29",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -915,10 +926,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ウエイトリフティング部と慶應義塾大学による伝統の早慶戦。",
     externalUrl: "https://www.waseda.jp/inst/athletic/club/weightlifting/",
-    lastUpdated: "2026-07-29",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -933,10 +944,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学剣道部と慶應義塾大学による伝統の早慶戦（女子）。",
     externalUrl: "http://www.waseda-kendo.com/soukei/",
-    lastUpdated: "2026-09-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -951,10 +962,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学剣道部と慶應義塾大学による伝統の早慶戦（男子）。",
     externalUrl: "http://www.waseda-kendo.com/topics_detail1/id=2493",
-    lastUpdated: "2026-10-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -969,10 +980,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ボクシング部と慶應義塾大学による伝統の早慶戦。開会式12:30。",
     externalUrl: "http://www.waseda-boxing.com/",
-    lastUpdated: "2026-10-16",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -986,10 +997,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学射撃部と慶應義塾大学による伝統の早慶戦。",
     externalUrl: "https://waseda-shooting.com/",
-    lastUpdated: "2026-07-29",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1004,10 +1015,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学フェンシング部と慶應義塾大学による伝統の早慶戦。",
     externalUrl: "https://wasedafencing.com/",
-    lastUpdated: "2026-07-29",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -1027,10 +1038,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学弓道部(男子)が出場する全国大学弓道選抜大会。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1044,10 +1055,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東学生弓道リーグ戦に向けた練習試合。対 青山学院大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1061,10 +1072,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "全日本学生弓道選手権大会(インカレ)に向けた練習試合。対 明治大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1078,10 +1089,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学弓道部(女子)が出場する全国大学弓道選抜大会。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1095,10 +1106,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "全日本学生弓道選手権大会に向けた個人予選(男子)。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1112,10 +1123,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東学生弓道リーグ戦に向けた練習試合。対 東京大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1129,10 +1140,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "全日本学生弓道選手権大会に向けた個人予選(女子)。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1146,10 +1157,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東学生弓道リーグ戦に向けた練習試合。対 國學院大學。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1163,10 +1174,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "全日本学生弓道選手権大会(インカレ)に向けた練習試合。対 慶應義塾大学・中央大学・国際武道大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1180,10 +1191,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "全日本学生弓道選手権大会(インカレ)に向けた練習試合。対 法政大学・大東文化大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1197,10 +1208,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "全日本学生弓道選手権大会(インカレ)に向けた練習試合。対 法政大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1214,10 +1225,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "全日本学生弓道選手権大会(インカレ)に向けた練習試合。対 明治大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1231,10 +1242,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "全日本学生弓道選手権大会(インカレ)に向けた練習試合。対 中央大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1249,10 +1260,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学弓道部(男女)が出場する全日本学生弓道選手権大会(インカレ)。会場は未確認。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1266,10 +1277,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学弓道部(男女)が出場する全日本学生弓道遠的選手権大会。会場は未確認。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1283,10 +1294,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学弓道部(男子)と同志社大学の伝統の定期戦。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1300,10 +1311,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東学生弓道リーグ戦に向けた練習試合。対 東京都市大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1317,10 +1328,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東学生弓道リーグ戦に向けた練習試合。対 日本体育大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -1337,10 +1348,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第102回日本選手権水泳競技大会 水球競技。早稲田大学水泳部(水球男子) 対 明治大学。",
     externalUrl: "https://wasedaswim.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1355,10 +1366,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第102回日本選手権水泳競技大会 水球競技。早稲田大学水泳部(水球女子) 対 日体クラブ。",
     externalUrl: "https://wasedaswim.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1372,10 +1383,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第102回日本学生選手権水泳競技大会 飛込競技。早稲田大学水泳部(飛込)が出場。",
     externalUrl: "https://wasedaswim.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1389,10 +1400,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第102回日本学生選手権水泳競技大会 競泳・アーティスティックスイミング(AS)競技。早稲田大学水泳部が出場。",
     externalUrl: "https://wasedaswim.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1407,10 +1418,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第102回日本学生選手権水泳競技大会 競泳競技。早稲田大学水泳部(競泳)が出場。",
     externalUrl: "https://wasedaswim.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1425,10 +1436,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第102回日本学生選手権水泳競技大会 水球競技。早稲田大学水泳部(水球男子)が出場。",
     externalUrl: "https://wasedaswim.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -1445,10 +1456,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部の特別試合。対 東洋学園大学。",
     externalUrl: "https://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1462,10 +1473,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部の夏季オープン戦。対 京都大学。会場は未確認。",
     externalUrl: "https://www.wasedabbc.org/schedule/open-tournament/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1479,10 +1490,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部のオープン戦。対 東京工芸大学。会場は未確認。",
     externalUrl: "https://www.wasedabbc.org/schedule/open-tournament/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1497,10 +1508,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部の特別試合(海外遠征)。対 高麗大学校。",
     externalUrl: "https://www.wasedabbc.org/schedule/special/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -1517,10 +1528,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学庭球部(男子)が出場する全日本学生室内テニス選手権大会。",
     externalUrl: "https://www.wasedatennis.net/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1535,10 +1546,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学庭球部(女子)が出場する全日本学生室内テニス選手権大会。",
     externalUrl: "https://www.wasedatennis.net/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1553,10 +1564,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学庭球部(女子)が出場する2026年関東学生テニスリーグ。対戦相手は公式サイトに明記なし。",
     externalUrl: "https://www.wasedatennis.net/",
-    lastUpdated: "2026-08-27",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1571,10 +1582,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学庭球部(男子)が出場する2026年関東学生テニスリーグ。対戦相手は公式サイトに明記なし。",
     externalUrl: "https://www.wasedatennis.net/",
-    lastUpdated: "2026-08-27",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1588,10 +1599,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学庭球部(女子)と慶應義塾大学による伝統の早慶戦。開始時刻は公式サイトに明記なし(詳細は試合要項PDF参照)。",
     externalUrl: "https://www.wasedatennis.net/",
-    lastUpdated: "2026-09-08",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -1608,10 +1619,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学剣道部と慶應義塾大学剣道部の合同稽古。会場は未確認。",
     externalUrl: "http://www.waseda-kendo.com/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -1627,10 +1638,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学柔道部と慶應義塾大学・東京大学・一橋大学・東京理科大学・東京科学大学による合同練習(出稽古)。会場は未確認。",
     externalUrl: "http://www.waseda-judo.com/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -1647,10 +1658,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学相撲部(女子)が出場する全日本女子相撲岐阜大会。",
     externalUrl: "https://wasedasumo-website.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1665,10 +1676,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学相撲部が出場する東日本学生相撲個人体重別選手権大会。",
     externalUrl: "https://wasedasumo-website.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1683,10 +1694,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学相撲部が出場する東日本学生相撲リーグ戦。",
     externalUrl: "https://wasedasumo-website.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1701,10 +1712,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学相撲部(女子)が出場する全日本女子相撲選手権大会。",
     externalUrl: "https://wasedasumo-website.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1720,10 +1731,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学相撲部が出場する全国学生相撲選手権大会。",
     externalUrl: "https://wasedasumo-website.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -1740,10 +1751,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の練習試合。対 東京大学。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1758,10 +1769,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東大学ラグビー対抗戦グループ。早稲田大学 対 日本体育大学。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1776,10 +1787,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東大学ラグビー対抗戦グループ。早稲田大学 対 立教大学。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1794,10 +1805,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東大学ラグビー対抗戦グループ。早稲田大学 対 青山学院大学。40分×2。開場12:00。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-10-15",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1812,10 +1823,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東大学ラグビー対抗戦グループ。早稲田大学 対 筑波大学。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1830,10 +1841,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東大学ラグビー対抗戦グループ。早稲田大学 対 帝京大学。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1848,10 +1859,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東大学ラグビー対抗戦グループ。早稲田大学 対 慶應義塾大学の伝統の早慶戦。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1866,10 +1877,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東大学ラグビー対抗戦グループ。早稲田大学 対 明治大学の伝統の早明戦。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -1886,10 +1897,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第4回全日本大学バスケットボール新人戦。早稲田大学 対 仙台大学。",
     externalUrl: "https://waseda-basketball.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1904,10 +1915,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第4回全日本大学バスケットボール新人戦。早稲田大学 対 新潟医療福祉大学。",
     externalUrl: "https://waseda-basketball.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1922,10 +1933,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第4回全日本大学バスケットボール新人戦。早稲田大学 対 東海大学九州大学。",
     externalUrl: "https://waseda-basketball.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1940,10 +1951,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第102回関東大学バスケットボールリーグ戦。早稲田大学 対 白鷗大学。",
     externalUrl: "https://waseda-basketball.com/schedule",
-    lastUpdated: "2026-09-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1958,10 +1969,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第102回関東大学バスケットボールリーグ戦。早稲田大学 対 神奈川大学。",
     externalUrl: "https://waseda-basketball.com/schedule",
-    lastUpdated: "2026-09-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1976,10 +1987,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第102回関東大学バスケットボールリーグ戦。早稲田大学 対 日本大学。",
     externalUrl: "https://waseda-basketball.com/schedule",
-    lastUpdated: "2026-09-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -1994,10 +2005,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第102回関東大学バスケットボールリーグ戦。早稲田大学 対 国士舘大学。",
     externalUrl: "https://waseda-basketball.com/schedule",
-    lastUpdated: "2026-09-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2012,10 +2023,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第102回関東大学バスケットボールリーグ戦。早稲田大学 対 神奈川大学。",
     externalUrl: "https://waseda-basketball.com/schedule",
-    lastUpdated: "2026-09-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2030,10 +2041,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第4回全日本大学バスケットボール新人戦。早稲田大学 対 江戸川大学。",
     externalUrl: "https://waseda-basketball.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2048,10 +2059,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第4回全日本大学バスケットボール新人戦 3位決定戦。早稲田大学 対 白鷗大学。",
     externalUrl: "https://waseda-basketball.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2066,10 +2077,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学と関西大学の伝統の定期戦(早関戦)。時刻・会場は未確認。",
     externalUrl: "https://waseda-basketball.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -2086,10 +2097,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "JR東日本カップ2026 第100回関東大学サッカーリーグ戦1部 第12節。早稲田大学 対 東海大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2104,10 +2115,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "皇后杯JFA第48回全日本女子サッカー選手権大会関東予選2回戦。早稲田大学(女子) 対 日テレ・東京ヴェルディメニーナ。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-09-07",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2122,10 +2133,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "JR東日本カップ2026 第100回関東大学サッカーリーグ戦1部 第13節。早稲田大学 対 国士舘大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2140,10 +2151,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "JR東日本カップ2026 第100回関東大学サッカーリーグ戦1部 第14節。早稲田大学 対 東洋大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2158,10 +2169,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "JR東日本カップ2026 第100回関東大学サッカーリーグ戦1部 第15節。早稲田大学 対 筑波大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2176,10 +2187,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "JR東日本カップ2026 第100回関東大学サッカーリーグ戦1部 第16節。早稲田大学 対 日本大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2194,10 +2205,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "JR東日本カップ2026 第100回関東大学サッカーリーグ戦1部 第17節。早稲田大学 対 桐蔭横浜大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2212,10 +2223,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "JR東日本カップ2026 第100回関東大学サッカーリーグ戦1部 第18節。早稲田大学 対 法政大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2230,10 +2241,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "JR東日本カップ2026 第100回関東大学サッカーリーグ戦1部 第19節。早稲田大学 対 中央大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2248,10 +2259,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "JR東日本カップ2026 第100回関東大学サッカーリーグ戦1部 第20節。早稲田大学 対 駒澤大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2266,10 +2277,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "JR東日本カップ2026 第100回関東大学サッカーリーグ戦1部 第21節。早稲田大学 対 明治大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -2289,10 +2300,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "2026関東学生リーグ戦Aブロック。早稲田大学 対 成蹊大学。",
     externalUrl: "http://wlax-redbats.com/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2307,10 +2318,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "2026関東学生リーグ戦Aブロック。早稲田大学 対 中央大学。",
     externalUrl: "http://wlax-redbats.com/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2325,10 +2336,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "2026関東学生リーグ戦Aブロック。早稲田大学 対 慶應義塾大学。",
     externalUrl: "http://wlax-redbats.com/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2343,10 +2354,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "2026関東学生リーグ戦Aブロック。早稲田大学 対 明治大学。",
     externalUrl: "http://wlax-redbats.com/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -2362,10 +2373,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東学生女子ラクロスリーグ戦2026。早稲田大学 対 立教大学。",
     externalUrl: "http://w-lax.com/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2379,10 +2390,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東学生女子ラクロス準リーグ。早稲田大学 対 立教大学γ。会場は未確認。",
     externalUrl: "http://w-lax.com/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2396,10 +2407,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東学生女子ラクロスVリーグ。早稲田大学 対 東海大学。会場は未確認。",
     externalUrl: "http://w-lax.com/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2413,10 +2424,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東学生女子ラクロスVリーグ。早稲田大学 対 学習院大学。会場は未確認。",
     externalUrl: "http://w-lax.com/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2430,10 +2441,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東学生女子ラクロス準リーグ。早稲田大学 対 法政大学。",
     externalUrl: "http://w-lax.com/schedule/",
-    lastUpdated: "2026-07-31",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2447,10 +2458,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東学生女子ラクロスVリーグ。早稲田大学 対 日本大学(公式サイト表記「日大中高」、要確認)。会場は未確認。",
     externalUrl: "http://w-lax.com/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2464,10 +2475,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東学生女子ラクロスリーグ戦2026。早稲田大学 対 東京大学。会場は未確認。",
     externalUrl: "http://w-lax.com/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2481,10 +2492,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東学生女子ラクロス準リーグ。早稲田大学 対 慶應義塾大学。会場は未確認。",
     externalUrl: "http://w-lax.com/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2498,10 +2509,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "関東学生女子ラクロスリーグ戦2026。早稲田大学 対 慶應義塾大学。会場は未確認。",
     externalUrl: "http://w-lax.com/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -2517,10 +2528,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学少林寺拳法部が出場する東京都大会 立合二次予選。",
     externalUrl: "http://waseda-shorinji.com/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2534,10 +2545,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学少林寺拳法部が出場する関東学生新人大会。",
     externalUrl: "http://waseda-shorinji.com/schedule/",
-    lastUpdated: "2026-09-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -2554,10 +2565,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学自動車部が出場する全日本学生ダートトライアル選手権大会。部公式サイトの日程表は「去年度準拠」との注記があり、変更の可能性あり。",
     externalUrl: "http://wuac.com/posts/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2571,10 +2582,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学自動車部が出場する全日本学生ジムカーナ選手権大会。部公式サイトの日程表は「去年度準拠」との注記あり。同サイトの観戦案内欄では「8/20前日練習・8/21大会本番」とも記載されており、月間予定表の8/30表記と矛盾がある(要確認)。連盟公式発表では8/29〜30の可能性も。",
     externalUrl: "http://wuac.com/posts/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2588,10 +2599,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学自動車部が出場する全日本学生自動車運転競技選手権大会。部公式サイトの日程表は「去年度準拠」との注記あり、全日本学生自動車連盟の公式発表(11/3)とは日程が異なる(要確認)。",
     externalUrl: "http://wuac.com/posts/schedule/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2605,10 +2616,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "全日本学生自動車連盟公式発表による全日本学生自動車運転競技選手権大会(11/3・鈴鹿サーキット)。早稲田大学自動車部サイトの10/26表記との整合は未確認。",
     externalUrl: "https://www.ajsaa-alljapan.org/blank-2",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -2624,10 +2635,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学準硬式野球部のオープン戦(変則ダブルヘッダー)。対 東北学院大学・国士館大学。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2641,10 +2652,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学準硬式野球部のオープン戦(ダブルヘッダー)。対 国士館大学世田谷。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2658,10 +2669,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学準硬式野球部のオープン戦(ダブルヘッダー)。対 帝京大学。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -2678,10 +2689,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学バドミントン部(男女)が出場する第69回東日本学生バドミントン選手権大会。開催地は北海道。",
     externalUrl: "https://waseda-bad.com/blog/%E5%B9%B4%E9%96%93%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2696,10 +2707,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学バドミントン部(男女)が出場する第77回全日本学生バドミントン選手権大会。開催地は石川県。",
     externalUrl: "https://waseda-bad.com/blog/%E5%B9%B4%E9%96%93%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2714,10 +2725,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学バドミントン部(男女)が出場する第77回全日本学生バドミントン大学対抗戦。開催地は兵庫県。",
     externalUrl: "https://waseda-bad.com/blog/%E5%B9%B4%E9%96%93%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -2751,10 +2762,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "東京六大学応援団連盟 吹奏楽部・チアリーディング部による第50回合同演奏会。開場17:30。",
     externalUrl: "http://www.w-ouen.com/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2769,10 +2780,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学応援部の伝統行事「北風祭」。開祭式11:00、応援部ステージ11:20〜。",
     externalUrl: "http://www.w-ouen.com/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -2787,10 +2798,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第102回日本学生選手権水泳競技大会 水球競技。早稲田大学水泳部(水球女子)が出場。",
     externalUrl: "https://wasedaswim.com/schedule",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -3018,10 +3029,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "文学学術院 文芸・ジャーナリズム論系主催の講演会。",
     externalUrl: "https://www.waseda.jp/flas/hss/news/2026/06/11/15770/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3030,17 +3041,17 @@ const EVENTS = [
     date: "2026-07-04",
     startTime: "18:30",
     endTime: "20:00",
-    location: "国際文学館(村上春樹ライブラリー) 地下1階",
+    location: "国際文学館（村上春樹ライブラリー） 地下1階",
     campus: "waseda",
     organizer: "早稲田大学国際文学館(村上春樹ライブラリー)",
     category: "lecture",
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "国際文学館主催の講演会。",
     externalUrl: "https://www.waseda.jp/culture/wihl/other/13047",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3056,10 +3067,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "比較法研究所主催のシンポジウム。",
     externalUrl: "https://www.waseda.jp/folaw/icl/news/2026/05/25/12557/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3075,10 +3086,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "国連開発計画(UNDP)によるキャリアセミナー。本学学生対象、事前登録制、英語(通訳なし)。",
     externalUrl: "https://www.waseda.jp/top/news/120466",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3087,17 +3098,17 @@ const EVENTS = [
     date: "2026-07-15",
     startTime: "18:30",
     endTime: "20:00",
-    location: "国際文学館(村上春樹ライブラリー) 地下1階",
+    location: "国際文学館（村上春樹ライブラリー） 地下1階",
     campus: "waseda",
     organizer: "早稲田大学国際文学館(村上春樹ライブラリー)",
     category: "lecture",
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "小西国際交流財団共催の朗読イベント。",
     externalUrl: "https://www.waseda.jp/culture/wihl/other/13087",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3106,7 +3117,7 @@ const EVENTS = [
     date: "2026-10-06",
     startTime: "18:30",
     endTime: "20:00",
-    location: "国際文学館(村上春樹ライブラリー) 地下1階",
+    location: "国際文学館（村上春樹ライブラリー） 地下1階",
     campus: "waseda",
     organizer: "早稲田大学国際文学館(村上春樹ライブラリー)",
     category: "lecture",
@@ -3116,7 +3127,7 @@ const EVENTS = [
     feeText: "無料(事前申込制・抽選)",
     description: "海外文学作家を招く「Authors Alive!」シリーズの講演・朗読会。日本語・アラビア語(日本語通訳あり)。事前申込制で応募多数の場合は抽選(応募締切2026-09-16 23:59)。",
     externalUrl: "https://www.waseda.jp/culture/wihl/other/13650",
-    lastUpdated: "2026-09-07",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3132,10 +3143,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "横川敏雄記念公開講座の1回(全5回シリーズのうち)。",
     externalUrl: "https://www.waseda.jp/folaw/law/news/2026/05/29/21593/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3151,10 +3162,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "文学学術院 哲学コース主催の講演会。",
     externalUrl: "https://www.waseda.jp/flas/hss/news/2026/06/15/15774/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3163,7 +3174,7 @@ const EVENTS = [
     date: "2026-07-20",
     startTime: "13:30",
     endTime: "16:00",
-    location: "早稲田キャンパス27号館 小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "早稲田大学ダイバーシティ推進室",
     category: "lecture",
@@ -3173,7 +3184,7 @@ const EVENTS = [
     feeText: "料金不明(要事前申込)",
     description: "ダイバーシティ推進室 開設10周年記念シンポジウム。事前申込制。",
     externalUrl: "https://www.waseda.jp/inst/diversity/news/2026/06/08/21017/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3189,10 +3200,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "学生・卒業生等が参加する第29回早稲田大学ビジネスプランコンテストの最終発表会。",
     externalUrl: "https://www.waseda.jp/inst/entrepreneur/news/2026/07/14/8967/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3201,17 +3212,17 @@ const EVENTS = [
     date: "2026-07-22",
     startTime: "18:30",
     endTime: "20:00",
-    location: "国際文学館(村上春樹ライブラリー) 地下1階",
+    location: "国際文学館（村上春樹ライブラリー） 地下1階",
     campus: "waseda",
     organizer: "早稲田大学国際文学館(村上春樹ライブラリー)",
     category: "lecture",
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "国際文学館翻訳プロジェクトの特別企画講演。",
     externalUrl: "https://www.waseda.jp/culture/wihl/other/13033",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3227,10 +3238,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "日本語教育研究科(日研)主催のオンライン公開講演会。",
     externalUrl: "https://www.waseda.jp/fire/gsjal/news/2026/06/12/12688/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3246,10 +3257,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "デジタルアーカイブ推進基本法をめぐるシンポジウム。開場16:00。",
     externalUrl: "https://www.waseda.jp/fedu/edu/news/2026/07/08/20995/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3264,10 +3275,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "食と農の研究所主催のシンポジウム。",
     externalUrl: "https://www.waseda.jp/inst/cro/news/2026/07/24/24776/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3276,17 +3287,17 @@ const EVENTS = [
     date: "2026-07-28",
     startTime: "18:30",
     endTime: "20:00",
-    location: "小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "早稲田大学国際文学館(村上春樹ライブラリー)",
     category: "music",
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "国際文学館主催のトーク＆歌唱イベント。",
     externalUrl: "https://www.waseda.jp/culture/wihl/other/13123",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3302,10 +3313,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "文学学術院 日本史コース主催の講演会。",
     externalUrl: "https://www.waseda.jp/flas/hss/news/2026/07/09/15860/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3321,10 +3332,10 @@ const EVENTS = [
     scope: "circle",
     target: ["public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "小中学生向け科学実験教室「ユニラブ」第37回。",
     externalUrl: "https://dpt-unilab.w.waseda.jp/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3340,10 +3351,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "次世代ジャーナリズム・メディア研究所主催のシンポジウム。",
     externalUrl: "https://www.waseda.jp/inst/cro/news/2026/07/08/24011/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3359,10 +3370,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "横川敏雄記念公開講座の1回(全5回シリーズのうち)。",
     externalUrl: "https://www.waseda.jp/folaw/law/news/2026/05/29/21593/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3371,17 +3382,17 @@ const EVENTS = [
     date: "2026-09-19",
     startTime: "13:30",
     endTime: "15:00",
-    location: "27号館小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "早稲田大学法学学術院",
     category: "lecture",
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "横川敏雄記念公開講座の最終回(全5回シリーズのうち)。",
     externalUrl: "https://www.waseda.jp/folaw/law/news/2026/05/29/21593/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3390,17 +3401,17 @@ const EVENTS = [
     date: "2026-09-12",
     startTime: "14:00",
     endTime: "16:30",
-    location: "早稲田大学小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "早稲田大学オペラ/音楽劇研究所",
     category: "music",
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "オペラ/音楽劇研究所主催のレクチャーコンサート。",
     externalUrl: "https://www.waseda.jp/inst/cro/news/2026/06/17/23731/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3416,10 +3427,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "総合研究機構主催の第5回シンポジウム。",
     externalUrl: "https://www.waseda.jp/inst/cro/news/2026/07/27/24757/",
-    lastUpdated: "2026-07-30",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3446,7 +3457,7 @@ const EVENTS = [
     date: "2026-09-30",
     startTime: "18:30",
     endTime: "20:00",
-    location: "小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "早稲田大学坪内博士記念演劇博物館",
     category: "lecture",
@@ -3456,7 +3467,7 @@ const EVENTS = [
     feeText: "無料(要事前予約、定員200名)",
     description: "演劇博物館の逍遙祭。坪内逍遥の「小説の主脳」をテーマにした講演会。",
     externalUrl: "https://enpaku.w.waseda.jp/",
-    lastUpdated: "2026-08-07",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3471,10 +3482,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部のオープン戦。対 作新学院大学。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-08-07",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3489,10 +3500,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部のオープン戦。対 石川ミリオンスターズ。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-08-07",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3507,10 +3518,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部のオープン戦。対 上武大学。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-08-07",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3525,10 +3536,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部のオープン戦。対 中央大学。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-08-07",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3543,10 +3554,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部のオープン戦。対 環太平洋大学。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-08-07",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3561,10 +3572,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部のオープン戦。対 立命館大学。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-08-07",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3579,10 +3590,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部のオープン戦。対 駒澤大学。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-08-07",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3597,10 +3608,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部のオープン戦。対 読売ジャイアンツ3軍。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-08-07",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3615,10 +3626,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部のオープン戦(2軍)。対 早稲田実業。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-08-07",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3633,10 +3644,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部のオープン戦(1軍)。対 東京国際大学。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-09-14",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3651,10 +3662,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部の2026秋季リーグ戦。対 明治大学。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-09-14",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3669,10 +3680,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部の2026秋季リーグ戦。対 明治大学。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-09-14",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3687,10 +3698,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学準硬式野球部の令和8年度秋季リーグ戦。対 東京大学。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-08-07",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3705,10 +3716,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学準硬式野球部の令和8年度秋季リーグ戦。対 東京大学。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-08-07",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3723,10 +3734,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学準硬式野球部の令和8年度秋季リーグ戦。対 明治大学。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-09-11",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3741,10 +3752,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学準硬式野球部の令和8年度秋季リーグ戦。対 明治大学。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-09-11",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3759,10 +3770,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学準硬式野球部の令和8年度秋季リーグ戦。対 慶應義塾大学。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-09-11",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3777,10 +3788,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学準硬式野球部の令和8年度秋季リーグ戦。対 慶應義塾大学。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-09-11",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3795,10 +3806,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学軟式野球部の2026秋季リーグ戦。対 慶應義塾大学。",
     externalUrl: "https://wasedarbbc.wixsite.com/my-site",
-    lastUpdated: "2026-09-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3813,10 +3824,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ア式蹴球部(女子)と慶應義塾大学による伝統の早慶戦。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-10-16",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3871,10 +3882,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学史学会主催のシンポジウム。デジタル・ヒューマニティーズ(DH)をテーマに、AI・考古学・歴史情報学等の観点から研究者が報告し討議する。",
     externalUrl: "https://www.waseda.jp/flas/rilas/news/2026/09/01/17456/",
-    lastUpdated: "2026-09-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3927,10 +3938,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "2026年関東学生テニスリーグ4部。早稲田大学(女子) 対 明治大学。",
     externalUrl: "https://www.wasedatennis.net/",
-    lastUpdated: "2026-09-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3944,10 +3955,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "2026年関東学生テニスリーグ4部。早稲田大学(男子) 対 筑波大学。",
     externalUrl: "https://www.wasedatennis.net/",
-    lastUpdated: "2026-09-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3962,10 +3973,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学競走部所属選手が出場する国際大会。日本陸上競技連盟(JAAF)でも開催情報を確認。",
     externalUrl: "https://waseda-ac.jp/competition/schedule",
-    lastUpdated: "2026-08-07",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3980,10 +3991,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ア式蹴球部女子部のリーグ戦。対 東洋大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-08-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -3998,10 +4009,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ア式蹴球部男子部のトーナメント戦。対 九州産業大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-08-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4015,10 +4026,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学弓道部(男子)の練習試合。対 中央大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-08-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4032,10 +4043,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学弓道部(男子)の練習試合。対 明治大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-08-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4049,10 +4060,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学弓道部(男子)と関西学院大学の定期戦。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-08-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4066,10 +4077,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学弓道部(男子)のリーグ戦第一週。対 東京都立大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-08-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4083,10 +4094,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学弓道部(女子)のリーグ戦第一週。対 日本体育大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-08-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4100,10 +4111,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学弓道部(女子)のリーグ戦第二週。対 東京都立大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-08-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4117,10 +4128,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学弓道部(男子)のリーグ戦第三週。対 東京大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-08-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4134,10 +4145,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学弓道部(女子)のリーグ戦第三週。対 東京都市大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-08-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4151,10 +4162,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学弓道部(男子)のリーグ戦第四週。対 中央大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-08-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4168,10 +4179,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学弓道部(男子)のリーグ戦第五週。対 國學院大學。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-08-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4185,10 +4196,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学弓道部(女子)のリーグ戦第五週。対 中央大学。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-08-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -4323,10 +4334,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "アジア史コース主催の講演会。「【対象】学生、教職員、一般」と明記、事前申込不要・直接会場へ。",
     externalUrl: "https://www.waseda.jp/flas/hss/news/2026/07/27/15969/",
-    lastUpdated: "2026-08-17",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4342,10 +4353,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "法学学術院・国際法律フォーラムによるセミナー。使用言語はドイツ語・日本語(通訳あり)。事前登録制(Googleフォーム)。対象者の明記は公式サイト上になし。",
     externalUrl: "https://www.waseda.jp/folaw/icl/news/2026/08/05/12799/",
-    lastUpdated: "2026-08-27",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4381,10 +4392,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の夏合宿練習試合。早大DEチーム 対 新潟食農大。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-08-18",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4399,10 +4410,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の夏合宿練習試合。早大CDチーム 対 立命館大学。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-08-18",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4417,10 +4428,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の夏合宿練習試合。早大Cチーム 対 天理大学Cチーム。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-08-18",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4435,10 +4446,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の夏合宿練習試合。早大DEチーム 対 同志社大学。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-08-18",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4453,10 +4464,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の夏合宿練習試合。早大Aチーム 対 天理大学Aチーム。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-08-18",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4471,10 +4482,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の夏合宿練習試合。早大Bチーム 対 天理大学Bチーム。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-08-18",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4489,10 +4500,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の夏合宿練習試合。早大CDチーム 対 龍谷大学。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-08-18",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4507,10 +4518,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の夏合宿練習試合。早大Aチーム 対 京都産業大学Aチーム。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-08-18",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4525,10 +4536,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の夏合宿練習試合。早大Bチーム 対 京都産業大学Bチーム。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-08-18",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4543,10 +4554,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の練習試合。対 東海大学。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-08-18",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4561,10 +4572,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の試合。対 筑波大学。10/25にも同カード(仙台開催)が別途予定されている。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-08-18",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4579,10 +4590,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の試合。対 明治大学。伝統の早明戦(12/6・国立競技場)とは別カード。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-08-18",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4597,10 +4608,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の試合。対 帝京大学(帝京大学グラウンドにて)。11/1の対抗戦(秩父宮)とは別カード。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-08-18",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -4691,10 +4702,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部と慶應義塾大学による伝統の早慶戦。両日とも試合開始13:00。",
     externalUrl: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/",
-    lastUpdated: "2026-10-16",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4709,10 +4720,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学柔道部と慶應義塾大学による伝統の早慶戦。開会式10:45。",
     externalUrl: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/",
-    lastUpdated: "2026-10-16",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4727,10 +4738,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学柔道部が出場する全日本学生個人体重別選手権大会。26日は男子60〜81kg級・女子70〜78kg超級、27日は男子90〜100kg超級・女子48〜63kg級。会場は公式サイトに明記なし。",
     externalUrl: "http://www.waseda-judo.com/schedule/",
-    lastUpdated: "2026-09-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4746,10 +4757,10 @@ const EVENTS = [
     scope: "circle",
     target: ["applicant", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "高校生対象のガイダンス。10:00〜12:00合同練習、13:00〜14:30説明会(いずれかのみの参加も可)。Googleフォームで要事前申込。",
     externalUrl: "https://www.instagram.com/waseda_judo/p/DZJzvPYpjJg/",
-    lastUpdated: "2026-08-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -4766,10 +4777,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学米式蹴球部の試合。対 日本体育大学。",
     externalUrl: "https://www.bigbears.org/game/",
-    lastUpdated: "2026-08-21",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4784,10 +4795,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学米式蹴球部の試合。対 慶應義塾大学。",
     externalUrl: "https://www.bigbears.org/game/",
-    lastUpdated: "2026-08-21",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4802,10 +4813,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学米式蹴球部の試合。対 中央大学。",
     externalUrl: "https://www.bigbears.org/game/",
-    lastUpdated: "2026-08-21",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4820,10 +4831,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学米式蹴球部の試合。対 立教大学。",
     externalUrl: "https://www.bigbears.org/game/",
-    lastUpdated: "2026-08-21",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4838,10 +4849,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学米式蹴球部の試合。対 東京大学。",
     externalUrl: "https://www.bigbears.org/game/",
-    lastUpdated: "2026-08-21",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4856,10 +4867,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学米式蹴球部の試合。対 法政大学。",
     externalUrl: "https://www.bigbears.org/game/",
-    lastUpdated: "2026-08-21",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4874,10 +4885,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学米式蹴球部の試合。対 明治大学。",
     externalUrl: "https://www.bigbears.org/game/",
-    lastUpdated: "2026-08-21",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4905,7 +4916,7 @@ const EVENTS = [
     date: "2026-09-03",
     startTime: "14:00",
     endTime: "15:00",
-    location: "国際文学館(村上春樹ライブラリー) 地下1階",
+    location: "国際文学館（村上春樹ライブラリー） 地下1階",
     campus: "waseda",
     organizer: "柳井イニシアティブ",
     category: "lecture",
@@ -4915,7 +4926,7 @@ const EVENTS = [
     feeText: "無料",
     description: "坂口安吾・太宰治・檀一雄の死をめぐるOpen Talk。",
     externalUrl: "https://www.waseda.jp/culture/news/2026/07/21/36360/",
-    lastUpdated: "2026-08-21",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4943,17 +4954,17 @@ const EVENTS = [
     date: "2026-10-28",
     startTime: "18:00",
     endTime: "19:30",
-    location: "早稲田大学小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "国際文学館",
     category: "lecture",
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "作家・多和田葉子と満谷マーガレットによるトークイベント。",
     externalUrl: "https://www.waseda.jp/culture/news",
-    lastUpdated: "2026-10-22",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -4967,10 +4978,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "津軽三味線愛好会による白河市での公演。",
     externalUrl: "https://www.waseda.jp/culture/news",
-    lastUpdated: "2026-08-21",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5026,10 +5037,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学バスケットボール部のリーグ戦。対 国士舘大学。",
     externalUrl: "https://waseda-basketball.com/schedule",
-    lastUpdated: "2026-08-24",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5044,10 +5055,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学バスケットボール部のリーグ戦。対 山梨学院大学。",
     externalUrl: "https://waseda-basketball.com/schedule",
-    lastUpdated: "2026-08-24",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5062,10 +5073,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学バスケットボール部のリーグ戦。対 東海大学。",
     externalUrl: "https://waseda-basketball.com/schedule",
-    lastUpdated: "2026-08-24",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5093,7 +5104,7 @@ const EVENTS = [
     date: "2026-10-01",
     startTime: "17:30",
     endTime: "20:00",
-    location: "早稲田大学小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "国際文学館",
     category: "music",
@@ -5103,7 +5114,7 @@ const EVENTS = [
     feeText: "無料(要事前申込、募集締切9/13)",
     description: "村上RADIOの公開録音イベント。開場16:45。学生はMyWasedaの申請フォーム、一般はTOKYO FMの応募フォームで要申込。",
     externalUrl: "https://www.waseda.jp/culture/wihl/other/13795",
-    lastUpdated: "2026-08-24",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5117,10 +5128,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "岐阜県八百津町で開催されるコンサート。",
     externalUrl: "https://www.waseda.jp/culture/news",
-    lastUpdated: "2026-08-24",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   // ---- 情報源チェック(2026-08-26) ----
@@ -5137,10 +5148,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "研究発表会(10:00〜12:10)とシンポジウム「古筆『狭衣物語』残簡について」(13:00〜16:15)の2部構成。会員外の参加も歓迎、事前申込を推奨(当日受付も可)。",
     externalUrl: "https://www.waseda.jp/flas/cms/assets/uploads/2026/08/heianchobungakukenkyukai_2026_1.pdf",
-    lastUpdated: "2026-08-26",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5155,10 +5166,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学バドミントン部(男女)が出場する関東学生バドミントン秋季リーグ戦。",
     externalUrl: "https://waseda-bad.com/blog/%E5%B9%B4%E9%96%93%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB/",
-    lastUpdated: "2026-08-26",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5172,10 +5183,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学バドミントン部と慶應義塾大学による伝統の早慶戦(定期戦)。",
     externalUrl: "https://waseda-bad.com/blog/%E5%B9%B4%E9%96%93%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB/",
-    lastUpdated: "2026-10-15",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5250,10 +5261,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "戸山公園内のプレイパークでの運営支援ボランティア。早稲田大学の学生対象。10:15集合、10:30活動開始、17:00終了。応募締切2026-10-14 12:00(応募状況により早期締切の場合あり)。",
     externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/09/17/24678/",
-    lastUpdated: "2026-09-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -5290,11 +5301,11 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "松本尚氏(日本医科大学特任教授・内閣総理大臣補佐官)、原量宏氏(香川大学名誉教授)による医療DXとサイバーセキュリティに関する公開講演会。事前の参加登録制。",
     externalUrl: "https://www.waseda.jp/folaw/icl/news/2026/09/15/12900/",
     registrationUrl: "https://forms.gle/dhWc8en1JmgBFiZM7",
-    lastUpdated: "2026-09-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -5305,7 +5316,7 @@ const EVENTS = [
     date: "2026-10-11",
     startTime: "14:00",
     endTime: "15:30",
-    location: "大隈講堂",
+    location: "大隈記念講堂",
     campus: "waseda",
     organizer: "交響楽団",
     category: "music",
@@ -5316,7 +5327,7 @@ const EVENTS = [
     feeText: "料金不明(先着順)",
     description: "早稲田文化芸術週間2026の一環で開催される早稲田大学交響楽団の演奏会。先着順。",
     externalUrl: "https://www.waseda.jp/culture/event/?date=2026-10",
-    lastUpdated: "2026-09-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5325,7 +5336,7 @@ const EVENTS = [
     date: "2026-10-12",
     startTime: "17:30",
     endTime: "19:00",
-    location: "大隈講堂",
+    location: "大隈記念講堂",
     campus: "waseda",
     organizer: "早稲田大学",
     category: "music",
@@ -5335,7 +5346,7 @@ const EVENTS = [
     feeText: "料金不明(事前申込制)",
     description: "早稲田文化芸術週間2026の一環で開催されるライブイベント。事前申込制。",
     externalUrl: "https://www.waseda.jp/culture/event/?date=2026-10",
-    lastUpdated: "2026-09-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5344,7 +5355,7 @@ const EVENTS = [
     date: "2026-10-20",
     startTime: "18:30",
     endTime: "20:00",
-    location: "大隈講堂",
+    location: "大隈記念講堂",
     campus: "waseda",
     organizer: "早稲田大学",
     category: "lecture",
@@ -5354,7 +5365,7 @@ const EVENTS = [
     feeText: "料金不明(要事前予約)",
     description: "早稲田文化芸術週間2026の一環で開催されるトークイベント。要事前予約。",
     externalUrl: "https://www.waseda.jp/culture/event/?date=2026-10",
-    lastUpdated: "2026-09-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5368,10 +5379,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田文化芸術週間2026の一環で開催されるミュージアムツアー。開催時間は情報源に記載なし。",
     externalUrl: "https://www.waseda.jp/culture/event/?date=2026-10",
-    lastUpdated: "2026-09-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5416,7 +5427,7 @@ const EVENTS = [
     id: "evt-459",
     title: "ミュージアムコンサート：Seiren Musical Project（10/21）",
     date: "2026-10-21",
-    location: "国際文学館（村上春樹ライブラリー）4号館地下1階",
+    location: "国際文学館（村上春樹ライブラリー） 地下1階",
     campus: "waseda",
     organizer: "早稲田大学",
     category: "music",
@@ -5426,7 +5437,7 @@ const EVENTS = [
     feeText: "無料（予約不要）",
     description: "早稲田文化芸術週間2026。Seiren Musical Projectによるミュージカルコンサート。同シリーズ開催：10/13 モダンジャズ研究会、10/17 津軽三味線愛好会 三津巴、10/21 Seiren Musical Project。開催日時・場所は各公演で異なります。入場無料・予約不要。",
     externalUrl: "https://www.waseda.jp/culture/news/2026/09/08/36475/",
-    lastUpdated: "2026-10-14",
+    lastUpdated: "2026-11-14",
     isPublished: true,
     startTime: "12:30",
     endTime: "13:00"
@@ -5463,10 +5474,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の練習試合。早大DEチーム 対 大東文化大学Cチーム。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-09-25",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5481,10 +5492,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ア式蹴球部女子部のリーグ戦。対 帝京平成大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-09-25",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5518,11 +5529,11 @@ const EVENTS = [
     category: "lecture",
     scope: "circle",
     target: ["student", "obog", "public"],
-    feeType: "free",
-    feeText: "無料(記載なし・推定)",
+    feeType: "unknown",
+    feeText: "料金未確認",
     description: "デジタル人文学を日本語学の観点から論じる講演会。学部生・大学院生・教員・研究者・一般が対象。事前登録制(Googleフォーム)。",
     externalUrl: "https://www.waseda.jp/inst/wias/news/2026/09/24/23436/",
-    lastUpdated: "2026-09-25",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5556,11 +5567,11 @@ const EVENTS = [
     category: "lecture",
     scope: "circle",
     target: ["student", "obog", "public"],
-    feeType: "free",
-    feeText: "無料(記載なし・推定)",
+    feeType: "unknown",
+    feeText: "料金未確認",
     description: "ドイツ語圏(現代)文学における石油をテーマにした講演会(ドイツ語)。学生・大学院生・教員・一般が対象。事前申込不要。",
     externalUrl: "https://www.waseda.jp/flas/hss/news/2026/09/18/16091/",
-    lastUpdated: "2026-09-25",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -5577,10 +5588,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部の2026秋季リーグ戦。対 明治大学。当初9/28開催予定だったが天候不良のため9/30に順延。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-09-28",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5595,10 +5606,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学準硬式野球部の令和8年度秋季リーグ戦。対 慶應義塾大学。当初9/28開催予定だったが天候不良のため中止、10/7に順延(公式サイトには順延の明記はないが、同一カードのため順延と判断)。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-10-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5613,10 +5624,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ア式蹴球部女子部のリーグ戦。対 日本大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-09-27",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -5652,11 +5663,11 @@ const EVENTS = [
     category: "lecture",
     scope: "circle",
     target: ["student", "obog", "public"],
-    feeType: "free",
-    feeText: "無料(記載なし・推定)",
+    feeType: "unknown",
+    feeText: "料金未確認",
     description: "水銀汚染をテーマにした開発途上国の環境問題についての講座。学生・教職員・一般が対象。事前申込制(所属により異なる申込フォーム、申込締切10/12 12:00)。",
     externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/09/22/24578/",
-    lastUpdated: "2026-09-28",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5671,11 +5682,11 @@ const EVENTS = [
     category: "lecture",
     scope: "circle",
     target: ["student", "obog", "public"],
-    feeType: "free",
-    feeText: "無料(記載なし・推定)",
+    feeType: "unknown",
+    feeText: "料金未確認",
     description: "アドルノとゲルンハルトをテーマにしたドイツ語圏文学の講演会(ドイツ語)。学生・大学院生・教員・一般が対象。事前申込不要。",
     externalUrl: "https://www.waseda.jp/flas/hss/news/2026/09/28/16153/",
-    lastUpdated: "2026-09-28",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -5693,10 +5704,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学の産学連携・最先端研究を紹介するフォーラム。事前申込制。",
     externalUrl: "https://waseda-oif26.jp/",
-    lastUpdated: "2026-09-29",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -5713,10 +5724,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部の2026秋季リーグ戦。対 東京大学。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-10-01",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5731,10 +5742,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部の2026秋季リーグ戦。対 東京大学。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-10-01",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5749,10 +5760,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部のオープン戦。対 横浜商科大学。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-10-01",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5767,10 +5778,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部のオープン戦。対 Honda。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-10-01",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5785,10 +5796,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部の2026秋季リーグ戦。対 立教大学。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-10-01",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5803,10 +5814,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部の2026秋季リーグ戦。対 立教大学。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-10-01",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5839,10 +5850,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "お笑い工房LUDOのお笑いライブ。開場17:45。",
     externalUrl: "https://ameblo.jp/ludo-waseda/",
-    lastUpdated: "2026-10-01",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5851,7 +5862,7 @@ const EVENTS = [
     date: "2026-10-11",
     startTime: "10:30",
     endTime: "17:30",
-    location: "小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "早稲田大学国際教養学部(SILS)",
     category: "theater",
@@ -5861,7 +5872,7 @@ const EVENTS = [
     feeText: "無料",
     description: "ソポクレス『アンティゴネ』を題材にしたSILS ART PROJECT 2026。開場10:00。事前予約制。",
     externalUrl: "https://www.waseda.jp/fire/sils/news-en/2026/09/30/25614/",
-    lastUpdated: "2026-10-01",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5935,10 +5946,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "村上春樹『走ることについて語るときに僕の語ること』特装版をテーマにした展示。",
     externalUrl: "https://www.waseda.jp/culture/wihl/other/14039",
-    lastUpdated: "2026-10-01",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -5994,10 +6005,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "Hawaii PJの秋新歓説明会(対面)。事前申込制(フォーム)。",
     externalUrl: "https://www.instagram.com/hawaii_pj/",
-    lastUpdated: "2026-10-01",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6011,10 +6022,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "Hawaii PJの秋新歓説明会(オンライン)。12:30〜13:00、20:00〜20:30の2回開催。事前申込制(フォーム)。",
     externalUrl: "https://www.instagram.com/hawaii_pj/",
-    lastUpdated: "2026-10-01",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6028,10 +6039,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "Hawaii PJの秋新歓説明会(オンライン)。12:30〜13:00、20:00〜20:30の2回開催。事前申込制(フォーム)。",
     externalUrl: "https://www.instagram.com/hawaii_pj/",
-    lastUpdated: "2026-10-01",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6045,10 +6056,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "Hawaii PJによる早稲田祭への出展。時間・詳細は情報源に記載なし。",
     externalUrl: "https://www.instagram.com/hawaii_pj/",
-    lastUpdated: "2026-10-01",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6062,10 +6073,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学柔道部員が出場する講道館杯。開始時間は情報源に記載なし。",
     externalUrl: "http://www.waseda-judo.com/schedule/",
-    lastUpdated: "2026-10-01",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6080,10 +6091,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学柔道部が出場する全日本学生体重別団体。10/23は移動日。会場は公式サイトに記載なし。",
     externalUrl: "http://www.waseda-judo.com/schedule/",
-    lastUpdated: "2026-10-01",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6154,10 +6165,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田スポGOMIクラブが参加するスポGOMI大会(調布開催)。",
     externalUrl: "https://www.instagram.com/spogomi_in_waseda/",
-    lastUpdated: "2026-10-01",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -6174,10 +6185,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学空手部と慶應義塾大学による伝統の早慶戦。",
     externalUrl: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/",
-    lastUpdated: "2026-10-16",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6192,10 +6203,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学準硬式野球部の令和8年度秋季リーグ戦。対 法政大学。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-10-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6210,10 +6221,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学準硬式野球部の令和8年度秋季リーグ戦。対 法政大学。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-10-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6228,10 +6239,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学軟式野球部の2026秋季リーグ戦。対 明治大学。",
     externalUrl: "https://wasedarbbc.wixsite.com/my-site",
-    lastUpdated: "2026-10-15",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -6295,10 +6306,10 @@ const EVENTS = [
     orgId: "A-063",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学マンドリン楽部の第217回定期演奏会。夜公演。",
     externalUrl: "http://wasedamandolin.net/concert/",
-    lastUpdated: "2026-10-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -6357,10 +6368,10 @@ const EVENTS = [
     orgId: "A-081",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学グリークラブの第74回定期演奏会。",
     externalUrl: "https://www.wasedaglee.com/",
-    lastUpdated: "2026-10-27",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -6401,10 +6412,10 @@ const EVENTS = [
     orgId: "A-122",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学GWラグビークラブ(GW)によるクラブ選手権の試合。GWは早稲田大学ラグビー蹴球部(体育各部)とは別の、OB・現役混成のクラブチーム。",
     externalUrl: "https://wasedagwrugby.com/schedule/8242",
-    lastUpdated: "2026-09-10",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6420,10 +6431,10 @@ const EVENTS = [
     orgId: "A-122",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学GWラグビークラブ(GW)によるクラブ選手権の試合。GWは早稲田大学ラグビー蹴球部(体育各部)とは別の、OB・現役混成のクラブチーム。",
     externalUrl: "https://wasedagwrugby.com/schedule/8242",
-    lastUpdated: "2026-09-10",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -6463,10 +6474,10 @@ const EVENTS = [
     orgId: "C-082",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "（劇団）森による2026年度10月企画公演。10/9(金)18:00、10/10(土)13:00・18:00、10/11(日)11:00・15:00開演。",
     externalUrl: "http://ticket.corich.jp/apply/481797/",
-    lastUpdated: "2026-09-10",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -6477,7 +6488,7 @@ const EVENTS = [
     title: "HSO×BSSO×OUJO Big Band Jazz concert",
     date: "2026-09-19",
     startTime: "17:50",
-    location: "小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "ハイソサエティ・オーケストラ",
     category: "music",
@@ -6488,7 +6499,7 @@ const EVENTS = [
     feeText: "入場無料",
     description: "早稲田大学ハイソサエティ・オーケストラ(HSO)が他大学ビッグバンドサークルと共演するジャズコンサート。予約不要。",
     externalUrl: "https://www.highso-waseda.com/",
-    lastUpdated: "2026-09-10",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -6507,10 +6518,10 @@ const EVENTS = [
     orgId: "C-121",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学よさこいチーム東京花火が「にいがた総おどり」に出演。",
     externalUrl: "https://www.tokyohanabi-official.com/出演予定",
-    lastUpdated: "2026-09-10",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6526,10 +6537,10 @@ const EVENTS = [
     orgId: "C-121",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学よさこいチーム東京花火が「富山のよさこい祭り」に出演。",
     externalUrl: "https://www.tokyohanabi-official.com/出演予定",
-    lastUpdated: "2026-09-10",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -6546,10 +6557,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学準硬式野球部の令和8年度秋季リーグ戦。対 立教大学。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-10-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6564,10 +6575,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学準硬式野球部の令和8年度秋季リーグ戦。対 立教大学。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-10-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6582,10 +6593,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学準硬式野球部の令和8年度木村杯新人戦1回戦。対 慶應義塾大学。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-10-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6600,10 +6611,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学準硬式野球部の令和8年度木村杯新人戦準決勝。対 法政大学。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-10-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6618,10 +6629,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学準硬式野球部の令和8年度木村杯新人戦決勝。対戦相手は準決勝の結果により決定(公式サイトに記載なし、本稿時点で不明)。",
     externalUrl: "https://w-junkoh.com/schedule",
-    lastUpdated: "2026-10-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6636,10 +6647,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "第32回関東女子サッカーリーグ1部後期。早稲田大学ア式蹴球部女子部 対 東洋大学。大学女子リーグ(O.R.S)とは別の大会。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-10-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -6655,10 +6666,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部の2026秋季リーグ戦。対 明治大学(3回戦)。早稲田4-2明治で勝利、勝ち点を獲得。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-10-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6673,10 +6684,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ア式蹴球部女子部のリーグ戦。対 十文字学園女子大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-10-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6692,10 +6703,10 @@ const EVENTS = [
     orgId: "C-274",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学女声合唱団の第8回定期演奏会。開場16:30。",
     externalUrl: "https://wasedafemalechorus.wixsite.com/wasejo",
-    lastUpdated: "2026-10-17",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6710,10 +6721,10 @@ const EVENTS = [
     orgId: "C-302",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学VTuber研究会による早稲田祭2026での出展企画。",
     externalUrl: "https://waseda.vken.org/",
-    lastUpdated: "2026-10-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6729,10 +6740,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学宇宙共創研究拠点(WASC)の設立記念ワークショップ。",
     externalUrl: "https://www.waseda.jp/top/event/list",
-    lastUpdated: "2026-10-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6748,10 +6759,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学多元文化学会の2026年度秋期大会。",
     externalUrl: "https://www.waseda.jp/top/event/list",
-    lastUpdated: "2026-10-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6767,10 +6778,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "映画『果てしなきスカーレット』をめぐるトークイベント。細田守監督を招いて開催。",
     externalUrl: "https://www.waseda.jp/top/event/list",
-    lastUpdated: "2026-10-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6784,10 +6795,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学・清華大学・日本大学による日本研究フォーラム2026。時間・会場は情報源に記載なし。",
     externalUrl: "https://www.waseda.jp/flas/cms/tag/events",
-    lastUpdated: "2026-10-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6802,10 +6813,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "視覚文化研究の論点と方法をテーマとした国際日本学ワークショップ2026。単発か連続講座かなど開催形態・会場の詳細は情報源に記載なし。",
     externalUrl: "https://www.waseda.jp/flas/cms/tag/events",
-    lastUpdated: "2026-10-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6819,10 +6830,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "GCC(Global Citizenship Center)主催のイベント。事前申込必要。時間・会場は情報源に記載なし。",
     externalUrl: "https://www.waseda.jp/inst/weekly/",
-    lastUpdated: "2026-10-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -6840,10 +6851,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "演劇博物館前で開催される青空市。関連グッズ等の頒布会(お一人様10点まで)。",
     externalUrl: "https://enpaku.w.waseda.jp/",
-    lastUpdated: "2026-10-07",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -6874,7 +6885,7 @@ const EVENTS = [
     date: "2026-11-02",
     startTime: "14:00",
     endTime: "15:00",
-    location: "国際文学館(村上春樹ライブラリー) 地下1階",
+    location: "国際文学館（村上春樹ライブラリー） 地下1階",
     campus: "waseda",
     organizer: "柳井イニシアティブ",
     category: "lecture",
@@ -6884,7 +6895,7 @@ const EVENTS = [
     feeText: "無料",
     description: "文楽の女性登場人物の嘆きをめぐるOpen Talk。",
     externalUrl: "https://www.waseda.jp/culture/event/?date=2026-10",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -6902,10 +6913,10 @@ const EVENTS = [
     orgId: "C-228",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "新入生向けの対面新歓説明会。1年生を対象に新規部員を募集(募集締切10/23)。",
     externalUrl: "https://www.instagram.com/divingram_ankou/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6922,10 +6933,10 @@ const EVENTS = [
     orgId: "C-246",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "中国語学習会による新歓交流イベント。",
     externalUrl: "https://www.instagram.com/wasechaiken_2026/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6980,10 +6991,10 @@ const EVENTS = [
     orgId: "C-045",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "オールジャンルのボランティアサークルPOSTによる地域交流活動。見学・参加可。",
     externalUrl: "https://www.instagram.com/waseda_post/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -6998,10 +7009,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学バスケットボール部(男子)のリーグ戦。対 明治大学。",
     externalUrl: "https://www.instagram.com/waseda__bigbearsbb/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7053,10 +7064,10 @@ const EVENTS = [
     orgId: "A-137",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "世界旅行研究会のメンバーによる帰国報告会。途中参加・退出可。",
     externalUrl: "https://www.instagram.com/waseda__srk/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7071,10 +7082,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部のトレーニングマッチ。対 白鴎大学。40分×2。開場13:30。",
     externalUrl: "https://www.instagram.com/wasedarugby_1918/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7166,10 +7177,10 @@ const EVENTS = [
     orgId: "C-045",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "オールジャンルのボランティアサークルPOSTによる地域交流活動。見学・参加可。",
     externalUrl: "https://www.instagram.com/waseda_post/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7239,10 +7250,10 @@ const EVENTS = [
     orgId: "C-228",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "新入生向けのオンライン新歓説明会。1年生を対象に新規部員を募集(募集締切10/23)。",
     externalUrl: "https://www.instagram.com/divingram_ankou/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7260,10 +7271,10 @@ const EVENTS = [
     orgId: "A-049",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "写真部で今年入会した124期の作品展示。最終日は17:00まで。",
     externalUrl: "https://www.instagram.com/p/DeGJBBTp3sy/",
-    lastUpdated: "2026-10-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7279,10 +7290,10 @@ const EVENTS = [
     orgId: "C-228",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "新入生向けの対面新歓説明会。1年生を対象に新規部員を募集(募集締切10/23)。",
     externalUrl: "https://www.instagram.com/divingram_ankou/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7299,10 +7310,10 @@ const EVENTS = [
     orgId: "C-269",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "日韓交流サークル、ニッコリの秋学期第1回活動。",
     externalUrl: "https://www.instagram.com/peace38_nikkori/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7339,10 +7350,10 @@ const EVENTS = [
     orgId: "C-246",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "中国語学習会とガチ中華同好会によるコラボイベント。",
     externalUrl: "https://www.instagram.com/wasechaiken_2026/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7378,10 +7389,10 @@ const EVENTS = [
     orgId: "C-045",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "オールジャンルのボランティアサークルPOSTによる活動。見学・参加可。",
     externalUrl: "https://www.instagram.com/waseda_post/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7398,10 +7409,10 @@ const EVENTS = [
     orgId: "A-011",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "キリスト者学生会の新入生歓迎会。レク・サークル紹介等。参加は要申込(フォーム)、どなたでも歓迎。",
     externalUrl: "https://www.instagram.com/p/Dd83KtpTpzg/",
-    lastUpdated: "2026-10-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7417,10 +7428,10 @@ const EVENTS = [
     orgId: "C-228",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "新入生向けの対面新歓説明会。1年生を対象に新規部員を募集(募集締切10/23)。",
     externalUrl: "https://www.instagram.com/divingram_ankou/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7455,10 +7466,10 @@ const EVENTS = [
     orgId: "A-137",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "世界旅行研究会のメンバーによる帰国報告会。途中参加・退出可。",
     externalUrl: "https://www.instagram.com/p/DePPI0JjPme/",
-    lastUpdated: "2026-10-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7514,10 +7525,10 @@ const EVENTS = [
     orgId: "C-228",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "新入生向けのオンライン新歓説明会。1年生を対象に新規部員を募集(募集締切10/23)。",
     externalUrl: "https://www.instagram.com/divingram_ankou/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7533,10 +7544,10 @@ const EVENTS = [
     orgId: "C-228",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "新入生向けの対面新歓説明会。1年生を対象に新規部員を募集(募集締切10/23)。",
     externalUrl: "https://www.instagram.com/divingram_ankou/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7553,10 +7564,10 @@ const EVENTS = [
     orgId: "C-246",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "中国語学習会による映画会イベント。",
     externalUrl: "https://www.instagram.com/wasechaiken_2026/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7573,10 +7584,10 @@ const EVENTS = [
     orgId: "C-045",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "オールジャンルのボランティアサークルPOSTによる清掃活動。見学・参加可。",
     externalUrl: "https://www.instagram.com/waseda_post/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7592,10 +7603,10 @@ const EVENTS = [
     orgId: "A-137",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "世界旅行研究会のメンバーによる帰国報告会。途中参加・退出可。",
     externalUrl: "https://www.instagram.com/p/DePPI0JjPme/",
-    lastUpdated: "2026-10-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7624,7 +7635,7 @@ const EVENTS = [
     date: "2026-10-26",
     startTime: "18:00",
     endTime: "19:30",
-    location: "早稲田大学 大隈小講堂",
+    location: "大隈記念講堂 小講堂",
     campus: "waseda",
     organizer: "早稲田大学サッカー観戦会",
     category: "lecture",
@@ -7635,7 +7646,7 @@ const EVENTS = [
     feeText: "無料",
     description: "サッカー観戦会主催の講演会。ゲスト: 兵藤慎剛(元プロサッカー選手、現ア式蹴球部監督)。開場17:30。",
     externalUrl: "https://www.instagram.com/soccerkansenkai/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7652,10 +7663,10 @@ const EVENTS = [
     orgId: "C-246",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "中国語学習会による旅行系YouTuberを招いたコラボイベント。",
     externalUrl: "https://www.instagram.com/wasechaiken_2026/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7672,10 +7683,10 @@ const EVENTS = [
     orgId: "C-246",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "中国語学習会によるハロウィンイベント。",
     externalUrl: "https://www.instagram.com/wasechaiken_2026/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7691,10 +7702,10 @@ const EVENTS = [
     orgId: "A-137",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "世界旅行研究会のメンバーによる帰国報告会。途中参加・退出可。",
     externalUrl: "https://www.instagram.com/p/DePPI0JjPme/",
-    lastUpdated: "2026-10-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7723,7 +7734,7 @@ const EVENTS = [
     date: "2026-11-06",
     startTime: "17:00",
     endTime: "19:00",
-    location: "早稲田大学 大隈講堂",
+    location: "大隈記念講堂",
     campus: "waseda",
     organizer: "カラーガードサークル ワセガシラ",
     category: "theater",
@@ -7734,7 +7745,7 @@ const EVENTS = [
     feeText: "無料(早稲田祭)",
     description: "カラーガードサークルワセガシラによる早稲田祭2026前夜祭への出演。Seirenとのコラボ。",
     externalUrl: "https://www.instagram.com/wasegashira_info/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7743,7 +7754,7 @@ const EVENTS = [
     date: "2026-11-06",
     startTime: "17:00",
     endTime: "19:00",
-    location: "早稲田大学 大隈記念講堂",
+    location: "大隈記念講堂",
     campus: "waseda",
     organizer: "バンカライズム-万色主義-",
     category: "theater",
@@ -7754,7 +7765,7 @@ const EVENTS = [
     feeText: "無料(早稲田祭)",
     description: "学ラン雑技団バンカライズムによる早稲田祭2026前夜祭への出演。Brilliant Pinksとのコラボ。",
     externalUrl: "https://www.instagram.com/p/Dd602d9k8NM/",
-    lastUpdated: "2026-10-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -7968,10 +7979,10 @@ const EVENTS = [
     orgId: "A-107",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "特撮サークル怪獣同盟による早稲田祭期間中のヒーローショー。",
     externalUrl: "https://www.instagram.com/p/DeG1pN4lLu8/",
-    lastUpdated: "2026-10-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8019,7 +8030,7 @@ const EVENTS = [
     date: "2026-11-23",
     startTime: "15:00",
     endTime: "16:40",
-    location: "早稲田大学 大隈記念講堂",
+    location: "大隈記念講堂",
     campus: "waseda",
     organizer: "早稲田大学ハワイ民族舞踊研究会〈wasehula〉",
     category: "theater",
@@ -8039,7 +8050,7 @@ const EVENTS = [
     date: "2026-11-23",
     startTime: "17:50",
     endTime: "19:30",
-    location: "早稲田大学 大隈記念講堂",
+    location: "大隈記念講堂",
     campus: "waseda",
     organizer: "早稲田大学ハワイ民族舞踊研究会〈wasehula〉",
     category: "theater",
@@ -8059,7 +8070,7 @@ const EVENTS = [
     date: "2026-11-27",
     startTime: "18:30",
     endTime: "20:00",
-    location: "早稲田大学 小野記念講堂(27号館 地下2階)",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "国際文学館",
     category: "lecture",
@@ -8069,7 +8080,7 @@ const EVENTS = [
     feeText: "無料",
     description: "国際文学館(村上春樹ライブラリー)開館5周年の特別対談。テーマ「スポーツと文学」。事前申込制(抽選、締切11/11)。開場18:00。",
     externalUrl: "https://www.instagram.com/the_haruki_murakami_library/",
-    lastUpdated: "2026-10-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8204,10 +8215,10 @@ const EVENTS = [
     orgId: "T-001",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学弓道部(男子)のリーグ戦入替戦。対 明治大学。開始時刻は公式サイトに記載なし。",
     externalUrl: "https://www.waseda-kyudo.net/game2026/",
-    lastUpdated: "2026-10-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -8244,10 +8255,10 @@ const EVENTS = [
     orgId: "T-013",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "",
+    feeText: "料金未確認",
     description: "早稲田大学剣道部が出場する全日本学生剣道優勝大会。9:30開会、有観客開催。",
     externalUrl: "http://www.waseda-kendo.com/calendar_detail/id=11182",
-    lastUpdated: "2026-10-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8265,10 +8276,10 @@ const EVENTS = [
     orgId: "C-117",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "",
+    feeText: "料金未確認",
     description: "珈琲研究会による早稲田祭2026での出店。",
     externalUrl: "https://www.instagram.com/p/DeUJmcVTOdH/",
-    lastUpdated: "2026-10-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8285,10 +8296,10 @@ const EVENTS = [
     orgId: "C-277",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "",
+    feeText: "料金未確認",
     description: "Twinkleの引退公演。開演17:00は予定で、チケット情報は後日公開予定。",
     externalUrl: "https://www.instagram.com/p/Dd761cnGD2u/",
-    lastUpdated: "2026-10-13",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8316,7 +8327,7 @@ const EVENTS = [
     date: "2026-12-13",
     startTime: "13:00",
     endTime: "17:30",
-    location: "早稲田大学 大隈記念講堂 大講堂",
+    location: "大隈記念講堂 大講堂",
     campus: "waseda",
     organizer: "出版甲子園実行委員会",
     category: "other",
@@ -8328,7 +8339,7 @@ const EVENTS = [
     description: "第22回出版甲子園の決勝大会。観覧は要予約(抽選、10/18 10:00予約開始、申込締切11/18(水)23:59)で、YouTube配信あり。ゲストトークショーに加藤シゲアキ・小川哲・蝉谷めぐ実の3名が出演予定。",
     externalUrl: "https://www.instagram.com/p/DeWZbvrTtgc/",
     registrationUrl: "https://forms.gle/SQcwoZWW73MUhFFdA",
-    lastUpdated: "2026-11-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -8392,11 +8403,11 @@ const EVENTS = [
     ],
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田祭2026の祭当日前企画。11月4日の回は大隈講堂前にて開催し、下駄っぱーずと魁響を含む7団体が出演する。",
     externalUrl: "https://wasedasai.net/former",
     sourceUrls: ["https://wasedasai.net/former", "https://www.instagram.com/p/DeRc2HABGKv/", "https://www.instagram.com/p/DeY-F0nGcTP/", "https://www.instagram.com/p/De9O3OwzSAl/"],
-    lastUpdated: "2026-10-28",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8411,10 +8422,10 @@ const EVENTS = [
     orgId: "C-217",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "下駄っぱーずによる早稲田祭2026出演。Opening Festival(10:00)、中夜祭(16:25)、WASEDA PARADE(16:30〜17:45、ワセガシラとコラボ)の3枠。",
     externalUrl: "https://www.instagram.com/p/DeRc2HABGKv/",
-    lastUpdated: "2026-10-14",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8431,10 +8442,10 @@ const EVENTS = [
     orgId: "C-217",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "下駄っぱーずによる理工展2026でのステージ出演。",
     externalUrl: "https://www.instagram.com/p/DeRc2HABGKv/",
-    lastUpdated: "2026-10-14",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8449,10 +8460,10 @@ const EVENTS = [
     orgId: "C-217",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "下駄っぱーずによる早稲田祭2026出演。中間決起(09:05)、大隈講堂前ステージ企画(14:05)の2枠。",
     externalUrl: "https://www.instagram.com/p/DeRc2HABGKv/",
-    lastUpdated: "2026-10-14",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8510,10 +8521,10 @@ const EVENTS = [
     orgId: "A-097",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "映画研究会の秋の新歓説明会。説明会後にご飯会があり、参加には新歓LINEへの登録が必要。",
     externalUrl: "https://www.instagram.com/p/Dd2ylFUsBtM/",
-    lastUpdated: "2026-10-14",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8530,10 +8541,10 @@ const EVENTS = [
     orgId: "A-097",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "映画研究会の秋の新歓説明会。説明会後にご飯会があり、参加には新歓LINEへの登録が必要。",
     externalUrl: "https://www.instagram.com/p/Dd2ylFUsBtM/",
-    lastUpdated: "2026-10-14",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8551,10 +8562,10 @@ const EVENTS = [
     orgId: "C-032",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "まつりスタッフによる早稲田祭2026謎解き企画。早稲田キャンパス・戸山キャンパスとその周辺地域を舞台に、ゴールは戸山キャンパス33号館4階。",
     externalUrl: "https://www.instagram.com/p/DeY-GbDE4Ox/",
-    lastUpdated: "2026-10-14",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8607,10 +8618,10 @@ const EVENTS = [
     orgId: "A-076",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "律ゾリステンによる早稲田祭演奏会『Rest in Ritz』。第1部11:00〜、第2部13:00〜、第3部15:00〜の3部制。",
     externalUrl: "https://www.instagram.com/p/Dd1PCTSCQ05/",
-    lastUpdated: "2026-10-14",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8641,7 +8652,7 @@ const EVENTS = [
     date: "2026-11-06",
     startTime: "17:00",
     endTime: "19:00",
-    location: "大隈講堂",
+    location: "大隈記念講堂",
     campus: "waseda",
     organizer: "魁響(さきがけひびき)",
     category: "music",
@@ -8649,10 +8660,10 @@ const EVENTS = [
     orgId: "C-068",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "魁響(和太鼓)による早稲田祭2026前夜祭への出演。",
     externalUrl: "https://www.instagram.com/p/DeY-F0nGcTP/",
-    lastUpdated: "2026-10-14",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8667,10 +8678,10 @@ const EVENTS = [
     orgId: "C-068",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "魁響(和太鼓)による早稲田祭2026出演。Opening Festival(10:00)、2代ステージ「光芒」(12:15)の2ステージ。",
     externalUrl: "https://www.instagram.com/p/DeY-F0nGcTP/",
-    lastUpdated: "2026-10-14",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8687,10 +8698,10 @@ const EVENTS = [
     orgId: "C-068",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "魁響(和太鼓)による理工展2026での屋外ステージ出演。",
     externalUrl: "https://www.instagram.com/p/DeY-F0nGcTP/",
-    lastUpdated: "2026-10-14",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8705,10 +8716,10 @@ const EVENTS = [
     orgId: "C-068",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "魁響(和太鼓)による早稲田祭2026出演。中間決起(9:05)、3代ステージ「快聲」(13:00)、Ending Festival(17:15)の3ステージ。",
     externalUrl: "https://www.instagram.com/p/DeY-F0nGcTP/",
-    lastUpdated: "2026-10-14",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -8727,17 +8738,17 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "初めてボランティアに挑戦したい学生向けの相談会。事前申込推奨(当日参加も可)。",
     externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/10/07/24783/",
-    lastUpdated: "2026-10-15",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
     id: "evt-475",
     title: "高尾の森づくりボランティア",
     date: "2026-11-22",
-    startTime: "8:50",
+    startTime: "08:50",
     endTime: "16:00",
     location: "こげさわの森(東京都八王子市裏高尾、JR高尾駅集合)",
     campus: "outside",
@@ -8746,10 +8757,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "高尾の森での森づくり活動ボランティア。早稲田大学の学生対象、定員8名(抽選制)。応募締切2026-11-11 12:00。",
     externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/10/09/24929/",
-    lastUpdated: "2026-10-15",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8765,17 +8776,17 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "荒川河川敷での清掃ボランティア。早稲田大学の学生対象(留学生も歓迎)、定員10名(抽選制)。荒天時中止、応募締切2026-11-19 12:00。",
     externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/10/12/24510/",
-    lastUpdated: "2026-10-15",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
     id: "evt-477",
     title: "BOCCIA JAPAN CUP 2027 大会運営ボランティア",
     date: "2026-11-29",
-    startTime: "8:15",
+    startTime: "08:15",
     endTime: "18:30",
     location: "武蔵野総合体育館(東京都武蔵野市)",
     campus: "outside",
@@ -8787,7 +8798,7 @@ const EVENTS = [
     feeText: "無料(昼食提供あり、交通費・日当は辞退)",
     description: "ボッチャ競技大会の運営支援ボランティア。早稲田大学の学生対象、定員5名(抽選制)。応募締切2026-10-20 12:00。",
     externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/10/05/24702/",
-    lastUpdated: "2026-10-15",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8802,10 +8813,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学合気道部と慶應義塾大学による伝統の早慶戦。開会式14:00。",
     externalUrl: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/",
-    lastUpdated: "2026-10-16",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8819,10 +8830,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学日本拳法部と慶應義塾大学による伝統の早慶戦。",
     externalUrl: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/",
-    lastUpdated: "2026-10-15",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8855,10 +8866,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学自転車部と慶應義塾大学による伝統の早慶戦。開会式10:00。",
     externalUrl: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/",
-    lastUpdated: "2026-10-16",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8872,10 +8883,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ハンドボール部(男子・女子)と慶應義塾大学による伝統の早慶戦。",
     externalUrl: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/",
-    lastUpdated: "2026-10-15",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8889,10 +8900,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学少林寺拳法部(男子・女子)と慶應義塾大学による伝統の早慶戦。",
     externalUrl: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/",
-    lastUpdated: "2026-10-15",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8907,10 +8918,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学レスリング部と慶應義塾大学による伝統の早慶戦。開会式14:00。",
     externalUrl: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/",
-    lastUpdated: "2026-10-16",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -8948,10 +8959,10 @@ const EVENTS = [
     orgId: "A-011",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "キリスト者学生会による秋イベント。横浜中華街(元町・中華街駅集合)での食べ歩き企画。",
     externalUrl: "https://www.instagram.com/p/DeYrZHITC3i/",
-    lastUpdated: "2026-10-15",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -8988,10 +8999,10 @@ const EVENTS = [
     orgId: "C-123",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ドラえもん研究会による早稲田祭2026企画「ドラえもん検定2026〜潜れ!ドラ知識の海〜」。会誌の販売もあり。",
     externalUrl: "https://www.instagram.com/p/DeHXdCRvKyL/",
-    lastUpdated: "2026-10-15",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -9053,10 +9064,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学水上スキー部と慶應義塾大学による伝統の早慶戦。開会式11:00。",
     externalUrl: "https://www.uaa.keio.ac.jp/competition/pdf/soukeisen_2026.pdf",
-    lastUpdated: "2026-10-16",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9071,10 +9082,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の関東大学ジュニア選手権大会。早大DE 対 日大C。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-10-16",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9089,10 +9100,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の関東大学ジュニア選手権大会。早大C 対 明大C。",
     externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-10-16",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9162,10 +9173,10 @@ const EVENTS = [
     scope: "circle",
     target: ["public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "演劇博物館共催、児玉竜一館長による十一月「吉例顔見世大歌舞伎」事前講義。オンライン開催、録画視聴も可能。定員50名程度(先着順、シリーズ共通)。",
     externalUrl: "https://enpaku.w.waseda.jp/ex/21790/",
-    lastUpdated: "2026-10-16",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9179,10 +9190,10 @@ const EVENTS = [
     scope: "circle",
     target: ["public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "演劇博物館共催、児玉竜一館長による十一月「吉例顔見世大歌舞伎」事後講義。対面開催。定員50名程度(先着順、シリーズ共通)。",
     externalUrl: "https://enpaku.w.waseda.jp/ex/21790/",
-    lastUpdated: "2026-10-16",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9197,10 +9208,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部のオープン戦(1軍)。対 日産自動車。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-10-16",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9215,10 +9226,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学野球部のオープン戦(1軍)。対 亜細亜大学。",
     externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-10-16",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -9237,10 +9248,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学洋弓部(男子・女子)と慶應義塾大学による伝統の早慶戦。開会式08:00。",
     externalUrl: "https://www.uaa.keio.ac.jp/competition/pdf/soukeisen_2026.pdf",
-    lastUpdated: "2026-10-17",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9255,10 +9266,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学馬術部と慶應義塾大学による伝統の早慶戦。",
     externalUrl: "https://www.uaa.keio.ac.jp/competition/pdf/soukeisen_2026.pdf",
-    lastUpdated: "2026-10-17",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9292,10 +9303,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学庭球部が出場する全日本大学対抗テニス王座決定試合。",
     externalUrl: "https://www.wasedatennis.net/",
-    lastUpdated: "2026-10-17",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9334,10 +9345,10 @@ const EVENTS = [
     orgId: "C-040",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "Walkin'による早稲田祭2026の体験型企画『バカの学問「バカデミック」ツアー』(「夜のバカガク研究所」、現「バ科学研究所」とも)。",
     externalUrl: "https://www.instagram.com/p/DfUUvPmzcSe/",
-    lastUpdated: "2026-11-05",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -9357,10 +9368,10 @@ const EVENTS = [
     orgId: "C-212",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ハワイ民族舞踊研究会(わせフラ)による早稲田祭2026前夜祭への出演。",
     externalUrl: "https://www.instagram.com/p/DelV7X2iYpm/",
-    lastUpdated: "2026-10-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9375,10 +9386,10 @@ const EVENTS = [
     orgId: "C-212",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ハワイ民族舞踊研究会(わせフラ)による早稲田祭2026出演。Opening Festival(10:00)、ストリート企画(11:30)、単独ステージ(16:20)の3ステージ。",
     externalUrl: "https://www.instagram.com/p/DelV7X2iYpm/",
-    lastUpdated: "2026-10-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9395,10 +9406,10 @@ const EVENTS = [
     orgId: "C-220",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ベリーダンスサークルSARAH bellyによる早稲田祭2026前夜祭への出演。",
     externalUrl: "https://www.instagram.com/p/DenwCYFAZUR/",
-    lastUpdated: "2026-10-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9415,10 +9426,10 @@ const EVENTS = [
     orgId: "C-220",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ベリーダンスサークルSARAH bellyによる早稲田祭2026出演。",
     externalUrl: "https://www.instagram.com/p/DenwCYFAZUR/",
-    lastUpdated: "2026-10-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9435,10 +9446,10 @@ const EVENTS = [
     orgId: "C-220",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ベリーダンスサークルSARAH bellyによる早稲田祭2026 Ending Festivalへの出演。バンカライズムとコラボ。",
     externalUrl: "https://www.instagram.com/p/DenwCYFAZUR/",
-    lastUpdated: "2026-10-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9455,10 +9466,10 @@ const EVENTS = [
     orgId: "C-311",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田マイケル・ジャクソン研究会による早稲田祭2026前夜祭への出演。",
     externalUrl: "https://www.instagram.com/p/DejzEvcAWTc/",
-    lastUpdated: "2026-10-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9475,10 +9486,10 @@ const EVENTS = [
     orgId: "C-311",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田マイケル・ジャクソン研究会による早稲田祭2026単独ステージ出演。",
     externalUrl: "https://www.instagram.com/p/DejzEvcAWTc/",
-    lastUpdated: "2026-10-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9493,10 +9504,10 @@ const EVENTS = [
     orgId: "C-311",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田マイケル・ジャクソン研究会による早稲田祭2026出演。単独ステージ(10:00)、Ending Festival(17:15)の2ステージ。",
     externalUrl: "https://www.instagram.com/p/DejzEvcAWTc/",
-    lastUpdated: "2026-10-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9514,10 +9525,10 @@ const EVENTS = [
     orgId: "C-032",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "まつりスタッフによる早稲田祭2026の香水づくり体験企画「Fragrance Palette」。",
     externalUrl: "https://www.instagram.com/p/Deoa46ZEy45/",
-    lastUpdated: "2026-10-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9535,10 +9546,10 @@ const EVENTS = [
     orgId: "C-032",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "まつりスタッフによる早稲田祭2026の企画「Balloon U!」。風船を一斉に飛ばす企画。最終入場16:25、風船がなくなり次第終了。",
     externalUrl: "https://www.instagram.com/p/Del2vdUk6LA/",
-    lastUpdated: "2026-10-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9556,10 +9567,10 @@ const EVENTS = [
     orgId: "C-032",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "まつりスタッフによる早稲田祭2026のでんでん太鼓づくり企画「わせっこたいこ」。11/7は10:30〜16:00、11/8は10:00〜16:00。予約不要。",
     externalUrl: "https://www.instagram.com/p/DejRPCeE0Yg/",
-    lastUpdated: "2026-10-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9576,10 +9587,10 @@ const EVENTS = [
     orgId: "A-189",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ケルト音楽同好会による早稲田祭ライブ。",
     externalUrl: "https://www.instagram.com/p/DegWc50xoA3/",
-    lastUpdated: "2026-10-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9596,10 +9607,10 @@ const EVENTS = [
     orgId: "A-091",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "虚竹会による早稲田祭演奏会&楽器体験会。",
     externalUrl: "https://www.instagram.com/p/DefcBj9Si9s/",
-    lastUpdated: "2026-10-19",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9636,10 +9647,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学軟式野球部の2026秋季リーグ戦。対 立教大学。",
     externalUrl: "https://wasedarbbc.wixsite.com/my-site",
-    lastUpdated: "2026-10-20",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9654,10 +9665,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ア式蹴球部女子部のリーグ戦。対 順天堂大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-10-20",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9690,10 +9701,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学バレーボール部と慶應義塾大学による第84回早慶定期戦。会場は情報源に記載なし。",
     externalUrl: "https://wasedavolley.org/",
-    lastUpdated: "2026-10-20",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
 
@@ -9713,10 +9724,10 @@ const EVENTS = [
     orgId: "C-216",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "TAP-LOVERSによる早稲田祭2026カウントダウンイベントへの出演。",
     externalUrl: "https://www.instagram.com/p/DegfxDIEiVE/",
-    lastUpdated: "2026-10-20",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9733,10 +9744,10 @@ const EVENTS = [
     orgId: "C-216",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "TAP-LOVERSによる早稲田祭2026単独ステージ「TAP-LOVERS Special stage 2026」。",
     externalUrl: "https://www.instagram.com/p/DegfxDIEiVE/",
-    lastUpdated: "2026-10-20",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9753,10 +9764,10 @@ const EVENTS = [
     orgId: "C-216",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "TAP-LOVERSによる早稲田祭2026単独ステージ出演。",
     externalUrl: "https://www.instagram.com/p/DegfxDIEiVE/",
-    lastUpdated: "2026-10-20",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9792,10 +9803,10 @@ const EVENTS = [
     orgId: "A-118",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "三津巴による所沢キャンパス祭2026でのステージ出演。",
     externalUrl: "https://www.instagram.com/p/DenjL1iEslX/",
-    lastUpdated: "2026-10-22",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9810,10 +9821,10 @@ const EVENTS = [
     orgId: "A-118",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "三津巴による早稲田祭2026ストリート企画への出演。11:30〜12:00(2号館横)、13:30〜14:00(8号館前)の2回。",
     externalUrl: "https://www.instagram.com/p/DenjL1iEslX/",
-    lastUpdated: "2026-10-22",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9830,10 +9841,10 @@ const EVENTS = [
     orgId: "A-118",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "三津巴による早稲田祭2026小講堂企画への出演。",
     externalUrl: "https://www.instagram.com/p/DenjL1iEslX/",
-    lastUpdated: "2026-10-22",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9850,10 +9861,10 @@ const EVENTS = [
     orgId: "A-118",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "三津巴による理工展2026への出演。",
     externalUrl: "https://www.instagram.com/p/DenjL1iEslX/",
-    lastUpdated: "2026-10-22",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9868,10 +9879,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学軟式野球部の令和8年度秋季阿久澤杯。対 慶應義塾大学。",
     externalUrl: "https://wasedarbbc.wixsite.com/my-site",
-    lastUpdated: "2026-10-22",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9928,10 +9939,10 @@ const EVENTS = [
     orgId: "C-220",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ベリーダンスサークルSARAH bellyによる早稲田祭2026出演。",
     externalUrl: "https://www.instagram.com/p/DenwCYFAZUR/",
-    lastUpdated: "2026-10-25",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9946,10 +9957,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ア式蹴球部女子部のリーグ戦。対 山梨学院大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-10-25",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9966,10 +9977,10 @@ const EVENTS = [
     orgId: "ET-041",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "aka Wa.Se.Da.による所沢キャンパス祭2026でのステージ出演。",
     externalUrl: "https://tokosai.net/",
-    lastUpdated: "2026-10-25",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -9984,10 +9995,10 @@ const EVENTS = [
     orgId: "C-121",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学よさこいチーム東京花火による所沢キャンパス祭2026でのステージ出演。",
     externalUrl: "https://tokosai.net/",
-    lastUpdated: "2026-10-25",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10004,10 +10015,10 @@ const EVENTS = [
     orgId: "A-024",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "政友会による秋新歓企画。経済政策をテーマにした勉強会。",
     externalUrl: "https://www.instagram.com/p/De6MNhfInbk/",
-    lastUpdated: "2026-10-26",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10062,10 +10073,10 @@ const EVENTS = [
     orgId: "C-032",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "まつりスタッフによる早稲田祭2026の企画。3号館壁面への映像投影。事前予約フォームあり。",
     externalUrl: "https://www.instagram.com/p/De6jJHMk2ml/",
-    lastUpdated: "2026-10-26",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10102,10 +10113,10 @@ const EVENTS = [
     orgId: "C-252",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "チャータースクールへの教育支援～ハワイ編～による追加の秋新歓説明会(オンライン)。入会締切は11/16。",
     externalUrl: "https://www.instagram.com/p/De52O4Sgaka/",
-    lastUpdated: "2026-10-26",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10122,10 +10133,10 @@ const EVENTS = [
     orgId: "C-252",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "チャータースクールへの教育支援～ハワイ編～による追加の秋新歓説明会(オンライン)。入会締切は11/16。",
     externalUrl: "https://www.instagram.com/p/De52O4Sgaka/",
-    lastUpdated: "2026-10-26",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10141,17 +10152,17 @@ const EVENTS = [
     orgId: "C-263",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "ハイソサエティ・オーケストラがJ-WAVE主催の音楽イベント「BESSHOW TIME 2026」に出演。開場17:30。",
     externalUrl: "https://www.instagram.com/p/De0rlYrPKCb/",
-    lastUpdated: "2026-10-26",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
     id: "evt-549",
     title: "早稲田祭企画演奏会・野外演奏会",
     date: "2026-11-08",
-    location: "小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "早大ピアノの会",
     category: "music",
@@ -10159,10 +10170,10 @@ const EVENTS = [
     orgId: "A-079",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早大ピアノの会による早稲田祭2026企画の演奏会・野外演奏会。",
     externalUrl: "http://w-piano.com",
-    lastUpdated: "2026-10-26",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10177,10 +10188,10 @@ const EVENTS = [
     orgId: "A-079",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早大ピアノの会による早東合同演奏会2026。",
     externalUrl: "http://w-piano.com",
-    lastUpdated: "2026-10-26",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10189,7 +10200,7 @@ const EVENTS = [
     date: "2026-11-06",
     startTime: "17:00",
     endTime: "19:00",
-    location: "大隈講堂",
+    location: "大隈記念講堂",
     campus: "waseda",
     organizer: "早稲田大学ジャグリングサークル～infinitｙ～",
     category: "theater",
@@ -10197,10 +10208,10 @@ const EVENTS = [
     orgId: "C-238",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "ジャグリングサークル～infinitｙ～による早稲田祭2026前夜祭への出演。フラッシュモブ部とのコラボと単独パフォーマンス。",
     externalUrl: "https://www.instagram.com/p/Deqp0xtkYPZ/",
-    lastUpdated: "2026-10-27",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10217,10 +10228,10 @@ const EVENTS = [
     orgId: "C-238",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "ジャグリングサークル～infinitｙ～による早稲田祭2026ストリート企画でのジャグリングパフォーマンス。",
     externalUrl: "https://www.instagram.com/p/Deqp0xtkYPZ/",
-    lastUpdated: "2026-10-27",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10236,10 +10247,10 @@ const EVENTS = [
     orgId: "A-066",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ニューオルリンズジャズクラブによる早稲田祭2026のジャズライブ。1〜4年の全13バンドが出演。開場11:05、開場前の入場不可。",
     externalUrl: "https://www.instagram.com/p/De9GSXcTScN/",
-    lastUpdated: "2026-10-27",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10257,10 +10268,10 @@ const EVENTS = [
     orgId: "A-047",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "鉄道研究会(WRC)による早稲田祭2026の展示。Nゲージジオラマ・乗車券・写真の展示のほか、駅メロ鳴動体験・模型運転体験を実施。",
     externalUrl: "https://www.instagram.com/p/De823evk4iw/",
-    lastUpdated: "2026-11-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10278,10 +10289,10 @@ const EVENTS = [
     orgId: "A-177",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "児童文学研究会による早稲田祭2026企画。不思議の国のアリスをテーマにした展示・ゲーム。会誌・豆絵本の販売も実施。",
     externalUrl: "https://www.instagram.com/p/Del0MCozdbL/",
-    lastUpdated: "2026-10-27",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10298,10 +10309,10 @@ const EVENTS = [
     orgId: "C-238",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "ジャグリングサークル～infinitｙ～による理工展2026ステージでのジャグリングパフォーマンス。",
     externalUrl: "https://www.instagram.com/p/Deqp0xtkYPZ/",
-    lastUpdated: "2026-10-27",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10337,10 +10348,10 @@ const EVENTS = [
     orgId: "C-238",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "ジャグリングサークル～infinitｙ～による早稲田祭2026 3号館前ステージでのジャグリングパフォーマンス。",
     externalUrl: "https://www.instagram.com/p/Deqp0xtkYPZ/",
-    lastUpdated: "2026-10-27",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10367,7 +10378,7 @@ const EVENTS = [
     title: "第2回単独公演「Voyage」",
     date: "2026-11-22",
     startTime: "16:00",
-    location: "小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "カラーガードサークル ワセガシラ",
     category: "theater",
@@ -10375,10 +10386,10 @@ const EVENTS = [
     orgId: "C-306",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "カラーガードサークルワセガシラによる第2回単独公演「Voyage」。秋新歓生向けの座席あり。",
     externalUrl: "https://www.instagram.com/p/De5bJd4zPje/",
-    lastUpdated: "2026-10-27",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10393,10 +10404,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学軟式野球部の令和8年度秋季阿久澤杯。対 立教大学。",
     externalUrl: "https://wasedarbbc.wixsite.com/my-site",
-    lastUpdated: "2026-10-27",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10412,10 +10423,10 @@ const EVENTS = [
     orgId: "EN-034",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田コンピュータエンタテインメントによる第73回理工展への出展。",
     externalUrl: "https://wce.jp/",
-    lastUpdated: "2026-10-27",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10432,10 +10443,10 @@ const EVENTS = [
     orgId: "C-282",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "書道パフォーマンスサークル漣による早稲田祭2026単独ステージ。",
     externalUrl: "https://www.instagram.com/p/De9O3OwzSAl/",
-    lastUpdated: "2026-10-28",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10452,10 +10463,10 @@ const EVENTS = [
     orgId: "C-282",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "書道パフォーマンスサークル漣による早稲田祭2026単独ステージ。",
     externalUrl: "https://www.instagram.com/p/De9O3OwzSAl/",
-    lastUpdated: "2026-10-28",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10473,10 +10484,10 @@ const EVENTS = [
     orgId: "C-319",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "リトルヤンゴンプロジェクトによる早稲田祭2026出店。ミャンマー風春巻き「サモサ」を販売。",
     externalUrl: "https://www.instagram.com/p/De6FpPDH3Qv/",
-    lastUpdated: "2026-10-28",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10553,10 +10564,10 @@ const EVENTS = [
     orgId: "C-221",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "WASEDA BALLERSによる早稲田祭2026単独ステージ。",
     externalUrl: "https://www.instagram.com/p/DegXQojnXvr/",
-    lastUpdated: "2026-10-29",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10573,10 +10584,10 @@ const EVENTS = [
     orgId: "C-221",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "WASEDA BALLERSによる早稲田祭2026 WASEDA PARADEへの出演。フラッシュモブ部とのコラボ。",
     externalUrl: "https://www.instagram.com/p/DegXQojnXvr/",
-    lastUpdated: "2026-10-29",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10593,10 +10604,10 @@ const EVENTS = [
     orgId: "C-221",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "WASEDA BALLERSによる理工展2026単独ステージ。",
     externalUrl: "https://www.instagram.com/p/DegXQojnXvr/",
-    lastUpdated: "2026-10-29",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10613,10 +10624,10 @@ const EVENTS = [
     orgId: "C-221",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "WASEDA BALLERSによる早稲田祭2026単独ステージ。",
     externalUrl: "https://www.instagram.com/p/DegXQojnXvr/",
-    lastUpdated: "2026-10-29",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10633,10 +10644,10 @@ const EVENTS = [
     orgId: "C-235",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学チアリーダーズFALCONSによる早稲田祭2026カウントダウンイベントへの出演。",
     externalUrl: "https://www.instagram.com/p/DetQGIuFNZy/",
-    lastUpdated: "2026-10-29",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10653,10 +10664,10 @@ const EVENTS = [
     orgId: "C-235",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学チアリーダーズFALCONSによる早稲田祭2026 Opening Festivalへの出演。ワセガシラとのコラボ。",
     externalUrl: "https://www.instagram.com/p/DetQGIuFNZy/",
-    lastUpdated: "2026-10-29",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10673,10 +10684,10 @@ const EVENTS = [
     orgId: "C-235",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学チアリーダーズFALCONSによる早稲田祭2026 WASEDA PARADEへの出演。",
     externalUrl: "https://www.instagram.com/p/DetQGIuFNZy/",
-    lastUpdated: "2026-10-29",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10693,10 +10704,10 @@ const EVENTS = [
     orgId: "C-235",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学チアリーダーズFALCONSによる早稲田祭2026単独公演。",
     externalUrl: "https://www.instagram.com/p/DetQGIuFNZy/",
-    lastUpdated: "2026-10-29",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10751,10 +10762,10 @@ const EVENTS = [
     orgId: "C-294",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学K-POPカバーダンスサークルParfumによる早稲田祭2026ステージ。",
     externalUrl: "https://www.instagram.com/p/Demc3SRmsg1/",
-    lastUpdated: "2026-10-29",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10771,10 +10782,10 @@ const EVENTS = [
     orgId: "C-294",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学K-POPカバーダンスサークルParfumによる理工展2026ステージ。",
     externalUrl: "https://www.instagram.com/p/Demc3SRmsg1/",
-    lastUpdated: "2026-10-29",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10791,10 +10802,10 @@ const EVENTS = [
     orgId: "C-294",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学K-POPカバーダンスサークルParfumによる早稲田祭2026ステージ。",
     externalUrl: "https://www.instagram.com/p/Demc3SRmsg1/",
-    lastUpdated: "2026-10-29",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10811,10 +10822,10 @@ const EVENTS = [
     orgId: "C-294",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学K-POPカバーダンスサークルParfumによる早稲田祭2026ステージ。",
     externalUrl: "https://www.instagram.com/p/Demc3SRmsg1/",
-    lastUpdated: "2026-10-29",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10831,10 +10842,10 @@ const EVENTS = [
     orgId: "C-118",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "踊り侍による早稲田祭2026カウントダウンイベントへの出演。バンカライズム・Brilliant Pinksとのコラボ。",
     externalUrl: "https://www.instagram.com/p/DfNBoDoD2kl/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10851,10 +10862,10 @@ const EVENTS = [
     orgId: "C-118",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "踊り侍による早稲田祭2026 Opening Festivalへの出演。魁響とのコラボ。",
     externalUrl: "https://www.instagram.com/p/DfNBoDoD2kl/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10871,10 +10882,10 @@ const EVENTS = [
     orgId: "C-118",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "踊り侍による早稲田祭2026単独ステージ。",
     externalUrl: "https://www.instagram.com/p/DfNBoDoD2kl/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10891,10 +10902,10 @@ const EVENTS = [
     orgId: "C-118",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "踊り侍による早稲田祭2026 WASEDA PARADEへの出演。Brilliant Pinksとのコラボ。",
     externalUrl: "https://www.instagram.com/p/DfNBoDoD2kl/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10911,10 +10922,10 @@ const EVENTS = [
     orgId: "C-118",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "踊り侍による早稲田祭2026単独ステージ。",
     externalUrl: "https://www.instagram.com/p/DfNBoDoD2kl/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10931,10 +10942,10 @@ const EVENTS = [
     orgId: "C-118",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "踊り侍による理工展2026ステージへの出演。",
     externalUrl: "https://www.instagram.com/p/DfNBoDoD2kl/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10951,10 +10962,10 @@ const EVENTS = [
     orgId: "C-118",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "踊り侍による早稲田祭2026企画「掴め、大隈先生の心。」への出演。",
     externalUrl: "https://www.instagram.com/p/DfNBoDoD2kl/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10971,10 +10982,10 @@ const EVENTS = [
     orgId: "C-118",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "踊り侍による早稲田祭2026 Ending Festivalへの出演。早稲田マイケル・ジャクソン研究会とのコラボ。",
     externalUrl: "https://www.instagram.com/p/DfNBoDoD2kl/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -10991,10 +11002,10 @@ const EVENTS = [
     orgId: "C-209",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ジャズダンスサークルOasisによる早稲田祭2026 WASEDA PARADEへの出演。",
     externalUrl: "https://www.instagram.com/p/DfF83KNEujJ/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11011,10 +11022,10 @@ const EVENTS = [
     orgId: "C-209",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ジャズダンスサークルOasisによる早稲田祭2026 Ending Festivalへの出演。魁響とのコラボ。",
     externalUrl: "https://www.instagram.com/p/DfF9aAlkqyv/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11023,7 +11034,7 @@ const EVENTS = [
     date: "2026-11-07",
     startTime: "11:00",
     endTime: "11:35",
-    location: "早稲田キャンパス 小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "SEIREN",
     category: "theater",
@@ -11031,10 +11042,10 @@ const EVENTS = [
     orgId: "C-095",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "SEIRENによる早稲田祭2026ミュージカルショー「SYNK:SEIREN LINE」。",
     externalUrl: "https://www.instagram.com/p/DfM2UjCEutM/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11051,10 +11062,10 @@ const EVENTS = [
     orgId: "C-095",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "SEIRENによる早稲田祭2026ミュージカルショー「SYNK:SEIREN LINE」。",
     externalUrl: "https://www.instagram.com/p/DfM2UjCEutM/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11071,10 +11082,10 @@ const EVENTS = [
     orgId: "A-179",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "環境ロドリゲスによる理工展2026出展。「Precious Plastic Waseda」によるシーリングスタンプ作成。11/7は10:00〜17:00、11/8は10:00〜16:00。",
     externalUrl: "https://www.instagram.com/p/DfGOe9RBgGW/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11092,10 +11103,10 @@ const EVENTS = [
     orgId: "A-179",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "環境ロドリゲスによる早稲田祭2026出展。「Precious Plastic Waseda」による射出体験・販売・ビーズアート・展示。",
     externalUrl: "https://www.instagram.com/p/DfGNgGMByhA/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11112,10 +11123,10 @@ const EVENTS = [
     orgId: "A-078",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "クラシック弦楽合奏団による早稲田祭2026企画「クラシック弦楽合奏団～室内楽の響き～」。",
     externalUrl: "https://www.instagram.com/p/De9Z3KRk3li/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11149,10 +11160,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ア式蹴球部女子部のリーグ戦。対 神奈川大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11168,10 +11179,10 @@ const EVENTS = [
     orgId: "C-095",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "SEIRENによる第66弾公演『Coming Soon』。",
     externalUrl: "https://www.seiren-musical-project.com/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11187,10 +11198,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "オペラ/音楽劇研究所主催、第238回オペラ研究会。テーマ「舞台と客席の関係の過去と未来」。講師: 小林徹也氏。司会: 石井道子(早稲田大学)。Zoom配信あり(事前登録制)。",
     externalUrl: "https://www.waseda.jp/inst/cro/news/2026/09/25/25021/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11206,10 +11217,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "総合人文科学研究センター2026年度年次フォーラム。11/14は13:30〜17:00、11/15は10:00〜17:00。",
     externalUrl: "https://www.waseda.jp/flas/rilas/news/2026/10/21/17689/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11218,17 +11229,17 @@ const EVENTS = [
     date: "2026-11-20",
     startTime: "13:00",
     endTime: "18:10",
-    location: "早稲田大学小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "早稲田大学総合人文科学研究センター角田柳作記念国際日本学研究所",
     category: "lecture",
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "総合人文科学研究センター角田柳作記念国際日本学研究所主催のシンポジウム。",
     externalUrl: "https://www.waseda.jp/flas/rilas/news/2026/10/23/17713/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11244,10 +11255,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "日本中東学会第32回公開講演会。早稲田大学総合人文科学研究センター・早稲田大学カタールチェア・早稲田大学文学研究科中東・イスラーム研究コース共催。",
     externalUrl: "https://www.waseda.jp/flas/rilas/?p=17650",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11263,10 +11274,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "文化構想学部文芸・ジャーナリズム論系主催の講演会。講師: 星泉氏(東京外国語大学教授)。予約不要。",
     externalUrl: "https://www.waseda.jp/flas/cms/?p=21140",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11282,10 +11293,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "2026年度早稲田大学国文学会秋季大会講演会。講師: 紅野謙介氏(日本大学名誉教授)。",
     externalUrl: "https://www.waseda.jp/flas/hss/news/2026/10/26/16256/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11339,10 +11350,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "演劇映像コース主催の講演会。",
     externalUrl: "https://www.waseda.jp/flas/hss/news/2026/10/29/16333/",
-    lastUpdated: "2026-11-02",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11360,10 +11371,10 @@ const EVENTS = [
     orgId: "A-055",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "絵画会による早稲田祭2026の教室展示「絵画会展」。",
     externalUrl: "https://www.instagram.com/p/DfGb18xE9MK/",
-    lastUpdated: "2026-11-03",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11381,10 +11392,10 @@ const EVENTS = [
     orgId: "A-055",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "絵画会による早稲田祭2026のストリート企画。2日間かけて1作品を制作するライブペインティング。",
     externalUrl: "https://www.instagram.com/p/DfJxOwATjPB/",
-    lastUpdated: "2026-11-03",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11402,10 +11413,10 @@ const EVENTS = [
     orgId: "A-055",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "絵画会による早稲田祭2026「わせだブックフリマ」。",
     externalUrl: "https://www.instagram.com/p/DfLj5mJE0RQ/",
-    lastUpdated: "2026-11-03",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11423,10 +11434,10 @@ const EVENTS = [
     orgId: "A-055",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "絵画会による早稲田祭2026の芸術展企画「絵画会芸術展」。",
     externalUrl: "https://www.instagram.com/p/DfLj5mJE0RQ/",
-    lastUpdated: "2026-11-03",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11519,10 +11530,10 @@ const EVENTS = [
     orgId: "C-313",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学踊ってみたサークルによる早稲田祭2026大隈講堂前ステージの転換企画。",
     externalUrl: "https://www.instagram.com/p/DfPdSShyOZI/",
-    lastUpdated: "2026-11-03",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11539,10 +11550,10 @@ const EVENTS = [
     orgId: "C-313",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学踊ってみたサークルによる早稲田祭2026単独ステージ。",
     externalUrl: "https://www.instagram.com/p/DfPdSShyOZI/",
-    lastUpdated: "2026-11-03",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11580,10 +11591,10 @@ const EVENTS = [
     orgId: "A-013",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "考古学研究会による早稲田祭2026の勾玉作り体験。",
     externalUrl: "https://www.instagram.com/p/DfO1zYmSG80/",
-    lastUpdated: "2026-11-03",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11621,10 +11632,10 @@ const EVENTS = [
     orgId: "C-260",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学気仙沼チームによる早稲田祭2026出店。気仙沼産サメステーキを販売。",
     externalUrl: "https://www.instagram.com/p/DfPNBV5GSFm/",
-    lastUpdated: "2026-11-03",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11641,10 +11652,10 @@ const EVENTS = [
     orgId: "C-032",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "まつりスタッフによる早稲田祭2026の音楽企画「ROCK IN WASEDA FES 2026」。",
     externalUrl: "https://www.instagram.com/p/DfPCx4sk7SZ/",
-    lastUpdated: "2026-11-03",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11679,10 +11690,10 @@ const EVENTS = [
     orgId: "A-090",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "狂言研究会が所属する早稲田大学能楽連盟による秋季公演。狂言「呼声」「苞山伏」「清水」、小舞「風車」を上演。開場11:00。",
     externalUrl: "https://www.instagram.com/p/DfFB2bay4wO/",
-    lastUpdated: "2026-11-03",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11691,7 +11702,7 @@ const EVENTS = [
     date: "2026-12-09",
     startTime: "13:30",
     endTime: "16:45",
-    location: "早稲田大学小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "早稲田大学人間科学学術院",
     category: "lecture",
@@ -11701,7 +11712,7 @@ const EVENTS = [
     feeText: "無料",
     description: "学術変革領域研究(A)「子どもの健康格差の解明」(研究代表: 可知悠子、早稲田大学)主催、早稲田大学人間科学学術院共催の公開シンポジウム。ハイブリッド開催(対面・オンライン)。開場13:00。事前申込制、締切12/7。",
     externalUrl: "https://beyond.research-miyacology.tmu.ac.jp/child-and-adolescent-poverty/news/558.html",
-    lastUpdated: "2026-11-03",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11717,10 +11728,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "演劇映像学コース主催の講演会。講師: Natalie Van Parys氏(振付家・演出家)。事前登録制、締切12/8。",
     externalUrl: "https://www.waseda.jp/flas/hss/news/2026/10/21/16274/",
-    lastUpdated: "2026-11-03",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11736,10 +11747,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "自然保護ボランティア活動をテーマにした相談会。途中参加・途中退出可。",
     externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/10/23/24979/",
-    lastUpdated: "2026-11-03",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11755,10 +11766,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "首都直下地震への備えをテーマにしたセミナー＆ワークショップ。定員15名程度、先着順。",
     externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/10/26/25192/",
-    lastUpdated: "2026-11-03",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11767,7 +11778,7 @@ const EVENTS = [
     date: "2026-11-25",
     startTime: "17:30",
     endTime: "19:00",
-    location: "国際文学館(村上春樹ライブラリー)",
+    location: "国際文学館（村上春樹ライブラリー）",
     campus: "waseda",
     organizer: "早稲田大学国際コミュニティセンター(ICC)",
     category: "community",
@@ -11777,7 +11788,7 @@ const EVENTS = [
     feeText: "無料",
     description: "国際文学館(村上春樹ライブラリー)を会場としたICCの交流イベント。定員35名程度(抽選)、受付17:20。日英対応。",
     externalUrl: "https://www.waseda.jp/inst/icc/news/2026/08/24/43651/",
-    lastUpdated: "2026-11-03",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11794,10 +11805,10 @@ const EVENTS = [
     orgId: "C-222",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学チアダンスチームMYNXによる早稲田祭2026 Opening Festival in 戸山への出演。",
     externalUrl: "https://www.instagram.com/p/DfFIYKtk7-K/",
-    lastUpdated: "2026-11-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11814,10 +11825,10 @@ const EVENTS = [
     orgId: "C-222",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学チアダンスチームMYNXによる早稲田祭2026大隈講堂前ステージ企画への出演。",
     externalUrl: "https://www.instagram.com/p/DfFIYKtk7-K/",
-    lastUpdated: "2026-11-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11834,10 +11845,10 @@ const EVENTS = [
     orgId: "C-222",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学チアダンスチームMYNXによる早稲田祭2026中夜祭への出演。",
     externalUrl: "https://www.instagram.com/p/DfFIYKtk7-K/",
-    lastUpdated: "2026-11-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11854,10 +11865,10 @@ const EVENTS = [
     orgId: "C-222",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学チアダンスチームMYNXによる早稲田祭2026 WASEDA PARADEへの出演。",
     externalUrl: "https://www.instagram.com/p/DfFIYKtk7-K/",
-    lastUpdated: "2026-11-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11894,10 +11905,10 @@ const EVENTS = [
     orgId: "A-022",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "雄弁会による早稲田祭2026企画「第49回大隈杯争奪雄弁大会」。聴衆が審査を行う弁論大会。入退室自由。",
     externalUrl: "https://www.instagram.com/p/DfFDpq9PfvU/",
-    lastUpdated: "2026-11-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11914,10 +11925,10 @@ const EVENTS = [
     orgId: "C-073",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "口笛サークルことリップによる早稲田祭2026ステージ転換企画への出演。口笛アンサンブル。",
     externalUrl: "https://www.instagram.com/p/DfTZ9f-zkr2/",
-    lastUpdated: "2026-11-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11934,10 +11945,10 @@ const EVENTS = [
     orgId: "C-073",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "口笛サークルことリップによる理工展2026ステージ企画への出演。口笛アンサンブル。",
     externalUrl: "https://www.instagram.com/p/DfTZ9f-zkr2/",
-    lastUpdated: "2026-11-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11954,10 +11965,10 @@ const EVENTS = [
     orgId: "C-073",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "口笛サークルことリップによる早稲田祭2026ステージ企画への出演。口笛アンサンブル。",
     externalUrl: "https://www.instagram.com/p/DfTZ9f-zkr2/",
-    lastUpdated: "2026-11-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -11995,10 +12006,10 @@ const EVENTS = [
     orgId: "C-003",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "出版甲子園実行委員会による文学フリマ東京43への出店。ZINE(500円ほか)等を頒布。",
     externalUrl: "https://www.instagram.com/p/DfMmE1nk_S8/",
-    lastUpdated: "2026-11-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12034,10 +12045,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "フランス語フランス文学コース主催の講演会。講師: François Bizet氏。事前申込不要。",
     externalUrl: "https://www.waseda.jp/flas/hss/news/2026/10/29/16324/",
-    lastUpdated: "2026-11-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12053,10 +12064,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "フランス語フランス文学コース主催の講演会。講師: François Bizet氏。事前申込不要。",
     externalUrl: "https://www.waseda.jp/flas/hss/news/2026/10/29/16324/",
-    lastUpdated: "2026-11-04",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12111,10 +12122,10 @@ const EVENTS = [
     orgId: "C-045",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "オールジャンルのボランティアサークルPOSTによる早稲田祭2026企画。車椅子乗車体験、コラボグッズ販売(500円)、ボランティアレポート展示。新宿区立障害者福祉センター協力。",
     externalUrl: "https://www.instagram.com/p/DfOUDJfk4BS/",
-    lastUpdated: "2026-11-05",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12131,10 +12142,10 @@ const EVENTS = [
     orgId: "C-045",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "オールジャンルのボランティアサークルPOSTによる早稲田祭2026企画。パラリンピック種目「ボッチャ」の体験会。",
     externalUrl: "https://www.instagram.com/p/DfOUDJfk4BS/",
-    lastUpdated: "2026-11-05",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12151,10 +12162,10 @@ const EVENTS = [
     orgId: "C-007",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "教育・教職サークルT-teamによる早稲田祭2026出展。教職課程・教育分野に関心のある人向け。",
     externalUrl: "https://www.instagram.com/p/DfBudG3E31A/",
-    lastUpdated: "2026-11-05",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12163,7 +12174,7 @@ const EVENTS = [
     date: "2026-11-23",
     startTime: "18:30",
     endTime: "20:10",
-    location: "早稲田大学小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "早稲田大学知的財産法制研究所(RCLIP)",
     category: "lecture",
@@ -12173,7 +12184,7 @@ const EVENTS = [
     feeText: "無料(要登録)",
     description: "知的財産法制研究所(RCLIP)主催、比較法研究所・法学部・法学研究科共催の公開講演会。講師: Bernt Hugenholtz氏(アムステルダム大学名誉教授)。日本語・英語(逐次通訳)。",
     externalUrl: "https://www.waseda.jp/folaw/icl/news/2026/11/02/13076/",
-    lastUpdated: "2026-11-05",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12182,7 +12193,7 @@ const EVENTS = [
     date: "2026-11-28",
     startTime: "14:30",
     endTime: "17:30",
-    location: "早稲田大学小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "柳井イニシアティブ",
     category: "culture",
@@ -12192,7 +12203,7 @@ const EVENTS = [
     feeText: "無料",
     description: "柳井イニシアティブ主催の無声映画上映イベント。活動写真弁士: 片岡一郎、大森くみこ、山城秀之、山内菜々子。楽士: 松村牧亜。事前登録制(締切11/26)。開場14:00。",
     externalUrl: "https://www.waseda.jp/culture/news/2026/11/04/37325",
-    lastUpdated: "2026-11-05",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12208,10 +12219,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "研究戦略センター主催のマッチングフォーラム。基調講演・パネルディスカッション・ポスターセッション。学内教員・研究員・学生対象。一般参加者申込締切12/16、ポスター発表者申込締切11/20。",
     externalUrl: "https://www.waseda.jp/inst/research/news/86005",
-    lastUpdated: "2026-11-05",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12228,10 +12239,10 @@ const EVENTS = [
     orgId: "A-185",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "オリジナルソング研究会オールウェイズによる早稲田祭2026ライブ。どなたでも観覧可。",
     externalUrl: "https://www.instagram.com/p/DfUZEZ-pmsg/",
-    lastUpdated: "2026-11-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12280,7 +12291,7 @@ const EVENTS = [
     date: "2026-11-07",
     startTime: "10:30",
     endTime: "12:30",
-    location: "早稲田キャンパス 大隈小講堂",
+    location: "大隈記念講堂 小講堂",
     campus: "waseda",
     organizer: "モダンジャズ研究会",
     category: "music",
@@ -12288,10 +12299,10 @@ const EVENTS = [
     orgId: "A-067",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "モダンジャズ研究会による早稲田祭2026のライブ演奏。",
     externalUrl: "https://www.instagram.com/p/DfSC1YZv3hg/",
-    lastUpdated: "2026-11-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12308,10 +12319,10 @@ const EVENTS = [
     orgId: "A-067",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "モダンジャズ研究会による早稲田祭2026のストリート短時間企画。",
     externalUrl: "https://www.instagram.com/p/DfSC1YZv3hg/",
-    lastUpdated: "2026-11-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12328,10 +12339,10 @@ const EVENTS = [
     orgId: "A-108",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "生花研究会による早稲田祭2026の花展。テーマ「虹」。",
     externalUrl: "https://www.instagram.com/p/DfT1pQfBiWx/",
-    lastUpdated: "2026-11-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12349,10 +12360,10 @@ const EVENTS = [
     orgId: "A-057",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "陶芸部稲穂窯による早稲田祭2026の手づくり陶器市。部員制作の器を販売。",
     externalUrl: "https://www.instagram.com/p/DfHwtExI4V5/",
-    lastUpdated: "2026-11-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12370,10 +12381,10 @@ const EVENTS = [
     orgId: "C-202",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "モンブランスキークラブによる早稲田祭2026の屋台「早稲田餃子 もんもん」(屋台番号4)。",
     externalUrl: "https://www.instagram.com/p/DfMXlRUnZro/",
-    lastUpdated: "2026-11-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12391,10 +12402,10 @@ const EVENTS = [
     orgId: "C-265",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "農楽塾による早稲田祭2026企画「のーじゅく収穫祭」。ミニかかし作り・さつまいもハンコなど。参加者に先着でさつまいもを配布。",
     externalUrl: "https://www.instagram.com/p/DfUmtV7zbLn/",
-    lastUpdated: "2026-11-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12410,10 +12421,10 @@ const EVENTS = [
     orgId: "E12-02",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "創法会による早稲田祭2026企画の推理ゲーム。第1部11:00、第2部12:30、第3部14:30、第4部16:00開演。",
     externalUrl: "https://www.instagram.com/p/De9HzV1sAJt/",
-    lastUpdated: "2026-11-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12429,10 +12440,10 @@ const EVENTS = [
     orgId: "E12-02",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "創法会による早稲田祭2026企画の推理ゲーム。第1部11:00、第2部12:30、第3部14:30、第4部16:00開演。",
     externalUrl: "https://www.instagram.com/p/De9HzV1sAJt/",
-    lastUpdated: "2026-11-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12450,10 +12461,10 @@ const EVENTS = [
     orgId: "E12-02",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "創法会による早稲田祭2026企画。相続をテーマにしたシミュレーション体験。予約なしで随時体験可。",
     externalUrl: "https://www.instagram.com/p/DfWqHgbMhxo/",
-    lastUpdated: "2026-11-06",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12489,10 +12500,10 @@ const EVENTS = [
     orgId: "C-018",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学バンザイ同盟による早稲田祭2026ステージ出演。学内各所でのゲリラ的なパフォーマンスも実施。",
     externalUrl: "https://www.instagram.com/p/DfWlFKpTkY5/",
-    lastUpdated: "2026-11-08",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12509,10 +12520,10 @@ const EVENTS = [
     orgId: "C-258",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学躰道会による早稲田祭2026の躰道演武。基本技・法形・攻防・展開を披露。",
     externalUrl: "https://www.instagram.com/p/DfQrxkOzjUv/",
-    lastUpdated: "2026-11-08",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12567,10 +12578,10 @@ const EVENTS = [
     orgId: "A-187",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学フィンスイミングチームSIX BEATによる早稲田祭2026水泳企画「水華絢爛」への出演。フィンの紹介・実演。",
     externalUrl: "https://www.instagram.com/p/DfYsuJln688/",
-    lastUpdated: "2026-11-08",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12587,10 +12598,10 @@ const EVENTS = [
     orgId: "C-266",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "スポーツチャンバラ剣隼会による早稲田祭2026のチャンバラ体験会。予約不要、子どもから大人まで参加可。",
     externalUrl: "https://www.instagram.com/p/DfZVkNLzRfi/",
-    lastUpdated: "2026-11-08",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12605,10 +12616,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "大地の芸術祭の作品保全ボランティアツアー。新潟県十日町市松代支所・NPO法人越後妻有里山協働機構協力。オンライン事前説明会11/26 17:15〜18:00。定員6名(抽選)、応募締切11/18 12:00。",
     externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/10/26/24871/",
-    lastUpdated: "2026-11-08",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12624,10 +12635,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学自然環境調査室によるカヤネズミ営巣調査の協力ボランティア。小雨決行、雨天中止。定員10名(抽選)、応募締切12/2 12:00。",
     externalUrl: "https://www.waseda.jp/inst/wavoc/news/2026/10/26/24470/",
-    lastUpdated: "2026-11-08",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12643,10 +12654,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田小劇場どらま館と集団運営の思想史コロックの共催読書会。竹田信弥氏『ひとりでやらないもん！』を題材にした全2回シリーズの第2回。第2回からの参加も可、事前に簡単な課題を準備。",
     externalUrl: "https://www.instagram.com/p/DfY_HcBmL3J/",
-    lastUpdated: "2026-11-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12681,10 +12692,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "ICCによる運動会企画「カラフル！ICC運動会」。申込締切11/20 9:00。",
     externalUrl: "https://www.waseda.jp/inst/weekly/circleguide/",
-    lastUpdated: "2026-11-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12700,10 +12711,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "ICCによるアニメをテーマにしたランチ交流会。同日先着。",
     externalUrl: "https://www.waseda.jp/inst/weekly/circleguide/",
-    lastUpdated: "2026-11-09",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12769,17 +12780,17 @@ const EVENTS = [
     date: "2026-12-04",
     startTime: "14:00",
     endTime: "15:00",
-    location: "早稲田大学国際文学館地下1階",
+    location: "国際文学館（村上春樹ライブラリー） 地下1階",
     campus: "waseda",
     organizer: "柳井イニシアティブ",
     category: "lecture",
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "柳井イニシアティブ主催のOpen Talk。テーマ「恋文のゆくえ――戦後の渋谷、文学、そして映画」。",
     externalUrl: "https://www.waseda.jp/culture/news/2026/11/10/37313/",
-    lastUpdated: "2026-11-11",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12815,10 +12826,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "総合人文科学研究センター主催の講演会。講師: Wiebke Denecke教授。",
     externalUrl: "https://www.waseda.jp/flas/rilas/news/2026/11/08/17830/",
-    lastUpdated: "2026-11-11",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12834,10 +12845,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "総合人文科学研究センター角田柳作記念国際日本学研究所・早稲田大学SGU国際日本学拠点・日本古典籍研究所・MIT Global Humanities共催の研究ワークショップ。日本語。",
     externalUrl: "https://www.waseda.jp/flas/rilas/news/2026/11/08/17835/",
-    lastUpdated: "2026-11-11",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12853,10 +12864,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "総合人文科学研究センター角田柳作記念国際日本学研究所・早稲田大学SGU国際日本学拠点・日本古典籍研究所・MIT Global Humanities共催の研究ワークショップ。日本語。",
     externalUrl: "https://www.waseda.jp/flas/rilas/news/2026/11/08/17835/",
-    lastUpdated: "2026-11-11",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12872,10 +12883,10 @@ const EVENTS = [
     orgId: "A-064",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "東京外国語大学外語祭にて、同大学のアルゼンチンタンゴサークルの教室公演にオルケスタ・デ・タンゴ・ワセダが生演奏で共演。アルゼンチン・タンゴ日本上陸100周年の企画で、13:15の回から最終回(17:15開始)まで出演。",
     externalUrl: "https://www.instagram.com/p/DfbFxVGyCqg/",
-    lastUpdated: "2026-11-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12891,10 +12902,10 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "メリーランド大学ボルチモア校Orianne Smith教授による英米ロマン主義・ゴシック文学をテーマにした講演会2本(13:10〜14:50、15:05〜16:45)。事前申込不要。",
     externalUrl: "https://www.waseda.jp/flas/hss/news/2026/11/10/16357/",
-    lastUpdated: "2026-11-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12903,7 +12914,7 @@ const EVENTS = [
     date: "2026-12-01",
     startTime: "18:00",
     endTime: "20:00",
-    location: "早稲田大学 小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "早稲田大学坪内博士記念演劇博物館",
     category: "lecture",
@@ -12913,7 +12924,7 @@ const EVENTS = [
     feeText: "無料(定員200名・要事前申込/先着、11/23(月)正午締切)",
     description: "台湾・台北木偶劇団を招き、伝統人形劇「布袋戯」の歴史と人形操作を紹介するレクチャー・デモンストレーション&ワークショップ。開場17:30。",
     externalUrl: "https://enpaku.w.waseda.jp/ex/22004/",
-    lastUpdated: "2026-11-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12928,10 +12939,10 @@ const EVENTS = [
     orgId: "C-121",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学よさこいチーム東京花火が「沼津秋祭り よさこい東海道」に出演。",
     externalUrl: "https://www.tokyohanabi-official.com/出演予定",
-    lastUpdated: "2026-11-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12947,10 +12958,10 @@ const EVENTS = [
     orgId: "C-121",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学よさこいチーム東京花火が「瑞浪バサラカーニバル」に出演。",
     externalUrl: "https://www.tokyohanabi-official.com/出演予定",
-    lastUpdated: "2026-11-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12965,10 +12976,10 @@ const EVENTS = [
     orgId: "C-121",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学よさこいチーム東京花火の単独公演「如月祭」。会場未発表。",
     externalUrl: "https://www.tokyohanabi-official.com/出演予定",
-    lastUpdated: "2026-11-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -12984,10 +12995,10 @@ const EVENTS = [
     orgId: "C-121",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学よさこいチーム東京花火が「京都さくらよさこい」に出演。",
     externalUrl: "https://www.tokyohanabi-official.com/出演予定",
-    lastUpdated: "2026-11-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -13002,10 +13013,10 @@ const EVENTS = [
     orgId: "C-121",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学よさこいチーム東京花火が「土佐学生よさこい」に出演。",
     externalUrl: "https://www.tokyohanabi-official.com/出演予定",
-    lastUpdated: "2026-11-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -13021,10 +13032,10 @@ const EVENTS = [
     orgId: "C-121",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学よさこいチーム東京花火が「よさこい祭り」に出演。",
     externalUrl: "https://www.tokyohanabi-official.com/出演予定",
-    lastUpdated: "2026-11-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -13040,10 +13051,10 @@ const EVENTS = [
     orgId: "C-121",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学よさこいチーム東京花火が「原宿表参道元氣祭スーパーよさこい」に出演。",
     externalUrl: "https://www.tokyohanabi-official.com/出演予定",
-    lastUpdated: "2026-11-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -13059,29 +13070,30 @@ const EVENTS = [
     orgId: "C-121",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学よさこいチーム東京花火が「富山のよさこい祭り」に出演。",
     externalUrl: "https://www.tokyohanabi-official.com/出演予定",
-    lastUpdated: "2026-11-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
     id: "evt-699",
-    title: "オール早慶戦 in甲子園 vs全慶應義塾大学",
+    title: "オール早慶戦 in 甲子園",
     date: "2026-11-28",
     startTime: "13:00",
     location: "阪神甲子園球場",
     campus: "outside",
-    organizer: "早稲田大学野球部",
+    organizer: "早稲田大学野球部・慶應義塾体育会野球部",
     category: "sports",
     scope: "circle",
     orgId: "T-008",
     target: ["student", "obog", "public"],
-    feeType: "unknown",
-    feeText: "料金不明",
-    description: "早稲田大学野球部の特別試合。対 全慶應義塾大学。",
-    externalUrl: "http://www.wasedabbc.org/schedule/",
-    lastUpdated: "2026-11-12",
+    feeType: "paid",
+    feeText: "S席5,000円／A席4,000円／B席 大人2,500円・こども（4歳〜中学生）1,000円",
+    description: "早稲田大学野球部と慶應義塾体育会野球部による特別試合。両校とも現役部員に社会人・OB選手を加えた混成チーム（オール早稲田大学・オール慶應義塾大学）で対戦する。甲子園での開催は2009年以来。雨天時の予備日は11月29日。",
+    externalUrl: "https://allsoukei2026.jp/",
+    sourceUrls: ["https://allsoukei2026.jp/", "https://www.gaora.co.jp/journal/detail/371"],
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -13096,10 +13108,10 @@ const EVENTS = [
     orgId: "T-013",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学剣道部が出場する関東学生剣道新人戦大会。",
     externalUrl: "http://www.waseda-kendo.com/topics_detail1/id=2499",
-    lastUpdated: "2026-11-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -13115,10 +13127,10 @@ const EVENTS = [
     orgId: "T-013",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学剣道部が出場する関東女子学生剣道新人戦大会。",
     externalUrl: "http://www.waseda-kendo.com/topics_detail1/id=2501",
-    lastUpdated: "2026-11-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -13133,10 +13145,10 @@ const EVENTS = [
     orgId: "T-016",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学競走部(競歩)が出場する記録会。",
     externalUrl: "https://waseda-ac.jp/competition/detail/1074",
-    lastUpdated: "2026-11-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -13151,10 +13163,10 @@ const EVENTS = [
     orgId: "T-016",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "東海大学主催の長距離競技会。早稲田大学競走部が出場予定。",
     externalUrl: "https://waseda-ac.jp/competition/detail/1075",
-    lastUpdated: "2026-11-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -13170,10 +13182,10 @@ const EVENTS = [
     orgId: "T-002",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "JR東日本カップ2026 第100回関東大学サッカーリーグ戦1部 第22節。早稲田大学 対 日本体育大学。",
     externalUrl: "https://www.waseda-afc.jp/",
-    lastUpdated: "2026-11-12",
+    lastUpdated: "2026-11-14",
     isPublished: true
   },
   {
@@ -13181,7 +13193,7 @@ const EVENTS = [
     title: "2026年度定期公演『Fly』",
     date: "2026-12-08",
     startTime: "17:00",
-    location: "早稲田大学 大隈記念講堂 大講堂",
+    location: "大隈記念講堂 大講堂",
     campus: "waseda",
     organizer: "SEIREN",
     category: "theater",
@@ -13200,7 +13212,7 @@ const EVENTS = [
     title: "第19回定期公演「Flügel」",
     date: "2026-12-24",
     startTime: "17:00",
-    location: "早稲田大学 小野記念講堂",
+    location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
     organizer: "TAP-LOVERS (タップラバーズ)",
     category: "theater",
@@ -13245,7 +13257,7 @@ const EVENTS = [
     orgId: "T-017",
     target: ["student", "obog"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学柔道部と慶應義塾大学による交流企画「早慶交換会」。14:00から合同練習を実施予定。会場は未確認。",
     externalUrl: "http://www.waseda-judo.com/schedule/",
     lastUpdated: "2026-11-14",
@@ -13264,7 +13276,7 @@ const EVENTS = [
     orgId: "T-004",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の関東大学ジュニア選手権大会。早大B 対 明大B。",
     externalUrl: "https://www.wasedarugby.com/schedule",
     lastUpdated: "2026-11-14",
@@ -13283,7 +13295,7 @@ const EVENTS = [
     orgId: "T-004",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の練習試合。早大C 対 明大C。",
     externalUrl: "https://www.wasedarugby.com/schedule",
     lastUpdated: "2026-11-14",
@@ -13394,7 +13406,7 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ハンドボール部が出場する全日本学生選手権大会1回戦。対大同大学。",
     externalUrl: "http://wasedahandball.com/",
     lastUpdated: "2026-11-14",
@@ -13412,7 +13424,7 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ハンドボール部が出場する全日本学生選手権大会。対立命館大学。",
     externalUrl: "http://wasedahandball.com/",
     lastUpdated: "2026-11-14",
@@ -13429,7 +13441,7 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学ソフトボール部(男子・女子)と慶應義塾大学による早慶戦。女子の部は10:00開始。",
     externalUrl: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/",
     lastUpdated: "2026-11-14",
@@ -13447,7 +13459,7 @@ const EVENTS = [
     orgId: "T-009",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学自動車部と慶應義塾大学による早慶戦(モータースポーツ)。",
     externalUrl: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/",
     lastUpdated: "2026-11-14",
@@ -13465,7 +13477,7 @@ const EVENTS = [
     scope: "circle",
     target: ["student", "obog", "public"],
     feeType: "unknown",
-    feeText: "料金不明",
+    feeText: "料金未確認",
     description: "早稲田大学航空部と慶應義塾大学による早慶戦(グライダー競技)。",
     externalUrl: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/",
     lastUpdated: "2026-11-14",
