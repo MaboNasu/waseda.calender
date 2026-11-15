@@ -180,6 +180,8 @@ function renderEventDetailPage(ev) {
         <div class="event-hero-row">📍 ${escapeHtml(getEventLocationLabel(ev))}</div>
       </div>
 
+      ${typeof wcResultCardHTML === 'function' ? wcResultCardHTML(ev) : ''}
+
       <div class="event-participation-box">
         <p class="event-participation-title">参加について</p>
         <div class="event-participation-chips">

@@ -45,7 +45,7 @@ Node.js 18以上、追加ライブラリ不要。ネットワークアクセス�
     node scripts/results-collection-queue.js --backfill --limit 10 --format json --output .local/results-queue.json
 
 既定では過去30日以内に終了した公開スポーツイベントを抽出する。
-results.js がない場合は警告を出し、既公開結果の重複除外ができない。結果表示パッチ統合後に再実行すること。
+results.js がない場合は警告を出し、既公開結果の重複除外ができない（2026-11-16 に results.js を main に追加済み）。
 --events / --results / --state で入力ファイルを指定できる。externalUrl は結果が確認された出典ではない。
 
 ### 2. 調査状態の更新
@@ -87,7 +87,7 @@ mark コマンドは実際の出典確認を行わない。担当者が事実に
 **元出典の事実の正しさ、出典間矛盾、要約の転載の有無は保証できない。** 必ず人間が確認する。
 --out は上書きを拒否する。生成したJSONはレビュー用であり、results.js ではない。
 
-GitHubへの書き込み担当は、承認内容を未公開パッチの正式スキーマに照合した後、results.js に取り込み、必ず node scripts/check-results.js を実行する。パッチがGitHubへ反映されるまでこの段階は実行不可。
+GitHubへの書き込み担当は、承認内容を results.js の先頭コメントにある形式に合わせて取り込み、必ず node scripts/check-results.js を実行する。
 
 ### 5. 公開後の再確認
 
@@ -109,5 +109,5 @@ GitHubへの書き込み担当は、承認内容を未公開パッチの正式�
 | OK付き下書きの形式検査・JSON出力 | scripts/check-result-drafts.js |
 | HTML/PDF/結果表の自動解釈 | **未実装** |
 | Driveへの下書き自動保存 | **未実装** |
-| results.js、表示、check-results.js | **未公開パッチと統合待ち** |
+| results.js、表示、check-results.js | 実装済み（2026-11-16。詳細ページの結果カード・団体ページの戦績・/results.html） |
 | 定期実行、結果自動公開、SNS結果投稿 | **未設定** |

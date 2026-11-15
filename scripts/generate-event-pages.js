@@ -65,6 +65,17 @@ function loadEventsModule() {
   };
 }
 
+/** results.js（確認済みの結果と表示関数）を vm で読む。表示関数はブラウザと同じものを使う */
+function loadResultsModule() {
+  const file = path.join(ROOT, 'results.js');
+  if (!fs.existsSync(file)) return { wcResultCardHTML: () => '' };
+  const sandbox = {};
+  vm.createContext(sandbox);
+  vm.runInContext(fs.readFileSync(file, 'utf8') + '\nvar __EXPORTED__ = { wcResultCardHTML, wcGetResult };', sandbox, { filename: 'results.js' });
+  return sandbox.__EXPORTED__;
+}
+const RESULTS_MODULE = loadResultsModule();
+
 /* ============================================================
    以下、script.js / event-page.js の同名関数の複製（DOM非依存の純粋関数のみ）
    ============================================================ */
@@ -318,6 +329,8 @@ function renderEventPageHtml(ev, labelFns) {
         <div class="event-hero-row">📍 ${escapeHtml(getEventLocationLabel(ev, campusLabel))}</div>
       </div>
 
+      ${RESULTS_MODULE.wcResultCardHTML(ev)}
+
       <div class="event-participation-box">
         <p class="event-participation-title">参加について</p>
         <div class="event-participation-chips">
@@ -398,7 +411,7 @@ function renderEventPageHtml(ev, labelFns) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=46">
+  <link rel="stylesheet" href="/style.css?v=47">
   <script type="application/ld+json" id="event-page-jsonld">${jsonLd}</script>
 </head>
 <body>
@@ -414,6 +427,7 @@ function renderEventPageHtml(ev, labelFns) {
       <a class="nav-btn" href="/index.html#upcoming-section">この先7日間</a>
       <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
       <a class="nav-btn" href="/organizations.html">公認団体</a>
+      <a class="nav-btn" href="/results.html">試合結果</a>
       <a class="nav-btn" href="/contact.html">掲載依頼</a>
       <a class="nav-btn" href="/mypage.html">マイページ</a>
     </nav>
@@ -429,6 +443,7 @@ function renderEventPageHtml(ev, labelFns) {
   <a class="nav-btn" href="/index.html#upcoming-section">この先7日間</a>
   <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
   <a class="nav-btn" href="/organizations.html">公認団体</a>
+  <a class="nav-btn" href="/results.html">試合結果</a>
   <a class="nav-btn" href="/contact.html">掲載依頼・問い合わせ</a>
   <a class="nav-btn" href="/mypage.html">マイページ</a>
 </nav>
@@ -460,6 +475,7 @@ function renderEventPageHtml(ev, labelFns) {
       <a href="/index.html#today-section">本日のイベント</a>
       <a href="/index.html#calendar-section">カレンダー</a>
       <a href="/organizations.html">公認団体</a>
+      <a href="/results.html">試合結果</a>
       <a href="/contact.html">掲載依頼・問い合わせ</a>
       <a href="/about.html">運営者情報</a>
       <a href="/terms.html">利用規約</a>
@@ -474,9 +490,10 @@ function renderEventPageHtml(ev, labelFns) {
 </footer>
 
 <script src="/events.js?v=8"></script>
-<script src="/script.js?v=42"></script>
+<script src="/results.js?v=1"></script>
+<script src="/script.js?v=43"></script>
 <script src="/image-generator.js?v=8"></script>
-<script src="/event-page.js?v=14"></script>
+<script src="/event-page.js?v=15"></script>
 <script type="module" src="/firebase-init.js?v=3"></script>
 <script src="/auth-ui.js?v=9"></script>
 <script src="/pwa-install.js?v=3"></script>

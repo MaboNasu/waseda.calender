@@ -2285,3 +2285,60 @@ textarea.form-control { resize: vertical; min-height: 120px; }
     font-size: 0.76rem;
   }
 }
+
+/* ============================================================
+   試合結果・イベント結果（results.js / results-page.js）
+   ============================================================ */
+.result-card {
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--enjy);
+  border-radius: var(--radius-md);
+  background: var(--gray-50);
+}
+.result-card-title { margin: 0 0 0.4rem; font-size: 0.78rem; font-weight: 700; color: var(--text-secondary); letter-spacing: 0.04em; }
+.result-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.6rem; margin: 0.2rem 0; }
+.result-badge { display: inline-block; padding: 0.05rem 0.5rem; border-radius: 999px; font-size: 0.78rem; font-weight: 700; white-space: nowrap; }
+.result-win .result-badge { background: var(--enjy); color: var(--white); }
+.result-loss .result-badge { background: var(--gray-200); color: var(--gray-800); }
+.result-draw .result-badge { background: var(--white); color: var(--gray-700); border: 1px solid var(--gray-400); }
+.result-score { font-size: 0.95rem; color: var(--text-primary); overflow-wrap: anywhere; }
+.result-score strong { font-size: 1.05rem; }
+.result-team { font-size: 0.8rem; color: var(--text-secondary); }
+.result-detail { font-size: 0.8rem; color: var(--text-secondary); }
+.result-award { margin: 0.3rem 0 0; font-weight: 700; color: var(--enjy); }
+.result-summary { margin: 0.4rem 0 0; font-size: 0.88rem; color: var(--text-primary); line-height: 1.6; }
+.result-sources { margin: 0.45rem 0 0; font-size: 0.75rem; color: var(--text-muted); overflow-wrap: anywhere; }
+.result-sources a { color: var(--text-secondary); }
+.result-confirmed { margin-left: 0.3rem; }
+
+.result-mark { display: inline-block; margin-left: 0.35rem; padding: 0 0.4rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700; white-space: nowrap; }
+.result-mark.result-win { background: var(--enjy); color: var(--white); }
+.result-mark.result-loss { background: var(--gray-200); color: var(--gray-800); }
+.result-mark.result-draw { border: 1px solid var(--gray-400); color: var(--gray-700); }
+.result-mark.result-report { background: var(--enjy-pale); color: var(--enjy); }
+
+.org-record { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 0.9rem; margin: 0 0 0.75rem; padding: 0.55rem 0.8rem; border-radius: var(--radius-sm); background: var(--enjy-pale); font-size: 0.88rem; }
+.org-record-label { font-weight: 700; color: var(--enjy); }
+.org-record-item strong { font-weight: 700; }
+.org-record-link { margin-left: auto; font-size: 0.78rem; color: var(--enjy); }
+
+.results-page .section-title { margin-bottom: 0.5rem; }
+.results-lead { margin: 0 0 1rem; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; }
+.results-filters { display: flex; flex-wrap: wrap; gap: 0.6rem 1rem; margin: 0 0 0.75rem; }
+.results-filters label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--text-secondary); }
+.results-filters select { min-height: 44px; max-width: 100%; padding: 0.3rem 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--white); font: inherit; color: var(--text-primary); }
+.results-count { margin: 0 0 0.5rem; font-size: 0.8rem; color: var(--text-muted); }
+.results-list { display: grid; gap: 0.75rem; }
+.results-row { padding: 0.85rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--white); min-width: 0; }
+.results-row-meta { display: flex; flex-wrap: wrap; gap: 0.2rem 0.8rem; margin: 0 0 0.2rem; font-size: 0.78rem; color: var(--text-muted); }
+.results-row-title { margin: 0 0 0.35rem; font-size: 1rem; line-height: 1.5; overflow-wrap: anywhere; }
+.results-row-title a { color: var(--enjy); text-decoration: none; }
+.results-row-title a:hover { text-decoration: underline; }
+.results-note { margin: 1.25rem 0 0; font-size: 0.8rem; color: var(--text-muted); }
+@media (max-width: 480px) {
+  .results-filters label { flex: 1 1 100%; justify-content: space-between; }
+  .results-filters select { flex: 1; }
+  .org-record-link { margin-left: 0; }
+}
