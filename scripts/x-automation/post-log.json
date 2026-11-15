@@ -1582,6 +1582,27 @@
       "status": "dry-run",
       "postId": null,
       "errorType": null
+    },
+    {
+      "postedAt": "2026-11-15T02:01:40.188Z",
+      "postType": "theme",
+      "targetDate": "2026-11-15",
+      "eventIds": [
+        "evt-150",
+        "evt-144",
+        "evt-146",
+        "evt-603",
+        "evt-645",
+        "evt-684",
+        "evt-234",
+        "evt-480",
+        "evt-481"
+      ],
+      "campaign": "theme_event",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
     }
   ]
 }
