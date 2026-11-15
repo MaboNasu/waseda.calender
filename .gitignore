@@ -23,3 +23,6 @@ scripts/last-check-changed.json
 # 出典照合（verify-event-sources.js）の結果と、照合用の根拠の引用（Instagramのキャプションの抜粋など。公開しない）
 scripts/last-verify-report.json
 .verify-evidence/
+
+# 結果収集のローカル状態・承認用JSON（GitHubには公開しない）
+.local/
