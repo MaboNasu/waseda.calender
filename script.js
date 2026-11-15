@@ -1255,6 +1255,8 @@ function showDayEvents(dateStr) {
   }
   document.getElementById('modal-title').textContent = `${dateDisp} のイベント（${filtered.length}件）`;
   document.getElementById('modal-tags').innerHTML = '';
+  const dayModalResultEl = document.getElementById('modal-result');
+  if (dayModalResultEl) dayModalResultEl.innerHTML = '';
   document.getElementById('modal-detail-content').innerHTML = `<div class="day-event-list">${listHTML}</div>`;
   const reactions = document.getElementById('modal-reactions');
   if (reactions) reactions.innerHTML = '';
@@ -1317,6 +1319,8 @@ function openModal(eventId) {
     <span class="tag ${feeClass(ev.feeType)}">${escapeHtml(ev.feeText || feeLabel(ev.feeType))}</span>`;
 
   // 詳細グリッド
+  const modalResultEl = document.getElementById('modal-result');
+  if (modalResultEl) modalResultEl.innerHTML = typeof wcResultCardHTML === 'function' ? wcResultCardHTML(ev.id) : '';
   document.getElementById('modal-detail-content').innerHTML = `
     <div class="modal-detail-item">
       <span class="modal-detail-label">日付</span>

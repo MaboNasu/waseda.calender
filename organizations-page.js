@@ -471,6 +471,12 @@ window.addEventListener('wc-auth-changed', () => {
   if (organizationState.selectedId) refreshOrgFollowButton(organizationState.selectedId);
 });
 
+/** 今日の日付（日本時間、YYYY-MM-DD）。戦績の年度を決めるのに使う */
+function orgTodayStrForResults() {
+  const d = new Date(Date.now() + 9 * 3600 * 1000);
+  return d.toISOString().slice(0, 10);
+}
+
 /** 団体の開催実績（終了済みイベント）セクションのHTML */
 function renderOrgPastEventsHTML(org) {
   const past = getPastEventsForOrganization(org);
@@ -480,7 +486,7 @@ function renderOrgPastEventsHTML(org) {
     return `
       <a class="org-related-event org-archive-event${extraClass}" href="${orgPageBuildEventPageUrl(ev)}">
         <strong>${orgEscapeHtml(ev.title)}</strong>
-        <span>${orgEscapeHtml(ev.date)}${ev.endDate && ev.endDate !== ev.date ? `〜${orgEscapeHtml(ev.endDate)}` : ''}</span>
+        <span>${orgEscapeHtml(ev.date)}${ev.endDate && ev.endDate !== ev.date ? `〜${orgEscapeHtml(ev.endDate)}` : ''}${typeof wcResultMarkHTML === 'function' && wcResultMarkHTML(ev.id) ? ` ${wcResultMarkHTML(ev.id)}` : ''}</span>
       </a>`;
   }).join('');
   const more = past.length > visibleCount
@@ -489,6 +495,7 @@ function renderOrgPastEventsHTML(org) {
   return `
     <div class="org-related org-archive">
       <h3>開催実績</h3>
+      ${typeof wcOrgRecordHTML === 'function' ? wcOrgRecordHTML(past, orgTodayStrForResults(), 'h4') : ''}
       ${past.length === 0 ? '<p class="org-muted">開催実績はまだありません。</p>' : items}
       ${more}
     </div>`;

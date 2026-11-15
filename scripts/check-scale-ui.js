@@ -148,17 +148,17 @@ assertIncludes(orgPage, 'getOrganizations().length', '団体総数の動的表�
 }
 
 // Ensure the homepage uses the same cache-busting versions as generated pages.
-for (const [asset, version] of [['events.js', '8'], ['script.js', '42'], ['auth-ui.js', '9']]) {
+for (const [asset, version] of [['events.js', '8'], ['script.js', '43'], ['auth-ui.js', '9']]) {
   assertIncludes(homeIndex, asset + '?v=' + version, 'ホームの' + asset + 'キャッシュ版');
 }
 // キャッシュ/静的生成の版ズレ防止。
-assertIncludes(generator, '/style.css?v=46', '生成イベントページ style version');
-assertIncludes(generator, '/script.js?v=42', '生成イベントページ script version');
+assertIncludes(generator, '/style.css?v=47', '生成イベントページ style version');
+assertIncludes(generator, '/script.js?v=43', '生成イベントページ script version');
 assertIncludes(generator, '/image-generator.js?v=8', '生成イベントページ image generator version');
 assertIncludes(generator, '/auth-ui.js?v=9', '生成イベントページ auth UI version');
 assertIncludes(contactHtml, 'organizations.js?v=9', '問い合わせページ organization data version');
 assertIncludes(serviceWorker, 'image-generator', 'Service Worker freshness-critical assets');
-assertIncludes(serviceWorker, "wc-cache-v18", 'Service Worker cache version');
+assertIncludes(serviceWorker, "wc-cache-v19", 'Service Worker cache version');
 
 // 実データに長文が増えても、UI側に長文対策が残っていることを確認する。
 // 現時点で長文データが無い環境でもチェック自体は失敗させない。
