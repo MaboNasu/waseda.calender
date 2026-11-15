@@ -219,6 +219,7 @@ function renderEventDetailPage(ev) {
 
       <div class="modal-footer">
         <span class="modal-updated">${ev.lastUpdated ? `最終更新: ${escapeHtml(ev.lastUpdated)}` : ''}</span>
+        <a class="report-link" href="/contact.html?entry=edit-delete&amp;type=event-edit&amp;event=${encodeURIComponent(ev.id)}" style="font-size:0.72rem;color:var(--text-muted);margin-left:auto;">情報の誤りを報告する</a>
       </div>
     </div>`;
 

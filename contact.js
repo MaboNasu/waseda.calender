@@ -115,6 +115,30 @@ async function lookupOrg(orgId, token) {
   return false;
 }
 
+/* ============================================================
+   イベントページの「情報の誤りを報告する」から来たときの初期入力
+   /contact.html?entry=edit-delete&type=event-edit&event=evt-xxx
+   ============================================================ */
+function applyReportPrefill() {
+  const params = new URLSearchParams(window.location.search);
+  const entry = params.get('entry');
+  if (entry !== 'edit-delete') return;
+  const radio = document.querySelector('input[name="entryChoice"][value="edit-delete"]');
+  if (radio) radio.checked = true;
+  const type = params.get('type');
+  const typeEl = document.getElementById('edit-delete-type');
+  if (typeEl && (type === 'event-edit' || type === 'event-delete')) typeEl.value = type;
+  const eventId = params.get('event');
+  if (eventId && /^evt-\d+$/.test(eventId)) {
+    const ev = typeof EVENTS !== 'undefined' ? EVENTS.find((e) => e.id === eventId) : null;
+    const nameEl = document.getElementById('target-event-name');
+    const urlEl = document.getElementById('target-page-url');
+    if (nameEl && !nameEl.value) nameEl.value = ev ? `${ev.title}（${eventId}）` : eventId;
+    if (urlEl && !urlEl.value) urlEl.value = `https://wasedacalendar.com/event/${eventId}.html`;
+  }
+  updateConditionalFields();
+}
+
 function setupOrgAuth() {
   const editCheckbox = document.getElementById('edit-org-info');
   if (editCheckbox) {
@@ -677,6 +701,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateConditionalFields();
 
   setupOrgAuth();
+  applyReportPrefill();
   setupCircleMatch();
   setupRecurringDates();
   setupGcalImport();

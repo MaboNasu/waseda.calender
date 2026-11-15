@@ -14,6 +14,13 @@ on:
       - 'scripts/generate-sitemap.js'
       - 'scripts/check-scale-ui.js'
       - 'scripts/check-home-sections.js'
+      - 'scripts/check-event-data.js'
+      - 'scripts/check-quality-gate.js'
+      - 'scripts/verify-event-sources.js'
+      - 'scripts/review-queue.js'
+      - 'scripts/weekly-report.js'
+      - 'scripts/lib/**'
+      - 'scripts/naming-dictionary.json'
       - '.github/workflows/ui-quality.yml'
   pull_request:
     paths:
@@ -27,6 +34,13 @@ on:
       - 'scripts/generate-sitemap.js'
       - 'scripts/check-scale-ui.js'
       - 'scripts/check-home-sections.js'
+      - 'scripts/check-event-data.js'
+      - 'scripts/check-quality-gate.js'
+      - 'scripts/verify-event-sources.js'
+      - 'scripts/review-queue.js'
+      - 'scripts/weekly-report.js'
+      - 'scripts/lib/**'
+      - 'scripts/naming-dictionary.json'
       - '.github/workflows/ui-quality.yml'
 
 permissions:
@@ -74,6 +88,12 @@ jobs:
 
       - name: Check home event classification
         run: node scripts/check-home-sections.js
+
+      - name: Check event data (format, fee wording, forbidden venue names)
+        run: node scripts/check-event-data.js --upcoming 60
+
+      - name: Test the source-verification gate
+        run: node scripts/check-quality-gate.js
 
       - name: Block internal review notes from public HTML
         shell: bash

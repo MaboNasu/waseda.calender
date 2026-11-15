@@ -355,6 +355,7 @@ function renderEventPageHtml(ev, labelFns) {
 
       <div class="modal-footer">
         <span class="modal-updated">${ev.lastUpdated ? `最終更新: ${escapeHtml(ev.lastUpdated)}` : ''}</span>
+        <a class="report-link" href="/contact.html?entry=edit-delete&amp;type=event-edit&amp;event=${encodeURIComponent(ev.id)}" style="font-size:0.72rem;color:var(--text-muted);margin-left:auto;">情報の誤りを報告する</a>
       </div>
     </div>`;
 
@@ -475,7 +476,7 @@ function renderEventPageHtml(ev, labelFns) {
 <script src="/events.js?v=8"></script>
 <script src="/script.js?v=42"></script>
 <script src="/image-generator.js?v=8"></script>
-<script src="/event-page.js?v=13"></script>
+<script src="/event-page.js?v=14"></script>
 <script type="module" src="/firebase-init.js?v=3"></script>
 <script src="/auth-ui.js?v=9"></script>
 <script src="/pwa-install.js?v=3"></script>
