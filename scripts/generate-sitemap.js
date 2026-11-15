@@ -74,6 +74,7 @@ function main() {
   const staticEntries = [
     urlEntry(`${SITE_ORIGIN}/`, { changefreq: 'daily', priority: '1.0' }),
     urlEntry(`${SITE_ORIGIN}/organizations.html`, { changefreq: 'weekly', priority: '0.7' }),
+    urlEntry(`${SITE_ORIGIN}/results.html`, { changefreq: 'daily', priority: '0.6' }),
     urlEntry(`${SITE_ORIGIN}/contact.html`, { changefreq: 'monthly', priority: '0.5' }),
     urlEntry(`${SITE_ORIGIN}/about.html`, { changefreq: 'monthly', priority: '0.4' }),
     urlEntry(`${SITE_ORIGIN}/terms.html`, { changefreq: 'yearly', priority: '0.3' }),

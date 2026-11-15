@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { wcOrgRecordHTML, wcResultMarkHTML } = require('../results.js');
 
 const ROOT = path.join(__dirname, '..');
 const SITE_ORIGIN = 'https://wasedacalendar.com';
@@ -217,7 +218,7 @@ function pastEventsHTML(org, events) {
     return `
         <a class="org-related-event org-archive-event${extra}" href="${buildEventPageUrl(ev)}">
           <strong>${escapeHtml(ev.title)}</strong>
-          <span>${escapeHtml(ev.date)}${ev.endDate && ev.endDate !== ev.date ? `〜${escapeHtml(ev.endDate)}` : ''}</span>
+          <span>${escapeHtml(ev.date)}${ev.endDate && ev.endDate !== ev.date ? `〜${escapeHtml(ev.endDate)}` : ''}${wcResultMarkHTML(ev.id) ? ` ${wcResultMarkHTML(ev.id)}` : ''}</span>
         </a>`;
   }).join('');
   const more = past.length > visibleCount
@@ -226,6 +227,7 @@ function pastEventsHTML(org, events) {
   return `
     <div class="org-related org-archive">
       <h2>開催実績</h2>
+      ${wcOrgRecordHTML(past, todayStr(), 'h3')}
       ${past.length === 0 ? '<p class="org-muted">開催実績はまだありません。</p>' : items}
       ${more}
     </div>`;
@@ -315,7 +317,7 @@ function renderOrgPageHtml(org, events) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=46">
+  <link rel="stylesheet" href="/style.css?v=47">
   <script type="application/ld+json" id="org-page-jsonld">${jsonLd}</script>
 </head>
 <body>
@@ -331,6 +333,7 @@ function renderOrgPageHtml(org, events) {
       <a class="nav-btn" href="/index.html#upcoming-section">この先7日間</a>
       <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
       <a class="nav-btn" href="/organizations.html">公認団体</a>
+      <a class="nav-btn" href="/results.html">試合結果</a>
       <a class="nav-btn" href="/contact.html">掲載依頼</a>
       <a class="nav-btn" href="/mypage.html">マイページ</a>
     </nav>
@@ -346,6 +349,7 @@ function renderOrgPageHtml(org, events) {
   <a class="nav-btn" href="/index.html#upcoming-section">この先7日間</a>
   <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
   <a class="nav-btn" href="/organizations.html">公認団体</a>
+      <a class="nav-btn" href="/results.html">試合結果</a>
   <a class="nav-btn" href="/contact.html">掲載依頼・問い合わせ</a>
   <a class="nav-btn" href="/mypage.html">マイページ</a>
 </nav>
@@ -378,6 +382,7 @@ function renderOrgPageHtml(org, events) {
       <a href="/index.html#today-section">本日のイベント</a>
       <a href="/index.html#calendar-section">カレンダー</a>
       <a href="/organizations.html">公認団体</a>
+      <a href="/results.html">試合結果</a>
       <a href="/contact.html">掲載依頼・問い合わせ</a>
       <a href="/about.html">運営者情報</a>
       <a href="/terms.html">利用規約</a>
@@ -393,7 +398,8 @@ function renderOrgPageHtml(org, events) {
 
 <script src="/events.js?v=8"></script>
 <script src="/organizations.js?v=9"></script>
-<script src="/organizations-page.js?v=16"></script>
+<script src="/results.js?v=1"></script>
+<script src="/organizations-page.js?v=17"></script>
 <script src="/org-page.js?v=1"></script>
 <script type="module" src="/firebase-init.js?v=3"></script>
 <script src="/auth-ui.js?v=9"></script>

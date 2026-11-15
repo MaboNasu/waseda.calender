@@ -9,6 +9,7 @@ on:
     branches: [main]
     paths:
       - 'events.js'
+      - 'results.js'
       - 'organizations.js'
       - 'style.css'
       - 'script.js'
