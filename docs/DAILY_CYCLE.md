@@ -15,10 +15,13 @@
 - `git fetch origin main && git checkout main && git pull`。今日の日付は `TZ=Asia/Tokyo date +%F`（記憶で仮定しない）。
 - `docs/EDITORIAL_RULES.md`・`EVENT_REVIEW_RULES.md`・`LEGAL_GUARDRAILS.md` を読む。
 - 作業ブランチ `auto/daily-YYYY-MM-DD` を切る。開始時点の main のコミットを `BASE` として控える。
+- `node scripts/review-queue.js start` で開始を記録する。「実行中です」と出て止まったら、別の実行が動いているので**何もせずに終了**し、報告にそう書く（二重実行の防止）。
+- このあとどの手順で失敗しても、`node scripts/review-queue.js fail --note "理由"` を実行してコミット・マージしてから終了する（午後の投稿準備を止めるため）。
 
 ### 1. 運営者の確認結果を反映する
 - 届いた OK / NG の行を `.verify-evidence/approvals-YYYYMMDD.txt` に保存し、`node scripts/review-queue.js apply .verify-evidence/approvals-YYYYMMDD.txt`。
 - 「→ 直す内容」が付いた行は、出典でその内容を確かめてから直す（確かめられなければ直さず、理由を報告）。
+- 「確認後に内容が変わったので保留」と出た行は、運営者が見た内容と今の内容が違う。勝手に公開せず、次の要確認にもう一度出す（自動でそうなる）。
 
 ### 2. 修正依頼を処理する
 - 出典ページを開いて確かめ、正しいと確認できたものだけ直す。確認できないものは報告に「保留」と書く。
@@ -33,24 +36,27 @@
 - 届いた形式のとおりに追加する（既存の同じ団体・同じ日付のイベントがあれば新規にしない）。
 - 届いた**根拠の引用**を `.verify-evidence/YYYYMMDD.json` に `{ "evt-xxx": { "url": "投稿URL", "text": "引用" } }` の形で保存する（このフォルダはコミットしない）。
 
-### 5. 検査と公開の判定
+### 5. 検査と公開の判定（データの手直しはこの前までに終える）
 ```
 node scripts/check-event-data.js --fix          # 辞書・ルールで機械的に直せるものだけ直す
 node scripts/check-event-data.js                # エラーが0件であること
 node scripts/verify-event-sources.js --changed-from BASE --evidence .verify-evidence/YYYYMMDD.json --apply
 ```
 - 新しく追加したもののうち **B は非公開の `partial`、C は非公開の `pending`** に自動でなる。A はそのまま公開。
-- **既存イベントの変更が C** と出たら、そのイベントの変更を元に戻し（BASE の内容に戻す）、報告の「保留した変更」に理由と出典を書く。
-- 追加・変更が1回で15件を超えたら、読み取りの連鎖ミスを疑ってマージせず、報告だけする。
+- **既存イベントの変更が C** と出たら、そのイベントの変更を元に戻し（BASE の内容に戻す）、報告の「保留した変更」に理由と出典を書く。戻したら **verify-event-sources.js をもう一度実行する**。
+- **照合のあとに events.js を手で直したら、必ず照合をやり直す。** 照合した内容と公開する内容が違うと、手順6の `finish` が失敗する。
+- 追加・変更が1回で15件を超えたら、読み取りの連鎖ミスを疑ってマージせず、`fail` を記録して報告だけする。
+- C の理由は3種類：**食い違い**（出典と違う・出典にない）、**決めきれない**（部分一致など照合器の限界）、**読めない**（出典を取得できない）。要確認には食い違いから先に並ぶ。
 
 ### 6. 生成・確認・マージ
 ```
 node scripts/generate-event-pages.js && node scripts/generate-org-pages.js && node scripts/generate-sitemap.js
 node scripts/check-quality-gate.js
-node scripts/review-queue.js status --note "今日の追加N件"   # daily-cycle-status.json を更新
+node scripts/review-queue.js finish --note "今日の追加N件"
 ```
+- `finish` は、今日の照合結果があり、照合のあとに events.js が変わっていないときだけ成功を記録する。失敗したら原因を直して手順5からやり直す。
 - コミットして main にマージする（公開されるのは A と、運営者が OK したものだけ。`CLAUDE.md` の「出典で確認したデータは確認なしでマージしてよい」の範囲）。
-- マージの直前に `git pull origin main` で他のセッションの変更を取り込む。
+- マージの直前に `git pull origin main` で他のセッションの変更を取り込む。取り込んだ結果 events.js が変わったら、手順5の照合と `finish` をやり直す。
 
 ### 7. 報告
 次の形で返す（朝の定期実行がこれを運営者への通知に使う）。

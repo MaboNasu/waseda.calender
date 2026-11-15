@@ -31,7 +31,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const {
   ROOT, EVENTS_PATH, loadEvents, loadOrganizations, loadDictionary,
-  normalizeForMatch, todayJst, isUpcoming, setEventField,
+  normalizeForMatch, todayJst, isUpcoming, setEventField, eventsSha256,
 } = require('./lib/event-data');
 
 const args = process.argv.slice(2);
@@ -107,7 +107,10 @@ function containsDate(normText, ymd) {
     while (i >= 0) {
       const next = normText[i + p.length];
       const prev = normText[i - 1];
-      if (!(next && /\d/.test(next)) && !(prev && /\d/.test(prev))) return true;
+      // 数字で終わる書き方（11/28 など）だけ、後ろに数字が続く誤一致（11/280）を除く。「12月5日14:00」は日付として認める
+      const nextBad = /\d$/.test(p) && next && /\d/.test(next);
+      const prevBad = prev && /\d/.test(prev);
+      if (!nextBad && !prevBad) return true;
       i = normText.indexOf(p, i + 1);
     }
     return false;
@@ -142,46 +145,66 @@ function containsTime(normText, hhmm) {
   });
 }
 
+/**
+ * タイトルの照合。戻り値の anchor は「出典の中でそのイベントを指す文字列」で、日付・主催・中止の照合範囲を決めるのに使う。
+ * 全文一致以外の形（大会名(自分の部)・vs 相手・かぎ括弧の中）は weak:true とし、anchor の近くに日付があることを
+ * verifyEvent で追加で確かめる（部分一致だけで A にしないため。2026-11-15 ChatGPT レビュー①）。
+ */
 function titleCheck(title, normText, ev = {}) {
   const t = String(title || '');
   let stripped = t.replace(ALLOWED_TITLE_SUFFIX, '');
-  if (normText.includes(normalizeForMatch(stripped))) return { ok: true };
+  const full = normalizeForMatch(stripped);
+  if (full && normText.includes(full)) return { ok: true, anchor: full };
   // 「早慶戦(柔道部)」のように、末尾の括弧が自分の部・団体名なら、括弧の前（大会・試合の名称）を照合する
   const team = /^(.+?)\s*[（(]([^()（）]+)[)）]\s*$/.exec(stripped);
   if (team && String(ev.organizer || '').replace(ORG_PREFIX, '').includes(team[2].replace(ORG_PREFIX, '').replace(/\s/g, ''))) {
-    if (normText.includes(normalizeForMatch(team[1]))) return { ok: true, note: '大会名（自分の部の名前を除く）を確認' };
+    const head = normalizeForMatch(team[1]);
+    if (normText.includes(head)) return { ok: true, weak: true, anchor: head, note: '大会名（自分の部の名前を除く）を確認' };
     stripped = team[1];
   }
   // 試合の表記「<部の名前> vs<相手>」は、相手の名前が出典にそのまま書かれていればよい（略記の展開・補足は不可）
   const vs = /^(.+?)\s*(?:vs\.?|VS\.?|ｖｓ|対)\s*(.+)$/.exec(stripped);
   if (vs) {
     const opponent = vs[2].replace(/[（(][^)）]*[)）]\s*$/, '').trim();
-    if (opponent && normText.includes(normalizeForMatch(opponent))) return { ok: true, note: '試合の表記（相手名を確認）' };
-    return { ok: false, reason: `対戦相手「${opponent}」が出典にそのまま書かれていない` };
+    const key = normalizeForMatch(opponent);
+    if (key && normText.includes(key)) return { ok: true, weak: true, anchor: key, note: '試合の表記（相手名を確認）' };
+    return { ok: false, code: 'mismatch', reason: `対戦相手「${opponent}」が出典にそのまま書かれていない` };
   }
   // 「講演会「…」」のように種別を前に付けた表記は、かぎ括弧の中（正式な題名）が出典にあればよい
   const quoted = /^([^「『]*)[「『](.+)[」』]([^」』]*)$/.exec(stripped);
-  if (quoted && quoted[2].length >= 4 && normText.includes(normalizeForMatch(quoted[2]))) {
-    return { ok: true, note: '題名（かぎ括弧の中）を確認' };
+  if (quoted && quoted[2].length >= 4) {
+    const key = normalizeForMatch(quoted[2]);
+    if (normText.includes(key)) return { ok: true, weak: true, anchor: key, note: '題名（かぎ括弧の中）を確認' };
   }
-  return { ok: false, reason: `タイトル「${stripped}」が出典にそのまま書かれていない` };
+  return { ok: false, code: 'mismatch', reason: `タイトル「${stripped}」が出典にそのまま書かれていない` };
 }
 
+/**
+ * 会場の照合。A にできるのは「出典に続けてそのまま書かれている」か「辞書の正式名・別名と一致」だけ。
+ * 語ごとに見つかるだけ（例：「大隈記念講堂」と「小講堂」が別々の場所にある）は weak として C にする。
+ * 括弧の中（号館・階・部屋）も識別に必要なので、出典になければ C にする（2026-11-15 ChatGPT レビュー①）。
+ */
 function venueCheck(location, normText, dict) {
   if (!location || /^(不明|未定|未確認)$/.test(location.trim())) return { ok: null };
   if (normText.includes(normalizeForMatch(location))) return { ok: true };
   const venue = dict.venues.find((v) => v.display === location || v.aliases.includes(location));
   if (venue && [venue.name, ...venue.aliases].some((n) => normText.includes(normalizeForMatch(n)))) {
-    return { ok: true, note: '辞書の別名で確認' };
+    return { ok: true, note: '辞書の正式名・別名で確認' };
   }
-  // 括弧の中（号館・集合場所などの補足）は照合しない。補足が出典にない場合は注記だけ残す
-  const core = location.replace(/[（(][^)）]*[)）]/g, ' ');
-  const tokens = core.split(/[\s　・、，,/／〜~→]+/).map((s) => s.trim())
-    .filter((s) => s.length >= 2 && !GENERIC_VENUE_TOKENS.has(s));
+  const core = location.replace(/[（(][^)）]*[)）]/g, ' ').trim();
+  const inner = [...location.matchAll(/[（(]([^)）]+)[)）]/g)].map((m) => m[1].trim()).filter((x) => x.length >= 2);
+  if (core && core !== location.trim() && normText.includes(normalizeForMatch(core))) {
+    const missingInner = inner.filter((x) => !normText.includes(normalizeForMatch(x)));
+    return missingInner.length
+      ? { ok: false, code: 'weak', reason: `会場「${core}」は出典にあるが、括弧内の「${missingInner.join('」「')}」が出典にない` }
+      : { ok: true, note: '会場名と括弧内の補足をそれぞれ確認' };
+  }
+  const tokens = core.split(/[\s　・、，,/／〜~→]+/).map((x) => x.trim())
+    .filter((x) => x.length >= 2 && !GENERIC_VENUE_TOKENS.has(x));
   if (!tokens.length) return { ok: null };
   const missing = tokens.filter((tok) => !normText.includes(normalizeForMatch(tok)));
-  if (missing.length) return { ok: false, reason: `会場の「${missing.join('」「')}」が出典に書かれていない` };
-  return core.trim() !== location.trim() ? { ok: true, note: '会場の括弧内の補足は照合していない' } : { ok: true };
+  if (missing.length) return { ok: false, code: 'mismatch', reason: `会場の「${missing.join('」「')}」が出典に書かれていない` };
+  return { ok: false, code: 'weak', reason: `会場「${location}」は語ごとには出典にあるが、続けた表記では見つからない（部分一致のため自動公開しない）` };
 }
 
 /** 団体名の照合に使う言い方の候補（「早稲田大学」の有無、括弧の前・中） */
@@ -202,7 +225,7 @@ function nameVariants(name) {
 
 function organizerCheck(ev, normText, sourceUrls, orgById, dict) {
   const whole = String(ev.organizer || '').trim();
-  if (!whole) return { ok: false, reason: '主催が空' };
+  if (!whole) return { ok: false, code: 'mismatch', reason: '主催が空' };
   const has = (names) => [...names].some((n) => normText.includes(normalizeForMatch(n)));
   const org = ev.orgId ? orgById.get(ev.orgId) : null;
   const orgNames = new Set();
@@ -225,29 +248,39 @@ function organizerCheck(ev, normText, sourceUrls, orgById, dict) {
   const fromOwnSite = sourceUrls.some((u) => {
     try { const x = new URL(u); const key = x.hostname.replace(/^www\./, '') + x.pathname; return ownSites.some((s) => key.startsWith(s)); } catch { return false; }
   });
-  if (fromOwnSite && parts.length === 1) return { ok: true, note: '団体自身の公式サイトが出典' };
-  return { ok: false, reason: `主催の「${missing.join('」「')}」が出典に書かれていない` };
+  // 団体自身の公式サイトが出典でも、主催かどうか（共催・会場提供かもしれない）は分からないので A にしない
+  if (fromOwnSite && parts.length === 1) return { ok: false, code: 'weak', reason: `主催「${whole}」の名前がイベントの記載にない（出典は団体自身のサイト）` };
+  return { ok: false, code: 'mismatch', reason: `主催の「${missing.join('」「')}」が出典に書かれていない` };
 }
 
 function feeCheck(ev, normText) {
   if (ev.feeType === 'free') {
-    return /無料|入場無料|参加無料|free|カンパ/.test(normText) ? { ok: true } : { ok: false, reason: '「無料」の根拠が出典にない' };
+    return /無料|入場無料|参加無料|free|カンパ/.test(normText) ? { ok: true } : { ok: false, code: 'weak', reason: '「無料」の根拠が出典にない' };
   }
   if (ev.feeType === 'paid') {
     const amounts = (String(ev.feeText || '').normalize('NFKC').match(/\d[\d,]*/g) || []).filter((a) => a.replace(/,/g, '').length >= 3);
     if (!amounts.length) return { ok: null };
     const missing = amounts.filter((a) => !normText.includes(a) && !normText.includes(a.replace(/,/g, '')));
-    return missing.length ? { ok: false, reason: `料金の「${missing.join('」「')}」が出典に書かれていない` } : { ok: true };
+    return missing.length ? { ok: false, code: 'mismatch', reason: `料金の「${missing.join('」「')}」が出典に書かれていない` } : { ok: true };
   }
   return { ok: null };
 }
 
-/** タイトルの周辺（同じイベントの記載範囲）を切り出す。タイトルが見つからなければ全文。 */
-function eventBlock(normText, ev) {
-  const key = normalizeForMatch(String(ev.title || '').replace(ALLOWED_TITLE_SUFFIX, ''));
-  const i = key.length >= 4 ? normText.indexOf(key) : -1;
-  if (i < 0) return normText;
-  return normText.slice(Math.max(0, i - 600), i + key.length + 1500);
+/** anchor（タイトルや相手名）の周辺＝同じイベントの記載範囲を切り出す。複数ある場合はすべての周辺をつなぐ。 */
+function eventBlock(normText, anchor) {
+  if (!anchor || anchor.length < 2) return normText;
+  const pieces = [];
+  let i = normText.indexOf(anchor);
+  while (i >= 0 && pieces.length < 5) {
+    pieces.push(normText.slice(Math.max(0, i - 600), i + anchor.length + 1500));
+    i = normText.indexOf(anchor, i + anchor.length);
+  }
+  return pieces.length ? pieces.join('\n') : normText;
+}
+
+/** 失敗の種類。unreadable=出典を読めない／mismatch=出典と食い違う・出典にない／weak=部分一致など、照合器の限界で決めきれない */
+function gateCodes(problems) {
+  return [...new Set(problems.map((p) => p.code || 'mismatch'))];
 }
 
 async function verifyEvent(ev, ctx) {
@@ -262,31 +295,38 @@ async function verifyEvent(ev, ctx) {
   const ev2 = ctx.evidence[ev.id];
   if (ev2 && ev2.text) texts.push(ev2.text);
 
-  const result = { id: ev.id, title: ev.title, date: ev.date, gate: 'C', checks: {}, problems: [], notes: [], unreadable };
-  if (!urls.length && !ev2) { result.problems.push('出典URLがない'); return result; }
-  if (!texts.length) { result.problems.push('出典をどれも読めない（根拠の引用が必要）'); return result; }
+  const result = { id: ev.id, title: ev.title, date: ev.date, gate: 'C', codes: [], checks: {}, problems: [], notes: [], unreadable };
+  const fail = (code, reason) => { result.problems.push(reason); result._p = (result._p || []).concat({ code, reason }); };
+  if (!urls.length && !ev2) { fail('unreadable', '出典URLも根拠の引用もない'); result.codes = ['unreadable']; delete result._p; return result; }
+  if (!texts.length) { fail('unreadable', '出典をどれも読めない（根拠の引用が必要）'); result.codes = ['unreadable']; delete result._p; return result; }
 
   const whole = normalizeForMatch(texts.join('\n'));
-  const block = eventBlock(whole, ev);
+  const title = titleCheck(ev.title, whole, ev);
+  const block = eventBlock(whole, title.ok ? title.anchor : null);
+  const inBlock = title.ok; // タイトルが見つからなければ範囲を絞れないので、残りは参考扱い（どのみち C）
 
   const checks = {
-    title: titleCheck(ev.title, whole, ev),
-    date: containsDate(block, ev.date) || containsDate(whole, ev.date) ? { ok: true } : { ok: false, reason: `日付 ${ev.date} が出典に書かれていない` },
-    startTime: !ev.startTime ? { ok: null } : (containsTime(block, ev.startTime) || containsTime(whole, ev.startTime) ? { ok: true } : { ok: false, reason: `開始時刻 ${ev.startTime} が出典に書かれていない` }),
-    venue: venueCheck(ev.location, whole, ctx.dict),
-    organizer: organizerCheck(ev, whole, urls, ctx.orgById, ctx.dict),
-    fee: feeCheck(ev, whole),
+    title,
+    date: containsDate(block, ev.date) ? { ok: true }
+      : { ok: false, code: containsDate(whole, ev.date) ? 'weak' : 'mismatch', reason: containsDate(whole, ev.date) ? `日付 ${ev.date} はページにあるが、このイベントの記載の近くにない` : `日付 ${ev.date} が出典に書かれていない` },
+    startTime: !ev.startTime ? { ok: null } : (containsTime(block, ev.startTime) ? { ok: true }
+      : { ok: false, code: 'mismatch', reason: `開始時刻 ${ev.startTime} が${inBlock ? 'このイベントの記載に' : '出典に'}書かれていない` }),
+    venue: venueCheck(ev.location, block, ctx.dict),
+    organizer: organizerCheck(ev, block, urls, ctx.orgById, ctx.dict),
+    fee: feeCheck(ev, block),
   };
   if (ev.endDate && ev.endDate !== ev.date) {
-    checks.endDate = containsDate(whole, ev.endDate) ? { ok: true } : { ok: false, reason: `終了日 ${ev.endDate} が出典に書かれていない` };
+    checks.endDate = containsDate(block, ev.endDate) ? { ok: true } : { ok: false, code: 'mismatch', reason: `終了日 ${ev.endDate} が出典に書かれていない` };
   }
-  if (CANCEL_WORDS.test(block)) checks.status = { ok: false, reason: '出典のイベント付近に「中止・延期」などの記載がある' };
+  if (inBlock && CANCEL_WORDS.test(block)) checks.status = { ok: false, code: 'mismatch', reason: '出典のこのイベントの記載の近くに「中止・延期」の告知がある' };
 
   result.checks = checks;
   for (const c of Object.values(checks)) {
-    if (c.ok === false) result.problems.push(c.reason);
+    if (c.ok === false) fail(c.code || 'mismatch', c.reason);
     if (c.note) result.notes.push(c.note);
   }
+  result.codes = gateCodes(result._p || []);
+  delete result._p;
   if (result.problems.length) return result;
   const missingCore = !ev.startTime && !ev.allDay ? ['開始時刻'] : [];
   if (!ev.location && ev.campus !== 'online') missingCore.push('会場');
@@ -350,8 +390,19 @@ async function main() {
   }
 
   const summary = { A: 0, B: 0, C: 0 };
-  results.forEach((r) => { summary[r.gate]++; });
-  const report = { generatedAt: new Date().toISOString(), today: todayJst(), mode: opt('--changed-from') ? `changed-from ${opt('--changed-from')}` : opt('--ids') ? 'ids' : `upcoming ${opt('--upcoming') || 30}`, summary, results };
+  const byCode = { unreadable: 0, mismatch: 0, weak: 0 };
+  results.forEach((r) => { summary[r.gate]++; if (r.gate === 'C') r.codes.forEach((c) => { byCode[c] = (byCode[c] || 0) + 1; }); });
+  const report = {
+    generatedAt: new Date().toISOString(),
+    today: todayJst(),
+    mode: opt('--changed-from') ? `changed-from ${opt('--changed-from')}` : opt('--ids') ? 'ids' : `upcoming ${opt('--upcoming') || 30}`,
+    // 照合したときの events.js。--apply のあとは書き換え後の値に更新する。
+    // review-queue.js status --finish はこれが今の events.js と一致しないと成功を記録しない（検査後の手直しで照合をすり抜けないため）
+    eventsSha256: eventsSha256(),
+    summary,
+    cReasons: byCode,
+    results,
+  };
   fs.writeFileSync(REPORT_PATH, JSON.stringify(report, null, 2) + '\n');
 
   if (flag('--apply')) {
@@ -361,7 +412,8 @@ async function main() {
     for (const r of results) {
       if (r.kind !== 'new' || r.gate === 'A') continue;
       const status = r.gate === 'B' ? 'partial' : 'pending';
-      const reason = r.gate === 'B' ? r.notes.join(' / ') : r.problems.join(' / ');
+      const tag = r.gate === 'C' ? `[${r.codes.join(',')}] ` : '';
+      const reason = tag + (r.gate === 'B' ? r.notes.join(' / ') : r.problems.join(' / '));
       source = setEventField(source, r.id, 'isPublished', false);
       source = setEventField(source, r.id, 'reviewStatus', status);
       source = setEventField(source, r.id, 'reviewReason', reason.slice(0, 200));
@@ -370,6 +422,7 @@ async function main() {
     loadEvents(source);
     fs.writeFileSync(EVENTS_PATH, source);
     report.applied = applied;
+    report.eventsSha256 = eventsSha256(source);
     fs.writeFileSync(REPORT_PATH, JSON.stringify(report, null, 2) + '\n');
   }
 
@@ -378,8 +431,9 @@ async function main() {
     return;
   }
   console.log(`判定: A ${summary.A}件 / B ${summary.B}件 / C ${summary.C}件（対象 ${results.length}件、${report.mode}）`);
+  console.log(`  Cの内訳: 出典と食い違う・出典にない ${byCode.mismatch}件 / 部分一致など照合器で決めきれない ${byCode.weak}件 / 出典を読めない ${byCode.unreadable}件`);
   for (const r of results.filter((x) => x.gate !== 'A')) {
-    const label = r.gate === 'B' ? 'B 一部保留' : 'C 確認待ち';
+    const label = r.gate === 'B' ? 'B 一部保留' : `C 確認待ち・${r.codes.map((c) => ({ mismatch: '食い違い', weak: '決めきれない', unreadable: '読めない' }[c])).join('・')}`;
     console.log(`\n[${label}] ${r.id} ${r.date} ${r.title}${r.kind === 'changed' ? `（変更: ${r.changedFields.join(', ')}）` : ''}`);
     for (const p of r.problems) console.log(`  - ${p}`);
     for (const n of r.notes) console.log(`  · ${n}`);

@@ -13,6 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const crypto = require('crypto');
 
 const ROOT = path.join(__dirname, '..', '..');
 const EVENTS_PATH = path.join(ROOT, 'events.js');
@@ -138,8 +139,21 @@ function setEventField(source, id, key, value) {
   return source.slice(0, range.start) + body + source.slice(range.end);
 }
 
+/** events.js の内容のハッシュ（照合したデータと公開するデータが同じかを確かめる） */
+function eventsSha256(source) {
+  return crypto.createHash('sha256').update(source ?? fs.readFileSync(EVENTS_PATH, 'utf8')).digest('hex');
+}
+
+/** 1イベントの公開内容の指紋。運営者の OK をこの内容に紐づけ、OK の後に中身が変わったら適用しない */
+function eventFingerprint(ev) {
+  const keys = ['title', 'date', 'endDate', 'startTime', 'endTime', 'location', 'organizer', 'feeType', 'feeText', 'externalUrl'];
+  return crypto.createHash('sha256').update(keys.map((k) => String(ev[k] ?? '')).join('\u0001')).digest('hex').slice(0, 8);
+}
+
 module.exports = {
   ROOT,
+  eventsSha256,
+  eventFingerprint,
   EVENTS_PATH,
   ORGS_PATH,
   DICT_PATH,

@@ -53,6 +53,8 @@ test('日付：複数の書き方を認め、桁の違う数字には一致し�
   assert.ok(V.containsDate(normalizeForMatch('開催日 11/28(土)'), '2026-11-28'));
   assert.ok(!V.containsDate(normalizeForMatch('受付番号 11/280'), '2026-11-28'));
   assert.ok(!V.containsDate(normalizeForMatch('2026年11月29日'), '2026-11-28'));
+  assert.ok(V.containsDate(normalizeForMatch('12月5日 14:00 開演'), '2026-12-05'), '日付の直後に時刻が続く書き方');
+  assert.ok(!V.containsDate(normalizeForMatch('12月15日'), '2026-12-05'));
 });
 
 test('時刻：開始時刻の書き方を認め、別の時刻には一致しない', () => {
@@ -148,6 +150,43 @@ test('「雨天中止」は中止の告知として扱わない', async () => {
   c.evidence['evt-test6'] = { text: '秋の清掃 12月6日(土) 9:00集合 早稲田小劇場どらま館 主催 テスト研究会 ※雨天中止の場合は前日に連絡します' };
   const r = await V.verifyEvent({ id: 'evt-test6', title: '秋の清掃', date: '2026-12-06', startTime: '09:00', location: '早稲田小劇場どらま館', organizer: 'テスト研究会', externalUrl: 'https://www.instagram.com/p/T6/' }, c);
   assert.strictEqual(r.gate, 'A', JSON.stringify(r.problems));
+});
+
+
+test('会場：語ごとにしか見つからない会場は A にしない（部分一致）', () => {
+  const dict = loadDictionary();
+  const text = normalizeForMatch('会場：大隈記念講堂 ／ 終演後は小講堂前で物販');
+  const r = V.venueCheck('大隈記念講堂 小講堂', text, dict);
+  assert.strictEqual(r.ok, false);
+  assert.strictEqual(r.code, 'weak');
+});
+
+test('会場：括弧内の号館・階が出典になければ A にしない', () => {
+  const dict = loadDictionary();
+  const text = normalizeForMatch('會津八一記念博物館 1階企画展示室');
+  assert.strictEqual(V.venueCheck('會津八一記念博物館(早稲田キャンパス2号館)', text, dict).ok, false);
+  assert.strictEqual(V.venueCheck('會津八一記念博物館(1階企画展示室)', text, dict).ok, true);
+});
+
+test('主催：団体自身のサイトが出典というだけでは A にしない', () => {
+  const orgs = new Map([['C-999', { id: 'C-999', name: 'テスト研究会', websiteUrl: 'https://test.example/' }]]);
+  const r = V.organizerCheck({ organizer: 'テスト研究会', orgId: 'C-999' }, normalizeForMatch('秋の展示会 12月6日'), ['https://test.example/news/1'], orgs, loadDictionary());
+  assert.strictEqual(r.ok, false);
+  assert.strictEqual(r.code, 'weak');
+});
+
+test('判定：日付がページにあってもイベントの記載から離れていれば A にしない', async () => {
+  const c = ctx();
+  const filler = 'あ'.repeat(2000);
+  c.evidence['evt-test7'] = { text: `12月6日(土) 別の催し ${filler} 秋の展示会 14:00開始 早稲田小劇場どらま館 主催 テスト研究会` };
+  const r = await V.verifyEvent({ id: 'evt-test7', title: '秋の展示会', date: '2026-12-06', startTime: '14:00', location: '早稲田小劇場どらま館', organizer: 'テスト研究会', externalUrl: 'https://www.instagram.com/p/T7/' }, c);
+  assert.strictEqual(r.gate, 'C');
+  assert.ok(r.codes.includes('weak'));
+});
+
+test('判定：出典を読めないときの理由は「読めない」として記録する', async () => {
+  const r = await V.verifyEvent({ id: 'evt-test8', title: 'X', date: '2026-12-06', organizer: 'テスト研究会', externalUrl: 'https://www.instagram.com/p/T8/' }, ctx());
+  assert.deepStrictEqual([...r.codes], ['unreadable']);
 });
 
 test('events.js の部分書き換え：他の項目と書式を変えない', () => {
