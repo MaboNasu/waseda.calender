@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-F4NHVEBKTK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-F4NHVEBKTK');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="早稲田大学の体育各部・サークルの試合結果と、公演・大会の結果をまとめた一覧です。各結果は公式サイトなどの出典で確認したものだけを掲載しています。">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://wasedacalendar.com/results.html">
+  <meta name="theme-color" content="#8B0000">
+  <title>試合結果 – Waseda Calendar</title>
+  <link rel="icon" type="image/png" href="assets/icon.png?v=2">
+  <link rel="manifest" href="assets/manifest.json?v=2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=47">
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="index.html#top" class="site-logo">
+      <span class="logo-main">Waseda Calendar</span>
+      <span class="logo-sub">早稲田イベント情報</span>
+    </a>
+    <nav class="header-nav" aria-label="メインナビゲーション">
+      <a class="nav-btn" href="index.html#today-section">本日のイベント</a>
+      <a class="nav-btn" href="index.html#upcoming-section">この先7日間</a>
+      <a class="nav-btn" href="index.html#calendar-section">カレンダー</a>
+      <a class="nav-btn" href="organizations.html">公認団体</a>
+      <a class="nav-btn active" href="results.html" aria-current="page">試合結果</a>
+      <a class="nav-btn" href="contact.html">掲載依頼</a>
+      <a class="nav-btn" href="mypage.html">マイページ</a>
+    </nav>
+    <div id="header-auth" class="header-auth"></div>
+    <button class="hamburger" id="hamburger-btn" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="モバイルナビゲーション">
+  <a class="nav-btn" href="index.html#today-section">本日のイベント</a>
+  <a class="nav-btn" href="index.html#upcoming-section">この先7日間</a>
+  <a class="nav-btn" href="index.html#calendar-section">カレンダー</a>
+  <a class="nav-btn" href="organizations.html">公認団体</a>
+  <a class="nav-btn active" href="results.html" aria-current="page">試合結果</a>
+  <a class="nav-btn" href="contact.html">掲載依頼・問い合わせ</a>
+  <a class="nav-btn" href="mypage.html">マイページ</a>
+</nav>
+
+<main class="results-page">
+  <section class="section">
+    <div class="container">
+      <h1 class="section-title">試合結果</h1>
+      <p class="results-lead">早稲田の体育各部・サークルの試合結果と、公演・大会の結果です。公式サイトなどの出典で確認したものだけを、新しい順に載せています。各結果の出典リンクから元の記録を確認できます。</p>
+      <div class="results-filters" role="group" aria-label="絞り込み">
+        <label>種類
+          <select id="results-kind">
+            <option value="">すべて</option>
+            <option value="match">試合</option>
+            <option value="report">公演・大会の報告</option>
+          </select>
+        </label>
+        <label>団体
+          <select id="results-org"><option value="">すべて</option></select>
+        </label>
+        <label>勝敗
+          <select id="results-outcome">
+            <option value="">すべて</option>
+            <option value="win">勝ち</option>
+            <option value="loss">負け</option>
+            <option value="draw">引き分け</option>
+          </select>
+        </label>
+      </div>
+      <p class="results-count" id="results-count" aria-live="polite"></p>
+      <div id="results-list" class="results-list"></div>
+      <p class="results-note">掲載内容の誤りは<a href="contact.html?entry=edit-delete&amp;type=event-edit">お問い合わせフォーム</a>からお知らせください。出典で確かめてから直します。</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-logo-wrap">
+      <span class="footer-logo">Waseda Calendar</span>
+    </div>
+    <nav class="footer-links" aria-label="フッターナビゲーション">
+      <a href="index.html#today-section">本日のイベント</a>
+      <a href="index.html#calendar-section">カレンダー</a>
+      <a href="organizations.html">公認団体</a>
+      <a href="results.html">試合結果</a>
+      <a href="contact.html">掲載依頼・問い合わせ</a>
+      <a href="about.html">運営者情報</a>
+      <a href="terms.html">利用規約</a>
+      <a href="privacy.html">プライバシーポリシー</a>
+    </nav>
+    <div class="footer-disclaimers">
+      <p>⚠ このサイトは早稲田大学公式サイトではありません。</p>
+      <p>掲載情報は主催団体の公開情報または掲載依頼をもとに作成しています。</p>
+      <p>© 2026 Waseda Calendar. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('hamburger-btn');
+    const nav = document.getElementById('mobile-nav');
+    if (!btn || !nav) return;
+    btn.addEventListener('click', () => {
+      nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', nav.classList.contains('open') ? 'true' : 'false');
+    });
+    document.addEventListener('click', (e) => {
+      if (!btn.contains(e.target) && !nav.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+</script>
+<script src="events.js?v=8"></script>
+<script src="results.js?v=1"></script>
+<script src="results-page.js?v=1"></script>
+<script type="module" src="firebase-init.js?v=3"></script>
+<script src="auth-ui.js?v=9"></script>
+<script src="pwa-install.js?v=3"></script>
+</body>
+</html>

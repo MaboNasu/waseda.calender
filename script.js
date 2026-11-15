@@ -1256,6 +1256,8 @@ function showDayEvents(dateStr) {
   document.getElementById('modal-title').textContent = `${dateDisp} のイベント（${filtered.length}件）`;
   document.getElementById('modal-tags').innerHTML = '';
   document.getElementById('modal-detail-content').innerHTML = `<div class="day-event-list">${listHTML}</div>`;
+  const dayResult = document.getElementById('modal-result');
+  if (dayResult) dayResult.innerHTML = '';
   const reactions = document.getElementById('modal-reactions');
   if (reactions) reactions.innerHTML = '';
   const shareActions = document.getElementById('modal-share-actions');
@@ -1350,6 +1352,9 @@ function openModal(eventId) {
       <span class="modal-detail-label">参加費</span>
       <span class="modal-detail-value">${escapeHtml(ev.feeText || feeLabel(ev.feeType))}</span>
     </div>`;
+
+  const modalResult = document.getElementById('modal-result');
+  if (modalResult) modalResult.innerHTML = typeof wcResultCardHTML === 'function' ? wcResultCardHTML(ev) : '';
 
   const reactions = document.getElementById('modal-reactions');
   if (reactions) reactions.innerHTML = createReactionButtonsHTML(ev);

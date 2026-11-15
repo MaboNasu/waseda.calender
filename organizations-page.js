@@ -480,7 +480,7 @@ function renderOrgPastEventsHTML(org) {
     return `
       <a class="org-related-event org-archive-event${extraClass}" href="${orgPageBuildEventPageUrl(ev)}">
         <strong>${orgEscapeHtml(ev.title)}</strong>
-        <span>${orgEscapeHtml(ev.date)}${ev.endDate && ev.endDate !== ev.date ? `〜${orgEscapeHtml(ev.endDate)}` : ''}</span>
+        <span>${orgEscapeHtml(ev.date)}${ev.endDate && ev.endDate !== ev.date ? `〜${orgEscapeHtml(ev.endDate)}` : ''}${typeof wcResultMarkHTML === 'function' ? ` ${wcResultMarkHTML(ev)}` : ''}</span>
       </a>`;
   }).join('');
   const more = past.length > visibleCount
@@ -489,6 +489,7 @@ function renderOrgPastEventsHTML(org) {
   return `
     <div class="org-related org-archive">
       <h3>開催実績</h3>
+      ${typeof wcOrgRecordHTML === 'function' ? wcOrgRecordHTML(past, orgPageTodayStr()) : ''}
       ${past.length === 0 ? '<p class="org-muted">開催実績はまだありません。</p>' : items}
       ${more}
     </div>`;

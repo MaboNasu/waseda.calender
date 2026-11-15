@@ -209,6 +209,17 @@ function relatedEventsHTML(org, events) {
     </div>`;
 }
 
+/** results.js（確認済みの結果と表示関数）を vm で読む。表示関数はブラウザと同じものを使う */
+function loadResultsModule() {
+  const file = path.join(ROOT, 'results.js');
+  if (!fs.existsSync(file)) return { wcResultMarkHTML: () => '', wcOrgRecordHTML: () => '' };
+  const sandbox = {};
+  vm.createContext(sandbox);
+  vm.runInContext(fs.readFileSync(file, 'utf8') + '\nvar __EXPORTED__ = { wcResultMarkHTML, wcOrgRecordHTML };', sandbox, { filename: 'results.js' });
+  return sandbox.__EXPORTED__;
+}
+const RESULTS_MODULE = loadResultsModule();
+
 function pastEventsHTML(org, events) {
   const past = getPastEventsForOrganization(org, events);
   const visibleCount = 8;
@@ -217,7 +228,7 @@ function pastEventsHTML(org, events) {
     return `
         <a class="org-related-event org-archive-event${extra}" href="${buildEventPageUrl(ev)}">
           <strong>${escapeHtml(ev.title)}</strong>
-          <span>${escapeHtml(ev.date)}${ev.endDate && ev.endDate !== ev.date ? `〜${escapeHtml(ev.endDate)}` : ''}</span>
+          <span>${escapeHtml(ev.date)}${ev.endDate && ev.endDate !== ev.date ? `〜${escapeHtml(ev.endDate)}` : ''} ${RESULTS_MODULE.wcResultMarkHTML(ev)}</span>
         </a>`;
   }).join('');
   const more = past.length > visibleCount
@@ -226,6 +237,7 @@ function pastEventsHTML(org, events) {
   return `
     <div class="org-related org-archive">
       <h2>開催実績</h2>
+      ${RESULTS_MODULE.wcOrgRecordHTML(past, todayStr())}
       ${past.length === 0 ? '<p class="org-muted">開催実績はまだありません。</p>' : items}
       ${more}
     </div>`;
@@ -315,7 +327,7 @@ function renderOrgPageHtml(org, events) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=46">
+  <link rel="stylesheet" href="/style.css?v=47">
   <script type="application/ld+json" id="org-page-jsonld">${jsonLd}</script>
 </head>
 <body>
@@ -331,6 +343,7 @@ function renderOrgPageHtml(org, events) {
       <a class="nav-btn" href="/index.html#upcoming-section">この先7日間</a>
       <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
       <a class="nav-btn" href="/organizations.html">公認団体</a>
+      <a class="nav-btn" href="/results.html">試合結果</a>
       <a class="nav-btn" href="/contact.html">掲載依頼</a>
       <a class="nav-btn" href="/mypage.html">マイページ</a>
     </nav>
@@ -346,6 +359,7 @@ function renderOrgPageHtml(org, events) {
   <a class="nav-btn" href="/index.html#upcoming-section">この先7日間</a>
   <a class="nav-btn" href="/index.html#calendar-section">カレンダー</a>
   <a class="nav-btn" href="/organizations.html">公認団体</a>
+  <a class="nav-btn" href="/results.html">試合結果</a>
   <a class="nav-btn" href="/contact.html">掲載依頼・問い合わせ</a>
   <a class="nav-btn" href="/mypage.html">マイページ</a>
 </nav>
@@ -378,6 +392,7 @@ function renderOrgPageHtml(org, events) {
       <a href="/index.html#today-section">本日のイベント</a>
       <a href="/index.html#calendar-section">カレンダー</a>
       <a href="/organizations.html">公認団体</a>
+      <a href="/results.html">試合結果</a>
       <a href="/contact.html">掲載依頼・問い合わせ</a>
       <a href="/about.html">運営者情報</a>
       <a href="/terms.html">利用規約</a>
@@ -392,8 +407,9 @@ function renderOrgPageHtml(org, events) {
 </footer>
 
 <script src="/events.js?v=8"></script>
+<script src="/results.js?v=1"></script>
 <script src="/organizations.js?v=9"></script>
-<script src="/organizations-page.js?v=16"></script>
+<script src="/organizations-page.js?v=17"></script>
 <script src="/org-page.js?v=1"></script>
 <script type="module" src="/firebase-init.js?v=3"></script>
 <script src="/auth-ui.js?v=9"></script>

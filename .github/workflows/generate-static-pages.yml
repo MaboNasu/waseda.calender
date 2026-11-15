@@ -10,6 +10,7 @@ on:
     paths:
       - 'events.js'
       - 'organizations.js'
+      - 'results.js'
       - 'style.css'
       - 'script.js'
       - 'event-page.js'

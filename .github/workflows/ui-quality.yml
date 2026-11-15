@@ -19,6 +19,7 @@ on:
       - 'scripts/verify-event-sources.js'
       - 'scripts/review-queue.js'
       - 'scripts/weekly-report.js'
+      - 'scripts/check-results.js'
       - 'scripts/lib/**'
       - 'scripts/naming-dictionary.json'
       - '.github/workflows/ui-quality.yml'
@@ -39,6 +40,7 @@ on:
       - 'scripts/verify-event-sources.js'
       - 'scripts/review-queue.js'
       - 'scripts/weekly-report.js'
+      - 'scripts/check-results.js'
       - 'scripts/lib/**'
       - 'scripts/naming-dictionary.json'
       - '.github/workflows/ui-quality.yml'
@@ -95,6 +97,9 @@ jobs:
       - name: Test the source-verification gate
         run: node scripts/check-quality-gate.js
 
+      - name: Check confirmed results (results.js)
+        run: node scripts/check-results.js
+
       - name: Block internal review notes from public HTML
         shell: bash
         run: |
@@ -132,6 +137,6 @@ jobs:
           test -n "$(find event -maxdepth 1 -name '*.html' -print -quit)"
           test -n "$(find org -maxdepth 1 -name '*.html' -print -quit)"
           grep -q '/image-generator.js?v=8' event/*.html
-          grep -q '/style.css?v=46' event/*.html
-          grep -q '/style.css?v=46' org/*.html
+          grep -q '/style.css?v=47' event/*.html
+          grep -q '/style.css?v=47' org/*.html
           grep -q '<urlset' sitemap.xml
