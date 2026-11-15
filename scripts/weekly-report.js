@@ -5,7 +5,7 @@
  *   node scripts/weekly-report.js [--crawl-state 巡回状態_YYYYMMDD.txt] [--skip-audit]
  *   node scripts/weekly-report.js apply <運営者が OK/NG を書いた週次確認ファイル>
  *       2章（団体名の表記）の OK を naming-dictionary.json に登録する（運営者の承認があるものだけ）。
- *       1章の NG と 3章の OK は、出力の「翌朝の作業へ渡すもの」に並べる（定期実行が修正依頼・巡回状態に回す）。
+ *       1章の NG・3章の OK・5章の OK は、出力の「翌朝の作業へ渡すもの」に並べる。
  *
  * 出力（標準出力）をそのまま Google ドライブの「週次確認_YYYYMMDD.txt」にする。内容は4つ。
  *   1. 公開中イベントの出典監査（今後30日・出典と食い違うもののうち、開催日の近い8件まで）
@@ -137,6 +137,7 @@ function applyWeekly(file) {
   const chosen = new Map();
   const auditNg = [];
   const igOk = [];
+  const missingOk = [];
   for (const raw of text.split(/\r?\n/)) {
     const h = /^##\s*(\d)\./.exec(raw);
     if (h) { section = Number(h[1]); continue; }
@@ -149,6 +150,8 @@ function applyWeekly(file) {
       if (decision === 'OK') chosen.set(cols[1], cols[2]);
     } else if (section === 1 && decision === 'NG') {
       auditNg.push(`${cols[1]}（${cols[3]}）: ${cols[4]} 出典: ${cols[5]}`);
+    } else if (section === 5 && decision === 'OK') {
+      missingOk.push(`${cols[1]}（${cols[2]}・${cols[3]}） 出典: ${cols[4]}`);
     } else if (section === 3 && decision === 'OK') {
       igOk.push(`${cols[1]}|A||${''}|  # ${cols[2]} ${cols[3]}（${today} 運営者承認）`);
     }
@@ -172,6 +175,8 @@ function applyWeekly(file) {
   auditNg.forEach((x) => console.log(x));
   console.log(`## 巡回状態に追加するアカウント ${igOk.length}件`);
   igOk.forEach((x) => console.log(x));
+  console.log(`## 取りこぼし監査で掲載を承認されたもの ${missingOk.length}件（出典を読んで通常どおり追加し、verify-event-sources.js にかける）`);
+  missingOk.forEach((x) => console.log(x));
 }
 
 if (require.main === module) {
