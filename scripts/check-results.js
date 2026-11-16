@@ -71,7 +71,7 @@ function checkData() {
   return { count: Object.keys(RESULTS).length, errors };
 }
 
-function testDisplay() {
+async function testDisplay() {
   const fixture = {
     'evt-t1': { kind: 'match', team: '男子', outcome: 'win', score: '1-0', detail: '前半0-0／後半1-0', sources: [{ url: 'https://example.com/r1', label: '公式サイト' }], confirmedAt: '2026-11-08' },
     'evt-t2': { kind: 'match', team: '男子', outcome: 'loss', score: '0-2', sources: [{ url: 'https://example.com/r2', label: '公式サイト' }], confirmedAt: '2026-11-08' },
@@ -161,6 +161,18 @@ function testDisplay() {
     assert.ok(keys.includes(n('ホッケー')));
     assert.ok(D.clubKeys({ title: '早慶戦(合気道部)' }).includes(n('合気道部')));
   });
+  t('下書きの照合：「関東大学対抗戦 vs帝京大」の相手は帝京大', () => {
+    const keys = D.opponentKeys({ title: 'ラグビー蹴球部 関東大学対抗戦 vs帝京大' });
+    assert.ok(keys.includes(n('帝京大')));
+    assert.ok(!keys.some((k) => k.includes('抗戦')));
+  });
+  t('下書きの照合：相手が先の順（慶應義塾大学 2-4 早稲田大学）を早稲田 4-2 として認める', async () => {
+    const ev = { id: 'evt-x', title: '早慶戦(野球部)', date: '2026-11-08', organizer: '早稲田大学野球部' };
+    const row = { line: 1, decision: '', fields: ['evt-x', 'match', '2回戦', 'win', '4-2', '', '', 'https://www.wasedabbc.org/game/1/', '早稲田大学野球部', ''] };
+    const cache = new Map([['https://www.wasedabbc.org/game/1/', { ok: true, text: '早稲田大学野球部 2026 秋季リーグ戦 慶應義塾大学 2-4 早稲田大学 11月8日(日) 明治神宮野球場' }]]);
+    const r = await D.judge(row, new Map([['evt-x', ev]]), {}, '2026-11-16', cache);
+    assert.strictEqual(r.gate, 'A', r.problems.join(' / '));
+  });
   t('下書きの読み取り：OK/NG と列', () => {
     const rows = D.parse('# x\nOK evt-1|match||win|1-0|||https://a|a|q\nNG evt-2|match||win|1-0|||https://a|a|q\nevt-3|report||||||https://a|a|q');
     assert.deepStrictEqual(rows.map((r) => [r.decision, r.fields[0], r.fields.length]), [['OK', 'evt-1', 10], ['NG', 'evt-2', 10], ['', 'evt-3', 10]]);
@@ -168,7 +180,7 @@ function testDisplay() {
 
   let failed = 0;
   for (const x of tests) {
-    try { x.fn(); console.log(`  ok  ${x.name}`); } catch (err) { failed++; console.error(`  NG  ${x.name}\n      ${err.message}`); }
+    try { await x.fn(); console.log(`  ok  ${x.name}`); } catch (err) { failed++; console.error(`  NG  ${x.name}\n      ${err.message}`); }
   }
   return { passed: tests.length - failed, total: tests.length };
 }
@@ -176,6 +188,7 @@ function testDisplay() {
 const data = checkData();
 console.log(`results.js: 確認済みの結果 ${data.count}件`);
 data.errors.forEach((e) => console.error(`  エラー: ${e}`));
-const t = testDisplay();
-console.log(`表示関数のテスト: ${t.passed}/${t.total} 件成功`);
-if (data.errors.length || t.passed !== t.total) process.exit(1);
+testDisplay().then((t) => {
+  console.log(`表示関数のテスト: ${t.passed}/${t.total} 件成功`);
+  if (data.errors.length || t.passed !== t.total) process.exit(1);
+});

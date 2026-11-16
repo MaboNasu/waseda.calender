@@ -47,6 +47,7 @@
 - 各候補について、公式の記録（団体の公式サイト、早稲田大学 競技スポーツセンター waseda.jp/inst/athletic、早稲田スポーツ新聞会、慶應の公式、大会・連盟の公式結果）から結果を探し、`.verify-evidence/results-YYYYMMDD.txt` に1行ずつ書く：
   `evt-xxx|kind|team|outcome|score|detail|award|出典URL|出典名|根拠の引用`（形式は scripts/apply-result-drafts.js の先頭）。見つからない・食い違うものは `# evt-xxx 理由` とだけ書く。スコアを推測しない。選手個人の名前は書かない。
 - `node scripts/apply-result-drafts.js .verify-evidence/results-YYYYMMDD.txt --apply` を実行する。出典のそのイベントの記載にスコア（成績）と相手名（節・回戦）がそろって書かれているものだけが results.js に入る。通らなかったものは入れず、報告の「結果：保留」に理由を書くだけにする（運営者の作業は増やさない）。
+- 出典がこの環境から取得できない（「取得失敗」）ときは、照合する側がブラウザでそのページを開き、スコアの載っている部分の本文を `.verify-evidence/pages-YYYYMMDD.json` に `{ "出典URL": "本文" }` で保存して `--pages` で渡してよい。下書きを書いた AI の引用はこの代わりにしない。
 - `node scripts/check-results.js` が通ることを確かめる。
 
 ### 5. 検査と公開の判定（データの手直しはこの前までに終える）
