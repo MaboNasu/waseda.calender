@@ -26,3 +26,4 @@ scripts/last-verify-report.json
 
 # 結果収集のローカル状態・承認用JSON（GitHubには公開しない）
 .local/
+scripts/last-result-drafts-report.json
