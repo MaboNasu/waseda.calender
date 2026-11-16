@@ -275,11 +275,14 @@ async function judge(row, events, existing, today, cache) {
     }
   } else {
     const aw = normalizeForMatch(award);
-    const at = norm.indexOf(aw);
-    if (at < 0) { out.problems.push(`成績「${award}」が出典にない`); return out; }
-    const window = norm.slice(Math.max(0, at - 600), at + 600);
-    const hit = keys.find((k) => window.includes(k));
-    if (!hit) { out.problems.push('成績の近くに大会名がない'); return out; }
+    if (norm.indexOf(aw) < 0) { out.problems.push(`成績「${award}」が出典にない`); return out; }
+    // 成績は大会名の「あと」に書かれる。大会名の前に別の大会の成績があっても通さないよう、成績の手前600字に大会名があるものだけを見る
+    let hit;
+    for (let at = norm.indexOf(aw); at >= 0 && !hit; at = norm.indexOf(aw, at + 1)) {
+      const before = norm.slice(Math.max(0, at - 600), at);
+      hit = keys.find((k) => before.includes(k));
+    }
+    if (!hit) { out.problems.push('成績の手前に大会名がない（別の大会の成績の可能性）'); return out; }
     out.notes.push(`成績と「${hit}」を確認`);
   }
   out.gate = 'A';
