@@ -197,6 +197,20 @@ const RESULTS = {
     score: "0-2",
     sources: [{ url: "https://www.waseda-afc.jp/news-women/149762", label: "早稲田大学ア式蹴球部" }],
     confirmedAt: "2026-11-16"
+  },
+  // ---- 2026-11-16 出典照合で追加（scripts/apply-result-drafts.js）----
+  "evt-233": {
+    kind: "match",
+    outcome: "loss",
+    score: "17-21",
+    sources: [{ url: "https://www.bigbears.org/game/", label: "早稲田大学米式蹴球部 BIG BEARS" }],
+    confirmedAt: "2026-11-16"
+  },
+  "evt-505": {
+    kind: "report",
+    award: "男子 準優勝／女子 準優勝",
+    sources: [{ url: "https://www.wasedatennis.net/", label: "早稲田大学庭球部" }],
+    confirmedAt: "2026-11-16"
   }
 };
 

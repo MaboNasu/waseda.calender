@@ -173,6 +173,15 @@ async function testDisplay() {
     const r = await D.judge(row, new Map([['evt-x', ev]]), {}, '2026-11-16', cache);
     assert.strictEqual(r.gate, 'A', r.problems.join(' / '));
   });
+  t('下書きの照合：成績は大会名のあとにあるものだけ（前にある別大会の「準優勝」で通さない）', async () => {
+    const ev = { id: 'evt-y', title: '全日本大学対抗テニス王座決定試合', date: '2026-10-25' };
+    const mk = (text) => new Map([['https://www.wasedatennis.net/', { ok: true, text }]]);
+    const row = { line: 1, decision: '', fields: ['evt-y', 'report', '', '', '', '', '準優勝', 'https://www.wasedatennis.net/', '早稲田大学庭球部', ''] };
+    const ng = await D.judge(row, new Map([['evt-y', ev]]), {}, '2026-11-16', mk('関東学生選手権 シングルス準優勝 全日本大学対抗テニス王座決定試合 決勝 ●早稲田4-5法大○'));
+    assert.strictEqual(ng.gate, 'C');
+    const ok = await D.judge(row, new Map([['evt-y', ev]]), {}, '2026-11-16', mk('全日本大学対抗テニス王座決定試合 決勝 ●早稲田4-5法大○ 最終結果：準優勝'));
+    assert.strictEqual(ok.gate, 'A', ok.problems.join(' / '));
+  });
   t('下書きの読み取り：OK/NG と列', () => {
     const rows = D.parse('# x\nOK evt-1|match||win|1-0|||https://a|a|q\nNG evt-2|match||win|1-0|||https://a|a|q\nevt-3|report||||||https://a|a|q');
     assert.deepStrictEqual(rows.map((r) => [r.decision, r.fields[0], r.fields.length]), [['OK', 'evt-1', 10], ['NG', 'evt-2', 10], ['', 'evt-3', 10]]);
