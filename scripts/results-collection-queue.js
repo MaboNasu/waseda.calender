@@ -111,7 +111,8 @@ function queue(events, publishedResults, state, options) {
     if (s.checkedAt && s.status !== 'pending') {
       if (!validDate(s.checkedAt)) throw Error('Invalid checkedAt for ' + e.id);
       const lastAge = dayDiff(s.checkedAt, end);
-      if (lastAge > age) throw Error('checkedAt is in the future for ' + e.id);
+      // 状態はコミットされるので、過去の日付を --as-of にすると「その日より後に調べた」ものがある。そのときは調べ済みとして飛ばす
+      if (lastAge > age) continue;
       const next = CHECK_DAYS.find((n) => n > lastAge);
       if (next === undefined || age < next) continue;
     }
