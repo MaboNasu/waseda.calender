@@ -52,6 +52,56 @@ const RESULTS = {
     score: "4-2",
     sources: [{ url: "https://www.waseda.jp/inst/athletic/?p=62869", label: "早稲田大学 競技スポーツセンター" }],
     confirmedAt: "2026-11-16"
+  },
+  // ---- 2026-11-16 出典照合で追加（scripts/apply-result-drafts.js）----
+  "evt-709": {
+    kind: "match",
+    team: "B",
+    outcome: "draw",
+    score: "17-17",
+    sources: [{ url: "https://www.wasedarugby.com/calendar/2026/", label: "早稲田大学ラグビー蹴球部" }],
+    confirmedAt: "2026-11-16"
+  },
+  "evt-710": {
+    kind: "match",
+    team: "C",
+    outcome: "loss",
+    score: "19-21",
+    sources: [{ url: "https://www.wasedarugby.com/calendar/2026/", label: "早稲田大学ラグビー蹴球部" }],
+    confirmedAt: "2026-11-16"
+  },
+  "evt-704": {
+    kind: "match",
+    team: "男子",
+    outcome: "loss",
+    score: "0-1",
+    sources: [{ url: "https://www.waseda-afc.jp/news-men/150250", label: "早稲田大学ア式蹴球部" }],
+    confirmedAt: "2026-11-16"
+  },
+  "evt-222": {
+    kind: "match",
+    matches: [
+      { team: "B", outcome: "loss", score: "22-37" },
+      { team: "C", outcome: "loss", score: "14-24" },
+      { team: "D", outcome: "loss", score: "19-26" }
+    ],
+    sources: [{ url: "https://www.wasedarugby.com/calendar/2026/", label: "早稲田大学ラグビー蹴球部" }],
+    confirmedAt: "2026-11-16"
+  },
+  "evt-478": {
+    kind: "match",
+    outcome: "win",
+    score: "1818-1731",
+    sources: [{ url: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/?lng=en", label: "早稲田大学競技スポーツセンター" }],
+    confirmedAt: "2026-11-16"
+  },
+  "evt-600": {
+    kind: "match",
+    team: "女子",
+    outcome: "loss",
+    score: "0-2",
+    sources: [{ url: "https://www.waseda-afc.jp/news-women/150186", label: "早稲田大学ア式蹴球部" }],
+    confirmedAt: "2026-11-16"
   }
 };
 

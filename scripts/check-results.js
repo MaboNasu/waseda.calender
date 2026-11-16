@@ -134,6 +134,38 @@ function testDisplay() {
     assert.strictEqual(m.wcOpponentFromTitle('早慶戦(ア式蹴球部 女子)'), '');
   });
 
+  const D = require('./apply-result-drafts');
+  const { normalizeForMatch: n } = require('./lib/event-data');
+  t('下書きの照合：桁の違うスコアに一致しない', () => {
+    assert.strictEqual(D.containsScore(n('早大 14-21 明大'), 4, 2), false);
+    assert.notStrictEqual(D.containsScore(n('早大 4－2 駒大'), 4, 2), false);
+    assert.notStrictEqual(D.containsScore(n('早稲田 2対1 慶應'), 2, 1), false);
+  });
+  t('下書きの照合：試合は相手名と節で照合し、大会名だけでは一致させない', () => {
+    const keys = D.opponentKeys({ title: '関東大学サッカーリーグ1部 第21節 vs明治大学' }, 'match');
+    assert.ok(keys.includes(n('明治大学')) && keys.includes(n('明大')) && keys.includes(n('第21節')));
+    assert.ok(!keys.includes(n('関東大学サッカーリーグ1部')));
+    assert.ok(D.opponentKeys({ title: '早慶戦(日本拳法部)' }, 'match').includes(n('慶應')));
+  });
+  t('下書きの照合：括弧内の内訳は最終スコアとして数えない', () => {
+    assert.strictEqual(D.containsScore(n('早稲田 1 (0-1/1-0) 1 相手'), 0, 1), false);
+    assert.notStrictEqual(D.containsScore(n('早稲田大学 34 ( 16-13 18-17 ) 30'), 34, 30), false);
+    assert.notStrictEqual(D.containsScore(n('○早大1,818-1,731慶大●'), 1818, 1731), false);
+  });
+  t('下書きの照合：内訳つきの最終スコアを見分ける（日付の「8(土)14」は数えない）', () => {
+    assert.deepStrictEqual(JSON.parse(JSON.stringify(D.strongScores(n('早稲田大学 0 (0-1/0-0) 1 日本体育大学')).map((x) => [x.a, x.b]))), [[0, 1]]);
+    assert.strictEqual(D.strongScores(n('11/8(土)14:00 キックオフ')).length, 0);
+  });
+  t('下書きの照合：早慶戦は部・競技名で行を特定する（2026-11-16 の取り違えの回帰テスト）', () => {
+    const keys = D.clubKeys({ title: '第100回早慶ホッケー定期戦', organizer: '早稲田大学ホッケー部' });
+    assert.ok(keys.includes(n('ホッケー')));
+    assert.ok(D.clubKeys({ title: '早慶戦(合気道部)' }).includes(n('合気道部')));
+  });
+  t('下書きの読み取り：OK/NG と列', () => {
+    const rows = D.parse('# x\nOK evt-1|match||win|1-0|||https://a|a|q\nNG evt-2|match||win|1-0|||https://a|a|q\nevt-3|report||||||https://a|a|q');
+    assert.deepStrictEqual(rows.map((r) => [r.decision, r.fields[0], r.fields.length]), [['OK', 'evt-1', 10], ['NG', 'evt-2', 10], ['', 'evt-3', 10]]);
+  });
+
   let failed = 0;
   for (const x of tests) {
     try { x.fn(); console.log(`  ok  ${x.name}`); } catch (err) { failed++; console.error(`  NG  ${x.name}\n      ${err.message}`); }

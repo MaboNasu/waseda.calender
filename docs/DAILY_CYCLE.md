@@ -42,6 +42,13 @@
 - 届いた形式のとおりに追加する（既存の同じ団体・同じ日付のイベントがあれば新規にしない）。
 - 届いた**根拠の引用**を `.verify-evidence/YYYYMMDD.json` に `{ "evt-xxx": { "url": "投稿URL", "text": "引用" } }` の形で保存する（このフォルダはコミットしない）。
 
+### 4.5 終わったイベントの結果を入れる（試合結果・大会の成績）
+- `node scripts/results-collection-queue.js --limit 8` で調査候補を出す（終了から1〜30日で、まだ結果がないもの）。
+- 各候補について、公式の記録（団体の公式サイト、早稲田大学 競技スポーツセンター waseda.jp/inst/athletic、早稲田スポーツ新聞会、慶應の公式、大会・連盟の公式結果）から結果を探し、`.verify-evidence/results-YYYYMMDD.txt` に1行ずつ書く：
+  `evt-xxx|kind|team|outcome|score|detail|award|出典URL|出典名|根拠の引用`（形式は scripts/apply-result-drafts.js の先頭）。見つからない・食い違うものは `# evt-xxx 理由` とだけ書く。スコアを推測しない。選手個人の名前は書かない。
+- `node scripts/apply-result-drafts.js .verify-evidence/results-YYYYMMDD.txt --apply` を実行する。出典のそのイベントの記載にスコア（成績）と相手名（節・回戦）がそろって書かれているものだけが results.js に入る。通らなかったものは入れず、報告の「結果：保留」に理由を書くだけにする（運営者の作業は増やさない）。
+- `node scripts/check-results.js` が通ることを確かめる。
+
 ### 5. 検査と公開の判定（データの手直しはこの前までに終える）
 ```
 node scripts/check-event-data.js --fix          # 辞書・ルールで機械的に直せるものだけ直す
@@ -58,6 +65,7 @@ node scripts/verify-event-sources.js --changed-from BASE --evidence .verify-evid
 ```
 node scripts/generate-event-pages.js && node scripts/generate-org-pages.js && node scripts/generate-sitemap.js
 node scripts/check-quality-gate.js
+node scripts/check-results.js
 node scripts/review-queue.js finish --note "今日の追加N件"
 ```
 - `finish` は、今日の照合結果があり、照合のあとに events.js が変わっていないときだけ成功を記録する。失敗したら原因を直して手順5からやり直す。
@@ -72,6 +80,7 @@ node scripts/review-queue.js finish --note "今日の追加N件"
 ■ 運営者の確認を反映：公開 n件、見送り n件、直して再確認 n件
 ■ 修正依頼：反映 n件、保留 n件（理由）
 ■ 週次確認：団体名の表記の登録 n件、出典監査の修正 n件、取りこぼしの追加 n件
+■ 結果：反映 n件（evt-xxx …）、保留 n件（理由）
 ■ 保留した変更：evt-xxx（理由・出典）
 ■ REVIEW（判断できなかったもの）：…
 ■ 要確認（明日の確認分。review-queue.js list の出力をそのまま）
