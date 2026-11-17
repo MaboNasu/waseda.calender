@@ -118,6 +118,17 @@ const RESULTS = {
     sources: [{ url: "https://waseda-ac.jp/competition/detail/1074", label: "早稲田大学競走部公式サイト" }],
     confirmedAt: "2026-11-17"
   },
+  // ---- 2026-11-17 修正依頼の照合で判明（evt-359の日程修正にあわせて追加）----
+  "evt-359": {
+    kind: "match",
+    outcome: "loss",
+    score: "3-5",
+    sources: [
+      { url: "https://w-junkoh.com/news/detail/id/33483", label: "早稲田大学準硬式野球部 公式サイト" },
+      { url: "https://tourokurenmei.com/archives/21138", label: "登録連盟" }
+    ],
+    confirmedAt: "2026-11-17"
+  },
   // ---- 2026-11-16 出典照合で追加（scripts/apply-result-drafts.js）----
   "evt-716": {
     kind: "match",
