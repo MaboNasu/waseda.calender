@@ -45,14 +45,14 @@ const OFFICIAL_HOSTS = [
   /(^|\.)waseda-boxing\.com$/, /(^|\.)waseda-shooting\.com$/, /(^|\.)wasedafencing\.com$/,
   /(^|\.)keio\.ac\.jp$/, /(^|\.)wasedasports\.com$/, /(^|\.)jufa-kanto\.jp$/, /(^|\.)kanto-hockey\.jp$/,
   /(^|\.)kantorugby\.com$/, /(^|\.)kcfa\.jp$/, /(^|\.)big6\.gr\.jp$/,
-  /(^|\.)handball\.or\.jp$/, /(^|\.)keio-soccer\.net$/, /(^|\.)wasedabbc\.org$/, /(^|\.)wasedasports-sousupo\.com$/, /(^|\.)wasedatennis\.net$/, /(^|\.)univas\.jp$/, /(^|\.)jfa\.jp$/, /(^|\.)rugby-japan\.jp$/,
+  /(^|\.)handball\.or\.jp$/, /(^|\.)kendo\.or\.jp$/, /(^|\.)tourokurenmei\.com$/, /(^|\.)keio-soccer\.net$/, /(^|\.)wasedabbc\.org$/, /(^|\.)wasedasports-sousupo\.com$/, /(^|\.)wasedatennis\.net$/, /(^|\.)univas\.jp$/, /(^|\.)jfa\.jp$/, /(^|\.)rugby-japan\.jp$/,
 ];
 const UNREADABLE_HOSTS = /(^|\.)instagram\.com$|(^|\.)x\.com$|(^|\.)twitter\.com$/;
 // よく使われる大学名の略称（頭文字＋「大」で機械的に略すと「東海大学→東大」のように取り違えるので、表で持つ）
 const UNIV_ABBR = {
   明治大学: ['明大'], 中央大学: ['中大'], 駒澤大学: ['駒大'], 駒沢大学: ['駒大'], 法政大学: ['法大'], 立教大学: ['立大'],
   慶應義塾大学: ['慶大', '慶應'], 慶應大学: ['慶大'], 日本大学: ['日大'], 日本体育大学: ['日体大'], 国士舘大学: ['国士大', '国士舘大'],
-  筑波大学: ['筑波大', '筑大'], 東海大学: ['東海大'], 東洋大学: ['東洋大'], 帝京大学: ['帝京大'], 青山学院大学: ['青学大', '青学'],
+  筑波大学: ['筑波大', '筑大'], 東海大学: ['東海大'], 東洋大学: ['東洋大'], 帝京大学: ['帝京大'], 青山学院大学: ['青学大', '青学'], 青山学院大: ['青学大', '青学'], 帝京大: ['帝京大'], 筑波大: ['筑波大', '筑大'],
   東京大学: ['東大'], 早稲田大学: ['早大'], 順天堂大学: ['順大'], 専修大学: ['専大'], 桐蔭横浜大学: ['桐蔭横浜大', '桐蔭大'],
   神奈川大学: ['神大', '神奈川大'], 山梨学院大学: ['山梨学院大', '山梨学院'], 亜細亜大学: ['亜大', '亜細亜大'], 立命館大学: ['立命大', '立命館大'],
   大同大学: ['大同大'], 東京農業大学: ['東農大'], 拓殖大学: ['拓大'], 流通経済大学: ['流経大'], 関東学院大学: ['関東学院大'],
@@ -72,6 +72,28 @@ function parse(text) {
     rows.push({ line: i + 1, decision: (m[1] || '').toUpperCase(), fields: f });
   });
   return rows;
+}
+
+/**
+ * organizations.js に団体の公式サイト（websiteUrl）として登録されているドメイン。
+ * 部・サークル自身のサイトは、その団体の結果の一次情報として扱う。
+ * 無料ブログ・作成サービス（wixsite・ameblo など）は誰でも作れるので除く。
+ */
+let CLUB_HOSTS = null;
+function clubHosts() {
+  if (CLUB_HOSTS) return CLUB_HOSTS;
+  CLUB_HOSTS = new Set();
+  try {
+    const { loadOrganizations } = require('./lib/event-data');
+    for (const o of loadOrganizations()) {
+      if (!o.websiteUrl) continue;
+      try {
+        const h = new URL(o.websiteUrl).hostname.replace(/^www\./, '');
+        if (!/wixsite|ameblo|wordpress\.com|jimdo|fc2|studio\.site|netlify|tumblr|github\.io|sakura\.ne\.jp|instagram|twitter|x\.com|facebook|note\.com|linktr/.test(h)) CLUB_HOSTS.add(h);
+      } catch { /* 不正なURLは無視 */ }
+    }
+  } catch { /* organizations.js が読めないときは使わない */ }
+  return CLUB_HOSTS;
 }
 
 /**
@@ -118,7 +140,45 @@ function scorePatterns(a, b) {
  * - 括弧の中（前後半の内訳など）は最終スコアとして数えない。「34(16-13,18-17)30」の形は 34-30 として認める
  */
 function scoreText(normText) {
-  return normText.replace(/(\d),(?=\d{3}(?!\d))/g, '$1');
+  return normText
+    .replace(/(\d),(?=\d{3}(?!\d))/g, '$1')
+    .replace(/(\d)[xX](?![a-zA-Z])/g, '$1') // サヨナラ・コールドの「6x」「13x」
+    .replace(/(\d)対(\d)/g, '$1-$2') // 「13x 対 3」「5対4」
+    .replace(/(\d)[ーｰ](\d)/g, '$1-$2'); // 記事で長音符を区切りに使う「21ー26」
+}
+
+/**
+ * 空白で区切られた表のスコア（正規化で空白を消す前の本文で見る）。
+ * - 「早稲田大学 7 19 中央大学」のような対戦表示（相手が先の順も）
+ * - 野球などのイニング別スコア（「早大 0 0 0 1 0 3 0 1 0 5 慶大 0 0 0 0 0 2 0 0 0 2」）の合計
+ */
+const WASEDA_NAME = '(?:早稲田大学|早稲田|早大)';
+function escapeRe(x) { return String(x).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+function rawScoreMatch(rawText, a, b, keys) {
+  const raw = String(rawText).normalize('NFKC').replace(/\s+/g, ' ');
+  const names = keys.filter((k) => k.length >= 2).map(escapeRe);
+  if (!names.length) return null;
+  const opp = `(?:${names.join('|')})`;
+  const board = [
+    new RegExp(`${WASEDA_NAME} ${a} ${b} ${opp}`),
+    new RegExp(`${opp} ${b} ${a} ${WASEDA_NAME}`),
+  ];
+  for (const re of board) { const m = re.exec(raw); if (m) return { at: m.index, how: '対戦表示' }; }
+  // イニング別スコア：チーム名のあとに1〜2桁の数か X が3〜12個、最後が合計
+  const rowRe = /(早稲田大学|早稲田|早大|[^\s\d]{1,12}) ((?:(?:\d{1,2}|[xX]) ){3,12})(\d{1,3})x?(?= |$)/g;
+  const rows = [];
+  let m;
+  while ((m = rowRe.exec(raw))) rows.push({ name: m[1], total: Number(m[3]), at: m.index });
+  for (let i = 0; i < rows.length - 1; i++) {
+    const r1 = rows[i];
+    const r2 = rows[i + 1];
+    if (r2.at - r1.at > 120) continue;
+    const isW = (r) => new RegExp(`^${WASEDA_NAME}$`).test(r.name);
+    const isO = (r) => keys.some((k) => k.length >= 2 && (r.name.includes(k) || k.includes(r.name)));
+    if (isW(r1) && isO(r2) && r1.total === Number(a) && r2.total === Number(b)) return { at: r1.at, how: 'イニング別スコアの合計' };
+    if (isO(r1) && isW(r2) && r2.total === Number(a) && r1.total === Number(b)) return { at: r1.at, how: 'イニング別スコアの合計' };
+  }
+  return null;
 }
 
 /** 「34(16-13,18-17)30」のように前後半の内訳つきで書かれた最終スコアの一覧 */
@@ -255,7 +315,7 @@ async function judge(row, events, existing, today, cache) {
   } else if (!award) out.problems.push('report は award（成績）が必要');
   let host = '';
   try { host = new URL(url).hostname; } catch { out.problems.push('出典URLが不正'); }
-  const official = OFFICIAL_HOSTS.some((re) => re.test(host));
+  const official = OFFICIAL_HOSTS.some((re) => re.test(host)) || clubHosts().has(host.replace(/^www\./, ''));
   if (host && !official && !UNREADABLE_HOSTS.test(host)) out.problems.push(`出典が公式と確認できないドメイン（${host}）`);
   if (out.problems.length) return out;
 
@@ -295,6 +355,16 @@ async function judge(row, events, existing, today, cache) {
           return keys.some((k) => before.includes(k)) && /早稲田|早大/.test(after);
         });
         if (rev !== undefined) { at = rev; out.notes.push('出典は相手が先の順で記載'); }
+      }
+      if (at === undefined && !/早慶/.test(ev.title || '')) {
+        // 空白区切りの表（対戦表示・イニング別スコア）。早慶戦の一覧は行の取り違えが起きやすいので使わない
+        const rs = rawScoreMatch(text, a, b, keys);
+        if (rs) {
+          out.notes.push(`${rs.how}で確認`);
+          out.gate = 'A';
+          out.entry = { kind, team, outcome, score, detail, award, url, label };
+          return out;
+        }
       }
       if (at === undefined) { out.problems.push(pos.length ? 'スコアの近くに対戦相手名・節がない（別の試合の可能性）' : `スコア ${score} が出典にない`); return out; }
     }
@@ -437,4 +507,4 @@ async function main() {
 
 if (require.main === module) main().catch((err) => { console.error(err.message); process.exit(2); });
 
-module.exports = { parse, parseNotes, containsScore, scorePositions, strongScores, opponentKeys, clubKeys, judge };
+module.exports = { rawScoreMatch, parse, parseNotes, containsScore, scorePositions, strongScores, opponentKeys, clubKeys, judge };

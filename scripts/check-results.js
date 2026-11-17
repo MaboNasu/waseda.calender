@@ -188,6 +188,18 @@ async function testDisplay() {
     assert.strictEqual(notes[4].request, 'evt-5|日付|2026-10-24|順延で2026-10-28に実施|https://a/b');
     assert.ok(notes[5].request.startsWith('evt-6|内容|'));
   });
+  t('下書きの照合：空白区切りの対戦表示とイニング別スコア', () => {
+    assert.ok(D.rawScoreMatch('早稲田大学 7 19 中央大学 Division1', 7, 19, ['中央大学']));
+    assert.ok(D.rawScoreMatch('1 2 3 4 5 6 7 8 9 計 早大 0 0 0 1 0 3 0 1 0 5 慶大 0 0 0 0 0 2 0 0 0 2', 5, 2, ['慶大']));
+    assert.ok(D.rawScoreMatch('計 立大 2 0 0 0 0 0 0 0 1 3 早大 0 0 0 0 0 1 0 0 0 1', 1, 3, ['立大']));
+    assert.strictEqual(D.rawScoreMatch('計 立大 2 0 0 0 0 0 0 0 1 3 早大 0 0 0 0 0 1 0 0 0 1', 3, 1, ['立大']), null);
+    assert.strictEqual(D.rawScoreMatch('早稲田大学 7 19 中央大学', 7, 19, ['明治大学']), null);
+  });
+  t('下書きの照合：サヨナラの「6x-5」とコールドの「13x 対 3」', () => {
+    assert.notStrictEqual(D.containsScore(n('早稲田大学 6x-5 H Honda'), 6, 5), false);
+    assert.notStrictEqual(D.containsScore(n('13x 対 3をもちまして早稲田大学が勝利'), 13, 3), false);
+    assert.notStrictEqual(D.containsScore(n('21ー26でノーサイドとなった'), 21, 26), false);
+  });
   t('下書きの読み取り：OK/NG と列', () => {
     const rows = D.parse('# x\nOK evt-1|match||win|1-0|||https://a|a|q\nNG evt-2|match||win|1-0|||https://a|a|q\nevt-3|report||||||https://a|a|q');
     assert.deepStrictEqual(rows.map((r) => [r.decision, r.fields[0], r.fields.length]), [['OK', 'evt-1', 10], ['NG', 'evt-2', 10], ['', 'evt-3', 10]]);

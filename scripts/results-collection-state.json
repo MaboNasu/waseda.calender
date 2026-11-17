@@ -3,8 +3,8 @@
   "events": {
     "evt-481": {
       "status": "not_found",
-      "checkedAt": "2026-11-16",
-      "note": "見つからず"
+      "checkedAt": "2026-11-18",
+      "note": "見つからず（早慶戦一覧に63-55の結果あり。個別結果ページ未確認）"
     },
     "evt-479": {
       "status": "published",
@@ -13,8 +13,8 @@
     },
     "evt-492": {
       "status": "not_found",
-      "checkedAt": "2026-11-16",
-      "note": "見つからず"
+      "checkedAt": "2026-11-18",
+      "note": "未掲載"
     },
     "evt-703": {
       "status": "not_applicable",
@@ -62,9 +62,9 @@
       "note": "未掲載（早慶戦勝敗一覧のホッケー秋は「早大-慶大」で結果なし）"
     },
     "evt-234": {
-      "status": "not_found",
-      "checkedAt": "2026-11-16",
-      "note": "未掲載（BIG BEARS 公式は未更新、連盟記事 id=10524 は入場券の告知）"
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
     },
     "evt-048": {
       "status": "not_found",
@@ -114,6 +114,126 @@
     "evt-523": {
       "status": "published",
       "checkedAt": "2026-11-17",
+      "note": ""
+    },
+    "evt-494": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜大会名｜関東大学ジュニア選手権大会 早大C vs明大C｜秋季オープン戦（対明大C）｜https://wasedasports-sousupo.com/news/rugby/men-rugby/300029/"
+    },
+    "evt-493": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜大会名｜関東大学ジュニア選手権大会｜秋季オープン戦｜https://wasedasports-sousupo.com/news/rugby/men-rugby/299956/"
+    },
+    "evt-404": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "結果なし（練習公開）"
+    },
+    "evt-400": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "結果なし（練習公開）"
+    },
+    "evt-445": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "見つからず（全日本剣道連盟の結果表は「勝数 本数」の表で、照合器で読めない）"
+    },
+    "evt-221": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-330": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-358": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-451": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-108": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-232": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-329": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-363": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-450": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-093": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-328": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-357": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-107": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-327": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-356": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-380": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-384": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-386": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-319": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
       "note": ""
     }
   }
