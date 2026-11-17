@@ -102,6 +102,21 @@ const RESULTS = {
     score: "0-2",
     sources: [{ url: "https://www.waseda-afc.jp/news-women/150186", label: "早稲田大学ア式蹴球部" }],
     confirmedAt: "2026-11-16"
+  },
+  // ---- 2026-11-17 出典照合で追加（scripts/apply-result-drafts.js）----
+  "evt-703": {
+    kind: "report",
+    detail: "男子3000m",
+    award: "5着",
+    sources: [{ url: "https://waseda-ac.jp/competition/detail/1075", label: "早稲田大学競走部公式サイト" }],
+    confirmedAt: "2026-11-17"
+  },
+  "evt-702": {
+    kind: "report",
+    detail: "女子5000mW",
+    award: "3着",
+    sources: [{ url: "https://waseda-ac.jp/competition/detail/1074", label: "早稲田大学競走部公式サイト" }],
+    confirmedAt: "2026-11-17"
   }
 };
 
