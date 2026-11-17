@@ -117,6 +117,115 @@ const RESULTS = {
     award: "3着",
     sources: [{ url: "https://waseda-ac.jp/competition/detail/1074", label: "早稲田大学競走部公式サイト" }],
     confirmedAt: "2026-11-17"
+  },
+  // ---- 2026-11-16 出典照合で追加（scripts/apply-result-drafts.js）----
+  "evt-716": {
+    kind: "match",
+    team: "男子",
+    outcome: "win",
+    score: "34-30",
+    sources: [{ url: "https://handball.or.jp/system/prog/game_event_schedule.php?eid=405", label: "日本ハンドボール協会" }],
+    confirmedAt: "2026-11-16"
+  },
+  "evt-717": {
+    kind: "match",
+    team: "女子",
+    outcome: "win",
+    score: "24-17",
+    sources: [{ url: "https://handball.or.jp/system/prog/game_event_schedule.php?eid=405", label: "日本ハンドボール協会" }],
+    confirmedAt: "2026-11-16"
+  },
+  "evt-113": {
+    kind: "match",
+    team: "男子",
+    outcome: "win",
+    score: "1-0",
+    sources: [{ url: "https://www.waseda-afc.jp/news-men/150141", label: "早稲田大学ア式蹴球部" }],
+    confirmedAt: "2026-11-16"
+  },
+  "evt-095": {
+    kind: "match",
+    outcome: "loss",
+    score: "13-15",
+    sources: [{ url: "https://www.waseda.jp/inst/athletic/news/2026/11/02/62621/", label: "早稲田大学競技スポーツセンター" }],
+    confirmedAt: "2026-11-16"
+  },
+  "evt-284": {
+    kind: "match",
+    team: "女子",
+    outcome: "draw",
+    score: "0-0",
+    sources: [{ url: "https://keio-soccer.net/games/3058", label: "慶應義塾体育会ソッカー部女子" }],
+    confirmedAt: "2026-11-16"
+  },
+  "evt-094": {
+    kind: "match",
+    outcome: "win",
+    score: "29-5",
+    sources: [{ url: "https://www.waseda.jp/inst/athletic/news/2026/10/26/62353/", label: "早稲田大学競技スポーツセンター" }],
+    confirmedAt: "2026-11-16"
+  },
+  // ---- 2026-11-16 出典照合で追加（scripts/apply-result-drafts.js）----
+  "evt-089": {
+    kind: "report",
+    award: "第10位",
+    sources: [{ url: "https://wasedasports-sousupo.com/news/300755/", label: "早稲田スポーツ新聞会" }],
+    confirmedAt: "2026-11-16"
+  },
+  "evt-501": {
+    kind: "match",
+    team: "1軍",
+    outcome: "win",
+    score: "5-3",
+    sources: [{ url: "https://www.wasedabbc.org/game/48980/", label: "早稲田大学野球部" }],
+    confirmedAt: "2026-11-16"
+  },
+  "evt-443": {
+    kind: "match",
+    team: "男子",
+    outcome: "loss",
+    score: "125-126",
+    sources: [{ url: "https://wasedasports-sousupo.com/news/kyudo/300490/", label: "早稲田スポーツ新聞会" }],
+    confirmedAt: "2026-11-16"
+  },
+  "evt-500": {
+    kind: "match",
+    team: "1軍",
+    outcome: "draw",
+    score: "3-3",
+    sources: [{ url: "https://www.wasedabbc.org/game/48974/", label: "早稲田大学野球部" }],
+    confirmedAt: "2026-11-16"
+  },
+  "evt-225": {
+    kind: "match",
+    matches: [
+      { label: "1回戦", outcome: "win", score: "6-1" },
+      { label: "2回戦", outcome: "win", score: "4-2" }
+    ],
+    sources: [{ url: "https://www.wasedabbc.org/game/48855/", label: "早稲田大学野球部" }, { url: "https://www.wasedabbc.org/game/48856/", label: "早稲田大学野球部" }],
+    confirmedAt: "2026-11-16"
+  },
+  "evt-538": {
+    kind: "match",
+    team: "女子",
+    outcome: "loss",
+    score: "0-2",
+    sources: [{ url: "https://www.waseda-afc.jp/news-women/149762", label: "早稲田大学ア式蹴球部" }],
+    confirmedAt: "2026-11-16"
+  },
+  // ---- 2026-11-16 出典照合で追加（scripts/apply-result-drafts.js）----
+  "evt-233": {
+    kind: "match",
+    outcome: "loss",
+    score: "17-21",
+    sources: [{ url: "https://www.bigbears.org/game/", label: "早稲田大学米式蹴球部 BIG BEARS" }],
+    confirmedAt: "2026-11-16"
+  },
+  "evt-505": {
+    kind: "report",
+    award: "男子 準優勝／女子 準優勝",
+    sources: [{ url: "https://www.wasedatennis.net/", label: "早稲田大学庭球部" }],
+    confirmedAt: "2026-11-16"
   }
 };
 

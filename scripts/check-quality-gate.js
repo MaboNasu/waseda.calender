@@ -225,6 +225,27 @@ test('現在の events.js にエラーがない', () => {
   assert.strictEqual(errors.length, 0, errors.map((e) => `${e.id} ${e.message}`).join('\n'));
 });
 
+// ---- 取りこぼし監査（scripts/official-event-audit.js） ----
+const OA = require('./official-event-audit');
+const calLink = (text, dates, loc, url) => `<a href="https://www.google.com/calendar/render?action=TEMPLATE&amp;text=${encodeURIComponent(text)}&amp;dates=${dates}&amp;location=${encodeURIComponent(loc)}&amp;sprop=${encodeURIComponent(url)}">`;
+test('取りこぼし監査：カレンダーのリンクから題名・期間・会場・URLを読む（終了日は1日戻す）', () => {
+  const items = OA.parseCalendarLinks(calLink('講演会「テスト」', '20261120/20261121', '小野記念講堂', 'https://www.waseda.jp/x/1/'));
+  assert.strictEqual(items.length, 1);
+  assert.strictEqual(items[0].start, '2026-11-20');
+  assert.strictEqual(items[0].end, '2026-11-20');
+  assert.strictEqual(items[0].location, '小野記念講堂');
+});
+test('取りこぼし監査：題名先頭の「11/27【締切…】」は開催日、カレンダーの期間は申込期間', () => {
+  const [it] = OA.parseCalendarLinks(calLink('11/27【締切：11/20, 9am】運動会', '20261029/20261121', '', 'https://www.waseda.jp/y/'));
+  assert.strictEqual(it.start, '2026-11-27');
+  assert.strictEqual(it.applyPeriod, '2026-10-29〜2026-11-20');
+});
+test('取りこぼし監査：URLが同じなら掲載済み、題名だけの一致は期間が重なるときだけ', () => {
+  const events = [{ id: 'evt-1', title: 'ICC English Chat Club（2026/10）', date: '2026-10-07', externalUrl: 'https://www.waseda.jp/a/' }];
+  assert.ok(OA.findListed({ title: '別の題名', start: '2026-11-01', end: '2026-11-01', url: 'http://waseda.jp/a' }, events));
+  assert.strictEqual(OA.findListed({ title: 'ICC English Chat Club（2026/11）', start: '2026-11-04', end: '2026-11-25', url: 'https://www.waseda.jp/b/' }, events), null);
+});
+
 (async () => {
   for (const t of tests) {
     try {

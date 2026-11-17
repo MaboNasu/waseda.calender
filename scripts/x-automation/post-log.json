@@ -1603,6 +1603,37 @@
       "status": "dry-run",
       "postId": null,
       "errorType": null
+    },
+    {
+      "postedAt": "2026-11-16T02:18:10.259Z",
+      "postType": "weekly",
+      "targetDate": "2026-11-16",
+      "eventIds": [
+        "evt-150",
+        "evt-144",
+        "evt-370",
+        "evt-645",
+        "evt-647",
+        "evt-631",
+        "evt-598",
+        "evt-560"
+      ],
+      "campaign": "weekly_waseda",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
+    },
+    {
+      "postedAt": "2026-11-17T04:40:57.572Z",
+      "postType": "recommend",
+      "targetDate": "2026-11-17",
+      "eventIds": [],
+      "campaign": "recommendation",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
     }
   ]
 }

@@ -864,12 +864,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://wasedacalendar.com/event/evt-131.html</loc>
-    <lastmod>2026-11-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://wasedacalendar.com/event/evt-132.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
@@ -2149,12 +2143,6 @@
   </url>
   <url>
     <loc>https://wasedacalendar.com/event/evt-359.html</loc>
-    <lastmod>2026-11-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://wasedacalendar.com/event/evt-360.html</loc>
     <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -3733,7 +3721,7 @@
   </url>
   <url>
     <loc>https://wasedacalendar.com/event/evt-632.html</loc>
-    <lastmod>2026-11-14</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -3829,7 +3817,7 @@
   </url>
   <url>
     <loc>https://wasedacalendar.com/event/evt-648.html</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -4010,6 +3998,36 @@
   <url>
     <loc>https://wasedacalendar.com/event/evt-678.html</loc>
     <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://wasedacalendar.com/event/evt-724.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://wasedacalendar.com/event/evt-725.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://wasedacalendar.com/event/evt-726.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://wasedacalendar.com/event/evt-727.html</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://wasedacalendar.com/event/evt-728.html</loc>
+    <lastmod>2026-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>

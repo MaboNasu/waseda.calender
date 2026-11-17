@@ -58,7 +58,7 @@ results.js がない場合は警告を出し、既公開結果の重複除外が
 - approved：運営者が承認済み
 - published：results.js への反映を確認済み
 
-状態は .local/results-collection-state.json（Git管理外）に保存。PCやセッションをまたぐ場合は運営者がこのJSONを同期すること。候補抽出だけでは状態は変わらない。
+状態は scripts/results-collection-state.json に保存し、コミットする（2026-11-16 に .local/ から移動。セッションが変わっても同じイベントを調べ直さないため）。候補抽出だけでは状態は変わらない。`apply-result-drafts.js --apply` が下書きのコメント行（見つからず・結果なし・食い違いなど）と反映した結果を記録する。
 
     node scripts/results-collection-queue.js mark --id evt-113 --status not_found --checked-at 2026-11-14 --note "公式結果未掲載"
 
@@ -119,3 +119,8 @@ GitHubへの書き込み担当は、承認内容を results.js の先頭コメ�
 - 通らなかったものは入れない。運営者が行頭に OK を付けた行に限り、出典を読めない（Instagram など）ときは根拠の引用で照合する。
 - 下書きを書く AI と、判定するプログラムを分けている（書いた側が自分で合格を出さない）。
 
+
+## 2026-11-16 追記（2）：まとめて調べるとき
+
+- 未掲載の結果をまとめて ChatGPT に頼むときは、`node scripts/results-collection-queue.js --backfill --limit 1000 --format json` の `match_or_report` を候補にする（体育各部・サークルの試合・大会）。
+- 返ってきた下書きはそのまま `.verify-evidence/results-YYYYMMDD-*.txt` に保存して `apply-result-drafts.js --apply` に通す。結果の行は照合を通ったものだけ入り、コメント行は状態に記録される。

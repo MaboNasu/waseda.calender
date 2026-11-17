@@ -2,7 +2,11 @@
 /**
  * scripts/apply-result-drafts.js — 結果の下書きを出典と照合し、通ったものだけ results.js に入れる
  *
- *   node scripts/apply-result-drafts.js <下書きファイル> [--apply] [--json]
+ *   node scripts/apply-result-drafts.js <下書きファイル> [--apply] [--json] [--pages <本文.json>]
+ *
+ *   --pages：この環境から取得できないサイト（handball.or.jp など）は、照合する側（下書きを書いた AI ではない）が
+ *   ブラウザで開いた本文を { "出典URL": "本文" } の JSON で渡せる（.verify-evidence/ に置き、コミットしない）。
+ *   取得に失敗したときだけ使う。
  *
  * 下書きの1行（AI が調べて書いたもの。# の行は無視）:
  *   evt-xxx|kind|team|outcome|score|detail|award|出典URL|出典名|根拠の引用
@@ -14,6 +18,9 @@
  *   C … それ以外（出典を読めない・スコアが見つからない・相手名が近くにない・形式の誤り・終了前のイベント）
  *       → 入れない。運営者の要確認に回す（行頭に OK が付いた行は、出典を読めない場合に限り
  *         根拠の引用での照合を認める）
+ *
+ * 「# evt-xxx 見つからず」などのコメント行は、--apply で候補の状態（scripts/results-collection-state.json）に記録する
+ * （parseNotes の説明を参照）。「# evt-xxx 食い違い｜項目｜掲載データ｜公式｜URL」は修正依頼の形で出力する。
  *
  * 結果は scripts/last-result-drafts-report.json にも保存する（コミット対象外）。
  */
@@ -38,7 +45,7 @@ const OFFICIAL_HOSTS = [
   /(^|\.)waseda-boxing\.com$/, /(^|\.)waseda-shooting\.com$/, /(^|\.)wasedafencing\.com$/,
   /(^|\.)keio\.ac\.jp$/, /(^|\.)wasedasports\.com$/, /(^|\.)jufa-kanto\.jp$/, /(^|\.)kanto-hockey\.jp$/,
   /(^|\.)kantorugby\.com$/, /(^|\.)kcfa\.jp$/, /(^|\.)big6\.gr\.jp$/,
-  /(^|\.)handball\.or\.jp$/, /(^|\.)univas\.jp$/, /(^|\.)jfa\.jp$/, /(^|\.)rugby-japan\.jp$/,
+  /(^|\.)handball\.or\.jp$/, /(^|\.)keio-soccer\.net$/, /(^|\.)wasedabbc\.org$/, /(^|\.)wasedasports-sousupo\.com$/, /(^|\.)wasedatennis\.net$/, /(^|\.)univas\.jp$/, /(^|\.)jfa\.jp$/, /(^|\.)rugby-japan\.jp$/,
 ];
 const UNREADABLE_HOSTS = /(^|\.)instagram\.com$|(^|\.)x\.com$|(^|\.)twitter\.com$/;
 // よく使われる大学名の略称（頭文字＋「大」で機械的に略すと「東海大学→東大」のように取り違えるので、表で持つ）
@@ -65,6 +72,38 @@ function parse(text) {
     rows.push({ line: i + 1, decision: (m[1] || '').toUpperCase(), fields: f });
   });
   return rows;
+}
+
+/**
+ * 「# evt-xxx 理由」のコメント行。調べた結果を候補の状態（scripts/results-collection-state.json）に残し、
+ * 同じイベントを毎日調べ直さないようにする。食い違いは修正依頼の形にする。
+ *   結果なし・個人成績のみ → not_applicable（もう調べない）
+ *   中止・延期・不出場      → cancelled（もう調べない）
+ *   食い違い               → conflict（掲載データを直すまで調べない）
+ *   見つからず・未掲載・PDFのみ → not_found（1・3・7・14・30日目にまた調べる）
+ */
+function parseNotes(text) {
+  const notes = [];
+  text.split(/\r?\n/).forEach((raw, i) => {
+    const m = /^#\s*(evt-[A-Za-z0-9-]+)\s*(.*)$/.exec(raw.trim());
+    if (!m) return;
+    const [, id, rest] = m;
+    let status = null;
+    if (/食い違い/.test(rest)) status = 'conflict';
+    else if (/結果なし|個人成績のみ/.test(rest)) status = 'not_applicable';
+    else if (/中止|延期|不出場/.test(rest)) status = 'cancelled';
+    else if (/見つからず|未掲載|PDFのみ/.test(rest)) status = 'not_found';
+    if (!status) return;
+    const note = { line: i + 1, id, status, text: rest.trim() };
+    if (status === 'conflict') {
+      const parts = rest.replace(/^食い違い[:：]?\s*/, '').split(/[｜|]/).map((x) => x.trim()).filter(Boolean);
+      note.request = parts.length >= 4
+        ? [id, parts[0], parts[1], parts[2], parts[3]].join('|')
+        : [id, '内容', '（掲載データ）', parts.join(' ') || rest.trim(), ''].join('|');
+    }
+    notes.push(note);
+  });
+  return notes;
 }
 
 function scorePatterns(a, b) {
@@ -129,6 +168,9 @@ function clubKeys(ev) {
   });
   const core = title.replace(/[（(][^()（）]*[)）]/g, '').replace(/第\d+回|早慶|定期戦|戦$/g, '').trim();
   if (core.length >= 2) keys.add(core);
+  // 部の名前と競技名が違うもの（出典は競技名で書くことが多い）
+  const SPORT = { ア式蹴球部: 'サッカー', ラグビー蹴球部: 'ラグビー', 米式蹴球部: 'アメリカンフットボール', 庭球部: 'テニス', 軟式庭球部: 'ソフトテニス', 漕艇部: 'レガッタ', 競走部: '陸上' };
+  [...keys].forEach((k) => { const base = k.replace(/\s.*$/, ''); if (SPORT[base]) keys.add(SPORT[base]); });
   if (ev.organizer) {
     const club = String(ev.organizer).replace(/^早稲田大学\s*/, '').trim();
     if (club.length >= 2) keys.add(club);
@@ -144,7 +186,8 @@ function clubKeys(ev) {
 function opponentKeys(ev, kind = 'match') {
   const keys = new Set();
   const title = String(ev.title || '');
-  const vs = /(?:vs\.?|VS\.?|対)\s*([^（(【\[]+)/.exec(title);
+  // 「vs」を優先する。「対」は「関東大学対抗戦」の「対」を拾わないよう、後ろが「抗」のときは使わない
+  const vs = /(?:vs|VS)\.?\s*([^（(【\[]+)/.exec(title) || /対(?!抗)\s*([^（(【\[]+)/.exec(title);
   if (vs) {
     const name = vs[1].trim().replace(/^(早大|早稲田)?\s*[A-Z]?\s*/, '');
     keys.add(name);
@@ -220,6 +263,7 @@ async function judge(row, events, existing, today, cache) {
   cache.set(url, fetched);
   let text;
   if (fetched.ok) text = fetched.text;
+  else if (cache.has(`page:${url}`)) { text = cache.get(`page:${url}`); out.notes.push(`ブラウザで取得した本文で照合（${fetched.reason}）`); }
   else if (row.decision === 'OK' && quote) { text = quote; out.notes.push(`出典を読めないため運営者 OK＋根拠の引用で照合（${fetched.reason}）`); }
   else { out.problems.push(`出典を読めない（${fetched.reason}）`); return out; }
 
@@ -236,9 +280,23 @@ async function judge(row, events, existing, today, cache) {
       at = f.at;
     } else {
       const pos = scorePositions(norm, a, b);
-      if (!pos.length) { out.problems.push(`スコア ${score} が出典にない`); return out; }
+      // 「早大125中―明大126中」「早大3点-明大1点」のように、単位や相手名がスコアの間に入る書き方
+      keys.forEach((k) => {
+        const re = new RegExp(`(?<!\\d)${a}(?:中|点|本)?-${k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}${b}(?:中|点|本)?(?!\\d)`);
+        const m = re.exec(norm);
+        if (m) pos.push(m.index);
+      });
       at = pos.find((p) => near(p, 250));
-      if (at === undefined) { out.problems.push('スコアの近くに対戦相手名・節がない（別の試合の可能性）'); return out; }
+      if (at === undefined || !pos.length) {
+        // 出典が「相手 2-4 早稲田」の順（ホーム側が先）で書いているとき：相手名の直後に逆順のスコア、その直後に早稲田
+        const rev = scorePositions(norm, b, a).find((p) => {
+          const before = norm.slice(Math.max(0, p - 15), p);
+          const after = norm.slice(p, p + String(b).length + String(a).length + 15);
+          return keys.some((k) => before.includes(k)) && /早稲田|早大/.test(after);
+        });
+        if (rev !== undefined) { at = rev; out.notes.push('出典は相手が先の順で記載'); }
+      }
+      if (at === undefined) { out.problems.push(pos.length ? 'スコアの近くに対戦相手名・節がない（別の試合の可能性）' : `スコア ${score} が出典にない`); return out; }
     }
     const hit = near(at, 250);
     if (/早慶/.test(ev.title || '')) {
@@ -252,11 +310,14 @@ async function judge(row, events, existing, today, cache) {
     }
   } else {
     const aw = normalizeForMatch(award);
-    const at = norm.indexOf(aw);
-    if (at < 0) { out.problems.push(`成績「${award}」が出典にない`); return out; }
-    const window = norm.slice(Math.max(0, at - 600), at + 600);
-    const hit = keys.find((k) => window.includes(k));
-    if (!hit) { out.problems.push('成績の近くに大会名がない'); return out; }
+    if (norm.indexOf(aw) < 0) { out.problems.push(`成績「${award}」が出典にない`); return out; }
+    // 成績は大会名の「あと」に書かれる。大会名の前に別の大会の成績があっても通さないよう、成績の手前600字に大会名があるものだけを見る
+    let hit;
+    for (let at = norm.indexOf(aw); at >= 0 && !hit; at = norm.indexOf(aw, at + 1)) {
+      const before = norm.slice(Math.max(0, at - 600), at);
+      hit = keys.find((k) => before.includes(k));
+    }
+    if (!hit) { out.problems.push('成績の手前に大会名がない（別の大会の成績の可能性）'); return out; }
     out.notes.push(`成績と「${hit}」を確認`);
   }
   out.gate = 'A';
@@ -270,7 +331,7 @@ function entryLiteral(id, e, today) {
   const cleanScore = (sc) => String(sc).replace(/[－–—]/g, '-').replace(/\s/g, '');
   if (e.kind === 'match' && Array.isArray(e.matches)) {
     lines.splice(lines.length - (e.team ? 1 : 0), e.team ? 1 : 0);
-    const ms = e.matches.map((m) => `      { team: ${JSON.stringify(m.team)}, outcome: ${JSON.stringify(m.outcome)}, score: ${JSON.stringify(cleanScore(m.score))}${m.detail ? `, detail: ${JSON.stringify(m.detail)}` : ''} }`).join(',\n');
+    const ms = e.matches.map((m) => `      { ${m.label ? `label: ${JSON.stringify(m.label)}` : `team: ${JSON.stringify(m.team)}`}, outcome: ${JSON.stringify(m.outcome)}, score: ${JSON.stringify(cleanScore(m.score))}${m.detail ? `, detail: ${JSON.stringify(m.detail)}` : ''} }`).join(',\n');
     lines.push(`    matches: [\n${ms}\n    ],`);
   } else if (e.kind === 'match') {
     lines.push(`    outcome: ${JSON.stringify(e.outcome)},`);
@@ -278,7 +339,9 @@ function entryLiteral(id, e, today) {
   }
   if (e.detail) lines.push(`    detail: ${JSON.stringify(e.detail)},`);
   if (e.award) lines.push(`    award: ${JSON.stringify(e.award)},`);
-  lines.push(`    sources: [{ url: ${JSON.stringify(e.url)}, label: ${JSON.stringify(e.label || '出典')} }],`);
+  const srcs = (e.sources && e.sources.length ? e.sources : [{ url: e.url, label: e.label }])
+    .map((x) => `{ url: ${JSON.stringify(x.url)}, label: ${JSON.stringify(x.label || '出典')} }`).join(', ');
+  lines.push(`    sources: [${srcs}],`);
   lines.push(`    confirmedAt: ${JSON.stringify(today)}`);
   lines.push('  }');
   return lines.join('\n');
@@ -300,13 +363,18 @@ function applyEntries(accepted, today) {
 }
 
 async function main() {
-  const file = args.find((a) => !a.startsWith('--'));
+  const file = args.find((a, i) => !a.startsWith('--') && args[i - 1] !== '--pages');
   if (!file) { console.error('使い方: node scripts/apply-result-drafts.js <下書きファイル> [--apply] [--json]'); process.exit(2); }
   const today = todayJst();
   const events = new Map(loadEvents().map((e) => [e.id, e]));
   const existing = loadResultsObject();
   const rows = parse(fs.readFileSync(file, 'utf8'));
   const cache = new Map();
+  const pagesArg = args.indexOf('--pages');
+  if (pagesArg >= 0) {
+    const pages = JSON.parse(fs.readFileSync(args[pagesArg + 1], 'utf8'));
+    for (const [u, text] of Object.entries(pages)) cache.set(`page:${u}`, String(text));
+  }
   const results = [];
   for (const row of rows) results.push(await judge(row, events, existing, today, cache));
   // 1つのイベントに複数の試合・部門の行があるとき：すべて通った場合だけ、1件にまとめて入れる
@@ -328,23 +396,45 @@ async function main() {
     const first = group[0];
     const merged = { ...first, entry: { ...first.entry } };
     if (first.entry.kind === 'match') {
-      merged.entry.matches = group.map((r) => ({ team: r.entry.team, outcome: r.entry.outcome, score: r.entry.score, detail: r.entry.detail }));
+      // 「1回戦」「11/7」のような列は、チームではなく試合の見出し（label）として持つ
+      const isLabel = (t) => /回戦$|^\d{1,2}\/\d{1,2}$|^第\d+戦$/.test(t);
+      merged.entry.matches = group.map((r) => (isLabel(r.entry.team)
+        ? { label: r.entry.team, outcome: r.entry.outcome, score: r.entry.score, detail: r.entry.detail }
+        : { team: r.entry.team, outcome: r.entry.outcome, score: r.entry.score, detail: r.entry.detail }));
     } else {
       merged.entry.award = group.map((r) => `${r.entry.team} ${r.entry.award}`).join('／');
       merged.entry.team = '';
     }
     merged.notes = group.flatMap((r) => r.notes);
+    const seen = new Set();
+    merged.entry.sources = group.map((r) => ({ url: r.entry.url, label: r.entry.label })).filter((x) => !seen.has(x.url) && seen.add(x.url));
     accepted.push(merged);
   }
   const held = results.filter((r) => r.gate !== 'A');
   fs.writeFileSync(REPORT_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), today, accepted: accepted.length, held: held.length, results }, null, 2) + '\n');
   if (flag('--apply') && accepted.length) applyEntries(accepted, today);
-  if (flag('--json')) { console.log(JSON.stringify({ accepted, held }, null, 2)); return; }
-  console.log(`照合: 反映できる ${accepted.length}件 / 保留 ${held.length}件${flag('--apply') ? '（results.js に反映しました）' : '（--apply で反映）'}`);
+  const notes = parseNotes(fs.readFileSync(file, 'utf8')).filter((n) => events.has(n.id) && !Object.prototype.hasOwnProperty.call(existing, n.id));
+  if (flag('--apply') && !flag('--no-state')) {
+    const Q = require('./results-collection-queue');
+    const done = new Set(accepted.map((r) => r.id));
+    for (const n of notes) if (!done.has(n.id)) Q.mark(Q.DEFAULT_STATE, { id: n.id, status: n.status, checkedAt: today, note: n.text.slice(0, 200) });
+    for (const r of accepted) Q.mark(Q.DEFAULT_STATE, { id: r.id, status: 'published', checkedAt: today, note: '' });
+  }
+  const conflicts = notes.filter((n) => n.request);
+  if (flag('--json')) { console.log(JSON.stringify({ accepted, held, notes }, null, 2)); return; }
+  console.log(`照合: 反映できる ${accepted.length}件 / 保留 ${held.length}件${flag('--apply') ? (accepted.length ? '（results.js に反映しました）' : '') : '（--apply で反映）'}`);
   for (const r of accepted) console.log(`  A ${r.id} ${r.title || ''} — ${r.notes.join(' / ')}`);
   for (const r of held) console.log(`  C ${r.id} ${r.title || ''} — ${r.problems.join(' / ')}`);
+  if (notes.length) {
+    const count = (st) => notes.filter((n) => n.status === st).length;
+    console.log(`調査メモ: 見つからず ${count('not_found')}件 / 結果なし ${count('not_applicable')}件 / 中止 ${count('cancelled')}件 / 食い違い ${count('conflict')}件${flag('--apply') && !flag('--no-state') ? '（候補の状態に記録しました）' : ''}`);
+  }
+  if (conflicts.length) {
+    console.log('■ 掲載データとの食い違い（修正依頼の形式。出典を開いて確かめてから直す）');
+    conflicts.forEach((n) => console.log(n.request));
+  }
 }
 
 if (require.main === module) main().catch((err) => { console.error(err.message); process.exit(2); });
 
-module.exports = { parse, containsScore, scorePositions, strongScores, opponentKeys, clubKeys, judge };
+module.exports = { parse, parseNotes, containsScore, scorePositions, strongScores, opponentKeys, clubKeys, judge };

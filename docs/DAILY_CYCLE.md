@@ -37,6 +37,7 @@
 - `node scripts/check-sources.js` を実行し、変化のあった情報源のページを実際に読んで、`EVENT_REVIEW_RULES.md` で EVENT / NOT_EVENT / REVIEW を判定する。
 - EVENT は `events.js` に追加・更新する。**項目は出典の文字のまま**（翻訳・略記の展開・推測をしない）。会場・団体名は `scripts/naming-dictionary.json` にあればその表示名。
 - REVIEW は追加しないで報告に書く。
+- `node scripts/official-event-audit.js` で大学公式のイベント一覧（大学全体・文化推進部・サークルガイド・ICC）と events.js を照らし、未掲載のうち今後14日以内のものを同じ手順で判定する（自動で読める一覧だけ。1回5件まで）。
 
 ### 4. Instagram 収集分を入れる
 - 届いた形式のとおりに追加する（既存の同じ団体・同じ日付のイベントがあれば新規にしない）。
@@ -45,8 +46,9 @@
 ### 4.5 終わったイベントの結果を入れる（試合結果・大会の成績）
 - `node scripts/results-collection-queue.js --limit 8` で調査候補を出す（終了から1〜30日で、まだ結果がないもの）。
 - 各候補について、公式の記録（団体の公式サイト、早稲田大学 競技スポーツセンター waseda.jp/inst/athletic、早稲田スポーツ新聞会、慶應の公式、大会・連盟の公式結果）から結果を探し、`.verify-evidence/results-YYYYMMDD.txt` に1行ずつ書く：
-  `evt-xxx|kind|team|outcome|score|detail|award|出典URL|出典名|根拠の引用`（形式は scripts/apply-result-drafts.js の先頭）。見つからない・食い違うものは `# evt-xxx 理由` とだけ書く。スコアを推測しない。選手個人の名前は書かない。
-- `node scripts/apply-result-drafts.js .verify-evidence/results-YYYYMMDD.txt --apply` を実行する。出典のそのイベントの記載にスコア（成績）と相手名（節・回戦）がそろって書かれているものだけが results.js に入る。通らなかったものは入れず、報告の「結果：保留」に理由を書くだけにする（運営者の作業は増やさない）。
+  `evt-xxx|kind|team|outcome|score|detail|award|出典URL|出典名|根拠の引用`（形式は scripts/apply-result-drafts.js の先頭）。結果を書かないものは1行のコメントにする：`# evt-xxx 見つからず`／`未掲載`／`PDFのみ`／`結果なし`／`個人成績のみ`／`中止`、掲載データと公式が食い違うものは `# evt-xxx 食い違い｜項目｜掲載データの値｜公式の値｜公式のURL`。スコアを推測しない。選手個人の名前は書かない。
+- `node scripts/apply-result-drafts.js .verify-evidence/results-YYYYMMDD.txt --apply` を実行する。コメント行は候補の状態（`scripts/results-collection-state.json`、コミットする）に記録され、結果なし・中止はもう候補に出ず、見つからずは数日おきにまた出る。出力の「掲載データとの食い違い」は手順2の修正依頼と同じように出典で確かめて直す（直したら `node scripts/results-collection-queue.js mark --id evt-xxx --status pending` で候補に戻す）。出典のそのイベントの記載にスコア（成績）と相手名（節・回戦）がそろって書かれているものだけが results.js に入る。通らなかったものは入れず、報告の「結果：保留」に理由を書くだけにする（運営者の作業は増やさない）。
+- 出典がこの環境から取得できない（「取得失敗」）ときは、照合する側がブラウザでそのページを開き、スコアの載っている部分の本文を `.verify-evidence/pages-YYYYMMDD.json` に `{ "出典URL": "本文" }` で保存して `--pages` で渡してよい。下書きを書いた AI の引用はこの代わりにしない。
 - `node scripts/check-results.js` が通ることを確かめる。
 
 ### 5. 検査と公開の判定（データの手直しはこの前までに終える）

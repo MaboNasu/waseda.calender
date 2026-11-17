@@ -15,7 +15,8 @@ const path = require('node:path');
 const vm = require('node:vm');
 
 const ROOT = path.resolve(__dirname, '..');
-const DEFAULT_STATE = path.join(ROOT, '.local', 'results-collection-state.json');
+// 調べた結果（見つからず・結果なし・食い違い）をセッションをまたいで持つため、リポジトリに入れる（2026-11-16 .local/ から移動）
+const DEFAULT_STATE = path.join(ROOT, 'scripts', 'results-collection-state.json');
 const CHECK_DAYS = [1, 3, 7, 14, 30];
 const REPORT_CATEGORIES = new Set(['music', 'theater', 'culture']);
 const DONE = new Set(['not_applicable', 'cancelled', 'approved', 'published']);
@@ -110,7 +111,8 @@ function queue(events, publishedResults, state, options) {
     if (s.checkedAt && s.status !== 'pending') {
       if (!validDate(s.checkedAt)) throw Error('Invalid checkedAt for ' + e.id);
       const lastAge = dayDiff(s.checkedAt, end);
-      if (lastAge > age) throw Error('checkedAt is in the future for ' + e.id);
+      // 状態はコミットされるので、過去の日付を --as-of にすると「その日より後に調べた」ものがある。そのときは調べ済みとして飛ばす
+      if (lastAge > age) continue;
       const next = CHECK_DAYS.find((n) => n > lastAge);
       if (next === undefined || age < next) continue;
     }
@@ -214,4 +216,4 @@ function main(argv = process.argv.slice(2)) {
 if (require.main === module) {
   try { main(); } catch (err) { console.error(err.message); process.exitCode = 1; }
 }
-module.exports = { validDate, dayDiff, queue, readState, readResults, parseArgs, renderMarkdown, mark, main };
+module.exports = { DEFAULT_STATE, STATES, validDate, dayDiff, queue, readState, readResults, parseArgs, renderMarkdown, mark, main };
