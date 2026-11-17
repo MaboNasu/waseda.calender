@@ -5680,7 +5680,7 @@ const EVENTS = [
     endTime: "19:10",
     location: "戸山キャンパス33号館第10会議室",
     campus: "toyama",
-    organizer: "早稲田大学文学学術院ドイツ語ドイツ文学コース",
+    organizer: "ドイツ語ドイツ文学コース",
     category: "lecture",
     scope: "circle",
     target: ["student", "obog", "public"],
@@ -5688,7 +5688,7 @@ const EVENTS = [
     feeText: "料金未確認",
     description: "アドルノとゲルンハルトをテーマにしたドイツ語圏文学の講演会(ドイツ語)。学生・大学院生・教員・一般が対象。事前申込不要。",
     externalUrl: "https://www.waseda.jp/flas/hss/news/2026/09/28/16153/",
-    lastUpdated: "2026-11-14",
+    lastUpdated: "2026-11-18",
     isPublished: true
   },
 
@@ -11286,7 +11286,7 @@ const EVENTS = [
   },
   {
     id: "evt-607",
-    title: "早稲田大学国文学会秋季大会講演会「文学史はなぜ必要なのか――ストーリー、物語、ナラティブの氾濫するなかで」",
+    title: "2026（令和八）年度早稲田大学国文学会秋季大会講演会 紅野謙介氏「文学史はなぜ必要なのか ──ストーリー、物語、ナラティブの氾濫するなかで」",
     date: "2026-11-28",
     startTime: "15:30",
     endTime: "16:30",
@@ -11300,7 +11300,7 @@ const EVENTS = [
     feeText: "料金未確認",
     description: "2026年度早稲田大学国文学会秋季大会講演会。講師: 紅野謙介氏(日本大学名誉教授)。",
     externalUrl: "https://www.waseda.jp/flas/hss/news/2026/10/26/16256/",
-    lastUpdated: "2026-11-14",
+    lastUpdated: "2026-11-18",
     isPublished: true
   },
   {
@@ -13534,11 +13534,11 @@ const EVENTS = [
   },
   {
     id: "evt-713",
-    title: "交差するクィア映画祭(シネマチュプキ×GSセンター)",
+    title: "シネマチュプキ×GSセンター 交差するクィア映画祭",
     date: "2026-11-16",
     endDate: "2026-12-01",
     startTime: "18:00",
-    location: "シネマチュプキタバタ",
+    location: "CINEMA Chupki TABATA（シネマ・チュプキ・タバタ）",
     campus: "outside",
     organizer: "早稲田大学ジェンダー・セクシュアリティセンター(GSセンター)",
     category: "culture",
@@ -13548,7 +13548,7 @@ const EVENTS = [
     feeText: "一般1,800円/シニア1,400円/学生・22歳以下1,000円/中学生以下500円",
     description: "シネマチュプキタバタとGSセンターの共催企画。11/16〜24と11/26〜12/1の2期間で異なる作品を上映。",
     externalUrl: "https://www.waseda.jp/inst/gscenter/news/2026/10/28/9297/",
-    lastUpdated: "2026-11-14",
+    lastUpdated: "2026-11-18",
     isPublished: true
   },
   {
