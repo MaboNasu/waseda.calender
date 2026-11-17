@@ -19,6 +19,9 @@
  *       → 入れない。運営者の要確認に回す（行頭に OK が付いた行は、出典を読めない場合に限り
  *         根拠の引用での照合を認める）
  *
+ * 「# evt-xxx 見つからず」などのコメント行は、--apply で候補の状態（scripts/results-collection-state.json）に記録する
+ * （parseNotes の説明を参照）。「# evt-xxx 食い違い｜項目｜掲載データ｜公式｜URL」は修正依頼の形で出力する。
+ *
  * 結果は scripts/last-result-drafts-report.json にも保存する（コミット対象外）。
  */
 'use strict';
@@ -69,6 +72,38 @@ function parse(text) {
     rows.push({ line: i + 1, decision: (m[1] || '').toUpperCase(), fields: f });
   });
   return rows;
+}
+
+/**
+ * 「# evt-xxx 理由」のコメント行。調べた結果を候補の状態（scripts/results-collection-state.json）に残し、
+ * 同じイベントを毎日調べ直さないようにする。食い違いは修正依頼の形にする。
+ *   結果なし・個人成績のみ → not_applicable（もう調べない）
+ *   中止・延期・不出場      → cancelled（もう調べない）
+ *   食い違い               → conflict（掲載データを直すまで調べない）
+ *   見つからず・未掲載・PDFのみ → not_found（1・3・7・14・30日目にまた調べる）
+ */
+function parseNotes(text) {
+  const notes = [];
+  text.split(/\r?\n/).forEach((raw, i) => {
+    const m = /^#\s*(evt-[A-Za-z0-9-]+)\s*(.*)$/.exec(raw.trim());
+    if (!m) return;
+    const [, id, rest] = m;
+    let status = null;
+    if (/食い違い/.test(rest)) status = 'conflict';
+    else if (/結果なし|個人成績のみ/.test(rest)) status = 'not_applicable';
+    else if (/中止|延期|不出場/.test(rest)) status = 'cancelled';
+    else if (/見つからず|未掲載|PDFのみ/.test(rest)) status = 'not_found';
+    if (!status) return;
+    const note = { line: i + 1, id, status, text: rest.trim() };
+    if (status === 'conflict') {
+      const parts = rest.replace(/^食い違い[:：]?\s*/, '').split(/[｜|]/).map((x) => x.trim()).filter(Boolean);
+      note.request = parts.length >= 4
+        ? [id, parts[0], parts[1], parts[2], parts[3]].join('|')
+        : [id, '内容', '（掲載データ）', parts.join(' ') || rest.trim(), ''].join('|');
+    }
+    notes.push(note);
+  });
+  return notes;
 }
 
 function scorePatterns(a, b) {
@@ -378,12 +413,28 @@ async function main() {
   const held = results.filter((r) => r.gate !== 'A');
   fs.writeFileSync(REPORT_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), today, accepted: accepted.length, held: held.length, results }, null, 2) + '\n');
   if (flag('--apply') && accepted.length) applyEntries(accepted, today);
-  if (flag('--json')) { console.log(JSON.stringify({ accepted, held }, null, 2)); return; }
-  console.log(`照合: 反映できる ${accepted.length}件 / 保留 ${held.length}件${flag('--apply') ? '（results.js に反映しました）' : '（--apply で反映）'}`);
+  const notes = parseNotes(fs.readFileSync(file, 'utf8')).filter((n) => events.has(n.id) && !Object.prototype.hasOwnProperty.call(existing, n.id));
+  if (flag('--apply') && !flag('--no-state')) {
+    const Q = require('./results-collection-queue');
+    const done = new Set(accepted.map((r) => r.id));
+    for (const n of notes) if (!done.has(n.id)) Q.mark(Q.DEFAULT_STATE, { id: n.id, status: n.status, checkedAt: today, note: n.text.slice(0, 200) });
+    for (const r of accepted) Q.mark(Q.DEFAULT_STATE, { id: r.id, status: 'published', checkedAt: today, note: '' });
+  }
+  const conflicts = notes.filter((n) => n.request);
+  if (flag('--json')) { console.log(JSON.stringify({ accepted, held, notes }, null, 2)); return; }
+  console.log(`照合: 反映できる ${accepted.length}件 / 保留 ${held.length}件${flag('--apply') ? (accepted.length ? '（results.js に反映しました）' : '') : '（--apply で反映）'}`);
   for (const r of accepted) console.log(`  A ${r.id} ${r.title || ''} — ${r.notes.join(' / ')}`);
   for (const r of held) console.log(`  C ${r.id} ${r.title || ''} — ${r.problems.join(' / ')}`);
+  if (notes.length) {
+    const count = (st) => notes.filter((n) => n.status === st).length;
+    console.log(`調査メモ: 見つからず ${count('not_found')}件 / 結果なし ${count('not_applicable')}件 / 中止 ${count('cancelled')}件 / 食い違い ${count('conflict')}件${flag('--apply') && !flag('--no-state') ? '（候補の状態に記録しました）' : ''}`);
+  }
+  if (conflicts.length) {
+    console.log('■ 掲載データとの食い違い（修正依頼の形式。出典を開いて確かめてから直す）');
+    conflicts.forEach((n) => console.log(n.request));
+  }
 }
 
 if (require.main === module) main().catch((err) => { console.error(err.message); process.exit(2); });
 
-module.exports = { parse, containsScore, scorePositions, strongScores, opponentKeys, clubKeys, judge };
+module.exports = { parse, parseNotes, containsScore, scorePositions, strongScores, opponentKeys, clubKeys, judge };

@@ -182,6 +182,12 @@ async function testDisplay() {
     const ok = await D.judge(row, new Map([['evt-y', ev]]), {}, '2026-11-16', mk('全日本大学対抗テニス王座決定試合 決勝 ●早稲田4-5法大○ 最終結果：準優勝'));
     assert.strictEqual(ok.gate, 'A', ok.problems.join(' / '));
   });
+  t('下書きのコメント行：状態と修正依頼への変換', () => {
+    const notes = D.parseNotes('# evt-1 見つからず\n# evt-2 結果なし\n# evt-3 個人成績のみ\n# evt-4 中止\n# evt-5 食い違い｜日付｜2026-10-24｜順延で2026-10-28に実施｜https://a/b\n# evt-6 食い違い：連盟と部で日付が違う\n# メモ');
+    assert.deepStrictEqual(notes.map((x) => [x.id, x.status]), [['evt-1', 'not_found'], ['evt-2', 'not_applicable'], ['evt-3', 'not_applicable'], ['evt-4', 'cancelled'], ['evt-5', 'conflict'], ['evt-6', 'conflict']]);
+    assert.strictEqual(notes[4].request, 'evt-5|日付|2026-10-24|順延で2026-10-28に実施|https://a/b');
+    assert.ok(notes[5].request.startsWith('evt-6|内容|'));
+  });
   t('下書きの読み取り：OK/NG と列', () => {
     const rows = D.parse('# x\nOK evt-1|match||win|1-0|||https://a|a|q\nNG evt-2|match||win|1-0|||https://a|a|q\nevt-3|report||||||https://a|a|q');
     assert.deepStrictEqual(rows.map((r) => [r.decision, r.fields[0], r.fields.length]), [['OK', 'evt-1', 10], ['NG', 'evt-2', 10], ['', 'evt-3', 10]]);
