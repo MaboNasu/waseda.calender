@@ -37,6 +37,7 @@
 - `node scripts/check-sources.js` を実行し、変化のあった情報源のページを実際に読んで、`EVENT_REVIEW_RULES.md` で EVENT / NOT_EVENT / REVIEW を判定する。
 - EVENT は `events.js` に追加・更新する。**項目は出典の文字のまま**（翻訳・略記の展開・推測をしない）。会場・団体名は `scripts/naming-dictionary.json` にあればその表示名。
 - REVIEW は追加しないで報告に書く。
+- `node scripts/official-event-audit.js` で大学公式のイベント一覧（大学全体・文化推進部・サークルガイド・ICC）と events.js を照らし、未掲載のうち今後14日以内のものを同じ手順で判定する（自動で読める一覧だけ。1回5件まで）。
 
 ### 4. Instagram 収集分を入れる
 - 届いた形式のとおりに追加する（既存の同じ団体・同じ日付のイベントがあれば新規にしない）。

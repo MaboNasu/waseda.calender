@@ -12,7 +12,8 @@
  *   2. 団体名の表記の承認候補（同じ団体IDで表記が揺れているもの。最大5件）
  *   3. 新しい Instagram アカウントの候補（organizations.js に URL があるのに巡回対象にないもの。最大10件）
  *   4. 指標（掲載数・確認待ち・料金未確認の割合）
- * 取りこぼし監査（大学のイベント一覧と照らす）は、定期実行の担当がページを読んで追記する。
+ * 5. 取りこぼし監査：大学公式のイベント一覧（Googleカレンダーのリンクがある一覧）は scripts/official-event-audit.js で
+ *    自動で照らす（--skip-official で省略）。それ以外のページは定期実行の担当が読んで追記する。
  *
  * 運営者は各行の行頭に OK / NG を書く。何も書かない行は翌週に持ち越す。件数は上限であって目標ではない。
  */
@@ -123,7 +124,14 @@ function main() {
   out.push(`# 今後30日のうち 料金未確認 ${up30.filter((e) => e.feeType === 'unknown').length}件・開始時刻なし ${up30.filter((e) => !e.startTime).length}件・出典URLなし ${up30.filter((e) => !e.externalUrl).length}件`);
   if (a.counts) out.push(`# 出典監査: 対象${a.counts.checked}件 → A ${a.counts.A}・B ${a.counts.B}・C ${a.counts.C}（食い違い ${a.counts.mismatch}・決めきれない ${a.counts.weak}・読めない ${a.counts.unreadable}）`);
 
-  out.push('', '## 5. 取りこぼし監査（定期実行の担当が追記）');
+  out.push('', '## 5. 取りこぼし監査（大学公式の一覧は自動。ほかのページは定期実行の担当が追記）');
+  if (!args.includes('--skip-official')) {
+    try {
+      out.push(execFileSync(process.execPath, [path.join(__dirname, 'official-event-audit.js'), '--format', 'weekly', '--limit', '10'], { encoding: 'utf8', timeout: 180000 }).trimEnd());
+    } catch (err) {
+      out.push(`# 大学公式の一覧の自動照合に失敗（${String(err.message).split('\n')[0]}）。担当がページを読んで追記する`);
+    }
+  }
   console.log(out.join('\n'));
 }
 
