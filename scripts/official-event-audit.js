@@ -26,7 +26,11 @@ const SOURCES = [
   { name: '早稲田大学 文化推進部 イベント', url: 'https://www.waseda.jp/culture/event/?date={YM}' },
   { name: '早稲田ウィークリー サークルガイド', url: 'https://www.waseda.jp/inst/weekly/circleguide/' },
   { name: '早稲田大学 ICC イベント', url: 'https://www.waseda.jp/inst/icc/events/report' },
+  // 一覧にカレンダーのリンクがなく、記事ページにあるもの（記事を最新から最大15件開いて読む）
+  { name: '文学学術院（文学部・文化構想学部・総合人文科学研究センター）イベント', url: 'https://www.waseda.jp/flas/cms/tag/events', articles: /https:\/\/www\.waseda\.jp\/flas\/[a-z]+\/news\/\d{4}\/\d\d\/\d\d\/\d+\//g },
+  { name: '早稲田ウィークリー 杜の掲示板', url: 'https://www.waseda.jp/inst/weekly/news/', articles: /https:\/\/www\.waseda\.jp\/inst\/weekly\/news\/\d{4}\/\d\d\/\d\d\/\d+\//g },
 ];
+const MAX_ARTICLES = 15;
 
 function expandUrls(src, today) {
   if (!src.url.includes('{YM}')) return [src.url];
@@ -186,7 +190,16 @@ async function main() {
     for (const url of expandUrls(src, today)) {
       try {
         const html = opt('--html') ? fs.readFileSync(opt('--html'), 'utf8') : await fetchHtml(url);
-        const got = parseCalendarLinks(html);
+        let got = parseCalendarLinks(html);
+        if (src.articles) {
+          const links = [...new Set(html.match(src.articles) || [])].slice(0, MAX_ARTICLES);
+          for (const link of links) {
+            try {
+              // 記事ページのカレンダーのリンクには個別URLが入らないことがあるので、記事のURLで補う
+              got.push(...parseCalendarLinks(await fetchHtml(link)).map((x) => ({ ...x, url: x.url || link })));
+            } catch (err) { errors.push(`${err.message}`); }
+          }
+        }
         if (!got.length) errors.push(`イベントを読めない（ページの形が変わった可能性）: ${url}`);
         items.push(...got);
       } catch (err) { errors.push(`${err.message}`); }
