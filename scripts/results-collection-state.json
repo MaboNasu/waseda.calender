@@ -7,9 +7,9 @@
       "note": "見つからず"
     },
     "evt-479": {
-      "status": "not_found",
-      "checkedAt": "2026-11-16",
-      "note": "見つからず"
+      "status": "published",
+      "checkedAt": "2026-11-17",
+      "note": ""
     },
     "evt-492": {
       "status": "not_found",
@@ -48,8 +48,8 @@
     },
     "evt-132": {
       "status": "not_found",
-      "checkedAt": "2026-11-16",
-      "note": "見つからず"
+      "checkedAt": "2026-11-17",
+      "note": "見つからず（全日本学生自動車連盟 https://www.ajsaa-alljapan.org/blank-2 は年間日程表のみで結果欄がない／"
     },
     "evt-351": {
       "status": "not_found",
@@ -95,6 +95,26 @@
       "status": "not_found",
       "checkedAt": "2026-11-16",
       "note": "見つからず（連盟10/24〜25と柔道部10/25〜26で日付の記載が違う。掲載データは連盟と一致）"
+    },
+    "evt-138": {
+      "status": "conflict",
+      "checkedAt": "2026-11-17",
+      "note": "食い違いではなく、下書きの1行形式(kind/outcome/score)では表現できない複雑な結果（男女別・団体戦・複数回戦）のため、"
+    },
+    "evt-137": {
+      "status": "not_found",
+      "checkedAt": "2026-11-17",
+      "note": "見つからず（早稲田大学バドミントン部公式サイトに「第77回全⽇本学⽣バドミントン選⼿権⼤会結果」という記事が存在することは、"
+    },
+    "evt-109": {
+      "status": "not_found",
+      "checkedAt": "2026-11-17",
+      "note": "見つからず（https://www.waseda-afc.jp/ トップページおよび /category/news-men アーカイブの1〜3ページ目を確認したが、"
+    },
+    "evt-523": {
+      "status": "published",
+      "checkedAt": "2026-11-17",
+      "note": ""
     }
   }
 }

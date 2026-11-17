@@ -103,6 +103,32 @@ const RESULTS = {
     sources: [{ url: "https://www.waseda-afc.jp/news-women/150186", label: "早稲田大学ア式蹴球部" }],
     confirmedAt: "2026-11-16"
   },
+  // ---- 2026-11-17 出典照合で追加（scripts/apply-result-drafts.js）----
+  "evt-703": {
+    kind: "report",
+    detail: "男子3000m",
+    award: "5着",
+    sources: [{ url: "https://waseda-ac.jp/competition/detail/1075", label: "早稲田大学競走部公式サイト" }],
+    confirmedAt: "2026-11-17"
+  },
+  "evt-702": {
+    kind: "report",
+    detail: "女子5000mW",
+    award: "3着",
+    sources: [{ url: "https://waseda-ac.jp/competition/detail/1074", label: "早稲田大学競走部公式サイト" }],
+    confirmedAt: "2026-11-17"
+  },
+  // ---- 2026-11-17 修正依頼の照合で判明（evt-359の日程修正にあわせて追加）----
+  "evt-359": {
+    kind: "match",
+    outcome: "loss",
+    score: "3-5",
+    sources: [
+      { url: "https://w-junkoh.com/news/detail/id/33483", label: "早稲田大学準硬式野球部 公式サイト" },
+      { url: "https://tourokurenmei.com/archives/21138", label: "登録連盟" }
+    ],
+    confirmedAt: "2026-11-17"
+  },
   // ---- 2026-11-16 出典照合で追加（scripts/apply-result-drafts.js）----
   "evt-716": {
     kind: "match",
@@ -211,6 +237,36 @@ const RESULTS = {
     award: "男子 準優勝／女子 準優勝",
     sources: [{ url: "https://www.wasedatennis.net/", label: "早稲田大学庭球部" }],
     confirmedAt: "2026-11-16"
+  },
+  // ---- 2026-11-17 出典照合で追加（scripts/apply-result-drafts.js）----
+  "evt-479": {
+    kind: "match",
+    outcome: "loss",
+    score: "3-4",
+    sources: [{ url: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/", label: "早稲田大学 競技スポーツセンター(早慶戦勝敗一覧)" }],
+    confirmedAt: "2026-11-17"
+  },
+  "evt-523": {
+    kind: "match",
+    team: "女子",
+    outcome: "win",
+    score: "4-1",
+    detail: "前半2-1／後半2-0",
+    sources: [{ url: "https://www.waseda-afc.jp/news-women/149727", label: "早稲田大学ア式蹴球部(女子部)公式サイト" }],
+    confirmedAt: "2026-11-17"
+  },
+  // ---- 2026-11-17 結果収集で判明（男女別・複数回戦のため matches で手動対応）----
+  "evt-138": {
+    kind: "match",
+    summary: "男子は1回戦敗退、女子はベスト8。",
+    matches: [
+      { team: "男子", label: "1回戦", outcome: "loss", score: "0-3", opponent: "法政大学" },
+      { team: "女子", label: "1回戦", outcome: "win", score: "3-0", opponent: "東日本国際大学" },
+      { team: "女子", label: "2回戦", outcome: "win", score: "3-2", opponent: "青山学院大学" },
+      { team: "女子", label: "3回戦", outcome: "loss", score: "2-3", opponent: "明治大学" }
+    ],
+    sources: [{ url: "https://waseda-bad.com/blog/2026/11/11/2026inter_t/", label: "早稲田大学バドミントン部公式サイト" }],
+    confirmedAt: "2026-11-17"
   }
 };
 
