@@ -235,6 +235,76 @@
       "status": "published",
       "checkedAt": "2026-11-18",
       "note": ""
+    },
+    "evt-201": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜日付｜2026-10-06｜2026-10-04に実施｜https://wasedasports-sousupo.com/news/kyudo/299395/"
+    },
+    "evt-202": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜日付｜2026-10-06｜2026-10-04に実施｜https://wasedasports-sousupo.com/news/kyudo/299395/"
+    },
+    "evt-088": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "個人成績のみ"
+    },
+    "evt-362": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-231": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-326": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-354": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-361": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-106": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-320": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-325": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-353": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-261": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-318": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
     }
   }
 }

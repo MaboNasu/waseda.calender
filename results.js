@@ -414,6 +414,87 @@ const RESULTS = {
     score: "5-2",
     sources: [{ url: "https://w-junkoh.com/game/detail/id/2188", label: "早稲田大学準硬式野球部" }],
     confirmedAt: "2026-11-18"
+  },
+  // ---- 2026-11-18 出典照合で追加（scripts/apply-result-drafts.js）----
+  "evt-362": {
+    kind: "match",
+    outcome: "win",
+    score: "4-2",
+    sources: [{ url: "https://www.wasedabbc.org/game/48970/", label: "早稲田大学野球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-231": {
+    kind: "match",
+    outcome: "loss",
+    score: "3-27",
+    sources: [{ url: "https://wasedasports-sousupo.com/news/americanfootball/299498/", label: "早稲田スポーツ新聞会" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-326": {
+    kind: "match",
+    outcome: "win",
+    score: "6-1",
+    sources: [{ url: "https://www.wasedabbc.org/game/48852/", label: "早稲田大学野球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-354": {
+    kind: "match",
+    outcome: "win",
+    score: "2-0",
+    sources: [{ url: "https://w-junkoh.com/game/detail/id/2151", label: "早稲田大学準硬式野球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-361": {
+    kind: "match",
+    team: "女子",
+    outcome: "win",
+    score: "1-0",
+    sources: [{ url: "https://www.waseda-afc.jp/news-women/149256", label: "早稲田大学ア式蹴球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-106": {
+    kind: "match",
+    outcome: "loss",
+    score: "0-1",
+    sources: [{ url: "https://www.waseda-afc.jp/news-men/149487", label: "早稲田大学ア式蹴球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-320": {
+    kind: "match",
+    team: "女子",
+    outcome: "draw",
+    score: "0-0",
+    sources: [{ url: "https://www.waseda-afc.jp/news-women/149161", label: "早稲田大学ア式蹴球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-325": {
+    kind: "match",
+    outcome: "win",
+    score: "6-0",
+    sources: [{ url: "https://www.wasedabbc.org/game/48851/", label: "早稲田大学野球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-353": {
+    kind: "match",
+    outcome: "win",
+    score: "1-0",
+    sources: [{ url: "https://w-junkoh.com/game/detail/id/2150", label: "早稲田大学準硬式野球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-261": {
+    kind: "match",
+    team: "女子",
+    outcome: "win",
+    score: "7-0",
+    sources: [{ url: "https://www.wasedatennis.net/team-competition2/%E7%AC%AC116%E5%9B%9E-%E6%97%A9%E6%85%B6%E5%AF%BE%E6%8A%97%E5%BA%AD%E7%90%83%E8%A9%A6%E5%90%88", label: "早稲田大学庭球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-318": {
+    kind: "match",
+    outcome: "loss",
+    score: "0-17",
+    sources: [{ url: "https://www.wasedabbc.org/game/48850/", label: "早稲田大学野球部" }],
+    confirmedAt: "2026-11-18"
   }
 };
 
