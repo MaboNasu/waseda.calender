@@ -139,6 +139,11 @@
   font-weight: 500;
   cursor: pointer;
 }
+.results-filter-grid select:disabled {
+  background: #f1efed;
+  color: #77716e;
+  cursor: not-allowed;
+}
 
 .results-list-heading {
   display: flex;
