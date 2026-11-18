@@ -22,6 +22,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=47">
+  <link rel="stylesheet" href="results-page.css?v=1">
 </head>
 <body>
 
@@ -58,33 +59,66 @@
 </nav>
 
 <main class="results-page">
-  <section class="section">
+  <section class="results-hero" aria-labelledby="results-title">
     <div class="container">
-      <h1 class="section-title">試合結果</h1>
-      <p class="results-lead">早稲田の体育各部・サークルの試合結果と、公演・大会の結果です。公式サイトなどの出典で確認したものだけを、新しい順に載せています。各結果の出典リンクから元の記録を確認できます。</p>
-      <div class="results-filters" role="group" aria-label="絞り込み">
-        <label>種類
-          <select id="results-kind">
-            <option value="">すべて</option>
-            <option value="match">試合</option>
-            <option value="report">公演・大会の報告</option>
-          </select>
-        </label>
-        <label>団体
-          <select id="results-org"><option value="">すべて</option></select>
-        </label>
-        <label>勝敗
-          <select id="results-outcome">
-            <option value="">すべて</option>
-            <option value="win">勝ち</option>
-            <option value="loss">負け</option>
-            <option value="draw">引き分け</option>
-          </select>
-        </label>
+      <p class="results-eyebrow">WASEDA CALENDAR <span aria-hidden="true">/</span> RESULTS</p>
+      <h1 id="results-title">試合結果</h1>
+      <p class="results-lead">早稲田の体育各部・サークルの試合や大会の記録を、ひとつの場所で。出典を確認できた結果だけを掲載しています。</p>
+      <p class="results-hero-total" id="results-total" aria-live="off"></p>
+    </div>
+  </section>
+  <section class="results-body" aria-label="結果を探す">
+    <div class="container">
+      <form class="results-toolbar" id="results-filter-form" role="search">
+        <div class="results-toolbar-heading">
+          <h2>結果を探す</h2>
+          <button id="results-clear" type="button" class="results-clear" hidden>条件をクリア</button>
+        </div>
+        <div class="results-search-field">
+          <label for="results-search">キーワード</label>
+          <div class="results-search-input-wrap">
+            <span aria-hidden="true" class="results-search-icon">⌕</span>
+            <input id="results-search" type="search" placeholder="団体・大会・対戦相手を検索" autocomplete="off">
+          </div>
+        </div>
+        <div class="results-filter-grid">
+          <label for="results-kind">種類
+            <select id="results-kind">
+              <option value="">すべての種類</option>
+              <option value="match">試合</option>
+              <option value="report">大会・公演の結果</option>
+            </select>
+          </label>
+          <label for="results-org">団体
+            <select id="results-org"><option value="">すべての団体</option></select>
+          </label>
+          <label for="results-outcome">勝敗
+            <select id="results-outcome">
+              <option value="">すべての勝敗</option>
+              <option value="win">勝ち</option>
+              <option value="loss">負け</option>
+              <option value="draw">引き分け</option>
+            </select>
+          </label>
+          <label for="results-sort">並び順
+            <select id="results-sort">
+              <option value="new">新しい順</option>
+              <option value="old">古い順</option>
+            </select>
+          </label>
+        </div>
+      </form>
+
+      <div class="results-list-heading">
+        <h2>掲載結果</h2>
+        <p class="results-count" id="results-count" role="status" aria-live="polite"></p>
       </div>
-      <p class="results-count" id="results-count" aria-live="polite"></p>
-      <div id="results-list" class="results-list"></div>
-      <p class="results-note">掲載内容の誤りは<a href="contact.html?entry=edit-delete&amp;type=event-edit">お問い合わせフォーム</a>からお知らせください。出典で確かめてから直します。</p>
+      <div id="results-list" class="results-list" aria-label="試合・大会結果一覧"></div>
+      <div class="results-more-wrap" id="results-more-wrap" hidden>
+        <p id="results-progress" class="results-progress"></p>
+        <button id="results-more" type="button" class="results-more">さらに結果を表示</button>
+      </div>
+      <p class="results-note">掲載内容に誤りがある場合は<a href="contact.html?entry=edit-delete&amp;type=event-edit">お問い合わせフォーム</a>からお知らせください。出典を確認して修正します。</p>
     </div>
   </section>
 </main>
@@ -131,7 +165,7 @@
 </script>
 <script src="events.js?v=8"></script>
 <script src="results.js?v=1"></script>
-<script src="results-page.js?v=1"></script>
+<script src="results-page.js?v=2"></script>
 <script type="module" src="firebase-init.js?v=3"></script>
 <script src="auth-ui.js?v=9"></script>
 <script src="pwa-install.js?v=3"></script>
