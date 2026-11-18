@@ -266,7 +266,9 @@ function opponentKeys(ev, kind = 'match') {
   if (kind === 'report') {
     title.replace(/[（(][^)）]*[)）]/g, ' ').split(/\s+/).filter((w) => w.length >= 4).forEach((w) => keys.add(w));
   }
-  return [...keys].filter((k) => k && k.length >= 2).map(normalizeForMatch);
+  // 地名や一般語だけの照合語は、会場名などに当たって別の試合を通してしまうので使わない
+  const GENERIC = new Set(['東京', '日本', '関東', '関西', '早稲田', '大学', '神奈川', '千葉', '埼玉', '横浜']);
+  return [...keys].filter((k) => k && k.length >= 2 && !GENERIC.has(k)).map(normalizeForMatch);
 }
 
 async function fetchText(url) {

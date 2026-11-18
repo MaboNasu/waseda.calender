@@ -390,6 +390,71 @@
       "status": "published",
       "checkedAt": "2026-11-18",
       "note": ""
+    },
+    "evt-199": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-303": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "見つからず"
+    },
+    "evt-255": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "見つからず"
+    },
+    "evt-282": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜日付｜2026-09-16 対慶應義塾大学｜公式結果一覧では同日の試合なし。対慶應戦は8月26日と10月16日｜https://wasedarbbc.wixsite.com/my-site/shi-he-jie-guo"
+    },
+    "evt-253": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜終了日｜2026-09-15｜2026-09-17に最終戦を実施｜https://www.wasedatennis.net/team-competition1/"
+    },
+    "evt-271": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "見つからず（題名に相手名がなく照合できない。部の報告では慶應義塾大学BYBに45-12）"
+    },
+    "evt-299": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-198": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-220": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-298": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-087": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-292": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-297": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
     }
   }
 }
