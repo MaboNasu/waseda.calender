@@ -2,9 +2,9 @@
   "version": 1,
   "events": {
     "evt-481": {
-      "status": "not_found",
+      "status": "published",
       "checkedAt": "2026-11-18",
-      "note": "見つからず（早慶戦一覧に63-55の結果あり。個別結果ページ未確認）"
+      "note": ""
     },
     "evt-479": {
       "status": "published",
@@ -115,6 +115,16 @@
       "status": "published",
       "checkedAt": "2026-11-17",
       "note": ""
+    },
+    "evt-534": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "見つからず（https://wasedarbbc.wixsite.com/my-site の「試合結果」一覧ページ(/shi-he-jie-guo)を確認。"
+    },
+    "evt-522": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "見つからず（同じ試合結果一覧ページに「立教」の見出しは存在するが、evt-534と同様スコアがページ本文になくInstagram投稿への外部リンクのみ）"
     },
     "evt-494": {
       "status": "conflict",

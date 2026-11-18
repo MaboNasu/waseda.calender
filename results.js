@@ -273,7 +273,17 @@ const RESULTS = {
     kind: "match",
     outcome: "loss",
     score: "7-13",
-    sources: [{ url: "https://wasedasports-sousupo.com/news/americanfootball/301711/", label: "早稲田スポーツ新聞会" }],
+    sources: [
+      { url: "https://www.bigbears.org/game/", label: "早稲田大学米式蹴球部(BIG BEARS)公式サイト" },
+      { url: "https://wasedasports-sousupo.com/news/americanfootball/301711/", label: "早稲田スポーツ新聞会" }
+    ],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-481": {
+    kind: "match",
+    outcome: "win",
+    score: "63-55",
+    sources: [{ url: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/", label: "早稲田大学 競技スポーツセンター(早慶戦勝敗一覧)" }],
     confirmedAt: "2026-11-18"
   },
   "evt-221": {

@@ -13857,6 +13857,28 @@ const EVENTS = [
     externalUrl: "https://www.waseda.jp/inst/weekly/news/2026/11/17/149994/",
     lastUpdated: "2026-11-17",
     isPublished: true
+  },
+  // ---- 2026-11-18 取りこぼし監査で追加 ----
+  {
+    id: "evt-740",
+    title: "日韓の絵解き―花に祈る",
+    date: "2026-12-20",
+    startTime: "13:00",
+    endTime: "18:00",
+    location: "早稲田大学戸山キャンパス38号館2階AV教室",
+    campus: "toyama",
+    organizer: "総合人文科学研究センター角田柳作記念国際日本学研究所・SGU国際日本学拠点・WCANS「環境人文学の基盤形成―いのちをめぐる真正性」プロジェクト",
+    category: "lecture",
+    scope: "circle",
+    target: ["student", "obog", "public"],
+    feeType: "free",
+    feeText: "参加費は不要",
+    description: "韓日の絵解き・説話文学をテーマにしたシンポジウム。基調講演、日本・韓国の絵解き説法の実演、座談会。紙花展示は33号館1階ロビーで12/20 12:30〜12/21 13:00。事前予約不要。",
+    externalUrl: "https://www.waseda.jp/flas/rilas/news/2026/11/14/17958/",
+    reviewStatus: "pending",
+    reviewReason: "[weak] 「無料」の根拠が出典にない",
+    lastUpdated: "2026-11-18",
+    isPublished: false
   }
 
 ];
