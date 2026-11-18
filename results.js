@@ -909,6 +909,114 @@ const RESULTS = {
     score: "59-26",
     sources: [{ url: "https://www.wasedarugby.com/event/%E6%97%A9%E5%A4%A7de-vs-%E6%96%B0%E6%BD%9F%E9%A3%9F%E8%BE%B2%E5%A4%A7-2-3/", label: "早稲田大学ラグビー蹴球部" }],
     confirmedAt: "2026-11-18"
+  },
+  // ---- 2026-11-18 出典照合で追加（scripts/apply-result-drafts.js）----
+  "evt-072": {
+    kind: "match",
+    team: "女子",
+    outcome: "loss",
+    score: "13-16",
+    sources: [{ url: "https://wasedaswim.com/game/detail/id/18712", label: "早稲田大学水泳部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-071": {
+    kind: "match",
+    team: "男子",
+    outcome: "win",
+    score: "14-11",
+    sources: [{ url: "https://wasedaswim.com/game/detail/id/18711", label: "早稲田大学水泳部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-179": {
+    kind: "match",
+    team: "1軍",
+    outcome: "win",
+    score: "3-0",
+    sources: [{ url: "https://www.wasedabbc.org/game/48864/", label: "早稲田大学野球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-178": {
+    kind: "match",
+    team: "1軍",
+    outcome: "win",
+    score: "6-3",
+    sources: [{ url: "https://www.wasedabbc.org/game/48822/", label: "早稲田大学野球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-044": {
+    kind: "report",
+    award: "男子 １位／女子 １位",
+    sources: [{ url: "https://waseda-ac.jp/news/detail/973", label: "早稲田大学競走部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-045": {
+    kind: "match",
+    outcome: "loss",
+    score: "1-3",
+    sources: [{ url: "https://wasedasports-sousupo.com/news/soccer/men-soccer/295736/", label: "早稲田スポーツ新聞会" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-129": {
+    kind: "report",
+    team: "男子団体",
+    award: "第3位",
+    sources: [{ url: "https://www.uaa.keio.ac.jp/topics/202608092302.html", label: "慶應義塾体育会" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-125": {
+    kind: "match",
+    team: "女子",
+    outcome: "win",
+    score: "6-3",
+    sources: [{ url: "https://w-lax.com/news/detail/id/32801", label: "早稲田大学ラクロス部女子" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-080": {
+    kind: "match",
+    outcome: "loss",
+    score: "5-6",
+    sources: [{ url: "https://www.wasedabbc.org/game/48860/", label: "早稲田大学野球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-123": {
+    kind: "match",
+    team: "女子",
+    outcome: "loss",
+    score: "5-6",
+    sources: [{ url: "https://w-lax.com/game/detail/id/18867", label: "早稲田大学ラクロス部女子" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-079": {
+    kind: "match",
+    team: "1軍",
+    outcome: "win",
+    score: "20-0",
+    sources: [{ url: "https://www.wasedabbc.org/game/48768/", label: "早稲田大学野球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-121": {
+    kind: "match",
+    team: "女子",
+    outcome: "win",
+    score: "6-1",
+    sources: [{ url: "https://w-lax.com/game/detail/id/18862", label: "早稲田大学ラクロス部女子" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-078": {
+    kind: "match",
+    team: "1軍",
+    outcome: "win",
+    score: "5-4",
+    sources: [{ url: "https://www.wasedabbc.org/game/48767/", label: "早稲田大学野球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-102": {
+    kind: "match",
+    team: "男子",
+    outcome: "win",
+    score: "94-91",
+    sources: [{ url: "https://waseda-basketball.com/game/detail/id/3302", label: "早稲田大学バスケットボール部" }],
+    confirmedAt: "2026-11-18"
   }
 };
 

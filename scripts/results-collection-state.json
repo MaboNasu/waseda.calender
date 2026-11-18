@@ -750,6 +750,156 @@
       "status": "published",
       "checkedAt": "2026-11-18",
       "note": ""
+    },
+    "evt-192": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜部門｜男子｜部の日程では女子の試合｜https://www.waseda-kyudo.net/game2026/"
+    },
+    "evt-063": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-061": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜対戦相手｜法政大学・大東文化大学｜法政大学・明治大学・大東文化大学｜https://www.waseda-kyudo.net/game2026/"
+    },
+    "evt-062": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-189": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "個人成績のみ"
+    },
+    "evt-060": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-124": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜対戦相手｜日本大学｜日大中高｜https://w-lax.com/game/detail/id/18864"
+    },
+    "evt-059": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-135": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "見つからず"
+    },
+    "evt-086": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "個人成績のみ"
+    },
+    "evt-103": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜大会回数｜第94回｜関西学院大学公式は第94回、早稲田大学の個別試合ページは第93回｜https://waseda-basketball.com/game/detail/id/3439"
+    },
+    "evt-122": {
+      "status": "cancelled",
+      "checkedAt": "2026-11-18",
+      "note": "中止（公式結果一覧に中止と記載）"
+    },
+    "evt-083": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "結果なし（早慶剣道部合同稽古）"
+    },
+    "evt-085": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "個人成績のみ"
+    },
+    "evt-057": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-058": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "個人成績のみ"
+    },
+    "evt-072": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-071": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-179": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-178": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-044": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-045": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-129": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-125": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-080": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-123": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-079": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-121": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-078": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-102": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
     }
   }
 }
