@@ -194,6 +194,7 @@ async function testDisplay() {
     assert.ok(D.rawScoreMatch('計 立大 2 0 0 0 0 0 0 0 1 3 早大 0 0 0 0 0 1 0 0 0 1', 1, 3, ['立大']));
     assert.strictEqual(D.rawScoreMatch('計 立大 2 0 0 0 0 0 0 0 1 3 早大 0 0 0 0 0 1 0 0 0 1', 3, 1, ['立大']), null);
     assert.strictEqual(D.rawScoreMatch('早稲田大学 7 19 中央大学', 7, 19, ['明治大学']), null);
+    assert.ok(D.rawScoreMatch('試合終了 早大C 東海大C 27 17 27 10 17', 27, 17, ['東海大C']));
   });
   t('下書きの照合：サヨナラの「6x-5」とコールドの「13x 対 3」', () => {
     assert.notStrictEqual(D.containsScore(n('早稲田大学 6x-5 H Honda'), 6, 5), false);
