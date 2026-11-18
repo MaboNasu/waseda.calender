@@ -2,9 +2,9 @@
   "version": 1,
   "events": {
     "evt-481": {
-      "status": "not_found",
-      "checkedAt": "2026-11-16",
-      "note": "見つからず"
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
     },
     "evt-479": {
       "status": "published",
@@ -62,9 +62,9 @@
       "note": "未掲載（早慶戦勝敗一覧のホッケー秋は「早大-慶大」で結果なし）"
     },
     "evt-234": {
-      "status": "not_found",
-      "checkedAt": "2026-11-16",
-      "note": "未掲載（BIG BEARS 公式は未更新、連盟記事 id=10524 は入場券の告知）"
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
     },
     "evt-048": {
       "status": "not_found",
@@ -115,6 +115,16 @@
       "status": "published",
       "checkedAt": "2026-11-17",
       "note": ""
+    },
+    "evt-534": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "見つからず（https://wasedarbbc.wixsite.com/my-site の「試合結果」一覧ページ(/shi-he-jie-guo)を確認。"
+    },
+    "evt-522": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "見つからず（同じ試合結果一覧ページに「立教」の見出しは存在するが、evt-534と同様スコアがページ本文になくInstagram投稿への外部リンクのみ）"
     }
   }
 }

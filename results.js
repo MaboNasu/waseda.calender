@@ -267,6 +267,21 @@ const RESULTS = {
     ],
     sources: [{ url: "https://waseda-bad.com/blog/2026/11/11/2026inter_t/", label: "早稲田大学バドミントン部公式サイト" }],
     confirmedAt: "2026-11-17"
+  },
+  // ---- 2026-11-18 出典照合で追加（scripts/apply-result-drafts.js）----
+  "evt-234": {
+    kind: "match",
+    outcome: "loss",
+    score: "7-13",
+    sources: [{ url: "https://www.bigbears.org/game/", label: "早稲田大学米式蹴球部(BIG BEARS)公式サイト" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-481": {
+    kind: "match",
+    outcome: "win",
+    score: "63-55",
+    sources: [{ url: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/", label: "早稲田大学 競技スポーツセンター(早慶戦勝敗一覧)" }],
+    confirmedAt: "2026-11-18"
   }
 };
 
