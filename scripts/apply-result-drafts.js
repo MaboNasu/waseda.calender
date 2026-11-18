@@ -89,7 +89,7 @@ function clubHosts() {
       if (!o.websiteUrl) continue;
       try {
         const h = new URL(o.websiteUrl).hostname.replace(/^www\./, '');
-        if (!/wixsite|ameblo|wordpress\.com|jimdo|fc2|studio\.site|netlify|tumblr|github\.io|sakura\.ne\.jp|instagram|twitter|x\.com|facebook|note\.com|linktr/.test(h)) CLUB_HOSTS.add(h);
+        if (!/(^|\.)(wixsite\.com|ameblo\.jp|wordpress\.com|jimdo\w*\.com|fc2\.com|studio\.site|netlify\.app|tumblr\.com|github\.io|sakura\.ne\.jp|instagram\.com|twitter\.com|x\.com|facebook\.com|note\.com|linktr\.ee)$/.test(h)) CLUB_HOSTS.add(h);
       } catch { /* 不正なURLは無視 */ }
     }
   } catch { /* organizations.js が読めないときは使わない */ }
@@ -152,13 +152,13 @@ function scoreText(normText) {
  * - 「早稲田大学 7 19 中央大学」のような対戦表示（相手が先の順も）
  * - 野球などのイニング別スコア（「早大 0 0 0 1 0 3 0 1 0 5 慶大 0 0 0 0 0 2 0 0 0 2」）の合計
  */
-const WASEDA_NAME = '(?:早稲田大学|早稲田|早大)';
+const WASEDA_NAME = '(?:早稲田大学|早稲田|早大)(?:[A-E]{1,2})?';
 function escapeRe(x) { return String(x).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 function rawScoreMatch(rawText, a, b, keys) {
   const raw = String(rawText).normalize('NFKC').replace(/\s+/g, ' ');
   const names = keys.filter((k) => k.length >= 2).map(escapeRe);
   if (!names.length) return null;
-  const opp = `(?:${names.join('|')})`;
+  const opp = `(?:${names.join('|')})(?:[A-E]{1,2})?`;
   const board = [
     new RegExp(`${WASEDA_NAME} ${a} ${b} ${opp}`),
     new RegExp(`${opp} ${b} ${a} ${WASEDA_NAME}`),
@@ -259,7 +259,7 @@ function opponentKeys(ev, kind = 'match') {
     (UNIV_ABBR[name] || []).forEach((k) => keys.add(k));
     // 「大東文化大C」「明大B」のようなチーム区分つきの名前は、区分を外した略称も使う（「大東大C」）
     const team = /^(.+?)([A-E]{1,2})$/.exec(name);
-    if (team) (UNIV_ABBR[team[1]] || []).forEach((k) => { keys.add(k + team[2]); keys.add(k); });
+    if (team) { keys.add(team[1]); (UNIV_ABBR[team[1]] || []).forEach((k) => { keys.add(k + team[2]); keys.add(k); }); }
   }
   if (/早慶/.test(title)) ['慶應', '慶大', '慶応', '早慶'].forEach((k) => keys.add(k));
   (title.match(/第\d+節|\d+回戦|準々決勝|準決勝|決勝|入替戦|定期戦/g) || []).forEach((k) => keys.add(k));

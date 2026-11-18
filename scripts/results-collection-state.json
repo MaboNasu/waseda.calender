@@ -530,6 +530,226 @@
       "status": "published",
       "checkedAt": "2026-11-18",
       "note": ""
+    },
+    "evt-116": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "見つからず"
+    },
+    "evt-136": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "見つからず"
+    },
+    "evt-070": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-074": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜競技・終了日｜競泳・アーティスティックスイミング、2026-08-30｜8月30日はAS競技のみ、競泳は9月6日まで開催｜https://wasedaswim.com/news/detail/id/32922"
+    },
+    "evt-186": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "見つからず"
+    },
+    "evt-073": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "個人成績のみ"
+    },
+    "evt-068": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-069": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-227": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "結果なし（高校生ガイダンス）"
+    },
+    "evt-081": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "個人成績のみ"
+    },
+    "evt-082": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "個人成績のみ"
+    },
+    "evt-115": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜日付｜2026-08-22｜成蹊大学の公式結果では2026-09-23に実施（成蹊4－早稲田12）｜https://seikeilaxwebsite.wixsite.com/homepage"
+    },
+    "evt-193": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-194": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-066": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "個人成績のみ"
+    },
+    "evt-064": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-196": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-219": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-191": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-190": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-130": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-185": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-188": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-228": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-244": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-184": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-187": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-243": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-183": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-217": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-218": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-242": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-216": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-127": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-182": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-214": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-215": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-181": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-212": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-213": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-065": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-180": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-211": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-210": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
     }
   }
 }
