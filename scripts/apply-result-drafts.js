@@ -52,7 +52,7 @@ const UNREADABLE_HOSTS = /(^|\.)instagram\.com$|(^|\.)x\.com$|(^|\.)twitter\.com
 const UNIV_ABBR = {
   明治大学: ['明大'], 中央大学: ['中大'], 駒澤大学: ['駒大'], 駒沢大学: ['駒大'], 法政大学: ['法大'], 立教大学: ['立大'],
   慶應義塾大学: ['慶大', '慶應'], 慶應大学: ['慶大'], 日本大学: ['日大'], 日本体育大学: ['日体大'], 国士舘大学: ['国士大', '国士舘大'],
-  筑波大学: ['筑波大', '筑大'], 東海大学: ['東海大'], 東洋大学: ['東洋大'], 帝京大学: ['帝京大'], 青山学院大学: ['青学大', '青学'], 青山学院大: ['青学大', '青学'], 帝京大: ['帝京大'], 筑波大: ['筑波大', '筑大'],
+  筑波大学: ['筑波大', '筑大'], 東海大学: ['東海大'], 東洋大学: ['東洋大'], 帝京大学: ['帝京大'], 青山学院大学: ['青学大', '青学'], 青山学院大: ['青学大', '青学'], 大東文化大学: ['大東大'], 大東文化大: ['大東大'], 立教大: ['立大'], 帝京大: ['帝京大'], 筑波大: ['筑波大', '筑大'],
   東京大学: ['東大'], 早稲田大学: ['早大'], 順天堂大学: ['順大'], 専修大学: ['専大'], 桐蔭横浜大学: ['桐蔭横浜大', '桐蔭大'],
   神奈川大学: ['神大', '神奈川大'], 山梨学院大学: ['山梨学院大', '山梨学院'], 亜細亜大学: ['亜大', '亜細亜大'], 立命館大学: ['立命大', '立命館大'],
   大同大学: ['大同大'], 東京農業大学: ['東農大'], 拓殖大学: ['拓大'], 流通経済大学: ['流経大'], 関東学院大学: ['関東学院大'],
@@ -162,6 +162,9 @@ function rawScoreMatch(rawText, a, b, keys) {
   const board = [
     new RegExp(`${WASEDA_NAME} ${a} ${b} ${opp}`),
     new RegExp(`${opp} ${b} ${a} ${WASEDA_NAME}`),
+    // 「早大 立教大 67 3」のように両チーム名のあとに得点が並ぶ表示
+    new RegExp(`${WASEDA_NAME} ${opp} ${a} ${b}(?![0-9])`),
+    new RegExp(`${opp} ${WASEDA_NAME} ${b} ${a}(?![0-9])`),
   ];
   for (const re of board) { const m = re.exec(raw); if (m) return { at: m.index, how: '対戦表示' }; }
   // イニング別スコア：チーム名のあとに1〜2桁の数か X が3〜12個、最後が合計
@@ -254,6 +257,9 @@ function opponentKeys(ev, kind = 'match') {
     keys.add(name.replace(/大学$/, '大'));
     if (name.replace(/大学$/, '').length >= 2) keys.add(name.replace(/大学$/, ''));
     (UNIV_ABBR[name] || []).forEach((k) => keys.add(k));
+    // 「大東文化大C」「明大B」のようなチーム区分つきの名前は、区分を外した略称も使う（「大東大C」）
+    const team = /^(.+?)([A-E]{1,2})$/.exec(name);
+    if (team) (UNIV_ABBR[team[1]] || []).forEach((k) => { keys.add(k + team[2]); keys.add(k); });
   }
   if (/早慶/.test(title)) ['慶應', '慶大', '慶応', '早慶'].forEach((k) => keys.add(k));
   (title.match(/第\d+節|\d+回戦|準々決勝|準決勝|決勝|入替戦|定期戦/g) || []).forEach((k) => keys.add(k));
@@ -342,7 +348,7 @@ async function judge(row, events, existing, today, cache) {
       const pos = scorePositions(norm, a, b);
       // 「早大125中―明大126中」「早大3点-明大1点」のように、単位や相手名がスコアの間に入る書き方
       keys.forEach((k) => {
-        const re = new RegExp(`(?<!\\d)${a}(?:中|点|本)?-${k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}${b}(?:中|点|本)?(?!\\d)`);
+        const re = new RegExp(`(?<!\\d)${a}(?:中|点|本)?-(?:${k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})?${b}(?:中|点|本)(?!\\d)`);
         const m = re.exec(norm);
         if (m) pos.push(m.index);
       });

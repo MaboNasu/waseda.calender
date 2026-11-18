@@ -305,6 +305,81 @@
       "status": "published",
       "checkedAt": "2026-11-18",
       "note": ""
+    },
+    "evt-302": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "個人成績のみ"
+    },
+    "evt-280": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜日付｜2026-09-26｜雨天順延、9月27日に第1戦を実施｜https://wasedasports-sousupo.com/news/junkobaseball/298925/"
+    },
+    "evt-293": {
+      "status": "cancelled",
+      "checkedAt": "2026-11-18",
+      "note": "中止（9月26日の明治大学戦は雨天中止・順延）"
+    },
+    "evt-281": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "見つからず（evt-280 の順延と重なり、どの試合の結果か確定できない）"
+    },
+    "evt-294": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "見つからず（連盟の試合ページはイニング表のチーム名が略号で照合できない）"
+    },
+    "evt-272": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "見つからず（相手も早稲田の団体で、照合の相手名が決められない）"
+    },
+    "evt-092": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-118": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-200": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-301": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-105": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-230": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-300": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-311": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-312": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
     }
   }
 }
