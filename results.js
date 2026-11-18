@@ -1017,6 +1017,54 @@ const RESULTS = {
     score: "94-91",
     sources: [{ url: "https://waseda-basketball.com/game/detail/id/3302", label: "早稲田大学バスケットボール部" }],
     confirmedAt: "2026-11-18"
+  },
+  // ---- 2026-11-18 出典照合で追加（scripts/apply-result-drafts.js）----
+  "evt-101": {
+    kind: "match",
+    team: "男子",
+    outcome: "loss",
+    score: "85-91",
+    sources: [{ url: "https://waseda-basketball.com/game/detail/id/3301", label: "早稲田大学バスケットボール部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-120": {
+    kind: "match",
+    team: "女子",
+    outcome: "win",
+    score: "8-2",
+    sources: [{ url: "https://w-lax.com/game/detail/id/18866", label: "早稲田大学ラクロス部女子" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-099": {
+    kind: "match",
+    team: "男子",
+    outcome: "win",
+    score: "101-94",
+    sources: [{ url: "https://waseda-basketball.com/game/detail/id/3299", label: "早稲田大学バスケットボール部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-098": {
+    kind: "match",
+    team: "男子",
+    outcome: "win",
+    score: "94-59",
+    sources: [{ url: "https://waseda-basketball.com/game/detail/id/3298", label: "早稲田大学バスケットボール部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-077": {
+    kind: "match",
+    outcome: "win",
+    score: "9-0",
+    sources: [{ url: "https://www.waseda.jp/inst/athletic/news/2026/07/06/59048/", label: "早稲田大学 競技スポーツセンター" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-119": {
+    kind: "match",
+    team: "女子",
+    outcome: "loss",
+    score: "4-5",
+    sources: [{ url: "https://w-lax.com/game/detail/id/18869", label: "早稲田大学ラクロス部女子" }],
+    confirmedAt: "2026-11-18"
   }
 };
 
