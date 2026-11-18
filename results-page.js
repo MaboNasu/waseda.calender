@@ -177,7 +177,16 @@
     }).join('');
   }
 
-  function filterChanged() { state.visible = PAGE_SIZE; render(); }
+  function filterChanged() {
+    var outcome = document.getElementById('results-outcome');
+    if (outcome) {
+      var isReport = state.kind === 'report';
+      outcome.disabled = isReport;
+      if (isReport) { state.outcome = ''; outcome.value = ''; }
+    }
+    state.visible = PAGE_SIZE;
+    render();
+  }
 
   function clearFilters() {
     state.query = ''; state.kind = ''; state.org = ''; state.outcome = ''; state.sort = 'new';
