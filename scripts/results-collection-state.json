@@ -455,6 +455,81 @@
       "status": "published",
       "checkedAt": "2026-11-18",
       "note": ""
+    },
+    "evt-291": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜大会区分｜関東学生テニスリーグ4部｜関東大学テニスリーグ第4戦｜https://www.wasedatennis.net/team-competition1/"
+    },
+    "evt-252": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜終了日｜2026-09-14｜2026-09-17に最終戦を実施｜https://www.wasedatennis.net/team-competition2/"
+    },
+    "evt-290": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜大会区分｜関東学生テニスリーグ4部｜関東大学テニスリーグ第4戦｜https://www.wasedatennis.net/team-competition2/"
+    },
+    "evt-046": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜スコア｜（結果未掲載）｜早稲田スポーツ新聞会の記事内でスコア表82-107と本文末尾83-107が食い違う｜https://wasedasports-sousupo.com/news/weightlifting/298425/"
+    },
+    "evt-197": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-195": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-076": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-117": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-142": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-229": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-279": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-091": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-258": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-278": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-075": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
     }
   }
 }

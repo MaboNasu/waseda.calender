@@ -625,6 +625,71 @@ const RESULTS = {
     score: "65-84",
     sources: [{ url: "https://wasedasports-sousupo.com/news/basketball/men-basketball/298384/", label: "早稲田スポーツ新聞会" }],
     confirmedAt: "2026-11-18"
+  },
+  // ---- 2026-11-18 出典照合で追加（scripts/apply-result-drafts.js）----
+  "evt-076": {
+    kind: "report",
+    team: "男子",
+    award: "6位",
+    sources: [{ url: "https://wasedaswim.com/news/detail/id/33237", label: "早稲田大学水泳部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-117": {
+    kind: "match",
+    team: "男子",
+    outcome: "loss",
+    score: "4-6",
+    sources: [{ url: "https://wasedasports-sousupo.com/news/lacrosse/men-lacrosse/298237/", label: "早稲田スポーツ新聞会" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-142": {
+    kind: "report",
+    team: "女子",
+    award: "3位",
+    sources: [{ url: "https://wasedaswim.com/news/detail/id/33237", label: "早稲田大学水泳部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-229": {
+    kind: "match",
+    outcome: "win",
+    score: "35-7",
+    sources: [{ url: "https://wasedasports-sousupo.com/news/americanfootball/298227/", label: "早稲田スポーツ新聞会" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-279": {
+    kind: "match",
+    outcome: "loss",
+    score: "3-6",
+    sources: [{ url: "https://w-junkoh.com/game/detail/id/2147", label: "早稲田大学準硬式野球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-091": {
+    kind: "match",
+    outcome: "win",
+    score: "69-0",
+    sources: [{ url: "https://wasedasports-sousupo.com/news/rugby/men-rugby/297913/", label: "早稲田スポーツ新聞会" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-258": {
+    kind: "match",
+    team: "女子",
+    outcome: "loss",
+    score: "1-3",
+    sources: [{ url: "https://www.waseda-afc.jp/news-women/148638", label: "早稲田大学ア式蹴球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-278": {
+    kind: "match",
+    outcome: "loss",
+    score: "3-6",
+    sources: [{ url: "https://wasedasports-sousupo.com/news/junkobaseball/297949/", label: "早稲田スポーツ新聞会" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-075": {
+    kind: "report",
+    award: "男子 男子総合6位／女子 女子総合２位",
+    sources: [{ url: "https://wasedasports-sousupo.com/news/swimming/299241/", label: "早稲田スポーツ新聞会" }],
+    confirmedAt: "2026-11-18"
   }
 };
 
