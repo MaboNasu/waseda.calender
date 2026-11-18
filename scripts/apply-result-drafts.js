@@ -228,6 +228,8 @@ function clubKeys(ev) {
   (title.match(/[（(]([^()（）]+)[)）]/g) || []).forEach((m) => {
     const inner = m.slice(1, -1).replace(/\s*(男子|女子)\s*/g, '').trim();
     if (inner.length >= 2) keys.add(inner);
+    // 「ア式蹴球部・ソッカー部」のように両校の部名が並ぶときは分けて使う
+    inner.split(/[・／/]/).map((x) => x.trim()).filter((x) => x.length >= 2).forEach((x) => keys.add(x));
   });
   const core = title.replace(/[（(][^()（）]*[)）]/g, '').replace(/第\d+回|早慶|定期戦|戦$/g, '').trim();
   if (core.length >= 2) keys.add(core);
