@@ -495,6 +495,73 @@ const RESULTS = {
     score: "0-17",
     sources: [{ url: "https://www.wasedabbc.org/game/48850/", label: "早稲田大学野球部" }],
     confirmedAt: "2026-11-18"
+  },
+  // ---- 2026-11-18 出典照合で追加（scripts/apply-result-drafts.js）----
+  "evt-092": {
+    kind: "match",
+    outcome: "win",
+    score: "67-3",
+    sources: [{ url: "https://www.wasedarugby.com/event/%E6%97%A9%E5%A4%A7-vs-%E7%AB%8B%E6%95%99%E5%A4%A7-111/", label: "早稲田大学ラグビー蹴球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-118": {
+    kind: "match",
+    outcome: "win",
+    score: "6-2",
+    sources: [{ url: "https://wlax-redbats.com/news/detail/id/33290", label: "早稲田大学ラクロス部男子 RED BATS" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-200": {
+    kind: "match",
+    team: "男子",
+    outcome: "win",
+    score: "125-124",
+    sources: [{ url: "https://wasedasports-sousupo.com/news/kyudo/298931/", label: "早稲田スポーツ新聞会" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-301": {
+    kind: "match",
+    outcome: "win",
+    score: "78-77",
+    sources: [{ url: "https://waseda-basketball.com/game/detail/id/3429", label: "早稲田大学バスケットボール部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-105": {
+    kind: "match",
+    outcome: "loss",
+    score: "0-3",
+    sources: [{ url: "https://www.waseda-afc.jp/news-men/149085", label: "早稲田大学ア式蹴球部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-230": {
+    kind: "match",
+    outcome: "win",
+    score: "38-27",
+    sources: [{ url: "https://wasedasports-sousupo.com/news/americanfootball/298890/", label: "早稲田スポーツ新聞会" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-300": {
+    kind: "match",
+    outcome: "win",
+    score: "68-66",
+    sources: [{ url: "https://waseda-basketball.com/game/detail/id/3428", label: "早稲田大学バスケットボール部" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-311": {
+    kind: "match",
+    team: "DE",
+    outcome: "win",
+    score: "19-17",
+    sources: [{ url: "https://wasedasports-sousupo.com/news/rugby/men-rugby/298915/", label: "早稲田スポーツ新聞会" }],
+    confirmedAt: "2026-11-18"
+  },
+  "evt-312": {
+    kind: "match",
+    team: "女子",
+    outcome: "loss",
+    score: "0-1",
+    sources: [{ url: "https://www.waseda-afc.jp/news-women/148972", label: "早稲田大学ア式蹴球部" }],
+    confirmedAt: "2026-11-18"
   }
 };
 
