@@ -13,8 +13,8 @@
     },
     "evt-492": {
       "status": "not_found",
-      "checkedAt": "2026-11-16",
-      "note": "見つからず"
+      "checkedAt": "2026-11-18",
+      "note": "未掲載"
     },
     "evt-703": {
       "status": "not_applicable",
@@ -125,6 +125,196 @@
       "status": "not_found",
       "checkedAt": "2026-11-18",
       "note": "見つからず（同じ試合結果一覧ページに「立教」の見出しは存在するが、evt-534と同様スコアがページ本文になくInstagram投稿への外部リンクのみ）"
+    },
+    "evt-494": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜大会名｜関東大学ジュニア選手権大会 早大C vs明大C｜秋季オープン戦（対明大C）｜https://wasedasports-sousupo.com/news/rugby/men-rugby/300029/"
+    },
+    "evt-493": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜大会名｜関東大学ジュニア選手権大会｜秋季オープン戦｜https://wasedasports-sousupo.com/news/rugby/men-rugby/299956/"
+    },
+    "evt-404": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "結果なし（練習公開）"
+    },
+    "evt-400": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "結果なし（練習公開）"
+    },
+    "evt-445": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "見つからず（全日本剣道連盟の結果表は「勝数 本数」の表で、照合器で読めない）"
+    },
+    "evt-221": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-330": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-358": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-451": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-108": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-232": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-329": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-363": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-450": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-093": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-328": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-357": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-107": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-327": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-356": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-380": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-384": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-386": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-319": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-201": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜日付｜2026-10-06｜2026-10-04に実施｜https://wasedasports-sousupo.com/news/kyudo/299395/"
+    },
+    "evt-202": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜日付｜2026-10-06｜2026-10-04に実施｜https://wasedasports-sousupo.com/news/kyudo/299395/"
+    },
+    "evt-088": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "個人成績のみ"
+    },
+    "evt-362": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-231": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-326": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-354": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-361": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-106": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-320": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-325": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-353": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-261": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-318": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
     }
   }
 }
