@@ -900,6 +900,91 @@
       "status": "published",
       "checkedAt": "2026-11-18",
       "note": ""
+    },
+    "evt-134": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜対戦相手｜国士館大学世田谷｜国士舘大学世田谷（部の日程の表記）｜https://w-junkoh.com/schedule/index/year/2026/month/07"
+    },
+    "evt-056": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "個人成績のみ"
+    },
+    "evt-084": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "結果なし（出稽古・合同練習）"
+    },
+    "evt-090": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜大会区分｜練習試合｜部の公式結果では定期戦｜https://www.wasedarugby.com/event/%E6%97%A9%E5%A4%A7-vs-%E6%9D%B1%E5%A4%A7-99/"
+    },
+    "evt-133": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "見つからず"
+    },
+    "evt-100": {
+      "status": "conflict",
+      "checkedAt": "2026-11-18",
+      "note": "食い違い｜対戦相手｜東海大学九州大学｜東海大九州大学（部の試合ページの表記）｜https://waseda-basketball.com/game/detail/id/3300"
+    },
+    "evt-054": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-055": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-128": {
+      "status": "not_applicable",
+      "checkedAt": "2026-11-18",
+      "note": "個人成績のみ"
+    },
+    "evt-052": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-053": {
+      "status": "not_found",
+      "checkedAt": "2026-11-18",
+      "note": "PDFのみ"
+    },
+    "evt-101": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-120": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-099": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-098": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-077": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
+    },
+    "evt-119": {
+      "status": "published",
+      "checkedAt": "2026-11-18",
+      "note": ""
     }
   }
 }
