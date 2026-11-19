@@ -1741,7 +1741,7 @@ const EVENTS = [
   // ---- ラグビー蹴球部 ----
   {
     id: "evt-090",
-    title: "ラグビー蹴球部 練習試合 vs東京大学",
+    title: "ラグビー蹴球部 定期戦 vs東京大学",
     date: "2026-07-11",
     startTime: "10:00",
     location: "東京大学 駒場キャンパス",
@@ -1753,8 +1753,8 @@ const EVENTS = [
     feeType: "unknown",
     feeText: "料金未確認",
     description: "早稲田大学ラグビー蹴球部の練習試合。対 東京大学。",
-    externalUrl: "https://www.wasedarugby.com/schedule",
-    lastUpdated: "2026-11-14",
+    externalUrl: "https://www.wasedarugby.com/event/%E6%97%A9%E5%A4%A7-vs-%E6%9D%B1%E5%A4%A7-99/",
+    lastUpdated: "2026-11-19",
     isPublished: true
   },
   {
@@ -4725,7 +4725,8 @@ const EVENTS = [
     feeText: "料金未確認",
     description: "早稲田大学柔道部と慶應義塾大学による伝統の早慶戦。開会式10:45。",
     externalUrl: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/",
-    lastUpdated: "2026-11-14",
+    sourceUrls: ["https://www.uaa.keio.ac.jp/competition/pdf/soukeisen_2026.pdf"],
+    lastUpdated: "2026-11-19",
     isPublished: true
   },
   {
@@ -11239,11 +11240,11 @@ const EVENTS = [
     category: "lecture",
     scope: "circle",
     target: ["student", "obog", "public"],
-    feeType: "unknown",
-    feeText: "料金未確認",
+    feeType: "free",
+    feeText: "無料（事前登録制）",
     description: "総合人文科学研究センター角田柳作記念国際日本学研究所主催のシンポジウム。",
     externalUrl: "https://www.waseda.jp/flas/rilas/news/2026/10/23/17713/",
-    lastUpdated: "2026-11-14",
+    lastUpdated: "2026-11-19",
     isPublished: true
   },
   {
@@ -11258,11 +11259,11 @@ const EVENTS = [
     category: "lecture",
     scope: "circle",
     target: ["student", "obog", "public"],
-    feeType: "unknown",
-    feeText: "料金未確認",
+    feeType: "free",
+    feeText: "無料（一般の方も無料・登録不要。オンライン視聴は要登録）",
     description: "日本中東学会第32回公開講演会。早稲田大学総合人文科学研究センター・早稲田大学カタールチェア・早稲田大学文学研究科中東・イスラーム研究コース共催。",
     externalUrl: "https://www.waseda.jp/flas/rilas/?p=17650",
-    lastUpdated: "2026-11-14",
+    lastUpdated: "2026-11-19",
     isPublished: true
   },
   {
@@ -13105,13 +13106,13 @@ const EVENTS = [
   },
   {
     id: "evt-690",
-    title: "掌中の芸術―台湾布袋戯の人形遣いと表現の美(レクチャー・デモンストレーション&ワークショップ)",
+    title: "掌中の芸術―台湾布袋戯の人形遣いと表現の美 レクチャー・デモンストレーション＆ワークショップ",
     date: "2026-12-01",
     startTime: "18:00",
     endTime: "20:00",
     location: "小野記念講堂（27号館 地下2階）",
     campus: "waseda",
-    organizer: "早稲田大学坪内博士記念演劇博物館",
+    organizer: "科研費基盤研究C「近現代東アジア文化圏における興行財の大衆性と芸術性の相剋と相生」",
     category: "lecture",
     scope: "circle",
     target: ["student", "obog", "public"],
@@ -13119,7 +13120,7 @@ const EVENTS = [
     feeText: "無料(定員200名・要事前申込/先着、11/23(月)正午締切)",
     description: "台湾・台北木偶劇団を招き、伝統人形劇「布袋戯」の歴史と人形操作を紹介するレクチャー・デモンストレーション&ワークショップ。開場17:30。",
     externalUrl: "https://enpaku.w.waseda.jp/ex/22004/",
-    lastUpdated: "2026-11-14",
+    lastUpdated: "2026-11-19",
     isPublished: true
   },
   {

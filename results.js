@@ -1065,6 +1065,16 @@ const RESULTS = {
     score: "4-5",
     sources: [{ url: "https://w-lax.com/game/detail/id/18869", label: "早稲田大学ラクロス部女子" }],
     confirmedAt: "2026-11-18"
+  },
+  // ---- 2026-11-19 出典照合で追加（scripts/apply-result-drafts.js）----
+  "evt-480": {
+    kind: "match",
+    matches: [
+      { team: "男子", outcome: "win", score: "1-0" },
+      { team: "女子", outcome: "draw", score: "0-0" }
+    ],
+    sources: [{ url: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/", label: "早稲田大学 競技スポーツセンター(早慶戦勝敗一覧)" }],
+    confirmedAt: "2026-11-19"
   }
 };
 
