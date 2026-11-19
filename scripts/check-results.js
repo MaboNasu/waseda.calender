@@ -161,6 +161,17 @@ async function testDisplay() {
     assert.ok(keys.includes(n('ホッケー')));
     assert.ok(D.clubKeys({ title: '早慶戦(合気道部)' }).includes(n('合気道部')));
   });
+  t('下書きの照合：早慶戦一覧で同じスコアが別の部にもあるときは、部・競技名が直前にある行を使う', async () => {
+    const ev = { id: 'evt-z', title: '第100回早慶ホッケー定期戦', date: '2026-11-15', organizer: '早稲田大学ホッケー部' };
+    const url = 'https://www.waseda.jp/inst/athletic/wasedasports/soukei/';
+    const row = (sc) => ({ line: 1, decision: '', fields: ['evt-z', 'match', '女子', 'draw', sc, '', '', url, '競技スポーツセンター', ''] });
+    const text = 'ア式蹴球部(女子) 11/1 下田グラウンド △早大0-0慶大△ 剣道部(男子) 10/25 ●早大9-11慶大○ ホッケー部(男子) 11/15 大井ホッケー競技場 ○早大1-0慶大× ホッケー部(女子) 11/15 大井ホッケー競技場 △早大0-0慶大△';
+    const cache = new Map([[url, { ok: true, text }]]);
+    const ok = await D.judge(row('0-0'), new Map([['evt-z', ev]]), {}, '2026-11-19', cache);
+    assert.strictEqual(ok.gate, 'A', ok.problems.join(' / '));
+    const ng = await D.judge(row('9-11'), new Map([['evt-z', ev]]), {}, '2026-11-19', cache);
+    assert.strictEqual(ng.gate, 'C');
+  });
   t('下書きの照合：「関東大学対抗戦 vs帝京大」の相手は帝京大', () => {
     const keys = D.opponentKeys({ title: 'ラグビー蹴球部 関東大学対抗戦 vs帝京大' });
     assert.ok(keys.includes(n('帝京大')));

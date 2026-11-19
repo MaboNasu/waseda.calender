@@ -12,9 +12,9 @@
       "note": ""
     },
     "evt-492": {
-      "status": "not_found",
-      "checkedAt": "2026-11-18",
-      "note": "未掲載"
+      "status": "cancelled",
+      "checkedAt": "2026-11-19",
+      "note": "中止（慶應義塾体育会の早慶戦一覧表 https://www.uaa.keio.ac.jp/competition/pdf/soukeisen_2026.pdf：台風25号による開催会場の被害が大きく開催取止め）"
     },
     "evt-703": {
       "status": "not_applicable",
@@ -57,9 +57,9 @@
       "note": "見つからず"
     },
     "evt-480": {
-      "status": "not_applicable",
-      "checkedAt": "2026-11-16",
-      "note": "未掲載（早慶戦勝敗一覧のホッケー秋は「早大-慶大」で結果なし）"
+      "status": "published",
+      "checkedAt": "2026-11-19",
+      "note": ""
     },
     "evt-234": {
       "status": "published",

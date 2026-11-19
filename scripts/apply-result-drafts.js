@@ -356,7 +356,10 @@ async function judge(row, events, existing, today, cache) {
         const m = re.exec(norm);
         if (m) pos.push(m.index);
       });
-      at = pos.find((p) => near(p, 250));
+      // 早慶戦の一覧は全競技が並ぶので、同じスコアが複数あるときは部・競技名が直前（100字以内）にあるものを選ぶ
+      const soukeiClubs = /早慶/.test(ev.title || '') ? clubKeys(ev) : null;
+      const clubBefore = (p) => soukeiClubs.some((k) => norm.slice(Math.max(0, p - 100), p).includes(k));
+      at = (soukeiClubs && pos.find((p) => near(p, 250) && clubBefore(p))) ?? pos.find((p) => near(p, 250));
       if (at === undefined || !pos.length) {
         // 出典が「相手 2-4 早稲田」の順（ホーム側が先）で書いているとき：相手名の直後に逆順のスコア、その直後に早稲田
         const rev = scorePositions(norm, b, a).find((p) => {
