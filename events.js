@@ -1923,7 +1923,7 @@ const EVENTS = [
   },
   {
     id: "evt-100",
-    title: "バスケ新人戦 vs東海大学九州大学",
+    title: "バスケ新人戦 vs東海大九州大学",
     date: "2026-07-10",
     startTime: "17:00",
     location: "松山市総合コミュニティセンター",
@@ -1934,7 +1934,7 @@ const EVENTS = [
     target: ["student", "obog", "public"],
     feeType: "unknown",
     feeText: "料金未確認",
-    description: "第4回全日本大学バスケットボール新人戦。早稲田大学 対 東海大学九州大学。",
+    description: "第4回全日本大学バスケットボール新人戦。早稲田大学 対 東海大九州大学。",
     externalUrl: "https://waseda-basketball.com/schedule",
     lastUpdated: "2026-11-14",
     isPublished: true
@@ -2449,7 +2449,7 @@ const EVENTS = [
   },
   {
     id: "evt-124",
-    title: "ラクロス部(女子) Vリーグ vs日本大学",
+    title: "ラクロス部(女子) Vリーグ vs日大中高",
     date: "2026-08-05",
     location: "",
     campus: "outside",
@@ -2459,7 +2459,7 @@ const EVENTS = [
     target: ["student", "obog", "public"],
     feeType: "unknown",
     feeText: "料金未確認",
-    description: "関東学生女子ラクロスVリーグ。早稲田大学 対 日本大学(公式サイト表記「日大中高」、要確認)。会場は未確認。",
+    description: "関東学生女子ラクロスVリーグ。早稲田大学 対 日大中高。",
     externalUrl: "http://w-lax.com/schedule/",
     lastUpdated: "2026-11-14",
     isPublished: true
@@ -9095,7 +9095,7 @@ const EVENTS = [
   },
   {
     id: "evt-494",
-    title: "ラグビー蹴球部 関東大学ジュニア選手権大会 早大C vs明大C",
+    title: "ラグビー蹴球部 練習試合 早大C vs明大C",
     date: "2026-10-18",
     startTime: "15:00",
     location: "上井草グラウンド",
@@ -9106,7 +9106,7 @@ const EVENTS = [
     target: ["student", "obog", "public"],
     feeType: "unknown",
     feeText: "料金未確認",
-    description: "早稲田大学ラグビー蹴球部の関東大学ジュニア選手権大会。早大C 対 明大C。",
+    description: "早稲田大学ラグビー蹴球部の練習試合。早大C 対 明大C。",
     externalUrl: "https://www.wasedarugby.com/schedule",
     lastUpdated: "2026-11-14",
     isPublished: true
