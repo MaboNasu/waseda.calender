@@ -13717,10 +13717,10 @@ const EVENTS = [
     feeType: "paid",
     feeText: "団体移動 10,000円・個別移動 6,000円（現金）",
     description: "早稲田大学韓国人学生会(WUKSA)の2026年度下半期MT。1泊2日。申込制(先着60名、締切11/18(水)23:00)。",
-    externalUrl: "https://www.instagram.com/p/Dfl6k1QoOZx/",
+    externalUrl: "https://www.instagram.com/p/DfzhjGmsDdB/",
     reviewStatus: "pending",
-    reviewReason: "[mismatch] タイトル「2026 하반기 MT」が出典にそのまま書かれていない / 日付 2026-11-28 が出典に書かれていない / 主催の「제81대 와세다대학교 한국인 학생회」が出典に書かれていない / 料金の「10,000」「6,000」が出典に書かれていない / 終了日 2026-11-29 が出典に書かれていない",
-    lastUpdated: "2026-11-15",
+    reviewReason: "[mismatch] 日付 2026-11-28 が出典に書かれていない / 終了日 2026-11-29 が出典に書かれていない（出典がハングル表記の日付「11월28일」のため照合器が認識できない。タイトル・主催・会場・料金は11/20に新しい投稿URLで確認済み）",
+    lastUpdated: "2026-11-20",
     isPublished: false
   },
   {
@@ -13879,6 +13879,27 @@ const EVENTS = [
     reviewStatus: "pending",
     reviewReason: "[weak] 「無料」の根拠が出典にない",
     lastUpdated: "2026-11-18",
+    isPublished: false
+  },
+  {
+    id: "evt-741",
+    title: "ももキュン☆ パフォーマンス",
+    date: "2026-11-23",
+    startTime: "11:55",
+    location: "レインボーモータースクール和光",
+    campus: "outside",
+    organizer: "ももキュン☆",
+    category: "culture",
+    scope: "circle",
+    orgId: "C-272",
+    target: ["student", "obog", "public"],
+    feeType: "free",
+    feeText: "観覧無料",
+    description: "ももキュン☆によるパフォーマンス。11:55〜・14:10〜の2回。",
+    externalUrl: "https://www.instagram.com/p/DfwxFkryzgO/",
+    reviewStatus: "pending",
+    reviewReason: "[mismatch] タイトル「ももキュン☆ パフォーマンス」が出典にそのまま書かれていない / 開始時刻 11:55 が出典に書かれていない",
+    lastUpdated: "2026-11-20",
     isPublished: false
   }
 
