@@ -1748,6 +1748,17 @@
       "status": "dry-run",
       "postId": null,
       "errorType": null
+    },
+    {
+      "postedAt": "2026-11-25T04:57:53.123Z",
+      "postType": "recommend",
+      "targetDate": "2026-11-25",
+      "eventIds": [],
+      "campaign": "recommendation",
+      "claudeUsed": false,
+      "status": "dry-run",
+      "postId": null,
+      "errorType": null
     }
   ]
 }
