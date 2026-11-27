@@ -985,6 +985,21 @@
       "status": "published",
       "checkedAt": "2026-11-18",
       "note": ""
+    },
+    "evt-096": {
+      "status": "published",
+      "checkedAt": "2026-11-27",
+      "note": ""
+    },
+    "evt-251": {
+      "status": "published",
+      "checkedAt": "2026-11-27",
+      "note": ""
+    },
+    "evt-502": {
+      "status": "published",
+      "checkedAt": "2026-11-27",
+      "note": ""
     }
   }
 }

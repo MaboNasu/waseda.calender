@@ -255,7 +255,7 @@ function organizerCheck(ev, normText, sourceUrls, orgById, dict) {
 
 function feeCheck(ev, normText) {
   if (ev.feeType === 'free') {
-    return /無料|入場無料|参加無料|free|カンパ/.test(normText) ? { ok: true } : { ok: false, code: 'weak', reason: '「無料」の根拠が出典にない' };
+    return /無料|入場無料|参加無料|free|カンパ|参加費(?:は)?不要|入場料(?:は)?不要/.test(normText) ? { ok: true } : { ok: false, code: 'weak', reason: '「無料」の根拠が出典にない' };
   }
   if (ev.feeType === 'paid') {
     const amounts = (String(ev.feeText || '').normalize('NFKC').match(/\d[\d,]*/g) || []).filter((a) => a.replace(/,/g, '').length >= 3);

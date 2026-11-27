@@ -1075,6 +1075,32 @@ const RESULTS = {
     ],
     sources: [{ url: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/", label: "早稲田大学 競技スポーツセンター(早慶戦勝敗一覧)" }],
     confirmedAt: "2026-11-19"
+  },
+  // ---- 2026-11-27 出典照合で追加（scripts/apply-result-drafts.js）----
+  "evt-096": {
+    kind: "match",
+    outcome: "win",
+    score: "44-8",
+    sources: [{ url: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/", label: "早稲田大学 競技スポーツセンター(早慶戦勝敗一覧)" }],
+    confirmedAt: "2026-11-27"
+  },
+  "evt-251": {
+    kind: "match",
+    matches: [
+      { team: "男子", outcome: "win", score: "11-4" },
+      { team: "女子", outcome: "win", score: "5-0" }
+    ],
+    sources: [{ url: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/", label: "早稲田大学 競技スポーツセンター(早慶戦勝敗一覧)" }],
+    confirmedAt: "2026-11-27"
+  },
+  "evt-502": {
+    kind: "match",
+    matches: [
+      { team: "男子", outcome: "loss", score: "3480-3722" },
+      { team: "女子", outcome: "win", score: "2405-2369" }
+    ],
+    sources: [{ url: "https://www.waseda.jp/inst/athletic/wasedasports/soukei/", label: "早稲田大学 競技スポーツセンター(早慶戦勝敗一覧)" }],
+    confirmedAt: "2026-11-27"
   }
 };
 
