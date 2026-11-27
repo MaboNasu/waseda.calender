@@ -234,7 +234,7 @@ function clubKeys(ev) {
   const core = title.replace(/[（(][^()（）]*[)）]/g, '').replace(/第\d+回|早慶|定期戦|戦$/g, '').trim();
   if (core.length >= 2) keys.add(core);
   // 部の名前と競技名が違うもの（出典は競技名で書くことが多い）
-  const SPORT = { ア式蹴球部: 'サッカー', ラグビー蹴球部: 'ラグビー', 米式蹴球部: 'アメリカンフットボール', 庭球部: 'テニス', 軟式庭球部: 'ソフトテニス', 漕艇部: 'レガッタ', 競走部: '陸上' };
+  const SPORT = { ア式蹴球部: 'サッカー', ラグビー蹴球部: 'ラグビー', 米式蹴球部: 'アメリカンフットボール', 庭球部: 'テニス', 軟式庭球部: 'ソフトテニス', 漕艇部: 'レガッタ', 競走部: '陸上', 洋弓部: 'アーチェリー' };
   [...keys].forEach((k) => { const base = k.replace(/\s.*$/, ''); if (SPORT[base]) keys.add(SPORT[base]); });
   if (ev.organizer) {
     const club = String(ev.organizer).replace(/^早稲田大学\s*/, '').trim();
@@ -263,7 +263,7 @@ function opponentKeys(ev, kind = 'match') {
     const team = /^(.+?)([A-E]{1,2})$/.exec(name);
     if (team) { keys.add(team[1]); (UNIV_ABBR[team[1]] || []).forEach((k) => { keys.add(k + team[2]); keys.add(k); }); }
   }
-  if (/早慶/.test(title)) ['慶應', '慶大', '慶応', '早慶'].forEach((k) => keys.add(k));
+  if (/早慶|対抗慶應/.test(title)) ['慶應', '慶大', '慶応', '早慶'].forEach((k) => keys.add(k));
   (title.match(/第\d+節|\d+回戦|準々決勝|準決勝|決勝|入替戦|定期戦/g) || []).forEach((k) => keys.add(k));
   if (kind === 'report') {
     title.replace(/[（(][^)）]*[)）]/g, ' ').split(/\s+/).filter((w) => w.length >= 4).forEach((w) => keys.add(w));
@@ -357,7 +357,7 @@ async function judge(row, events, existing, today, cache) {
         if (m) pos.push(m.index);
       });
       // 早慶戦の一覧は全競技が並ぶので、同じスコアが複数あるときは部・競技名が直前（100字以内）にあるものを選ぶ
-      const soukeiClubs = /早慶/.test(ev.title || '') ? clubKeys(ev) : null;
+      const soukeiClubs = /早慶|対抗慶應/.test(ev.title || '') ? clubKeys(ev) : null;
       const clubBefore = (p) => soukeiClubs.some((k) => norm.slice(Math.max(0, p - 100), p).includes(k));
       at = (soukeiClubs && pos.find((p) => near(p, 250) && clubBefore(p))) ?? pos.find((p) => near(p, 250));
       if (at === undefined || !pos.length) {
@@ -369,7 +369,7 @@ async function judge(row, events, existing, today, cache) {
         });
         if (rev !== undefined) { at = rev; out.notes.push('出典は相手が先の順で記載'); }
       }
-      if (at === undefined && !/早慶/.test(ev.title || '')) {
+      if (at === undefined && !/早慶|対抗慶應/.test(ev.title || '')) {
         // 空白区切りの表（対戦表示・イニング別スコア）。早慶戦の一覧は行の取り違えが起きやすいので使わない
         const rs = rawScoreMatch(text, a, b, keys);
         if (rs) {
@@ -382,7 +382,7 @@ async function judge(row, events, existing, today, cache) {
       if (at === undefined) { out.problems.push(pos.length ? 'スコアの近くに対戦相手名・節がない（別の試合の可能性）' : `スコア ${score} が出典にない`); return out; }
     }
     const hit = near(at, 250);
-    if (/早慶/.test(ev.title || '')) {
+    if (/早慶|対抗慶應/.test(ev.title || '')) {
       // 早慶戦の一覧は全競技が並ぶので、「慶應」だけでは行を特定できない。部・競技名がスコアの直前（100字以内）にあること
       const before = norm.slice(Math.max(0, at - 100), at);
       const club = clubKeys(ev).find((k) => before.includes(k));
